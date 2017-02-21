@@ -339,71 +339,71 @@ define([
                 class:'esri-feature-table-menu-item',
                 id: 'featureTableTools',
             });
-            domConstruct.place(featureTableTools, iconMenu, 'after');
+            // domConstruct.place(featureTableTools, iconMenu, 'after');
 
-            var SelectOnMapOrView = new ImageToggleButton({
-                imgSelected: 'images/SelectOnView.png',
-                imgUnselected: 'images/SelectOnMap.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
-            }, domConstruct.create('div', {}, featureTableTools));
+            // var SelectOnMapOrView = new ImageToggleButton({
+            //     imgSelected: 'images/SelectOnView.png',
+            //     imgUnselected: 'images/SelectOnMap.png',
+            //     titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+            //     titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+            // }, domConstruct.create('div', {}, featureTableTools));
 
-            SelectOnMapOrView.startup();
+            // SelectOnMapOrView.startup();
 
-            var SelectOnRectangle = new ImageToggleButton({
-                imgSelected: 'images/SearchList.Checked.png',
-                imgUnselected: 'images/SearchList.Unchecked.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
-            }, domConstruct.create('div', {}, featureTableTools));
+            // var SelectOnRectangle = new ImageToggleButton({
+            //     imgSelected: 'images/SearchList.Checked.png',
+            //     imgUnselected: 'images/SearchList.Unchecked.png',
+            //     titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+            //     titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+            // }, domConstruct.create('div', {}, featureTableTools));
 
-            SelectOnRectangle.startup();
+            // SelectOnRectangle.startup();
 
-            on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
-                // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(SelectOnMapOrView.isChecked()) {
-                    SelectOnRectangle.Check(false);
-                    this._selectViewIds();
-                    this._selectSignal = on(this.map, "extent-change", lang.hitch(this, this._selectViewIds, this));
-                } else {
-                    this._selectSignal.remove();
-                    this.myFeatureTable.clearFilter();
-                }
-            }));
-            on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
-                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(SelectOnRectangle.isChecked()) {
-                    SelectOnMapOrView.Check(false);
+            // on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
+            //     // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            //     if(SelectOnMapOrView.isChecked()) {
+            //         SelectOnRectangle.Check(false);
+            //         this._selectViewIds();
+            //         this._selectSignal = on(this.map, "extent-change", lang.hitch(this, this._selectViewIds, this));
+            //     } else {
+            //         this._selectSignal.remove();
+            //         this.myFeatureTable.clearFilter();
+            //     }
+            // }));
+            // on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
+            //     // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            //     if(SelectOnRectangle.isChecked()) {
+            //         SelectOnMapOrView.Check(false);
 
-                    require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
-                        var toolbar = new Draw(this.map);
-                        toolbar.activate(Draw.EXTENT, {
-                            showTooltips: false,
-                        });
-                        this.map.setMapCursor("url(images/Select.cur),auto");
-                        this.map.hideZoomSlider();
-                        toolbar.on("draw-end", lang.hitch(this, function(evt) {
-                            this.map.setMapCursor("default");
-                            var symbol;
-                            toolbar.deactivate();
-                            this.map.showZoomSlider();
-                            symbol = new SimpleLineSymbol().setColor('red');
-                            this._rectangleGr = new Graphic(evt.geometry, symbol);
-                            this._selectViewIds(this._rectangleGr.geometry);
-                            this.map.graphics.add(this._rectangleGr);
-                            var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
-                            this.map.setExtent(extent);
-                        }));
-                    }));
-                }
-                else 
-                {
-                    if(this._rectangleGr) {
-                        this.map.graphics.remove(this._rectangleGr);
-                        this.myFeatureTable.clearFilter();
-                    }
-                }
-            }));
+            //         require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
+            //             var toolbar = new Draw(this.map);
+            //             toolbar.activate(Draw.EXTENT, {
+            //                 showTooltips: false,
+            //             });
+            //             this.map.setMapCursor("url(images/Select.cur),auto");
+            //             this.map.hideZoomSlider();
+            //             toolbar.on("draw-end", lang.hitch(this, function(evt) {
+            //                 this.map.setMapCursor("default");
+            //                 var symbol;
+            //                 toolbar.deactivate();
+            //                 this.map.showZoomSlider();
+            //                 symbol = new SimpleLineSymbol().setColor('red');
+            //                 this._rectangleGr = new Graphic(evt.geometry, symbol);
+            //                 this._selectViewIds(this._rectangleGr.geometry);
+            //                 this.map.graphics.add(this._rectangleGr);
+            //                 var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
+            //                 this.map.setExtent(extent);
+            //             }));
+            //         }));
+            //     }
+            //     else 
+            //     {
+            //         if(this._rectangleGr) {
+            //             this.map.graphics.remove(this._rectangleGr);
+            //             this.myFeatureTable.clearFilter();
+            //         }
+            //     }
+            // }));
 
 
             this.status.show = true;
