@@ -1677,9 +1677,9 @@ define(["dojo/ready",
                         '<img src="images\\searchZoom.png" alt="Search" width="20" height="20">';
                     }
 
-                    var esriIconCloseNode = dojo.query(".esriIconClose")[0]; 
+                    var esriIconCloseNode = dojo.query(".searchIcon.esri-icon-close.searchClose")[0]; 
                     if(esriIconCloseNode) {
-                        domClass.remove(esriIconCloseNode, "esriIconClose");
+                        domClass.remove(esriIconCloseNode, "searchIcon esri-icon-close");
                         esriIconCloseNode.innerHTML = 
                             '<img src="images\\searchClear.png" alt="Clear search" width="16" height="16">';
                     }
