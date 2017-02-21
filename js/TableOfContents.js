@@ -52,7 +52,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 accountText: "toc-account",
                 visible: "toc-visible",
                 settingsIcon: "icon-cog",
-                settings: "toc-settings",
+                //settings: "toc-settings",
                 actions: "toc-actions",
                 account: "toc-account",
                 clear: "clear"
@@ -152,7 +152,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }, layerDiv);
                     
                     // title container
-                    var titleContainerDiv = domConstruct.create("div", {
+                    var tocTitleContainer = domConstruct.create("div", {
                         className: "toc-title-container",
                         tabindex: -1,
                     }, titleDiv);
@@ -160,11 +160,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     titleCheckbox = domConstruct.create("input", 
                     {
                         id: "layer_ck_"+i,
-                        className: titleCheckBoxClass, //this.css.titleCheckbox,
+                        className: titleCheckBoxClass, 
                         type: "checkbox",
                         tabindex: 0,
                         checked: layer.visibility,
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
 
                     var titleText = domConstruct.create("label", {
                         "for": "layer_ck_"+i,
@@ -172,9 +172,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         "innerHTML": layer.title,
                         role: "presentation",
                         //"title" : layer.title
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
 
-                    this._atachSpaceKey(titleContainerDiv, titleCheckbox);
+                    this._atachSpaceKey(tocTitleContainer, titleCheckbox);
 
                     var accountText = '';
                     if (layer.account) {
@@ -185,38 +185,38 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
 
                     // settings
-                    var settingsDiv, settingsIcon;
-                    if (layer.layerObject &&
-                        dojo.exists("settings", layer) &&
-                        layer.layerObject.isEditable()) 
+                    var tocSettings, settingsIcon;
+                    // if (layer.layerObject &&
+                    //     dojo.exists("settings", layer) &&
+                    //     layer.layerObject.isEditable()) 
                     { 
-                        settingsDiv = domConstruct.create("div", {
-                            className: this.css.settings,
+                        tocSettings = domConstruct.create("div", {
+                            className: "toc-settings",
                             id: layer.settings
-                        }, titleContainerDiv);
+                        }, tocTitleContainer);
 
                         settingsIcon = domConstruct.create("img", {
                             'src' : 'images/icon-cog.png',
                             alt:'Configuration',
                             role: "button,",
                             tabindex:0,
-                        }, settingsDiv);
+                        }, tocSettings);
                     }
 
                     // clear css
                     var clearCSS = domConstruct.create("div", {
                         className: this.css.clear
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
                     
                     // lets save all the nodes for events
                     var nodesObj = {
                         checkbox: titleCheckbox,
                         title: titleDiv,
-                        titleContainer: titleContainerDiv,
+                        titleContainer: tocTitleContainer,
                         titleText: titleText,
                         accountText: accountText,
                         settingsIcon: settingsIcon,
-                        settingsDiv: settingsDiv,
+                        tocSettings: tocSettings,
                         layer: layerDiv
                     };
                     this._nodes.push(nodesObj);

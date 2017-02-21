@@ -48,8 +48,8 @@ blockquote {
   float: right;
   margin-top: 5px;
   opacity: 0.15;
-  position: absolute;
-  margin-left: 264px;
+  /*position: absolute;
+  margin-left: 264px;*/
 }
 
 .toc-settings img{
