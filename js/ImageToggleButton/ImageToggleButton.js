@@ -60,6 +60,7 @@ define([
 
         startup: function() {
             var cbInput = dojo.byId(this.id+'_cb');
+            if(!cbInput) return;
             var cbLabel = dojo.byId(this.id+'_lbl');
             on(cbLabel, 'keydown', function(evt) {
                 switch(evt.key) {
