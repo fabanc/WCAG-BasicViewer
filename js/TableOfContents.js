@@ -44,7 +44,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 layer: "toc-layer",
                 firstLayer: "toc-first-layer",
                 title: "toc-title",
-                titleContainer: "toc-title-container",
+                //titleContainer: "toc-title-container",
                 content: "toc-content",
                 titleCheckbox: "checkbox",
                 checkboxCheck: "icon-check-1",
@@ -153,7 +153,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     
                     // title container
                     var titleContainerDiv = domConstruct.create("div", {
-                        className: this.css.titleContainer,
+                        className: "toc-title-container",
                         tabindex: -1,
                     }, titleDiv);
                     
