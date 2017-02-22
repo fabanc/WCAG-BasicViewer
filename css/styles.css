@@ -1751,9 +1751,11 @@ main {
     }
 
     .arcgisSearch .searchClose, .arcgisSearch .searchSpinner {
+        line-height: 28px;
         vertical-align: baseline;
         position: absolute;
         opacity:0.5;
+        height: 29px;
     }
 
     .searchClose:focus, .searchClose:hover {
