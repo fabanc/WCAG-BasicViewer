@@ -54,7 +54,10 @@ define([
             }
         },
         
+        __init:false,
+
         _init: function () {
+            if(this.__init) return;
             this.nav.setZoomSymbol(new SimpleLineSymbol("SOLID", new Color(this.zoomColor), 4));
 
             dojo.empty(this.navToolBar);
@@ -176,7 +179,7 @@ define([
             //     this.map._createLabelLayer();
             // }));
 
-
+            this.__init = true;
         },
 
         //disTabs : 1,

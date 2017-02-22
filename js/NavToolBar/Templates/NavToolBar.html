@@ -3,13 +3,18 @@
 	style="height:auto; position: absolute;"
 	>
 
-	<div id="navToolBar" class="navToolBar bg" title="${_i18n.widgets.navToolBar.zoomIn}">
+	<div 
+		id="navToolBar" 
+		class="navToolBar bg">
 		<div 
 			id="navZoomIn" 
-			class="navBtn borderBottom" >
+			class="navBtn borderBottom" 
+			title="${_i18n.widgets.navToolBar.zoomIn}">
 			<div 
 				class="disabledBtn" style="display:none" 
-				aria-label="${_i18n.widgets.navToolBar.aria.maxZoomIn}" role="button"></div>
+				aria-label="${_i18n.widgets.navToolBar.aria.maxZoomIn}" 
+				role="button">
+			</div>
 			<input 
 				type="image" 
 				src="images/icons_${iconColor}/plus${newIcons}.png" 
@@ -17,15 +22,22 @@
 				title="${_i18n.widgets.navToolBar.zoomIn}"
 				>
 		</div>
+
 		<div id="navHome" class="navBtn borderBottom">
 			<div 
 				class="disabledBtn" style="display:none" 
-				aria-label="${_i18n.widgets.navToolBar.aria.atDefaultExt}" role="button"></div>
+				aria-label="${_i18n.widgets.navToolBar.aria.atDefaultExt}" role="button">
+			</div>
 		</div>
-		<div id="navZoomOut" class="navBtn borderBottom" title="${_i18n.widgets.navToolBar.zoomOut}">
+
+		<div 
+			id="navZoomOut" 
+			class="navBtn borderBottom" 
+			title="${_i18n.widgets.navToolBar.zoomOut}">
 			<div 
 				class="disabledBtn" style="display:none" 
-				aria-label="${_i18n.widgets.navToolBar.aria.maxZoomOut}" role="button"></div>
+				aria-label="${_i18n.widgets.navToolBar.aria.maxZoomOut}" 
+				role="button"></div>
 			<input 
 				type="image" 
 				src="images/icons_${iconColor}/minus${newIcons}.png" 
