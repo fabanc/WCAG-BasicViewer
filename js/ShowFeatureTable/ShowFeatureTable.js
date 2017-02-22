@@ -107,7 +107,7 @@ define([
                     "xoffset": 0,
                     "yoffset": 0,
                     "type": "esriPMS",
-                    "url": require.toUrl("./images/SelectPointMarker.gif"),
+                    "url": require.toUrl("./images/SelectPointMarker3.gif"),
                     "contentType": "image/gif",
                     "width": 33,
                     "height": 33
@@ -509,10 +509,12 @@ define([
                     }));
                 }));
 
-                if(!SelectOnMapOrView.isChecked() && ! SelectOnRectangle.isChecked()) {
+                if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked()) {
                     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
-                    var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
-                    this.map.setExtent(extent);
+                    if(grs && grs.length>=2) {
+                        var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
+                        this.map.setExtent(extent);
+                    }
                 }
             }));
 
