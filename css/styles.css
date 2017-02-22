@@ -705,14 +705,17 @@ img {
 
 /*Calcite updates keep list and submit issues*/
 .calcite .esriPopup .title {
-  font-weight: bold; }
+  font-weight: bold; 
+}
 
 .dijitMenuItemIconChar.dijitCheckedMenuItemIconChar {
   display: inline-block;
-  visibility: hidden; }
+  visibility: hidden; 
+}
 
 .calcite .dijitMenu {
-  border: none; }
+  border: none; 
+}
 
 .dijitMenuItemLabel {
     padding: 4px 4px;
@@ -1224,6 +1227,18 @@ html, body {
     position: absolute;
     top: 45%;
     border-radius: 2px;
+}
+
+.dijitSplitterH .dijitSplitterThumb {
+    width: 20%;
+    border-radius: 3px;
+    margin: 0;
+    overflow: hidden;
+    position: absolute;
+    left: 40%;
+    border-radius: 5px;
+    top: 1px;
+    height: calc(100% - 2px);
 }
 
 .dj_a11y .dijitSplitterV {
