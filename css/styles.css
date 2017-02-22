@@ -592,7 +592,7 @@ img {
 @media only screen and (min-width: 720px) {
     .pageBody {
         width: 100%;
-        height: calc(100% - 52px);
+        height: calc(100% - 44px);
     }
 }
 
@@ -704,7 +704,8 @@ img {
 }
 
 /*Calcite updates keep list and submit issues*/
-.calcite .esriPopup .title {
+/* .calcite */
+.esriPopup .title {
   font-weight: bold; 
 }
 
@@ -713,7 +714,8 @@ img {
   visibility: hidden; 
 }
 
-.calcite .dijitMenu {
+/* .calcite */
+.dijitMenu {
   border: none; 
 }
 
@@ -730,7 +732,8 @@ img {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#665DADDD,endColorstr=#665DADDD);
   zoom: 1; }
 
-.calcite .dijitMenuItemLabel {
+/* .calcite */
+.dijitMenuItemLabel {
   max-width: 250px; }
 
 .dijitButtonNode {
@@ -818,13 +821,15 @@ img {
   /*#4997d2; calcite hover */ 
 }
 
-.calcite .dijitArrowButtonInner {
-  width: 16px;
-  height: 16px;
-  }
+/* .calcite  .dijitArrowButtonInner {
+  width: 18px;
+  height: 18px;
+  }*/
 
-.calcite .dijitPopup {
-  border: solid 1px #d3d3d3; }
+/* .calcite */
+.dijitPopup {
+  border: solid 1px #d3d3d3; 
+}
 
 .esriPopup .titlePane {
   font-size: 12px;
@@ -878,25 +883,35 @@ img {
   right: auto; }
 
 /*Share Dialog updates*/
-.calcite .icon-container {
+/* .calcite */
+.icon-container {
   margin: 10px 0 10px;
-  display: none; }
+  display: none; 
+}
 
 /*@media only screen and (min-width: 720px) {*/
-  .calcite .icon-container {
-    display: block; } 
+  /* .calcite */
+  .icon-container {
+    display: block; 
+  } 
 /*}*/
 
-.calcite .map-size-label {
+/* .calcite */
+.map-size-label {
   float: left;
   font-size: 15px;
-  margin: 0 5px 0 0; }
+  margin: 0 5px 0 0; 
+}
 
-.esriRTL .calcite .map-size-label {
+.esriRTL 
+/* .calcite */
+.map-size-label {
   float: right;
-  margin: 0 0 0 5px; }
+  margin: 0 0 0 5px; 
+}
 
-.calcite .share-dialog-icon {
+/* .calcite */
+.share-dialog-icon {
   --font-size: 30px;
   --line-height: 30px;
   float: left;
@@ -909,22 +924,30 @@ img {
   /* opacity: 0.5; */
 }
 
-.calcite .share-dialog-icon:hover, .calcite .share-dialog-icon:focus {
+/* .calcite */
+.share-dialog-icon:hover, 
+/* .calcite */
+.share-dialog-icon:focus {
   opacity: 1;
 }
 
-.calcite .share-dialog-icon:visited {
+/* .calcite */
+.share-dialog-icon:visited {
   color: rgba(0, 0, 0, 0.5); }
 
-.esriRTL .calcite .share-dialog-icon {
+.esriRTL 
+/* .calcite */
+.share-dialog-icon {
   float: right;
   margin: 0 0 0 10px; }
 
-.calcite .share-dialog-icon:hover {
+/* .calcite */
+.share-dialog-icon:hover {
   color: rgba(0, 0, 0, 0.8); 
 }
 
-.calcite .share-map-url {
+/* .calcite */
+.share-map-url {
   width: calc(100% - 0px) !important;
   height: 24px;
   font-size: 14px;
@@ -935,33 +958,34 @@ img {
   padding-right:1px;
 }
 
-.calcite .share-dialog-subheader {
+/* .calcite */
+.share-dialog-subheader {
   margin-bottom: 0;
 }
 
-.calcite .map-size-container {
+/* .calcite */ .map-size-container {
   margin: 0;
   padding: 0 0 20px; }
 
-.calcite .embed-map-size-clear, .calcite .icon-clear {
+/* .calcite */ .embed-map-size-clear, /* .calcite */ .icon-clear {
   clear: both; }
 
-.calcite .embed-map-size-dropdown {
+/* .calcite */ .embed-map-size-dropdown {
   float: left; }
 
-.esriRTL .calcite .embed-map-size-dropdown {
+.esriRTL /* .calcite */ .embed-map-size-dropdown {
   float: right; }
 
-.calcite .share-dialog-subheader {
+/* .calcite */ .share-dialog-subheader {
   font-size: 17px;
   display: none; }
 
 /*@media only screen and (min-width: 720px) {*/
-  .calcite .share-dialog-subheader {
+  /* .calcite */ .share-dialog-subheader {
     display: block; } 
 /*}*/
 
-.calcite .share-dialog-textarea {
+/* .calcite */ .share-dialog-textarea {
   max-width: calc(100% - 0px) !important;
   margin: 0 !important;
   width: calc(100% - 0px) !important;
@@ -1965,6 +1989,11 @@ input[type=checkbox].checkbox {
 
 .PrintDialog .dijitButtonText {
     padding: 2px 4px;
+}
+
+.PrintDialog .dijitArrowButtonInner {
+  width: auto;
+  height: auto;
 }
 
 .PrintDialog .dijitArrowButtonInner img {
