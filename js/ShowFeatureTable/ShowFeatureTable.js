@@ -343,13 +343,21 @@ define([
                 }, hidderToggle);
             }
 
+            var arrowButton = query('.esri-feature-table .dijitArrowButtonInner')[0];
+            if(arrowButton) {
+                domConstruct.create('img', {
+                    role: 'presentation',
+                    src: 'images/icons_black/carret-down.32.png',
+                }, arrowButton);
+            }
+
             var iconMenu = query('.esri-feature-table-menu-item.esri-feature-table-title')[0];
 
             var featureTableTools = domConstruct.create('div', {
                 class:'esri-feature-table-menu-item',
                 id: 'featureTableTools',
             });
-            domConstruct.place(featureTableTools, iconMenu, 'after');
+            domConstruct.place(featureTableTools, iconMenu, 'before');
 
             var SelectOnMapOrView = new ImageToggleButton({
                 imgSelected: 'images/SelectOnView.png',

@@ -1,14 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Ubuntu+Mono');
 
-blockquote {
-    display: inherit;
-    -webkit-margin-before: 0;
-    -webkit-margin-after: 0;
-    -webkit-margin-start: 0;
-    -webkit-margin-end: 0;
-    font-style: italic; 
-}
-
 .myBorderContainer {
   width: 100% !important;
   height: 100% !important; 
@@ -49,7 +40,7 @@ blockquote {
 .esri-feature-table-menu-item .dijitMenuItemLabel {
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 14px;
-    color:black;
+    /*color:black;*/
 }
 
 .esri-feature-table .dgrid-header .dgrid-cell {
@@ -109,31 +100,21 @@ blockquote {
 }
 
 #featureTableTools {
-    /*width:30px;
-    background-color: red;*/
     float:left;
-    margin:0 8px;
 }
 
-/*#featureTableTools img {
-    width: 22px;
-    height: 22px;
-    margin: 2px 1px;
+.esri-feature-table .dijitArrowButtonInner {
+    width:auto;
+    height:auto;
+}
+
+.esri-feature-table .dijitButtonText {
+    padding: 4px;
+    font-weight: bold;
+}
+
+.esri-feature-table .dijitArrowButtonInner img {
+    width: 12px;
+    height: 12px;
     padding: 2px;
 }
-
-.cbToggleBtn {
-    display:none;
-}
-
-input[type="checkbox"].cbToggleBtn + label img.UnselectedToggleImg,
-input[type="checkbox"].cbToggleBtn:checked + label img.SelectedToggleImg
-{
-    display: initial;
-}
-
-input[type="checkbox"].cbToggleBtn:checked + label img.UnselectedToggleImg,
-input[type="checkbox"].cbToggleBtn + label img.SelectedToggleImg
-{
-    display: none;
-}*/
