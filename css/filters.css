@@ -77,12 +77,12 @@
   display: -webkit-box;
   display:  -moz-box;
   display:  -ms-flexbox;
-  height: 50px;
+  height: 53px;
   overflow-x: auto;
   overflow-y: hidden;
   margin-top: -6px;
   position: absolute;
-  top: calc(100% - 50px);
+  top: calc(100% - 53px);
   width: 100%;
 }
 
@@ -90,7 +90,7 @@
     width: calc(100% - 22px);
     /* left: 1px; */
     /* top: 0px; */
-    height: calc(100% - 73px);
+    height: calc(100% - 76px);
     border: 1px solid black;
     border-top-right-radius: 8px;
     padding: 10px;
