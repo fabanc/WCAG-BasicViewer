@@ -2000,3 +2000,12 @@ input[type=checkbox].checkbox {
     width: 16px;
     height: 16px; 
 }
+
+.dgrid-hider-toggle {
+    padding:2px;
+}
+
+.dgrid-hider-toggle img {
+    width: 16px;
+    height: 16px;
+}

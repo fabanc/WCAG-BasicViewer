@@ -333,6 +333,16 @@ define([
 
             this.myFeatureTable.startup();
 
+            var hidderToggle = query('.ui-icon.dgrid-hider-toggle')[0];
+            if(hidderToggle) {
+                domClass.remove(hidderToggle, 'ui-icon');
+                domConstruct.create('img', {
+                    alt:'',
+                    title: hidderToggle.attributes['aria-label'].value,
+                    src:'images/icons_black/Columns.32.png',
+                }, hidderToggle);
+            }
+
             var iconMenu = query('.esri-feature-table-menu-item.esri-feature-table-title')[0];
 
             var featureTableTools = domConstruct.create('div', {

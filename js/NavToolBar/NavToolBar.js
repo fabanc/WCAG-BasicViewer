@@ -175,14 +175,8 @@ define([
                 }
             }));
 
-            // on(dom.byId("testBtn"), "click", lang.hitch(this, function(e) {
-            //     this.map._createLabelLayer();
-            // }));
-
             this.__init = true;
         },
-
-        //disTabs : 1,
 
         tryDisableBtn:function(id, disable) {
             var div = query("#"+id)[0];
