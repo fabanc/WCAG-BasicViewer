@@ -22,7 +22,7 @@
 .ImageToggleButton input.cbToggleBtn + label.cbToggleBtn img.UnselectedToggleImg,
 .ImageToggleButton input.cbToggleBtn:checked + label.cbToggleBtn img.SelectedToggleImg
 {
-    display: initial;
+    display: block;
 }
 
 .ImageToggleButton input.cbToggleBtn:checked + label.cbToggleBtn img.UnselectedToggleImg,
