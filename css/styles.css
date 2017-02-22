@@ -715,7 +715,8 @@ img {
   border: none; }
 
 .dijitMenuItemLabel {
-  padding: 0; }
+    padding: 4px 4px;
+}
 
 .dijitChecked .dijitMenuItemIconChar.dijitCheckedMenuItemIconChar {
   display: inline-block;
