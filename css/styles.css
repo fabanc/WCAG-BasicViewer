@@ -596,11 +596,6 @@ img {
     }
 }
 
-.esriPrint {
-    padding: 0px;
-    padding-bottom: 16px;
-}
-
 #panelTop {
     width: 100%;
 } 
@@ -1939,4 +1934,24 @@ input[type=checkbox].checkbox {
     }
 }
 
+.arcgisSearch .sourceName,
+.arcgisSearch .searchButtonText  {
+    color: white;
+}
 
+.PrintDialog .esriPrintButton {
+    color: black;
+}
+
+.PrintDialog .dijitButtonNode {
+    border: none;
+}
+
+.PrintDialog .dijitButtonText {
+    padding: 2px 4px;
+}
+
+.PrintDialog .dijitArrowButtonInner img {
+    width: 16px;
+    height: 16px; 
+}

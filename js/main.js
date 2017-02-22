@@ -871,7 +871,7 @@ define(["dojo/ready",
                 var detailDiv = dojo.byId('detailDiv');
                 detailDiv.style.maxHeight=(pageBody.clientHeight-instructionsDiv.clientHeight - 30) + 'px';
             } catch (e) {
-                
+                /* ignore instructionDiv not defined error: will come defined next time! */      
             }
         },
 
@@ -1399,6 +1399,12 @@ define(["dojo/ready",
                         domConstruct.place(print.printDomNode, printDiv, "first");
 
                         print.startup();
+
+                        var arrowButton = dojo.query('.PrintDialog .dijitArrowButtonInner')[0];
+                        domConstruct.create('img', {
+                            role: 'presentation',
+                            src: 'images/icons_black/carret-down.32.png',
+                        }, arrowButton);
 
                         deferred.resolve(true);
                         return;
