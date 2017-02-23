@@ -346,8 +346,9 @@ define([
             var arrowButton = query('.esri-feature-table .dijitArrowButtonInner')[0];
             if(arrowButton) {
                 domConstruct.create('img', {
-                    role: 'presentation',
+                    // role: 'presentation',
                     src: 'images/icons_black/carret-down.32.png',
+                    alt: 'carret-down'
                 }, arrowButton);
             }
 

@@ -356,9 +356,6 @@ define(["dojo/ready",
                         return r;
                     });
 
-                    // var home = has("home");
-                    // var locate = has("locate");
-
                     this._updateTheme();
 
                     toolbar._activateDefautTool();
@@ -1398,8 +1395,9 @@ define(["dojo/ready",
 
                         var arrowButton = dojo.query('.PrintDialog .dijitArrowButtonInner')[0];
                         domConstruct.create('img', {
-                            role: 'presentation',
+                            // role: 'presentation',
                             src: 'images/icons_black/carret-down.32.png',
+                            alt: 'carret-down',
                         }, arrowButton);
 
                         deferred.resolve(true);

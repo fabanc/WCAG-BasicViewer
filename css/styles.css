@@ -620,11 +620,11 @@ img {
 
 #panelText:focus {
   white-space: inherit;
-  /*font-size: 14px;*/
   overflow: auto;
 }
 
 #panelTitle h1 {
+  font-family: 'Roboto Condensed', sans-serif;
   padding: 6px;
   margin: 0;
   -webkit-margin-before: 0; 
