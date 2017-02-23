@@ -621,6 +621,7 @@ img {
 #panelText:focus {
   white-space: inherit;
   /*font-size: 14px;*/
+  overflow: auto;
 }
 
 #panelTitle h1 {
@@ -1952,6 +1953,7 @@ input[type=checkbox].checkbox {
     overflow: hidden;
     line-height: 0;
     margin:1px;
+    display: inline-block;
 }
 
 #panelLogo img {
