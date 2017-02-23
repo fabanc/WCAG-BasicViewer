@@ -382,7 +382,8 @@ define([
                 if(SelectOnMapOrView.isChecked()) {
                     SelectOnRectangle.Check(false);
                     this._selectViewIds();
-                    this._selectSignal = on(this.map, "extent-change", lang.hitch(this, this._selectViewIds, this));
+                    this._selectSignal = on(this.map, "extent-change", 
+                        lang.hitch(this, function() {this._selectViewIds();}));
                 } else {
                     this._selectSignal.remove();
                     this.myFeatureTable.clearFilter();
@@ -514,7 +515,7 @@ define([
                     }));
                 }));
 
-                //this._delaty(500).then(lang.hitch(this, function() {this._selectSignal = on(this.map, "extent-change", lang.hitch(this, this._selectViewIds, this));}));
+                //this._delay(500).then(lang.hitch(this, function() {this._selectSignal = on(this.map, "extent-change", lang.hitch(this, this._selectViewIds, this));}));
             }));
 
             on(this.myFeatureTable, "row-deselect", lang.hitch(this, function(evt){
@@ -580,7 +581,7 @@ define([
             q = new Query();
             q.outFields = [objectIdFieldName];
             q.geometry = geometry ? geometry : this.map.extent;
-            var exp=this.layer.layerObject.getDefinitionExpression();
+            var exp=this.layer.layerObject.getDefinitionExpression() || null;
             q.where = exp;
             q.returnGeometry = true;
             new QueryTask(this.layer.layerObject.url).execute(q).then(lang.hitch(this, function(ev) {
@@ -589,11 +590,11 @@ define([
             }));
         },
 
-        _delay: function(ms) {
-            var deferred = new dojo.Deferred();
-            setTimeout(function() {deferred.resolve(true);}, ms);
-            return deferred.promise;
-        },
+        // _delay: function(ms) {
+        //     var deferred = new dojo.Deferred();
+        //     setTimeout(function() {deferred.resolve(true);}, ms);
+        //     return deferred.promise;
+        // },
 
 
     });
