@@ -11,6 +11,29 @@ blockquote {
     font-style: italic; 
 }
 
+.claro .dijitArrowButtonInner {
+    width: auto;
+    height: auto;
+    margin: auto;
+    background-image: none;
+    background-repeat: no-repeat;
+}
+
+.claro .dijitButton .dijitButtonNode, .claro .dijitDropDownButton .dijitButtonNode, .claro .dijitComboButton .dijitButtonNode, .claro .dijitToggleButton .dijitButtonNode {
+    color: #000000;
+    -webkit-box-shadow: 0 0 0;
+    -moz-box-shadow: 0 0 0;
+    box-shadow: 0 0 0;
+    padding: 0;
+    background-color: transparent;
+    background-image: none;
+}
+
+.claro .dijitButtonText {
+    padding: 4px 8px;
+    font-weight: bold;
+}
+
 .arcgisSearch .showNoResults .noResultsMenu {
     width: calc(100% - 6px);
     margin: 0 2px;
@@ -705,7 +728,6 @@ img {
 }
 
 /*Calcite updates keep list and submit issues*/
-/* .calcite */
 .esriPopup .title {
   font-weight: bold; 
 }
@@ -713,15 +735,6 @@ img {
 .dijitMenuItemIconChar.dijitCheckedMenuItemIconChar {
   display: inline-block;
   visibility: hidden; 
-}
-
-/* .calcite */
-.dijitMenu {
-  border: none; 
-}
-
-.dijitMenuItemLabel {
-    padding: 4px 4px;
 }
 
 .dijitChecked .dijitMenuItemIconChar.dijitCheckedMenuItemIconChar {
@@ -732,10 +745,6 @@ img {
   --background-color: rgba(0, 0, 0, 0.8);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#665DADDD,endColorstr=#665DADDD);
   zoom: 1; }
-
-/* .calcite */
-.dijitMenuItemLabel {
-  max-width: 250px; }
 
 .dijitButtonNode {
   margin: 0;
@@ -813,75 +822,10 @@ img {
   -o-transition: all 0.5s linear;
   transition: all 0.5s linear; }
 
-.esriPrintButton .esriPrintButton {
-  background: #d3d3d3;
-  /*#5daddd; calcite blue */ }
-
-.esriPrintButton:hover {
-  --background: #a9a9a9;
-  /*#4997d2; calcite hover */ 
+.dijitArrowButtonInner {
+    width: 18px;
+    height: 18px;
 }
-
-/* .calcite  .dijitArrowButtonInner {
-  width: 18px;
-  height: 18px;
-  }*/
-
-/* .calcite */
-.dijitPopup {
-  border: solid 1px #d3d3d3; 
-}
-
-.esriPopup .titlePane {
-  font-size: 12px;
-  line-height: 16px;
-  height: 16px;
-  padding: 10px;
-  border: 0;
-  border-radius: 3px 3px 0 0;
-  -webkit-border-radius: 3px 3px 0 0; }
-
-.esriPopup .titlePane .title {
-  line-height: 16px; }
-
-.esriPopup .titleButton {
-  top: 10px;
-  background: none; }
-
-.esriPopup .titleButton.prev {
-  right: 73px; }
-
-.dj_rtl .esriPopup .titleButton.prev {
-  left: 73px;
-  right: auto; }
-
-.esriPopup .titleButton.next {
-  right: 55px; }
-
-.dj_rtl .esriPopup .titleButton.next {
-  left: 55px;
-  right: auto; }
-
-.esriPopup .titleButton.maximize {
-  right: 31px; }
-
-.dj_rtl .esriPopup .titleButton.maximize {
-  left: 31px;
-  right: auto; }
-
-.esriPopup .titleButton.restore {
-  right: 29px; }
-
-.dj_rtl .esriPopup .titleButton.restore {
-  left: 29px;
-  right: auto; }
-
-.esriPopup .titleButton.close {
-  right: 10px; }
-
-.dj_rtl .esriPopup .titleButton.close {
-  left: 10px;
-  right: auto; }
 
 /*Share Dialog updates*/
 /* .calcite */
@@ -1981,16 +1925,17 @@ input[type=checkbox].checkbox {
     color: white;
 }
 
-.PrintDialog .esriPrintButton {
-    color: black;
+.esriPrintButton {
+  /*background: #d3d3d3;*/
+  /*#5daddd; calcite blue */ }
+
+.esriPrintButton:hover {
+  /*background: #a9a9a9;*/
+  /*#4997d2; calcite hover */ 
 }
 
 .PrintDialog .dijitButtonNode {
     border: none;
-}
-
-.PrintDialog .dijitButtonText {
-    padding: 2px 4px;
 }
 
 .PrintDialog .dijitArrowButtonInner {
@@ -2010,4 +1955,24 @@ input[type=checkbox].checkbox {
 .dgrid-hider-toggle img {
     width: 16px;
     height: 16px;
+}
+
+.claro .dijitComboButton .dijitStretch {
+    -moz-border-radius: 4px 0 0 4px;
+    /* border-radius: 4px 0 0 4px; */
+    border-radius: 0;
+    border: none;
+}
+
+.claro .dijitComboButton .dijitArrowButton {
+    /*-moz-border-radius: 0 4px 4px 0;*/
+    /* border-radius: 0 4px 4px 0; */
+    border-radius: 0;
+    border: none;
+    padding: 0;
+}
+
+.claro .dijitArrowButtonInner {
+    display: inherit;
+    padding: 2px 4px;
 }

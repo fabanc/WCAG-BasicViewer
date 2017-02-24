@@ -33,10 +33,6 @@
     color:black;
 }
 
-.claro .dijitArrowButtonInner {
-    display:none !important;
-}
-
 .esri-feature-table-menu-item .dijitMenuItemLabel {
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 14px;
