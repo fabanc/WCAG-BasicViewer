@@ -1186,7 +1186,8 @@ html, body {
     width: 5px;
     margin: 0;
 }
-.dijitSplitterV .dijitSplitterThumb {
+
+.claro .dijitSplitterV .dijitSplitterThumb {
     background: gray none;
     height: 10%;
     left: 0.5px; 
@@ -1198,9 +1199,8 @@ html, body {
     border-radius: 2px;
 }
 
-.dijitSplitterH .dijitSplitterThumb {
+.claro .dijitSplitterH .dijitSplitterThumb {
     width: 20%;
-    border-radius: 3px;
     margin: 0;
     overflow: hidden;
     position: absolute;
