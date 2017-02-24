@@ -791,7 +791,7 @@ define(["dojo/ready",
 
                     var detailDiv = toolbar.createTool(tool);
                         domConstruct.create('div',{
-                        tabindex:0
+                        tabindex:0,
                     });
                     detailDiv.innerHTML = "<div tabindex=0 id='detailDiv'>"+description+"</div>";
                     detailDiv = dojo.query("#detailDiv")[0];
@@ -1144,15 +1144,15 @@ define(["dojo/ready",
 
                 areaIconNode = measureDiv.querySelector('.areaIcon');
                 domClass.remove(areaIconNode, 'areaIcon');
-                areaIconNode.innerHTML = '<img src="images\\area_measure.png" alt="Area"/>';
+                areaIconNode.innerHTML = '<img src="images/area_measure.png" alt="Area Button"/>';
 
                 distanceIconNode = measureDiv.querySelector('.distanceIcon');
                 domClass.remove(distanceIconNode, 'distanceIcon');
-                distanceIconNode.innerHTML = '<img src="images\\dist_measure.png" alt="Distance"/>';
+                distanceIconNode.innerHTML = '<img src="images/dist_measure.png" alt="Distance Button"/>';
 
                 locationIconNode = measureDiv.querySelector('.locationIcon');
                 domClass.remove(locationIconNode, 'locationIcon');
-                locationIconNode.innerHTML = '<img src="images\\dist_point.png" alt="Distance"/>';
+                locationIconNode.innerHTML = '<img src="images/dist_point.png" alt="Location Button"/>';
 
                 deferred.resolve(true);
             } else {
@@ -1676,7 +1676,7 @@ define(["dojo/ready",
                     {
                         domClass.remove(esriIconZoomNode, "searchIcon esri-icon-search");
                         esriIconZoomNode.innerHTML = 
-                        '<img src="images\\searchZoom.png" alt="Search" width="20" height="20">';
+                        '<img src="images\\searchZoom.png" alt="Search Button" width="20" height="20">';
                     }
 
                     var esriIconCloseNode = dojo.query(".searchIcon.esri-icon-close.searchClose")[0]; 
@@ -1950,7 +1950,9 @@ define(["dojo/ready",
                     var panelLogo = domConstruct.create("div", {
                         id: "panelLogo",
                         TabIndex:0, 
-                        innerHTML: "<img id='logo' src=" + this.config.logo + " alt='" + altText + "' Title='" + altText + "' aria-label='" + altText + "'></>"
+                        innerHTML: "<img id='logo' src=" + this.config.logo + " alt='" + altText + 
+                        //"' Title='" + altText + 
+                        "' aria-label='" + altText + "'></>"
                     }, dom.byId("panelTitle"));//, "first");
                     //domClass.add("panelTop", "largerTitle");
                     dojo.place(panelLogo, dojo.byId('panelText'), 'before');

@@ -1,3 +1,6 @@
+* {
+}
+
 #loadingTitle {
   display:none;
 }
@@ -615,7 +618,7 @@ img {
 @media only screen and (min-width: 720px) {
     .pageBody {
         width: 100%;
-        height: calc(100% - 44px);
+        height: calc(100% - 54px);
     }
 }
 
@@ -1282,7 +1285,9 @@ html, body {
         width: calc(100% - 8px);
         padding: 4px;
         font-size: 16px;
-    }
+        /*margin: 2px;
+        width: calc(100% - 12px);*/
+        }
 }
 
 #fixContent {
@@ -1424,6 +1429,7 @@ html, body {
     background-blend-mode: darken;
     padding: 3px 10px 0px 10px;
     border-radius: 4px;
+    font-size: 16px;
 }
 
 .dataInputBox {
@@ -1975,6 +1981,5 @@ input[type=checkbox].checkbox {
 }
 
 .claro .dijitArrowButtonInner {
-    display: inherit;
     padding: 2px 4px;
 }

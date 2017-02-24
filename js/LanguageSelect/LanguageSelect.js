@@ -147,7 +147,7 @@ define([
                     innerHTML: i18n.widgets.languageSelect.language,
                     title: i18n.widgets.languageSelect.changeHere,
                     'aria-label': i18n.widgets.languageSelect.changeHere,
-                    tabindex: -1
+                    tabindex: 0
                 }, this.domNode);
             }
 
