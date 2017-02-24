@@ -114,3 +114,7 @@
     height: 12px;
     padding: 2px;
 }
+
+div#featureTableContainer {
+    padding: 0;
+}

@@ -153,7 +153,7 @@ define([
             this.contentPaneTop = new ContentPane({
                 region: "center",
                 gutters:false, 
-                splitter: true,
+                splitter: false,
                 style: "height:100%; padding:0; overflow: none;",
                 content: dojo.byId("mapDiv"), 
                 id: 'contentPaneTop',
