@@ -247,19 +247,16 @@ define(["dojo/ready",
         // Create UI
         _createUI: function () {
             var borderContainer = new BorderContainer({
-                //design:'sidebar',
-                gutters:'false', 
-                liveSplitters:'false',
+                gutters:false, 
+                liveSplitters:true,
                 id:"borderContainer"
             });
              
             var contentPaneTop = new ContentPane({
                 region: "top",
-                splitter: 'false',
+                splitter: false,
                 style: "padding:0;",
-                //gutters: 'false',
                 content: dojo.byId("layoutTopPanel"),
-                //class: "splitterContent",
             });
             borderContainer.addChild(contentPaneTop);
               

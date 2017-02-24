@@ -143,8 +143,8 @@ define([
 
             this.borderContainer = new BorderContainer({
                 design:'headline',
-                gutters:'false', 
-                liveSplitters:'true',
+                gutters:false, 
+                liveSplitters:true,
                 class:"myBorderContainer",
                 id:'bc',
                 widgetsInTemplate: true
@@ -152,8 +152,8 @@ define([
              
             this.contentPaneTop = new ContentPane({
                 region: "center",
-                gutters:'false', 
-                splitter: 'true',
+                gutters:false, 
+                splitter: true,
                 style: "height:100%; padding:0; overflow: none;",
                 content: dojo.byId("mapDiv"), 
                 id: 'contentPaneTop',
@@ -163,8 +163,8 @@ define([
 
             this.contentPaneBottom = new ContentPane({
                 region: "bottom",
-                gutters:'false', 
-                splitter: 'true',
+                gutters:false, 
+                splitter: true,
                 class: "bg",
                 style: "height:50%;",
                 id: 'featureTableContainer',

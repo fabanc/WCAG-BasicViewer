@@ -2,7 +2,6 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/ke
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on", "dijit/form/DateTextBox",
     "dojo/Deferred", "dojo/promise/all", 
     "dojo/query", 
-    // "dijit/layout/BorderContainer", "dijit/layout/TabContainer", "dijit/layout/ContentPane", 
     "dojo/text!application/Filters/templates/Filters.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "application/Filters/FilterTab","application/Filters/FilterItem", 
@@ -13,13 +12,11 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/ke
         _WidgetBase, _TemplatedMixin, on, DateTextBox, 
         Deferred, all, 
         query,
-        // BorderContainer, TabContainer, ContentPane,
         Filters, 
         domClass, domAttr, domStyle, domConstruct, event, 
         FilterTab, FilterItem
     ) {
     var Widget = declare("esri.dijit.Filters", [_WidgetBase, _TemplatedMixin], {
-        // defaults
         templateString: Filters,
 
         options: {
