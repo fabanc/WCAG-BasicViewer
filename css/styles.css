@@ -526,7 +526,7 @@ img {
 #panelPages {
   font-family: Helvetica, Arial, sans-serif;
   width: calc(100% - 2px);
-  height: calc(100% - 155px);
+  height: calc(100% - 96px);
   background-color: #F9F9F9;
   overflow: auto;
   padding: 1px;
@@ -545,16 +545,7 @@ img {
 
 .pageContent {
     background-color: white;
-    margin: 0;
     height: 100%;
-    width: 100%;
-    top: 0;
-}
-
-.pageHeader {
-    position: relative;
-    width: calc(100% + 2px);
-    /*height: 25px;*/
 }
 
 .pageTitle {
@@ -619,7 +610,7 @@ img {
 @media only screen and (min-width: 720px) {
     .pageBody {
         width: 100%;
-        height: calc(100% - 54px);
+        height: calc(100% - 24px);
     }
 }
 
@@ -1244,7 +1235,7 @@ html, body {
 }
 
 .showAttr {
-    display: grid;
+    display: block;
 }
 
 .hideAttr {
@@ -1511,7 +1502,7 @@ html, body {
 }
 
 .leftWrapper {
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
 }
 
@@ -1926,7 +1917,7 @@ input[type=checkbox].checkbox {
     }
 
     #panelTitle {
-        height:45px;
+        height:46px;
     }
 }
 
