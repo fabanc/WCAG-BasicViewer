@@ -665,11 +665,9 @@ img {
 }
 
 #panelTools {
-    left: 0px;
-    top: 0px;
     min-height: 16px;
-    width: calc(100% - 2px);
-    display: block;
+    width: calc(100% - 4px);
+    margin: 2px;
     clear: both;
 }
 
@@ -1621,9 +1619,10 @@ main {
 }
 
 #panelSearch {
-    margin: 0;
+    margin: 2px;
     width:100%;
     position: relative;
+    width: calc(100% - 4px);
 }
 
 #panelSearch .searchLabel {
@@ -1706,12 +1705,6 @@ main {
 }
 
 @media only screen and (min-width: 720px) {
-    #panelSearch {
-        margin: 0;
-        width:100%;
-        position: relative;
-    }
-
     #panelSearch .searchLabel {
         padding: 8px 4px;
         float: left;
