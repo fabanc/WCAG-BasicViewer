@@ -281,8 +281,6 @@ define(["dojo/ready",
             borderContainer.placeAt(document.body);
             borderContainer.startup();
 
-            domConstruct.destroy('dijit_layout_ContentPane_0_splitter');
-
             aspect.after(contentPaneRight, "resize", lang.hitch(this, function() {
                 this.map.resize();
                 this.map.reposition();
@@ -447,14 +445,13 @@ define(["dojo/ready",
                 domConstruct.create("div", {
                     class:'goThereHint',
                     innerHTML: '<b>Alt&nbsp;+&nbsp;3</b> '+this.config.i18n.skip.content,
-                    style:'left:20%; top:50%;'
+                    style:'left:20%; top:45%;'
                 }, dom.byId('panelPages'));
 
                 domConstruct.create("div", {
                     class:'goThereHint',
                     innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.splitter,
-                    style:'left:-30px; top:40%;'
-                }, dom.byId('dijit_layout_ContentPane_1_splitter'));
+                    style:'right:5px; top:50%; z-index:1000;'
 
                 domConstruct.create("div", {
                     class:'goThereHint',
@@ -534,12 +531,12 @@ define(["dojo/ready",
             };
 
             skipToSplitter = function() {
-                dom.byId('dijit_layout_ContentPane_1_splitter').focus();
+                dojo.byId('dijit_layout_ContentPane_1_splitter').focus();
             };
 
             skipToMap = function() {
-                //document.querySelector('.esriSimpleSliderIncrementButton input').focus();
-                document.querySelector('#mapDiv').focus();
+                console.log(dojo.byId('mapDiv'));
+                dojo.byId('mapDiv').focus();
             };
 
             skipToInstructions = function() {
@@ -1784,10 +1781,14 @@ define(["dojo/ready",
                         // }
                         //focus
                         if(rule.selectorText.indexOf(':focus') >= 0) {
-                            // rule.style.outlineStyle = 'none';
-                            // rule.style.outlineColor = 'transparent';
-                            // rule.style.boxShadow = '0 0 0 2px '+this.focusColor+' inset';
-                            rule.style.outlineColor = this._rgbaColor(this.focusColor);
+                            if(rule.selectorText.indexOf('#mapDiv') >= 0) {
+                                rule.style.outlineStyle = 'none';
+                                rule.style.outlineColor = 'transparent';
+                                rule.style.boxShadow = 'rgba(255, 170, 0, 0.901961) 0px 0px 0px 2px';
+                            }
+                            else {
+                                rule.style.outlineColor = this._rgbaColor(this.focusColor);
+                            }
                         }
                         if(rule.selectorText.indexOf('.goThereHint') >= 0) {
                             rule.style.borderColor = this._rgbaColor(this.focusColor);
@@ -1866,7 +1867,7 @@ define(["dojo/ready",
                 bingMapsKey: this.config.bingKey
             }).then(lang.hitch(this, function (response) {
 
-                var mapDiv = document.querySelector('#mapDiv');
+                var mapDiv = dojo.byId('mapDiv');
                 on(mapDiv, 'keydown', lang.hitch(this, function(evn){
                     if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return; 
                     switch(evn.keyCode)  {
