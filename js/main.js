@@ -452,6 +452,7 @@ define(["dojo/ready",
                     class:'goThereHint',
                     innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.splitter,
                     style:'right:5px; top:50%; z-index:1000;'
+                }, dom.byId('leftPanel'));
 
                 domConstruct.create("div", {
                     class:'goThereHint',
@@ -1784,7 +1785,7 @@ define(["dojo/ready",
                             if(rule.selectorText.indexOf('#mapDiv') >= 0) {
                                 rule.style.outlineStyle = 'none';
                                 rule.style.outlineColor = 'transparent';
-                                rule.style.boxShadow = 'rgba(255, 170, 0, 0.901961) 0px 0px 0px 2px';
+                                rule.style.boxShadow = 'inset rgba(255, 170, 0, 0.901961) 0px 0px 0px 2px';
                             }
                             else {
                                 rule.style.outlineColor = this._rgbaColor(this.focusColor);

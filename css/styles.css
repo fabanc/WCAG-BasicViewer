@@ -139,6 +139,7 @@ blockquote {
 #mapDiv {
     width: calc(100% - 0px) !important;
     height: calc(100% - 0px) !important;
+    /*z-index:-2;*/
 }
 
 .map .container {
@@ -1222,6 +1223,14 @@ html, body {
     height: calc(100% - 1.5px);
 }
 
+.dijitSplitterThumb {
+    opacity:0.25;
+}
+
+.dijitSplitterThumb:hover {
+    opacity:1;
+}
+
 .dj_a11y .dijitSplitterV {
     border-left: 1px solid #d3d3d3 !important;
     border-right: 1px solid #d3d3d3 !important;
@@ -1957,7 +1966,7 @@ input[type=checkbox].checkbox {
 }
 
 .dgrid-hider-toggle {
-    padding:2px;
+    padding:1px;
 }
 
 .dgrid-hider-toggle img {
@@ -1982,4 +1991,14 @@ input[type=checkbox].checkbox {
 
 .claro .dijitArrowButtonInner {
     padding: 2px 4px;
+}
+
+.mapFocus {
+    width:100%; 
+    height:100%; 
+    position:absolute;
+}
+
+#dijit_layout_ContentPane_2 {
+  padding: 0.5px !important;
 }
