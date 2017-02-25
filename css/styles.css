@@ -519,18 +519,15 @@ img {
 
 #panelContent {
   font-family: Helvetica, Arial, sans-serif;
-  /* background-color: rgba(0, 0, 0, 0.5); */
-  /* position: relative; */
 }
 
 #panelPages {
   font-family: Helvetica, Arial, sans-serif;
-  width: calc(100% - 2px);
-  height: calc(100% - 96px);
-  background-color: #F9F9F9;
+  /*width: calc(100% - 2px);*/
+  height: calc(100% - 95px);
   overflow: auto;
-  padding: 1px;
-  background: #aaa;
+  /*margin-left: 1px;*/
+  padding: 0 1px;
 }
 
 .page {
@@ -1504,18 +1501,6 @@ html, body {
 .leftWrapper {
     display: inline-flex;
     flex-direction: column;
-}
-
-header {
-    height: auto;
-}
-
-footer {
-    height: auto;
-}
-
-main {
-    flex: 1;
 }
 
 .hideLoading {
