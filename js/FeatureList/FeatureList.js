@@ -329,7 +329,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 {
                     _prevSelected = values[0]+'_'+fid;
                     dojo.query('.featureItem_'+_prevSelected).forEach(function(e) {
-                        dojo.addClass(e, 'showAttr');
+                        //dojo.addClass(e, 'showAttr');
                         dojo.removeClass(e, 'hideAttr');
                         var li = query(e).closest('li');
                         li.addClass('borderLi');

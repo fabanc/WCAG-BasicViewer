@@ -1,4 +1,5 @@
 #featuresList {
+    font-family: 'Roboto Condensed', sans-serif;
     list-style: none;
     margin: 0px;
     padding-left: 0;
@@ -34,3 +35,6 @@
 
 
 
+/*.featureItem table, .featureItem table TH, .featureItem table, td {
+    border: 1px black solid;
+}*/
