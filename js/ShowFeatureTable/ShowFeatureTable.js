@@ -177,10 +177,9 @@ define([
         },
 
         startup: function () {
-            // on(this.map, 'parentSize_changed', lang.hitch(this, function(ev) {
-
-            //     this.borderContainer.resize();
-            // }));
+            on(this.map, 'parentSize_changed', lang.hitch(this, function(ev) {
+                this.borderContainer.resize();
+            }));
             aspect.after(
                 this.contentPaneFeatureTable.containerNode.parentNode, "resize", 
                 lang.hitch(this, function() {
