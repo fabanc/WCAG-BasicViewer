@@ -137,8 +137,8 @@ blockquote {
 }
 
 #mapDiv {
-    width: calc(100% - 0px) !important;
-    height: calc(100% - 0px) !important;
+    width: 100% !important;
+    height: 100% !important;
     /*z-index:-2;*/
 }
 

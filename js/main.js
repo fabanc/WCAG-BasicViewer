@@ -282,6 +282,7 @@ define(["dojo/ready",
             borderContainer.startup();
 
             aspect.after(contentPaneRight, "resize", lang.hitch(this, function() {
+                this.map.emit('parentSize_changed', {});
                 this.map.resize();
                 this.map.reposition();
             }));

@@ -56,35 +56,24 @@ define([
             map: null,
         },
 
-        status: {
-            get show() {
-                if (!dojo.byId('featureTableContainer_splitter')) return false;
-                return domStyle.get(dojo.byId('featureTableContainer_splitter'), "display") !== "none";
-            },
-            set show(visible) {
-                switch(visible){
-                    case true:
-                        domStyle.set(dojo.byId('featureTableContainer'), "height","50%");
-                        domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "initial");
-                        this._this.borderContainer.resize();
-                        break;
-                    case false:
-                        domStyle.set(dojo.byId('featureTableContainer'), "height",0);
-                        domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "none");
-                        this._this.borderContainer.resize();
-                        break;
-                }
-            },
-            Layer : null,
-            get layer() {
-                return this.Layer;
-            },
-            set layer(_layer) {
-                if(this.Layer) {
-                    this.Layer.layerObject._map.graphics.clear();
-                    this._this.destroy();
-                }
-                this._this.loadTable(_layer);
+        _getShowAttr: function() { 
+            //return this.status.show; 
+            if (!dojo.byId('featureTableContainer_splitter')) return false;
+            return domStyle.get(dojo.byId('featureTableContainer_splitter'), "display") !== "none";
+        },
+        _setShowAttr: function(visible) { 
+            //this.status.show = visible; 
+            switch(visible){
+                case true:
+                    domStyle.set(dojo.byId('featureTableContainer'), "height","50%");
+                    domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "initial");
+                    this.borderContainer.resize();
+                    break;
+                case false:
+                    domStyle.set(dojo.byId('featureTableContainer'), "height","0");
+                    domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "none");
+                    this.borderContainer.resize();
+                    break;
             }
         },
 
@@ -150,18 +139,18 @@ define([
                 widgetsInTemplate: true
             });
              
-            this.contentPaneTop = new ContentPane({
+            this.contentPaneMap = new ContentPane({
                 region: "center",
                 gutters:false, 
                 splitter: false,
-                style: "height:100%; padding:0; overflow: none;",
+                style: "height:100%; width:100%; padding:0; overflow: none;",
                 content: dojo.byId("mapDiv"), 
-                id: 'contentPaneTop',
+                id: 'contentPaneMap',
                 class: "splitterContent",
             });
-            this.borderContainer.addChild(this.contentPaneTop);
+            this.borderContainer.addChild(this.contentPaneMap);
 
-            this.contentPaneBottom = new ContentPane({
+            this.contentPaneFeatureTable = new ContentPane({
                 region: "bottom",
                 gutters:false, 
                 splitter: true,
@@ -170,7 +159,7 @@ define([
                 id: 'featureTableContainer',
                 content: domConstruct.create("div", { id: 'featureTableNode'}),
             });
-            this.borderContainer.addChild(this.contentPaneBottom);
+            this.borderContainer.addChild(this.contentPaneFeatureTable);
             this.borderContainer.placeAt(dojo.byId('mapPlace'));
 
             this.borderContainer.startup();
@@ -178,53 +167,44 @@ define([
 
         postCreate: function() {
             this.inherited(arguments);
-            this.status._this = this;
-            this.status.show = false;
+            this.set('show', false);
         },
 
         layout:function() {
+            this.inherited(arguments);
             this.map.resize();
             this.map.reposition();
         },
 
         startup: function () {
+            // on(this.map, 'parentSize_changed', lang.hitch(this, function(ev) {
 
-            aspect.after(this.contentPaneTop, "resize", lang.hitch(this, function() {
+            //     this.borderContainer.resize();
+            // }));
+            aspect.after(
+                this.contentPaneFeatureTable.containerNode.parentNode, "resize", 
+                lang.hitch(this, function() {
+                this.borderContainer.resize();
+            }));            
+            aspect.after(
+                this.contentPaneMap, "resize", 
+                lang.hitch(this, function() {
                 this.resize();
-            }));
-
+            }));            
             this.resize();
         },
 
-        // show: function() {
-        //     domStyle.set(dojo.byId('featureTableContainer'), "height","50%");
-        //     domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "initial");
-        //     this.borderContainer.resize();
-        // },
-
-        // hide: function() {
-        //     domStyle.set(dojo.byId('featureTableContainer'), "height",0);
-        //     domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "none");
-        //     this.borderContainer.resize();
-        // },
-
         destroy: function() {
-            if(this.status.Layer) {
-                this.status.Layer.layerObject._map.graphics.clear();
-            }
+            this.map.graphics.clear(); // !!!
             if(this.myFeatureTable)
                 this.myFeatureTable.destroy();
-            //this.hide();
             this.emit("destroied", {});
-            this.status.show = false;
+            this.set('show', false);
         },
 
         _rectangleGr : null,
 
         loadTable: function(myFeatureLayer){
-            //return;
-            this.status.Layer = myFeatureLayer;
-
             var outFields = [];
             var fieldInfos = [];
             var fieldsMap = myFeatureLayer.layerObject.infoTemplate._fieldsMap;
@@ -426,7 +406,7 @@ define([
             }));
 
 
-            this.status.show = true;
+            this.set('show', true);
 
             dojo.create('img', {
                 src:'images/reload1.gif',
