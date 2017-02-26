@@ -52,6 +52,18 @@ if (!('trim' in String.prototype)) {
 // }
 // Add ECMA262-5 Array methods if not supported natively
 //
+if (!Array.prototype.contains) {
+    Array.prototype.contains = function(obj) {
+        var i = this.length;
+        while (i--) {
+            if (this[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    };
+}
+
 if (!Array.prototype.find) {
   Array.prototype.find = function(predicate) {
     if (this === null) {
@@ -74,6 +86,7 @@ if (!Array.prototype.find) {
     return undefined;
   };
 }
+
 if (!('indexOf' in Array.prototype)) {
     Array.prototype.indexOf= function(find, i /*opt*/) {
         if (i===undefined) i= 0;
