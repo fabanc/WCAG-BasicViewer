@@ -135,11 +135,21 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             return dojo.hasClass(page, "showAttr");
         },
 
+        _clearMarker: function() {
+            //this.map.graphics.clear();
+            this.map.graphics.graphics.forEach(lang.hitch(this, function(gr) { 
+                if(gr.name && gr.name === 'featureMarker') {
+                    this.map.graphics.remove(gr);
+                }
+            }));
+        },
+
         __reloadList : function(ext) {
             var deferred = new Deferred();
 
             var list = query("#featuresList")[0];
-            this.map.graphics.clear();
+            // this.map.graphics.clear();
+            this._clearMarker();
             window.tasks.filter(function(t) { return t.layer.visible && t.layer.visibleAtMapScale;}).forEach(lang.hitch(this.map, function(t) {
                 t.query.geometry = ext.extent;
                 var exp=t.layer.getDefinitionExpression();
@@ -321,9 +331,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var objectIdFieldName = r.layer.objectIdField;
                 var fid = values[1];
                 var layer = r.layer;
-                layer._map.graphics.clear();
+                // layer._map.graphics.clear();
+                layer._map.graphics.graphics.forEach(lang.hitch(layer._map.graphics, function(gr) { 
+                    if(gr.name && gr.name === 'featureMarker') {
+                        this.remove(gr);
+                    }
+                }));
 
                 lang.hitch(window._this, window._this.showBadge(checkBox.checked));
+                //lang.hitch(this, this.showBadge(checkBox.checked));
                     
                 if(checkBox.checked)
                 {
@@ -375,6 +391,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         }
 
                         var gr = new Graphic(markerGeometry, marker);
+                        gr.name = 'featureMarker';
                         layer._map.graphics.add(gr);
                     });
                     // layer.selectFeatures(q, FeatureLayer.SELECTION_NEW).then(function(f) {
