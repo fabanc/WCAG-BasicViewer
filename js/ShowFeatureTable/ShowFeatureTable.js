@@ -194,7 +194,7 @@ define([
         },
 
         destroy: function() {
-            this.map.graphics.clear(); // !!!
+            this._removeAllGraphics(['ftMarker', 'rectView']);
             if(this.myFeatureTable)
                 this.myFeatureTable.destroy();
             this.emit("destroied", {});
@@ -292,12 +292,12 @@ define([
                             }
                         })
                     },
-                    {
-                        label: i18n.widgets.showFeatureTable.refresh, 
-                        callback: lang.hitch(this, function(evt){
-                            this.myFeatureTable.refresh();
-                        })
-                    },
+                    // {
+                    //     label: i18n.widgets.showFeatureTable.refresh, 
+                    //     callback: lang.hitch(this, function(evt){
+                    //         this.myFeatureTable.refresh();
+                    //     })
+                    // },
                     {
                         label: i18n.widgets.showFeatureTable.close, 
                         callback: lang.hitch(this, function(evt){
@@ -388,6 +388,7 @@ define([
                             this.map.showZoomSlider();
                             symbol = new SimpleLineSymbol().setColor('red');
                             this._rectangleGr = new Graphic(evt.geometry, symbol);
+                            this._rectangleGr.name = 'rectView';
                             this._selectViewIds(this._rectangleGr.geometry);
                             this.map.graphics.add(this._rectangleGr);
                             var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
@@ -518,7 +519,7 @@ define([
             }));
 
             on(this.myFeatureTable, "refresh", lang.hitch(this, function(evt){
-                this._removeAllGraphics('ftMarker');
+                this._removeAllGraphics(['ftMarker']);
             }));
 
             // on(this.myFeatureTable, "column-resize", lang.hitch(this, function(evt){
@@ -541,17 +542,12 @@ define([
 
         },
 
-        _removeAllGraphics: function(name) {
-            if(!name) {
-                this.map.graphics.clear();
-            }
-            else {
-                this.map.graphics.graphics.forEach(lang.hitch(this, function(gr) { 
-                    if(gr.name  && gr.name === 'ftMarker') {
-                        this.map.graphics.remove(gr);
-                    }
-                }));
-            }
+        _removeAllGraphics: function(names) {
+            this.map.graphics.graphics.forEach(lang.hitch(this, function(gr) { 
+                if(gr.name && names.contains(gr.name)) { //(gr.name === 'ftMarker' || gr.name === 'rectView')) {
+                    this.map.graphics.remove(gr);
+                }
+            }));
         },
 
         _selectSignal: null,
