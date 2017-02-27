@@ -57,12 +57,10 @@ define([
         },
 
         _getShowAttr: function() { 
-            //return this.status.show; 
             if (!dojo.byId('featureTableContainer_splitter')) return false;
             return domStyle.get(dojo.byId('featureTableContainer_splitter'), "display") !== "none";
         },
         _setShowAttr: function(visible) { 
-            //this.status.show = visible; 
             switch(visible){
                 case true:
                     domStyle.set(dojo.byId('featureTableContainer'), "height","50%");

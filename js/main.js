@@ -1007,85 +1007,92 @@ define(["dojo/ready",
                     domClass.add(legend.domNode, "legend");
                     legend.startup();
 
-                    on(toolbar, 'updateTool_legend', lang.hitch(this, function(name) {
-                        fixLegend();
-                        // dom.byId('pageBody_legend').focus();
-                    }));
-
-                    var fixLegend = function() {
-                        var tables = legend.domNode.querySelectorAll("table");
-                        if(tables && tables.length>0)
+                    var fixLegend = function(node) {
+                        var tables = node.querySelectorAll("table");
+                        if(tables)
                         {
-                            for(var t=0; t<tables.length; t++) {
-                                var table = tables[t];
-                                domAttr.set(table, 'role', "presentation");
-                            }
+                            tables.forEach(function(table) {
+                                domAttr.set(table, 'role', 'presentation');
+                            });
                         }
 
-                        var svgs = legend.domNode.querySelectorAll("svg");
-                        if(svgs && svgs.length>0)
+                        var svgs = node.querySelectorAll("svg");
+                        if(svgs)
                         {
-                            for(var s=0; s<svgs.length; s++) {
-                                var svg = svgs[s];
-                                domAttr.set(svg, 'title', "symbol");
-                            }
+                            svgs.forEach(function(svg) {
+                                domAttr.set(svg, 'title', 'symbol');
+                            });
                         }
 
-                        var LegendServiceLabels = legend.domNode.querySelectorAll(".esriLegendServiceLabel");
-                        if(LegendServiceLabels && LegendServiceLabels.length>0)
+                        var legendServiceLabels = node.querySelectorAll(".esriLegendServiceLabel");
+                        if(legendServiceLabels)
                         {
-                            for(var i=0; i<LegendServiceLabels.length; i++) {
-                                var LegendServiceLabel = LegendServiceLabels[i];
-                                if(LegendServiceLabel.nodeName !== 'H2') {
-                                    var h2 = domConstruct.create("h2",{
-                                        className: LegendServiceLabel.className,
-                                        innerHTML: LegendServiceLabel.innerHTML
+                            legendServiceLabels.forEach(function(legendServiceLabel) {
+                                var service = legendServiceLabel.closest('.esriLegendService');
+                                var tabindex = (service && (!service.style || service.style.display !== 'none')) ? 0 : -1;
+
+                                if(legendServiceLabel.nodeName !== 'H2') {
+                                    var h2 = domConstruct.create('h2',{
+                                        className: legendServiceLabel.className,
+                                        innerHTML: legendServiceLabel.innerHTML,
+                                        tabindex: tabindex
                                     });
-                                    LegendServiceLabel.parentNode.replaceChild(h2, LegendServiceLabel);
+                                    legendServiceLabel.parentNode.replaceChild(h2, legendServiceLabel);
                                 }
-
-                                    // var service = LegendServiceLabel.closest('.esriLegendService');
-                                    // if(service && (!service.style || service.style.display !== 'none')) {
-                                         domAttr.set(LegendServiceLabel, 'tabindex', 0);
-                                    // } else {
-                                    //     domAttr.set(LegendServiceLabel, 'tabindex', -1);
-                                    // }
-                            }
+                                else {
+                                    domAttr.set(legendServiceLabel, 'tabindex', tabindex);
+                                }
+                            });
                         }
 
-                        var LegendLayers = legend.domNode.querySelectorAll(".esriLegendLayer");
-                        for(var j=0; j<LegendLayers.length; j++) {
-                            //var LegendServiceLists = legend.domNode.querySelectorAll(".esriLegendLayer tbody");
-                            var LegendServiceList = LegendLayers[j].querySelector("tbody");
+                        var legendLayers = node.querySelectorAll(".esriLegendLayer");
+                        for(var j=0; j<legendLayers.length; j++) {
+                            var legendServiceList = legendLayers[j].querySelector("tbody");
 
-                            // if(LegendServiceList.querySelector('.layerHeader')) {
-                            //     var header = document.createElement("tr");
-                            //     header.innerHTML = "<th style='display:none;' class='layerHeader'>Layer</th>";
-                            //     LegendServiceList.insertBefore(header, LegendServiceList.childNodes[0]);
-                            // }
-                            domAttr.set(LegendServiceList, "role", "list");
-                            //domAttr.set(LegendServiceList, "aria-label", LegendServiceLabel.innerHTML);
+                            domAttr.set(legendServiceList, "role", "list");
+                            //domAttr.set(legendServiceList, "aria-label", legendServiceLabel.innerHTML);
 
-                            for(var k=0; k<LegendServiceList.childNodes.length; k++) {
-                                var item = LegendServiceList.childNodes[k];
+                            for(var k=0; k<legendServiceList.childNodes.length; k++) {
+                                var item = legendServiceList.childNodes[k];
                                 domAttr.set(item, "role", "listitem");
                                 domAttr.set(item, "tabindex", "0");
                             }
                         }
 
-                        var LegendLayerImages = legend.domNode.querySelectorAll(".esriLegendLayer image");
-                        for(var n = 0; n<LegendLayerImages.length; n++) {
-                            domAttr.set(LegendLayerImages[n],'alt','');
+                        var legendLayerImages = node.querySelectorAll(".esriLegendLayer image");
+                        if(legendLayerImages) {
+                            legendLayerImages.forEach(function(image) {
+                                domAttr.set(image,'alt','');
+                            });
                         }
 
-                        var messages = legend.domNode.querySelectorAll(".esriLegendMsg");
-                        for(var m = 0; m<messages.length; m++) {
-                            domAttr.set(messages[m],'tabindex',0);
+                        var messages = node.querySelectorAll(".esriLegendMsg");
+                        if(messages) {
+                            messages.forEach(function(message) {
+                                domAttr.set(message,'tabindex',0);
+                            });
                         }
                     };
                     
-                    on(this.map, "extent-change", lang.hitch(this, fixLegend));
-                    // dojo.setAttr(legendDiv, 'tabindex', 0);
+                    this.legendNodeObserver = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if(mutation.addedNodes && mutation.addedNodes.length>=1) {
+                                mutation.addedNodes.forEach(function(node) {
+                                    if(domStyle.get(node, 'display') !== 'none') {
+                                        fixLegend(node);
+
+                                        console.log(node);
+                                    }
+                                });
+                            }
+                        });    
+                    });
+
+                    this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
+                        attributes: true, 
+                        childList: true, 
+                        characterData: false 
+                    });
 
                     deferred.resolve(true);
 

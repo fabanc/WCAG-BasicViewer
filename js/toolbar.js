@@ -201,7 +201,7 @@ on, mouse, query, Deferred) {
             return pageBody;
         },
 
-       _toolClick: function (name) {
+        _toolClick: function (name) {
             
             var defaultBtns = dojo.query(".panelToolDefault");
             var defaultBtn;
