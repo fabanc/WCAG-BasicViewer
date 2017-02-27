@@ -310,6 +310,13 @@ define([
 
             this.myFeatureTable.startup();
 
+            // var menuTables = query('table.dijitMenu');
+            // if(menuTables) {
+            //     menuTables.forEach(function(table) {
+            //         domAttr.set(table, 'role','presentation');
+            //     });
+            // }
+
             var hidderToggle = query('.ui-icon.dgrid-hider-toggle')[0];
             if(hidderToggle) {
                 domClass.remove(hidderToggle, 'ui-icon');

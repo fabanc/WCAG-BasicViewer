@@ -8,11 +8,20 @@
 }
 
 .esri-feature-table .dgrid-row-even {
-    background-color: #dadada;
+    background-color: white; /*#dadada;*/
 }
 
 .esri-feature-table .dgrid-row-odd {
     background-color: white;
+}
+
+.esri-feature-table .dgrid-row {
+    border-bottom: 1px gray solid;
+}
+
+.esri-feature-table .dgrid-row .dgrid-cell {
+    border-right: 1px solid gray;
+    padding: 3px;
 }
 
 .esri-feature-table .esri-feature-table-menu {
