@@ -5,7 +5,7 @@ define({
                 showTypes: "Show Data Types",
                 hideTypes: "Hide Data Types",
                 refresh: "Refresh",
-                close: "Close",
+                close: "Close Table",
                 datePattern: "MMMM d, y",
                 shortDatePattern: "M/d/yyyy",
                 shortTimePattern: "H:mm a",
