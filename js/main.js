@@ -1080,8 +1080,6 @@ define(["dojo/ready",
                                 mutation.addedNodes.forEach(function(node) {
                                     if(domStyle.get(node, 'display') !== 'none') {
                                         fixLegend(node);
-
-                                        console.log(node);
                                     }
                                 });
                             }
