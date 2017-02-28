@@ -62,7 +62,7 @@ define(
         	"details": "Détails",
         	"share": "Partager",
             "filter": "Filtres",
-            "features": "Liste des Caractéristiques"
+            "features": "Liste d’entités sur la carte"
         },
         "skip":{
             "tools" : "Aller au outils",
