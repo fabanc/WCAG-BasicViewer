@@ -268,7 +268,7 @@ define([
                 // showRelatedRecords: true,
                 showDataTypes: true,
                 // showFeatureCount:true,
-                // showStatistics:true,
+                showStatistics:false,
                 menuFunctions: [
                     {
                         label: i18n.widgets.showFeatureTable.showTypes, 
@@ -306,6 +306,7 @@ define([
                 ],
                 cellNavigation:false,
                 showColumnHeaderTooltips: false,
+                showGridMenu: true,
             }, dojo.byId('featureTableNode'));
 
             this.myFeatureTable.startup();
@@ -336,13 +337,58 @@ define([
                 }, arrowButton);
             }
 
-            var iconMenu = query('.esri-feature-table-menu-item.esri-feature-table-title')[0];
+            var tableTitle = query('.esri-feature-table-title')[0];
+            // domStyle.set(tableTitle,'display', 'none');
+            var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
+                mutations.forEach(lang.hitch(this, function(mutation) {
+                    console.log(mutation);
+                    if(mutation.target.toString() === "[object Text]") {
+                        var pattern = /(.*)(\s\(.*\))/;
+                        var matches = mutation.target.nodeValue.match(pattern);
+                        console.log(matches);
+                        if(matches && matches.length === 3) {
+                            var t = this.layer.title + matches[2];
+                            var title = domConstruct.create('div', {
+                                innerHTML: t,
+                                class: "esri-feature-table-menu-item esri-feature-table-title titleDivDiv",
+                            });
+
+                            query(".titleDivDiv").forEach(domConstruct.destroy);
+                            domConstruct.place(title, tableTitle, 'before');
+                            domStyle.set(tableTitle, 'display', 'none');
+                        }
+                    }
+                }));    
+            })).observe(tableTitle.childNodes[0], { 
+                attributes: false, 
+                childList: true, 
+                characterData: true 
+            });
+
+
+
+
 
             var featureTableTools = domConstruct.create('div', {
                 class:'esri-feature-table-menu-item',
                 id: 'featureTableTools',
             });
-            domConstruct.place(featureTableTools, iconMenu, 'before');
+            domConstruct.place(featureTableTools, tableTitle, 'before');
+
+            var optionsMenu = query('.esri-feature-table-menu-item.esri-feature-table-menu-options')[0];
+
+            var featureTableEndTools = domConstruct.create('div', {
+                class:'esri-feature-table-menu-item',
+                id: 'featureTableEndTools',
+            }, optionsMenu);
+
+            var closeBtn = domConstruct.create('img', {
+                src: 'images/close.png',
+                id: 'featureTableCloseBtn',
+                alt: '',
+                title: i18n.widgets.showFeatureTable.close,
+            }, featureTableEndTools);
+            on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
             var SelectOnMapOrView = new ImageToggleButton({
                 imgSelected: 'images/SelectOnView.png',
