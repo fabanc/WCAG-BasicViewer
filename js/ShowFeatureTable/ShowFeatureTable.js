@@ -332,14 +332,7 @@ define([
                 }, hidderToggle);
             }
 
-            var arrowButton = query('.esri-feature-table .dijitArrowButtonInner')[0];
-            if(arrowButton) {
-                domConstruct.create('img', {
-                    // role: 'presentation',
-                    src: 'images/icons_black/carret-down.32.png',
-                    alt: 'carret-down'
-                }, arrowButton);
-            }
+            //this._addArrowCarrets();
 
             if(this.layers && this.layers.length > 1) {
                 var menu = new DropDownMenu({ style: "display: none;"});
@@ -375,7 +368,10 @@ define([
                     dropDown: menu,
                     id: "progButton"
                 });
+
                 button.startup();
+
+                this._addArrowCarrets();
 
                 var tableTitle = query('.esri-feature-table-title')[0];
                 // domStyle.set(tableTitle,'display', 'none');
@@ -399,6 +395,7 @@ define([
                                 query(".titleDivDiv").forEach(domConstruct.destroy);
                                 domConstruct.place(title, tableTitle, 'before');
                                 domStyle.set(tableTitle, 'display', 'none');
+                this._addArrowCarrets();
                             }
                         }
                     }));    
@@ -636,6 +633,20 @@ define([
 
         },
 
+        _addArrowCarrets: function() {
+            var arrowButtons = query('.esri-feature-table .dijitArrowButtonInner');
+            if(arrowButtons) {
+                arrowButtons.forEach(function(arrowButton) {            
+                    if(arrowButton && arrowButton.innerHTML === '') {
+                        domConstruct.create('img', {
+                            // role: 'presentation',
+                            src: 'images/icons_black/carret-down.32.png',
+                            alt: 'carret-down'
+                        }, arrowButton);
+                    }
+                });
+            }
+        },
         _removeAllGraphics: function(names) {
             this.map.graphics.graphics.forEach(lang.hitch(this, function(gr) { 
                 if(gr.name && names.contains(gr.name)) { //(gr.name === 'ftMarker' || gr.name === 'rectView')) {
