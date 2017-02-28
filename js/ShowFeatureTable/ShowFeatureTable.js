@@ -350,7 +350,8 @@ define([
                         //onClick: function(){ alert(layer.title); }
                     });
                     on(menuItem1.domNode, 'click', lang.hitch(this, function(ev){ 
-                        console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
+                        //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
+                        this.emit("change", { layerId: ev.target.parentElement.dataset.layerid });
                     }));
                     //menu.addChild(menuItem1);
                     domConstruct.place(menuItem1.domNode, menu.domNode, 0);

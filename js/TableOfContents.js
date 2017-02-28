@@ -265,12 +265,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 return;
             }
 
+            this._loadTableByLayerId(arg.value);
+        },
+
+        _loadTableByLayerId:function(layerId) {
             var cbToggleBtns = dojo.query('.cbShowTable .cbToggleBtn');
             array.forEach(cbToggleBtns, function(cb) {
-                cb.checked = cb.value === arg.value;
+                cb.checked = cb.value === layerId;
             });
 
-            var layerId = arg.value;
             for(var i = 0, m = null; i < this.layers.length; ++i) {
                 if(this.layers[i].id === layerId) {
                     if(this.featureTable) {
@@ -462,6 +465,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this._checkEvents.push(checkEvent);
         },
 
+        _forceClose: function() {
+            var checkedBtns = dojo.query('.TableOfContents .cbShowTable input:checked');
+            array.forEach(checkedBtns, function(checkedBtn) {
+                checkedBtn.click();
+            });
+        },
+
         _init: function () {
             this._visible();
             this._createList();
@@ -472,12 +482,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     layers: this.layers, 
                 }, dojo.byId('mapPlace'));
                 ft.startup();
-                on(ft, "destroy", lang.hitch(this, function(evt) {
-                    var checkedBtns = dojo.query('.TableOfContents .cbShowTable input:checked');
-                    array.forEach(checkedBtns, function(checkedBtn) {
-                        checkedBtn.click();
-                    });
+                on(ft, "destroy", this._forceClose);
+                on(ft, "change", lang.hitch(this, function(evt) {
+                    this._forceClose();
+                    this._loadTableByLayerId(evt.layerId);
                 }));
+      
                 on(ft, "destroied", lang.hitch(this, function(evt) {
                     this.showBadge(false);
                 }));
