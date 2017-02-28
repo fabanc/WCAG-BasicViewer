@@ -350,8 +350,13 @@ define([
                             var t = this.layer.title + matches[2];
                             var title = domConstruct.create('div', {
                                 innerHTML: t,
-                                class: "esri-feature-table-menu-item esri-feature-table-title titleDivDiv",
+                                class: 'esri-feature-table-menu-item esri-feature-table-title titleDivDiv',
                             });
+
+                            var arrow = domConstruct.create('img', {
+                                src: 'images/icons_white/carret-down.32.png',
+                                alt: 'carret-down',
+                            }, title);
 
                             query(".titleDivDiv").forEach(domConstruct.destroy);
                             domConstruct.place(title, tableTitle, 'before');

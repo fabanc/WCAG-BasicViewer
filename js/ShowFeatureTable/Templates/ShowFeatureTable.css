@@ -139,12 +139,19 @@
     font-weight: bold;
 }
 
-.esri-feature-table .dijitArrowButtonInner img {
+.esri-feature-table .dijitArrowButtonInner img,
+.esri-feature-table .titleDivDiv img {
     width: 12px;
     height: 12px;
     padding: 2px;
+    vertical-align: middle;
+    opacity: 0.25;
 }
 
+.esri-feature-table .dijitArrowButtonInner img:hover,
+.esri-feature-table .titleDivDiv img:hover {
+    opacity: 1;
+}
 div#featureTableContainer {
     padding: 0;
 }
