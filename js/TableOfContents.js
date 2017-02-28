@@ -469,6 +469,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if(has('featureTable')) {
                 var ft = this.featureTable = new ShowFeatureTable({
                     map: this.map,
+                    layers: this.layers, 
                 }, dojo.byId('mapPlace'));
                 ft.startup();
                 on(ft, "destroy", lang.hitch(this, function(evt) {

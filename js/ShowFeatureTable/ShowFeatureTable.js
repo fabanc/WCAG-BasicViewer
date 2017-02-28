@@ -1,6 +1,6 @@
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", 
-    "dojo/has", "dojo/dom","esri/kernel", 
+    "esri/arcgis/utils", "dojo/has", "dojo/dom","esri/kernel", 
     //"dijit/_WidgetBase",
     "dijit/layout/_LayoutWidget", 
     "esri/layers/FeatureLayer",
@@ -15,6 +15,7 @@ define([
     "dijit/registry", "dojo/aspect", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dijit/layout/ContentPane", "dijit/layout/BorderContainer",
+    "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem",
     "dojo/dom-construct", "dojo/_base/event", 
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", 
     "esri/symbols/CartographicLineSymbol", 
@@ -23,7 +24,7 @@ define([
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
     ], function (
-        Evented, declare, lang, has, dom, esriNS,
+        Evented, declare, lang, arcgisUtils, has, dom, esriNS,
         //_WidgetBase, 
         _LayoutWidget,
         FeatureLayer, FeatureTable, ImageToggleButton,
@@ -37,6 +38,7 @@ define([
         registry, aspect,
         domClass, domAttr, domStyle,
         ContentPane, BorderContainer, 
+        DropDownButton, DropDownMenu, MenuItem,
         domConstruct, event,
         SimpleMarkerSymbol, PictureMarkerSymbol, 
         CartographicLineSymbol, 
@@ -54,6 +56,7 @@ define([
 
         options: {
             map: null,
+            layers: null,
         },
 
         _getShowAttr: function() { 
@@ -79,6 +82,7 @@ define([
             var defaults = lang.mixin({}, this.options, options);
 
             this.map = defaults.map;
+            this.layers = defaults.layers;
             this.domNode = srcRefNode;
             this.containerNode = srcRefNode;
 
@@ -337,39 +341,61 @@ define([
                 }, arrowButton);
             }
 
-            var tableTitle = query('.esri-feature-table-title')[0];
-            // domStyle.set(tableTitle,'display', 'none');
-            var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
-                mutations.forEach(lang.hitch(this, function(mutation) {
-                    console.log(mutation);
-                    if(mutation.target.toString() === "[object Text]") {
-                        var pattern = /(.*)(\s\(.*\))/;
-                        var matches = mutation.target.nodeValue.match(pattern);
-                        console.log(matches);
-                        if(matches && matches.length === 3) {
-                            var t = this.layer.title + matches[2];
-                            var title = domConstruct.create('div', {
-                                innerHTML: t,
-                                class: 'esri-feature-table-menu-item esri-feature-table-title titleDivDiv',
-                            });
+            if(this.layers && this.layers.length > 1) {
+                var menu = new DropDownMenu({ style: "display: none;"});
+                this.layers.forEach(lang.hitch(this, function(layer){
+                    var menuItem1 = new MenuItem({
+                        label: layer.title,
+                        'data-layerid': layer.id,
+                        //onClick: function(){ alert(layer.title); }
+                    });
+                    on(menuItem1.domNode, 'click', lang.hitch(this, function(ev){ 
+                        console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
+                    }));
+                    //menu.addChild(menuItem1);
+                    domConstruct.place(menuItem1.domNode, menu.domNode, 0);
+                }));
+                menu.startup();
 
-                            var arrow = domConstruct.create('img', {
-                                src: 'images/icons_white/carret-down.32.png',
-                                alt: 'carret-down',
-                            }, title);
+                var button = new DropDownButton({
+                    label: 'label',
+                    name: "progButton",
+                    dropDown: menu,
+                    id: "progButton"
+                });
+                button.startup();
 
-                            query(".titleDivDiv").forEach(domConstruct.destroy);
-                            domConstruct.place(title, tableTitle, 'before');
-                            domStyle.set(tableTitle, 'display', 'none');
+                var tableTitle = query('.esri-feature-table-title')[0];
+                // domStyle.set(tableTitle,'display', 'none');
+                var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
+                    mutations.forEach(lang.hitch(this, function(mutation) {
+                        console.log(mutation);
+                        if(mutation.target.toString() === "[object Text]") {
+                            var pattern = /(.*)(\s\(.*\))/;
+                            var matches = mutation.target.nodeValue.match(pattern);
+                            console.log(matches);
+                            if(matches && matches.length === 3) {
+                                var label = this.layer.title + matches[2];
+                                var title = domConstruct.create('div', {
+                                    //innerHTML: label,
+                                    class: 'esri-feature-table-menu-item esri-feature-table-title titleDivDiv',
+                                });
+
+                                title.appendChild(button.domNode);
+                                query('#progButton_label', title)[0].innerText = label;
+
+                                query(".titleDivDiv").forEach(domConstruct.destroy);
+                                domConstruct.place(title, tableTitle, 'before');
+                                domStyle.set(tableTitle, 'display', 'none');
+                            }
                         }
-                    }
-                }));    
-            })).observe(tableTitle.childNodes[0], { 
-                attributes: false, 
-                childList: true, 
-                characterData: true 
-            });
-
+                    }));    
+                })).observe(tableTitle.childNodes[0], { 
+                    attributes: false, 
+                    childList: true, 
+                    characterData: true 
+                });
+            }
 
 
 
