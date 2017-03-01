@@ -310,7 +310,7 @@ define(["dojo/ready",
                     id: 'vSplitterTools',
                     class: 'bg',
                 }, dojo.byId('panelTools'));
-                var collapseLeftPanelButton = new ImageToggleButton({
+                var collapseLeftPanelButton = this.collapseLeftPanelButton = new ImageToggleButton({
                     id: 'collapseLeftPanelButton',
                     imgSelected: 'images/icons_white/right.png',
                     imgUnselected: 'images/icons_white/left.png',
@@ -528,13 +528,13 @@ define(["dojo/ready",
             dojo.html.set(skipInstructions, "6. "+this.config.i18n.skip.help);
             dojo.html.set(skipFeature, "7. "+this.config.i18n.skip.featureDetaills);
 
-            skipTools.addEventListener('click', function (e) { skipToTools(); });
-            skipSearch.addEventListener('click', function (e) { skipToSearch(); });
-            skipContent.addEventListener('click', function (e) { skipToContent(); });
-            skipSplitter.addEventListener('click', function (e) { skipToSplitter(); });
-            skipMap.addEventListener('click', function (e) { skipToMap(); });
-            skipInstructions.addEventListener('click', function (e) { skipToInstructions(); });
-            skipFeature.addEventListener('click', function (e) { skipToFeature(); });
+            skipTools.addEventListener('click', lang.hitch(this, this.skipToTools));
+            skipSearch.addEventListener('click', lang.hitch(this, this.skipToSearch));
+            skipContent.addEventListener('click', lang.hitch(this, this.skipToContent));
+            skipSplitter.addEventListener('click', lang.hitch(this, this.skipToSplitter));
+            skipMap.addEventListener('click', lang.hitch(this, this.skipToMap));
+            skipInstructions.addEventListener('click', lang.hitch(this, this.skipToInstructions));
+            skipFeature.addEventListener('click', lang.hitch(this, this.skipToFeature));
 
             query('.skip').forEach(function(h) {
                 h.addEventListener('keydown', function (e) {
@@ -562,43 +562,50 @@ define(["dojo/ready",
                 dom.byId('skip-tools').focus();
             };
 
-            skipToTools = function() {
-                query('#panelTools .panelToolActive input[type="image"]')[0].focus();
-                //dom.byId('panelTools').focus();
-            };
+        },
 
-            skipToSearch = function() {
-                dom.byId('search_input').focus();
-            };
+        skipToTools : function() {
+            this.collapseLeftPanelButton.preset(false);
+            query('#panelTools .panelToolActive input[type="image"]')[0].focus();
+            //dom.byId('panelTools').focus();
+        },
 
-            skipToContent = function() {
-                //dom.byId('panelPages').focus();
-                dojo.query(".page.showAttr .pageBody")[0].focus();
-            };
+        skipToSearch: function() {
+            this.collapseLeftPanelButton.preset(false);
+            dom.byId('search_input').focus();
+        },
 
-            skipToSplitter = function() {
-                dojo.byId('dijit_layout_ContentPane_1_splitter').focus();
-            };
+        skipToContent: function() {
+            this.collapseLeftPanelButton.preset(false);
+            //dom.byId('panelPages').focus();
+            dojo.query(".page.showAttr .pageBody")[0].focus();
+        },
 
-            skipToMap = function() {
-                console.log(dojo.byId('mapDiv'));
-                dojo.byId('mapDiv').focus();
-            };
+        skipToSplitter: function() {
+            this.collapseLeftPanelButton.preset(false);
+            dojo.byId('dijit_layout_ContentPane_1_splitter').focus();
+        },
 
-            skipToInstructions = function() {
-                var activeTool = query('.panelToolActive');
-                if(activeTool && activeTool.length>0) {
-                    activeTool = activeTool[0].childNodes[0];
-                    activeTool.click();
-                }
-                dom.byId('instructionsDiv').focus();            
-            };
+        skipToMap: function() {
+            // console.log(dojo.byId('mapDiv'));
+            dojo.byId('mapDiv').focus();
+        },
 
-            skipToFeature = function() {
-                if(featureList) {
-                    featureList.FocusDetails();
-                }
-            };
+        skipToInstructions: function() {
+            this.collapseLeftPanelButton.preset(false);
+            var activeTool = query('.panelToolActive');
+            if(activeTool && activeTool.length>0) {
+                activeTool = activeTool[0].childNodes[0];
+                activeTool.click();
+            }
+            dom.byId('instructionsDiv').focus();            
+        },
+
+        skipToFeature: function() {
+            if(featureList) {
+                this.collapseLeftPanelButton.preset(false);
+                featureList.FocusDetails();
+            }
         },
 
         featureList : null,

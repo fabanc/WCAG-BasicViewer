@@ -377,11 +377,11 @@ define([
                 // domStyle.set(tableTitle,'display', 'none');
                 var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
                     mutations.forEach(lang.hitch(this, function(mutation) {
-                        console.log(mutation);
+                        // console.log(mutation);
                         if(mutation.target.toString() === "[object Text]") {
                             var pattern = /(.*)(\s\(.*\))/;
                             var matches = mutation.target.nodeValue.match(pattern);
-                            console.log(matches);
+                            // console.log(matches);
                             if(matches && matches.length === 3) {
                                 var label = this.layer.title + matches[2];
                                 var title = domConstruct.create('div', {
