@@ -482,7 +482,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     layers: this.layers, 
                 }, dojo.byId('mapPlace'));
                 ft.startup();
-                on(ft, "destroy", this._forceClose);
+                on(ft, "destroy", lang.hitch(this, function(evy) {
+                    this._forceClose();
+                }));
                 on(ft, "change", lang.hitch(this, function(evt) {
                     this._forceClose();
                     this._loadTableByLayerId(evt.layerId);
@@ -513,6 +515,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         showBadge: function(show) {
+            var collapseLeftPanelButton = dijit.byId('collapseLeftPanelButton');
+            if(collapseLeftPanelButton) {
+                collapseLeftPanelButton.preset(show);
+            }
+
             // var indicator = dojo.byId('badge_featureTableSelected'); // !
             // if (show) {
             //     domStyle.set(indicator,'display','');

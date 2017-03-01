@@ -76,6 +76,12 @@ define([
             this.cbLabel.focus();
         },
 
+        preset: function(value) {
+            if(!value != ! this.cbInput.checked) {
+                this.cbInput.click();
+            }
+        },
+
         _keyDown: function(evt) {
             switch(evt.key) {
                 case " " :
