@@ -78,6 +78,8 @@ define(
         searchEnterCriteria : "Terme recherché pour",
         pressAlt : "Appuyer sur ALT + 0 à 7 pour naviguer rapidement",
         instructions:"instructions.french",
-        wcagViewer : "Visualiseur Accessible"
+        wcagViewer : "Visualiseur Accessible",
+        leftCollapse: "Réduire le panneau gauche",
+        leftExpand: "Révéler le panneau gauche",
     })
 );

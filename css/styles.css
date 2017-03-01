@@ -1253,14 +1253,21 @@ html, body {
 }
 
 #leftPanel{
-    min-width: 300px;
     height: 100%;
     width: 100%;
     background-color: white;
 }
 
+.leftPanelZero{
+    width: 0;
+}
+
+.leftPanelMin{
+    min-width: 300px;
+}
+
 @media only screen and (min-width: 720px) {
-    #leftPanel{
+    .leftPanelMin{
         min-width: 425px;
     }
 }
@@ -1972,4 +1979,40 @@ input[type=checkbox].checkbox {
 
 #dijit_layout_ContentPane_2 {
   padding: 0.5px !important;
+}
+
+#vSplitterTools {
+    height:auto;
+    top:2px;
+    line-height: 12px;
+    right:0;
+    position: absolute;
+    z-index: 1000;
+}
+
+#vSplitterTools.onMap {
+    /*top:50%;*/
+    left:0;
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    right:initial;
+}
+
+#collapseLeftPanelButton label {
+  margin:0;
+}
+#collapseLeftPanelButton label img {
+  opacity: 0.5;
+}
+#collapseLeftPanelButton label:hover img,
+#collapseLeftPanelButton label:focus img,
+{
+  opacity: 1;
+}
+
+#collapseLeftPanelButton img {
+  width:10px !important;
+  height:20px !important;
+  margin:0 !important;
+  padding: 2px 4px !important;
 }

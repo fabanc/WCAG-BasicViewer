@@ -29,6 +29,7 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
     "esri/layers/FeatureLayer", "application/NavToolBar/NavToolBar", 
+    "application/ImageToggleButton/ImageToggleButton", 
     "application/FeatureList/FeatureList", "application/Filters/Filters", "application/TableOfContents", 
     "application/LanguageSelect/LanguageSelect",
     "application/ShareDialog", //"application/SearchSources",
@@ -49,7 +50,7 @@ define(["dojo/ready",
     Legend, BasemapGallery, 
     i18n, i18n_BaseMapLabels,
     Measurement, OverviewMap, Extent, 
-    FeatureLayer, NavToolBar,
+    FeatureLayer, NavToolBar, ImageToggleButton,
     FeatureList, Filters, TableOfContents, LanguageSelect,
     ShareDialog, //SearchSources,
     SimpleMarkerSymbol, PictureMarkerSymbol, Graphic,
@@ -244,9 +245,10 @@ define(["dojo/ready",
             }
         },
 
+        _saveLeftPanelWidth:-1,
         // Create UI
         _createUI: function () {
-            var borderContainer = new BorderContainer({
+            var borderContainer = this.mainBorderContainer = new BorderContainer({
                 gutters:false, 
                 liveSplitters:true,
                 id:"borderContainer"
@@ -260,7 +262,7 @@ define(["dojo/ready",
             });
             borderContainer.addChild(contentPaneTop);
               
-            var contentPaneLeft = new ContentPane({
+            var contentPaneLeft = this.contentPaneLeft = new ContentPane({
                 region: "leading",
                 splitter: 'true',
                 style: "width:425px; padding:0; overflow: none;",
@@ -269,7 +271,7 @@ define(["dojo/ready",
             });
             borderContainer.addChild(contentPaneLeft);
               
-            var contentPaneRight = new ContentPane({
+            var contentPaneRight = this.contentPaneRight = new ContentPane({
                 style: "padding:1px;",
                 region: "center",
                 splitter: "true",
@@ -281,6 +283,18 @@ define(["dojo/ready",
             borderContainer.placeAt(document.body);
             borderContainer.startup();
 
+            // var vSplitter = dojo.byId('dijit_layout_ContentPane_1_splitter');
+            // var vSplitterTools = domConstruct.create('div', {
+            //     id: 'vSplitterTools',
+            // }, vSplitter);
+            // var collapseLeftPanelButton = new ImageToggleButton({
+            //     id: 'collapseLeftPanelButton',
+            //     imgSelected: 'images/icons_black/right.png',
+            //     imgUnselected: 'images/icons_black/left.png',
+            //     titleUnselected: i18n.leftCollapse, 
+            //     titleSelected: i18n.leftExpand, 
+            // }, domConstruct.create('div', {}, vSplitterTools));
+
             aspect.after(contentPaneRight, "resize", lang.hitch(this, function() {
                 this.map.emit('parentSize_changed', {});
                 this.map.resize();
@@ -291,6 +305,36 @@ define(["dojo/ready",
             //Add tools to the toolbar. The tools are listed in the defaults.js file
             var toolbar = new Toolbar(this.config);
             toolbar.startup().then(lang.hitch(this, function () {
+
+                var vSplitterTools = domConstruct.create('div', {
+                    id: 'vSplitterTools',
+                    class: 'bg',
+                }, dojo.byId('panelTools'));
+                var collapseLeftPanelButton = new ImageToggleButton({
+                    id: 'collapseLeftPanelButton',
+                    imgSelected: 'images/icons_white/right.png',
+                    imgUnselected: 'images/icons_white/left.png',
+                    titleUnselected: i18n.leftCollapse, 
+                    titleSelected: i18n.leftExpand, 
+                }, domConstruct.create('div', {}, vSplitterTools));
+                collapseLeftPanelButton.startup();
+
+                on(collapseLeftPanelButton, 'change', lang.hitch(this, function(ev) {
+                    var vSplitterTools = dojo.byId('vSplitterTools');
+                    if(collapseLeftPanelButton.isChecked()) {
+                        this._saveLeftPanelWidth = this.contentPaneLeft.domNode.clientWidth;
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,0));
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',0));
+                        domConstruct.place(vSplitterTools, dojo.byId('mapFocus'),'before');
+                        domClass.add(vSplitterTools, 'onMap');
+                    } else {
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,this._saveLeftPanelWidth));
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',12));
+                        domConstruct.place(vSplitterTools, dojo.byId('panelTools'),'before');
+                        domClass.remove(vSplitterTools, 'onMap');
+                    }
+                    collapseLeftPanelButton.focus();
+                }));
 
                 // set map so that it can be repositioned when page is scrolled
                 toolbar.map = this.map;
@@ -1074,23 +1118,23 @@ define(["dojo/ready",
                         }
                     };
                     
-                    this.legendNodeObserver = new MutationObserver(function(mutations) {
-                        mutations.forEach(function(mutation) {
-                            if(mutation.addedNodes && mutation.addedNodes.length>=1) {
-                                mutation.addedNodes.forEach(function(node) {
-                                    if(domStyle.get(node, 'display') !== 'none') {
-                                        fixLegend(node);
-                                    }
-                                });
-                            }
-                        });    
-                    });
+                    // this.legendNodeObserver = new MutationObserver(function(mutations) {
+                    //     mutations.forEach(function(mutation) {
+                    //         if(mutation.addedNodes && mutation.addedNodes.length>=1) {
+                    //             mutation.addedNodes.forEach(function(node) {
+                    //                 if(domStyle.get(node, 'display') !== 'none') {
+                    //                     fixLegend(node);
+                    //                 }
+                    //             });
+                    //         }
+                    //     });    
+                    // });
 
-                    this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
-                        attributes: true, 
-                        childList: true, 
-                        characterData: false 
-                    });
+                    // this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
+                    //     attributes: true, 
+                    //     childList: true, 
+                    //     characterData: false 
+                    // });
 
                     deferred.resolve(true);
 

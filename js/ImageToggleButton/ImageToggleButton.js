@@ -59,18 +59,10 @@ define([
         },
 
         startup: function() {
-            var cbInput = dojo.byId(this.id+'_cb');
+            var cbInput = this.cbInput = dojo.byId(this.id+'_cb');
             if(!cbInput) return;
-            var cbLabel = dojo.byId(this.id+'_lbl');
-            on(cbLabel, 'keydown', function(evt) {
-                switch(evt.key) {
-                    case " " :
-                    case "Enter" :
-                        evt.preventDefault();
-                        cbInput.click();
-                        break;
-                }
-            });
+            var cbLabel = this.cbLabel = dojo.byId(this.id+'_lbl');
+            on(cbLabel, 'keydown', lang.hitch(this, this._keyDown));
 
             on(cbInput, 'change', lang.hitch(this, function(ev) {
                 this.emit('change', {
@@ -80,15 +72,28 @@ define([
             }));
         },
 
+        focus: function() {
+            this.cbLabel.focus();
+        },
+
+        _keyDown: function(evt) {
+            switch(evt.key) {
+                case " " :
+                case "Enter" :
+                    evt.preventDefault();
+                    this.cbInput.click();
+                    break;
+            }
+        },
+
         isChecked : function() {
-            return dojo.byId(this.id+'_cb').checked;
+            return this.cbInput.checked;
         },
 
         Check: function(value) {
-            var cbInput = dojo.byId(this.id+'_cb');
-            if(cbInput.checked !== value) {
-                cbInput.checked = value;
-                this.emit('change', {checked: cbInput.checked});
+            if(this.cbInput.checked !== value) {
+                this.cbInput.checked = value;
+                this.emit('change', {checked: this.cbInput.checked});
             }
         }
 

@@ -79,7 +79,9 @@ define({
         searchEnterCriteria : "Enter search term for",
         pressAlt : "Press ALT + 0 to 7 keys for fast navigation",
         instructions:"instructions",
-        wcagViewer : "Accessible Viewer"
+        wcagViewer : "Accessible Viewer",
+        leftCollapse: "Collapse Left Panel",
+        leftExpand: "Expand Left Panel",
     }),
 "ar": 1,
 "cs": 1,
