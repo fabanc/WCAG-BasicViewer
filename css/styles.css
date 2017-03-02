@@ -2017,3 +2017,7 @@ input[type=checkbox].checkbox {
   margin:0 !important;
   padding: 2px 4px !important;
 }
+
+.claro .dijitTextBox {
+    width: auto;
+}

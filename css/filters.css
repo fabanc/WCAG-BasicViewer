@@ -22,7 +22,7 @@
 
 .filterAdd select {
     font-size: 18px;
-    width: calc(100% - 130px);
+    width: calc(100% - 136px);
     margin-top: 1px;
     font-family: 'Roboto Condensed', sans-serif;
 }
@@ -114,4 +114,18 @@
   background-color: red !important;
   color:white !important;
   margin-left: 10px;
+}
+
+.showErrors {
+    position: fixed;
+    padding: 2px;
+    background-color: white;
+    color: red;
+    border: red solid 1px;
+    font-size: 11px;
+    border-radius: 4px;
+}
+
+._filter .dijitValidationIcon {
+    width: 10px !important;
 }

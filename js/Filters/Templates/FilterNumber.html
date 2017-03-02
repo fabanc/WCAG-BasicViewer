@@ -10,12 +10,24 @@
 		<option value=" BETWEEN ">${_i18n.widgets.FilterItem.between}</option>			
 		<option value=" NOT BETWEEN ">${_i18n.widgets.FilterItem.notBetween}</option>			
 	</select>
-	<input type="textbox" data-dojo-attach-point="minValue" aria-label="Enter value to match"
+	<input type="textbox" 
+	id="${id1}"
+	data-dojo-attach-point="minValue" 
+	aria-label="${_i18n.widgets.FilterItem.enterValueToMatch}"
+	title="${_i18n.widgets.FilterItem.enterValueToMatch}"
 	data-dojo-type="dijit/form/ValidationTextBox"
-    data-dojo-props="regExp:'${format}', invalidMessage:'Invalid Number'"/>
+    data-dojo-props="regExp:'${format}', invalidMessage:'${_i18n.widgets.FilterItem.invalidNumber}',
+    missingMessage:'${_i18n.widgets.FilterItem.enterValueToMatch}'"
+    required='true'/>
 	<div style="display:none;" data-dojo-attach-point="divMaxValue">
-		<input type="textbox" data-dojo-attach-point="maxValue" aria-label="Enter last value" 
+		<input type="textbox" 
+		id="${id2}"
+		data-dojo-attach-point="maxValue" aria-label="${_i18n.widgets.FilterItem.enterLastValue}" 
+		title="${_i18n.widgets.FilterItem.enterLastValue}"
 		data-dojo-type="dijit/form/ValidationTextBox"
-	    data-dojo-props="regExp:'${format}', invalidMessage:'Invalid Number.'"/>
+	    data-dojo-props="regExp:'${format}', invalidMessage:'${_i18n.widgets.FilterItem.invalidNumber}',
+    	missingMessage:'${_i18n.widgets.FilterItem.enterLastValue}'"
+    	required='true'/>
 	</div>
+	<div class='showErrors'></div>
 </div>

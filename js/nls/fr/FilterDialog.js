@@ -18,7 +18,10 @@ define({
             lessThen: "Moins que",
             moreThen: "Plus que",
             between: "Entre",
-            notBetween: "Pas Entre"
+            notBetween: "Pas Entre",
+            enterValueToMatch: "Entrer la valeur correspondante",
+            enterLastValue:"Entrer la dernière valeur",
+            invalidNumber: "Nombre non valide.",
         }
     }
 });
