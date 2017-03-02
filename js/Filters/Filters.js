@@ -32,10 +32,10 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/ke
             // properties
             this.set("map", defaults.map);
             var Layers = this._getLayers(defaults.layers);
-            var VisibleLayers = Layers.filter(function(l) { return l.visibility; });//l => l.visibility);
-            this.set("layers", VisibleLayers);
+            //var VisibleLayers = Layers.filter(function(l) { return l.visibility; });//l => l.visibility);
+            //this.set("layers", VisibleLayers);
             window.filters = [];
-            VisibleLayers.forEach(lang.hitch(this,function(layer){
+            Layers.forEach(lang.hitch(this,function(layer){
                 if(layer.popupInfo) {
                     window.filters.push({
                         id: layer.id, 
