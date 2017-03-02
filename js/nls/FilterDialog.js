@@ -23,7 +23,10 @@ define({
                 notBetween: "Not Between",
                 enterValueToMatch: "Enter value to match",
                 enterLastValue:"Enter last value",
-                invalidNumber: "Invalid Number.",
+                invalidNumber: "Invalid number format",
+                enterDateToMatch: "Enter date to match",
+                enterLastDate:"Enter last date",
+                invalidDate: "Invalid date format",
             }
         }
     }),

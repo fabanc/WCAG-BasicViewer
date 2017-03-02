@@ -1789,9 +1789,7 @@ input[type=checkbox].checkbox {
     height: 16px;
     width: 16px;
     border: 1px solid #bababa;
-    vertical-align: top;
-    background-color: #fff;
-    color: #000;
+    vertical-align: bottom;
     cursor: pointer;
 }
 
@@ -1806,7 +1804,7 @@ input[type=checkbox].checkbox {
     }
 
     label.checkbox {
-        padding: 3px 0px;
+        /*padding: 3px 0px;*/
         font-size: 16px;
     }
 
@@ -2021,3 +2019,9 @@ input[type=checkbox].checkbox {
 .claro .dijitTextBox {
     width: auto;
 }
+
+.claro .dijitTooltipContainer {
+    border: solid black 1px;
+    background: white;
+    color: black;
+ }

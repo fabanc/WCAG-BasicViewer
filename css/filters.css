@@ -29,12 +29,11 @@
 
 .tabContent ul {list-style-type: none;-webkit-margin-before: 0;-webkit-margin-after: 0;-webkit-margin-start: 0px;-webkit-margin-end: 0px;-webkit-padding-start: 0;/* border-color: gray; *//* border-width: 1px; *//* border-style: solid; */padding: 5px;/* max-height: calc(100% - 66px); */width: calc(100% - 10px);overflow-y: auto;position: relative;/* top: 35px; */}
 .tabContent ul li {
-    border-color: gray;
     border-width: 1px;
     border-style: solid;
-    padding: 10px;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
+    padding: 2px 2px 10px 2px;
+    margin-bottom: 12px;
+    width: calc(100% - 2px);
   }
 
 ._filter {
@@ -111,21 +110,24 @@
 }
 
 .dijitTooltipContainer {
-  background-color: red !important;
+  background-color: #b60000 !important;
   color:white !important;
   margin-left: 10px;
 }
 
 .showErrors {
-    position: fixed;
-    padding: 2px;
+    position: absolute;
+    padding: 2px 4px;
     background-color: white;
-    color: red;
-    border: red solid 1px;
+    color: #b60000;
+    border: #b60000 solid 2px;
     font-size: 11px;
     border-radius: 4px;
+    right: 8px;
+    font-weight: bold;
 }
 
 ._filter .dijitValidationIcon {
     width: 10px !important;
 }
+

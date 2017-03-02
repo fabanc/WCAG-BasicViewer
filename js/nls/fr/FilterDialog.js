@@ -21,7 +21,11 @@ define({
             notBetween: "Pas Entre",
             enterValueToMatch: "Entrer la valeur correspondante",
             enterLastValue:"Entrer la dernière valeur",
-            invalidNumber: "Nombre non valide.",
+            invalidNumber: "Format de numéro non valide",
+            enterDateToMatch: "Entrez la date pour correspondre",
+            enterLastDate:"Entrez la dernière date",
+            invalidDate: "Format de date non valide",
+
         }
     }
 });

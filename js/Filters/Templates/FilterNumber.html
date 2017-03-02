@@ -22,12 +22,13 @@
 	<div style="display:none;" data-dojo-attach-point="divMaxValue">
 		<input type="textbox" 
 		id="${id2}"
-		data-dojo-attach-point="maxValue" aria-label="${_i18n.widgets.FilterItem.enterLastValue}" 
+		data-dojo-attach-point="maxValue" 
+		aria-label="${_i18n.widgets.FilterItem.enterLastValue}" 
 		title="${_i18n.widgets.FilterItem.enterLastValue}"
 		data-dojo-type="dijit/form/ValidationTextBox"
 	    data-dojo-props="regExp:'${format}', invalidMessage:'${_i18n.widgets.FilterItem.invalidNumber}',
     	missingMessage:'${_i18n.widgets.FilterItem.enterLastValue}'"
     	required='true'/>
 	</div>
-	<div class='showErrors'></div>
+	<div class='showErrors' style="display:none;"></div>
 </div>

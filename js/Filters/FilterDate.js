@@ -27,6 +27,8 @@ define([
             this.set("map", defaults.map);
             this.set("layer", defaults.layer);
             this.set("field", defaults.field);
+            this.set('id1', dijit.registry.getUniqueId(this.declaredClass));
+            this.set('id2', dijit.registry.getUniqueId(this.declaredClass));
         },
         
         startup: function () {
@@ -45,6 +47,16 @@ define([
 
         _init: function () {
             this.domNode = domConstruct.create("div", {innerHTML: this.field.fieldName});
+            this.num1field = dijit.byId(this.id1);
+            this.num2field = dijit.byId(this.id2);
+            this.num1field.displayMessage = lang.hitch(this, lang.hitch(this, this._showError));
+            this.num2field.displayMessage = lang.hitch(this, lang.hitch(this, this._showError));
+        },
+
+        _showError: function(err) {
+            var errDiv = dojo.query('#'+this.id+' .showErrors')[0];
+            domStyle.set(errDiv, 'display', (err && err !== '')?'block':'none');
+            errDiv.innerHTML= err;
         },
 
         getBetweenMode : function() {
