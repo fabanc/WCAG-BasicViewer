@@ -2,12 +2,13 @@
 	<select autofocus tabindex=0 
 		data-dojo-attach-event="onchange: criteriaChanged"
 		data-dojo-attach-point="criteria"
+		class="filterCriteria"
 		>
 		<option value=" = ">${_i18n.widgets.FilterItem.equal}</option>			
-		<option value=" != ">${_i18n.widgets.FilterItem.notEqual}</option>			
-		<option value=" < ">${_i18n.widgets.FilterItem.lessThen}</option>			
-		<option value=" > ">${_i18n.widgets.FilterItem.moreThen}</option>			
-		<option value=" BETWEEN ">${_i18n.widgets.FilterItem.between}</option>			
+		<option value=" != ">${_i18n.widgets.FilterItem.notEqual}</option>
+		<option value=" < ">${_i18n.widgets.FilterItem.lessThen}</option>
+		<option value=" > ">${_i18n.widgets.FilterItem.moreThen}</option>
+		<option value=" BETWEEN ">${_i18n.widgets.FilterItem.between}</option>
 		<option value=" NOT BETWEEN ">${_i18n.widgets.FilterItem.notBetween}</option>			
 	</select>
 	<input type="textbox" 

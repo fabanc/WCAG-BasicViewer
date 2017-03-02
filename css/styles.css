@@ -1440,19 +1440,6 @@ html, body {
 .dataInputBox {
   width:120px;
 }
-._filter._date .dijitArrowButtonInner {
-    padding-bottom: 6px !important;
-}
-
-._filter._date .dijitInputField {
-  padding: 2px;
-  width: 80px;
-}
-
-._filter._number .dijitInputField {
-  padding: 0px;
-  width: 100px;
-}
 
 .esriBookmarkTable {
     width:100%;
@@ -2025,3 +2012,7 @@ input[type=checkbox].checkbox {
     background: white;
     color: black;
  }
+
+ .claro .dijitCalendarYearLabel {
+    font-size: initial;
+}

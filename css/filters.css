@@ -43,13 +43,13 @@
 }
 
 ._filter ._fieldExamples {
-  max-height: 80px;
+  max-height: 175px;
   overflow: auto;
-  width: calc(100% - 30px);
-  border-width: 1px;
-  border-style: solid;
+  width: calc(100% - 34px);
+  border: 1px solid black;
   margin: 0;
   margin-top: 4px;
+  margin-left: 4px;
 }
 
 .filterTabs{
@@ -58,23 +58,8 @@
    position: absolute;
    width: calc(100% - 14px);
    height: calc(100% - 20px);
-   margin: 10px;
-   margin-right: 0;
+   margin: 4px 0px -6px 4px;
 }
-
-.selectOpenParan {
-  position: relative;
-  top: -20px;
-  left: calc(100% - 120px);
-}
-
-.selectCloseParan {
-  position: absolute;
-  margin=top: 10px;
-  left: calc(100% - 75px);
-}
-
-.selectAndOr {position: absolute;right: 25px;}
 
 .filterTabsZone {
   display: -webkit-box;
@@ -101,14 +86,6 @@
     overflow-y: auto;
 }
 
-.dijitCalendarYearContainer {
-  display: initial !important;
-}
-.dijitCalendarYearLabel {
-    position: absolute;
-    bottom: 0;
-}
-
 .dijitTooltipContainer {
   background-color: #b60000 !important;
   color:white !important;
@@ -127,7 +104,64 @@
     font-weight: bold;
 }
 
-._filter .dijitValidationIcon {
-    width: 10px !important;
+.claro ._filter .dijitTextBox {
+    border: 1px solid black;
 }
 
+.claro ._filter .dijitTextBox .dijitInputInner {
+    padding:0;
+    width: 100px !important;
+}
+
+.claro ._filter .dijitValidationIcon {
+    width: 11px !important;
+}
+
+.claro ._filter._date .dijitInputField {
+   padding: 0px;
+}
+
+.filterCriteria {
+    margin-left: 4px;
+    border: 1px solid black;
+}
+
+.filterTextBox {
+    border: 1px solid black;
+}
+
+.claro .dijitCalendarPreviousMonth, 
+.claro .dijitCalendarNextMonth {
+    /*text-decoration: line-through;
+    border: solid 1px silver;*/
+    font-weight: normal;
+}
+
+.claro .dijitCalendarPreviousMonth .dijitCalendarDateLabel, 
+.claro .dijitCalendarNextMonth .dijitCalendarDateLabel {
+    color: white;
+    background-color: grey;
+    font-weight: normal;
+}
+
+.claro .dijitCalendarDateTemplate {
+    background-color: #ffffff;
+    border: 1px solid gray;
+}
+
+.claro .dijitCalendarDateTemplate {
+    border-bottom: solid 1px gray;
+}
+
+.claro .dijitCalendar {
+    border: solid 2px silver;
+    /*-moz-border-radius: 4px;*/
+    background-color: silver;
+    background-image: none; 
+    /* padding: 6px 5px 3px 5px; */
+}
+
+.claro .dijitCalendar:hover {
+    background-color: silver;
+    border: solid 2px black;
+}
