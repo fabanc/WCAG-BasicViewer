@@ -136,13 +136,15 @@ define([
             q.outFields = [];
             q.returnGeometry = true;
             task.execute(q).then(function(ev) {
-                var myExtent = graphicsUtils.graphicsExtent(ev.features);
-                if(myExtent.xmin===myExtent.xmax && myExtent.ymin===myExtent.ymax) {
-                    filter.map.centerAndZoom(myExtent.getCenter(), 13);
-                }
-                else {
-                    var ext = myExtent.expand(1.5);
-                    filter.map.setExtent(ext);
+                if(ev.features && ev.features.length > 0) {
+                    var myExtent = graphicsUtils.graphicsExtent(ev.features);
+                    if(myExtent.xmin===myExtent.xmax && myExtent.ymin===myExtent.ymax) {
+                        filter.map.centerAndZoom(myExtent.getCenter(), 13);
+                    }
+                    else {
+                        var ext = myExtent.expand(1.5);
+                        filter.map.setExtent(ext);
+                    }
                 }
             });
         },
