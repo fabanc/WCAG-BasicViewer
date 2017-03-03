@@ -1125,23 +1125,23 @@ define(["dojo/ready",
                         }
                     };
                     
-                    // this.legendNodeObserver = new MutationObserver(function(mutations) {
-                    //     mutations.forEach(function(mutation) {
-                    //         if(mutation.addedNodes && mutation.addedNodes.length>=1) {
-                    //             mutation.addedNodes.forEach(function(node) {
-                    //                 if(domStyle.get(node, 'display') !== 'none') {
-                    //                     fixLegend(node);
-                    //                 }
-                    //             });
-                    //         }
-                    //     });    
-                    // });
+                    this.legendNodeObserver = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if(mutation.addedNodes && mutation.addedNodes.length>=1) {
+                                mutation.addedNodes.forEach(function(node) {
+                                    if(domStyle.get(node, 'display') !== 'none') {
+                                        fixLegend(node);
+                                    }
+                                });
+                            }
+                        });    
+                    });
 
-                    // this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
-                    //     attributes: true, 
-                    //     childList: true, 
-                    //     characterData: false 
-                    // });
+                    this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
+                        attributes: true, 
+                        childList: true, 
+                        characterData: false 
+                    });
 
                     deferred.resolve(true);
 
