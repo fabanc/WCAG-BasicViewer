@@ -15,7 +15,7 @@ define([
     "dijit/registry", "dojo/aspect", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dijit/layout/ContentPane", "dijit/layout/BorderContainer",
-    "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem",
+    "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem", "dijit/MenuSeparator",
     "dojo/dom-construct", "dojo/_base/event", 
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", 
     "esri/symbols/CartographicLineSymbol", 
@@ -38,7 +38,7 @@ define([
         registry, aspect,
         domClass, domAttr, domStyle,
         ContentPane, BorderContainer, 
-        DropDownButton, DropDownMenu, MenuItem,
+        DropDownButton, DropDownMenu, MenuItem, MenuSeparator,
         domConstruct, event,
         SimpleMarkerSymbol, PictureMarkerSymbol, 
         CartographicLineSymbol, 
@@ -340,7 +340,6 @@ define([
                     var menuItem1 = new MenuItem({
                         label: layer.title,
                         'data-layerid': layer.id,
-                        //onClick: function(){ alert(layer.title); }
                     });
                     on(menuItem1.domNode, 'click', lang.hitch(this, function(ev){ 
                         //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
@@ -348,7 +347,19 @@ define([
                     }));
                     //menu.addChild(menuItem1);
                     domConstruct.place(menuItem1.domNode, menu.domNode, 0);
+
                 }));
+                var menuItem2 = new MenuSeparator();
+                domConstruct.place(menuItem2.domNode, menu.domNode);
+        
+                var menuItem3 = new MenuItem({
+                    label: i18n.widgets.showFeatureTable.close,
+                });
+                on(menuItem3.domNode, 'click', lang.hitch(this, function(ev){ 
+                        //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
+                        this.emit("destroy", {});
+                    }));
+                domConstruct.place(menuItem3.domNode, menu.domNode);
                 menu.startup();
 
                 var button = new DropDownButton({
@@ -365,11 +376,13 @@ define([
                 var tableTitle = query('.esri-feature-table-title')[0];
                 // domStyle.set(tableTitle,'display', 'none');
                 var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
+                    console.log(mutations);
                     mutations.forEach(lang.hitch(this, function(mutation) {
-                        // console.log(mutation);
-                        if(mutation.target.toString() === "[object Text]") {
+                        console.log(mutation);
+                        var target = mutation.target.childNodes[0];
+                        if(target.toString() === "[object Text]") {
                             var pattern = /(.*)(\s\(.*\))/;
-                            var matches = mutation.target.nodeValue.match(pattern);
+                            var matches = target.nodeValue.match(pattern);
                             // console.log(matches);
                             if(matches && matches.length === 3) {
                                 var label = this.layer.title + matches[2];
@@ -384,11 +397,12 @@ define([
                                 query(".titleDivDiv").forEach(domConstruct.destroy);
                                 domConstruct.place(title, tableTitle, 'before');
                                 domStyle.set(tableTitle, 'display', 'none');
-                this._addArrowCarrets();
+                                this._addArrowCarrets();
                             }
                         }
                     }));    
-                })).observe(tableTitle.childNodes[0], { 
+                }));
+                titleNodeObserver.observe(tableTitle, { 
                     attributes: false, 
                     childList: true, 
                     characterData: true 
