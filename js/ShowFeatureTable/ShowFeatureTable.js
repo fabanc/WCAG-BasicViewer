@@ -15,7 +15,7 @@ define([
     "dijit/registry", "dojo/aspect", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dijit/layout/ContentPane", "dijit/layout/BorderContainer",
-    "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem", "dijit/MenuSeparator",
+    "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem",
     "dojo/dom-construct", "dojo/_base/event", 
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", 
     "esri/symbols/CartographicLineSymbol", 
@@ -38,7 +38,7 @@ define([
         registry, aspect,
         domClass, domAttr, domStyle,
         ContentPane, BorderContainer, 
-        DropDownButton, DropDownMenu, MenuItem, MenuSeparator,
+        DropDownButton, DropDownMenu, MenuItem,
         domConstruct, event,
         SimpleMarkerSymbol, PictureMarkerSymbol, 
         CartographicLineSymbol, 
@@ -340,6 +340,7 @@ define([
                     var menuItem1 = new MenuItem({
                         label: layer.title,
                         'data-layerid': layer.id,
+                        //onClick: function(){ alert(layer.title); }
                     });
                     on(menuItem1.domNode, 'click', lang.hitch(this, function(ev){ 
                         //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
@@ -347,19 +348,7 @@ define([
                     }));
                     //menu.addChild(menuItem1);
                     domConstruct.place(menuItem1.domNode, menu.domNode, 0);
-
                 }));
-                var menuItem2 = new MenuSeparator();
-                domConstruct.place(menuItem2.domNode, menu.domNode);
-        
-                var menuItem3 = new MenuItem({
-                    label: i18n.widgets.showFeatureTable.close,
-                });
-                on(menuItem3.domNode, 'click', lang.hitch(this, function(ev){ 
-                        //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
-                        this.emit("destroy", {});
-                    }));
-                domConstruct.place(menuItem3.domNode, menu.domNode);
                 menu.startup();
 
                 var button = new DropDownButton({
