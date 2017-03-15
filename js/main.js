@@ -432,7 +432,7 @@ define(["dojo/ready",
                 }));
             }));
 
-            on(document.body, 'keydown', function(event) {
+            on(document.body, 'keydown', lang.hitch(this, function(event) {
                 if(event.altKey) {
                     query('.goThereHint').forEach(function(h) {
                         domStyle.set(h, 'display','inline-table');
@@ -442,6 +442,7 @@ define(["dojo/ready",
                     case 'Esc' :
                     case 'Escape' :
                         var activeElement = focusUtil.curNode;
+                        if(!activeElement) break;
                         if(dojo.hasClass(activeElement, 'pageBody')) {
                             var id=activeElement.id.replace('pageBody','toolButton');
                             var toolBtn = document.querySelector("#"+id+" input[type='image'").focus();
@@ -452,7 +453,7 @@ define(["dojo/ready",
                         if(upper && upper.length>= 1) {
                             upper[0].focus();
                         } else {
-                            skipToMap();
+                            this.skipToMap();
                         }
                         break;
                     case '0' :
@@ -464,7 +465,7 @@ define(["dojo/ready",
                         break;
                 }
                 
-            });
+            }));
 
             on(document.body, 'keyup', function(event) {
                 if(!event.altKey) {
@@ -495,8 +496,8 @@ define(["dojo/ready",
 
                 domConstruct.create("div", {
                     class:'goThereHint',
-                    innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.splitter,
-                    style:'right:5px; top:50%; z-index:1000;'
+                    innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.vsplitter,
+                    style:'right:5px; top:55%; z-index:1000;'
                 }, dom.byId('leftPanel'));
 
                 domConstruct.create("div", {
@@ -515,26 +516,32 @@ define(["dojo/ready",
             var skipTools = query('.skip #skip-tools')[0];
             var skipSearch = query('.skip #skip-search')[0];
             var skipContent = query('.skip #skip-content')[0];
-            var skipSplitter = query('.skip #skip-splitter')[0];
+            var skipVSplitter = query('.skip #skip-Vsplitter')[0];
             var skipMap = query('.skip #skip-map')[0];
             var skipInstructions = query('.skip #skip-instructions')[0];
             var skipFeature = query('.skip #skip-feature')[0];
+            var skipHSplitter = query('.skip #skip-Hsplitter')[0];
+            var skipTable = query('.skip #skip-table')[0];
 
             dojo.html.set(skipTools, "1. "+this.config.i18n.skip.tools);
             dojo.html.set(skipSearch, "2. "+this.config.i18n.skip.search);
             dojo.html.set(skipContent, "3. "+this.config.i18n.skip.content);
-            dojo.html.set(skipSplitter, "4. "+this.config.i18n.skip.splitter);
+            dojo.html.set(skipVSplitter, "4. "+this.config.i18n.skip.vsplitter);
             dojo.html.set(skipMap, "5. "+this.config.i18n.skip.map);
             dojo.html.set(skipInstructions, "6. "+this.config.i18n.skip.help);
             dojo.html.set(skipFeature, "7. "+this.config.i18n.skip.featureDetaills);
+            dojo.html.set(skipHSplitter, "8. "+this.config.i18n.skip.hsplitter);
+            dojo.html.set(skipTable, "9. "+this.config.i18n.skip.table);
 
             skipTools.addEventListener('click', lang.hitch(this, this.skipToTools));
             skipSearch.addEventListener('click', lang.hitch(this, this.skipToSearch));
             skipContent.addEventListener('click', lang.hitch(this, this.skipToContent));
-            skipSplitter.addEventListener('click', lang.hitch(this, this.skipToSplitter));
+            skipVSplitter.addEventListener('click', lang.hitch(this, this.skipToVSplitter));
             skipMap.addEventListener('click', lang.hitch(this, this.skipToMap));
             skipInstructions.addEventListener('click', lang.hitch(this, this.skipToInstructions));
             skipFeature.addEventListener('click', lang.hitch(this, this.skipToFeature));
+            skipHSplitter.addEventListener('click', lang.hitch(this, this.skipToHSplitter));
+            skipTable.addEventListener('click', lang.hitch(this, this.skipToTable));
 
             query('.skip').forEach(function(h) {
                 h.addEventListener('keydown', function (e) {
@@ -581,7 +588,7 @@ define(["dojo/ready",
             dojo.query(".page.showAttr .pageBody")[0].focus();
         },
 
-        skipToSplitter: function() {
+        skipToVSplitter: function() {
             this.collapseLeftPanelButton.preset(false);
             dojo.byId('dijit_layout_ContentPane_1_splitter').focus();
         },
@@ -605,6 +612,22 @@ define(["dojo/ready",
             if(featureList) {
                 this.collapseLeftPanelButton.preset(false);
                 featureList.FocusDetails();
+            }
+        },
+
+        skipToHSplitter: function() {
+            var featureTableContainer = dojo.byId('featureTableContainer');
+            if(!featureTableContainer || featureTableContainer.clientHeight === 0) return;
+            dojo.byId('featureTableContainer_splitter').focus();
+        },
+
+        skipToTable: function() {
+            var featureTableContainer = dojo.byId('featureTableContainer');
+            if(!featureTableContainer || featureTableContainer.clientHeight === 0) return;
+            var header = query("#featureTableNode div.dgrid-header");
+            if(header && header.length>0)
+            {
+                header[0].focus();
             }
         },
 

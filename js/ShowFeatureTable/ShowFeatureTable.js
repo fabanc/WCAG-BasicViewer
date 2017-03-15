@@ -10,6 +10,7 @@ define([
     //"dijit/_TemplatedMixin", 
     //"dojo/text!application/ShowFeatureTable/templates/ShowFeatureTable.html", 
     "dojo/i18n!application/nls/ShowFeatureTable",
+    "dojo/i18n!application/nls/resources",
     "dojo/on", "dojo/query", 
     "esri/tasks/query", "esri/tasks/QueryTask",
     "dijit/registry", "dojo/aspect", 
@@ -32,7 +33,7 @@ define([
         Map, array,
         //_TemplatedMixin, 
         //ShowFeatureTableTemplate, 
-        i18n,
+        i18n, Ri18n,
         on, query, 
         Query, QueryTask,
         registry, aspect,
@@ -159,12 +160,25 @@ define([
                 class: "bg",
                 style: "height:50%;",
                 id: 'featureTableContainer',
-                content: domConstruct.create("div", { id: 'featureTableNode'}),
+                content: domConstruct.create("div", { id: 'featureTableNode1'}),
             });
+
             this.borderContainer.addChild(this.contentPaneFeatureTable);
             this.borderContainer.placeAt(dojo.byId('mapPlace'));
 
             this.borderContainer.startup();
+
+            domConstruct.create("div", {
+                class:'goThereHint',
+                innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+Ri18n.skip.hsplitter,
+                style:'left:40%; top:2px;'
+            }, dom.byId('featureTableNode1'));
+
+            domConstruct.create("div", {
+                class:'goThereHint',
+                innerHTML: '<b>Alt&nbsp;+&nbsp;9</b> '+Ri18n.skip.table,
+                style:'left:20%; top:50%;'
+            }, dom.byId('featureTableNode1'));
         },
 
         postCreate: function() {
@@ -366,7 +380,8 @@ define([
                     label: 'label',
                     name: "progButton",
                     dropDown: menu,
-                    id: "progButton"
+                    id: "progButton",
+                    role: 'application'
                 });
 
                 button.startup();
@@ -376,9 +391,9 @@ define([
                 var tableTitle = query('.esri-feature-table-title')[0];
                 // domStyle.set(tableTitle,'display', 'none');
                 var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
-                    console.log(mutations);
+                    // console.log(mutations);
                     mutations.forEach(lang.hitch(this, function(mutation) {
-                        console.log(mutation);
+                        // console.log(mutation);
                         var target = mutation.target.childNodes[0];
                         if(target.toString() === "[object Text]") {
                             var pattern = /(.*)(\s\(.*\))/;

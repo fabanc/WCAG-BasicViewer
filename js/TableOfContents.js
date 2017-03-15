@@ -278,7 +278,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 if(this.layers[i].id === layerId) {
                     if(this.featureTable) {
                         this.featureTable.destroy();
-                        domConstruct.create("div", { id: 'featureTableNode'}, dojo.byId('featureTableContainer'));
+                        domConstruct.create("div", { 
+                            id: 'featureTableNode',
+                            //tabindex: 0
+                        }, dojo.byId('featureTableContainer'));
                     }
                     this.featureTable.loadTable(this.layers[i]);
 
