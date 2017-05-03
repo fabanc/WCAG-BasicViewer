@@ -1942,17 +1942,21 @@ input[type=checkbox].checkbox {
 .loadingOverlay {
     position: absolute;
     z-index: 1001;
-    display: none;
+    background-color: LightGrey;
 }
 
 .pageOverlay {
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
+    top: 12.5%;
+    left: 12.5%;
+    height: 75%;
+    width: 75%;
+    display: table !important;
 }
 
 .loadingMessage {
     padding: 25px 40px;
     color: #999;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle !important;
 }
