@@ -252,12 +252,6 @@
                  "stringFieldOption":"richtext"
              },
 
-             {
-                "label":"<strong>Image:</strong>",
-                "fieldName":"image",
-                "type":"string",
-                "tooltip":"Image displayed within the splash screen"
-            },
             {
                 "label":"<strong>Background Color:</strong>",
                 "type":"color",
