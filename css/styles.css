@@ -1942,14 +1942,10 @@ input[type=checkbox].checkbox {
 .loadingOverlay {
     position: absolute;
     z-index: 1001;
-    background-color: LightGrey;
+    border-style: solid;
 }
 
 .pageOverlay {
-    top: 12.5%;
-    left: 12.5%;
-    height: 75%;
-    width: 75%;
     display: table !important;
 }
 
@@ -1959,4 +1955,5 @@ input[type=checkbox].checkbox {
     display: table-cell;
     text-align: center;
     vertical-align: middle !important;
+    verflow-y:auto;
 }

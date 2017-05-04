@@ -133,13 +133,12 @@ define(["dojo/ready",
             }, dojo.byId('languageSelectNode')).startup();
 
 
-            var toolbar = new Toolbar(this.config);
+            // var splash = new Splash(this.config);
+            // splash.show();
+            // setTimeout(function(){
+            //     splash.hide();
+            // }, 5000);
 
-            var splash = new Splash(this.config);
-            splash.show();
-            setTimeout(function() {
-                splash.hide();
-            }, 10000);
 
         },
 
@@ -304,6 +303,7 @@ define(["dojo/ready",
             domStyle.set("panelPages", "visibility", "hidden");
             //Add tools to the toolbar. The tools are listed in the defaults.js file
             var toolbar = new Toolbar(this.config);
+
             toolbar.startup().then(lang.hitch(this, function () {
 
                 // set map so that it can be repositioned when page is scrolled
@@ -353,6 +353,10 @@ define(["dojo/ready",
                             toolList.push(this._addPrint(this.config.tools[i], toolbar));
                             break;
                         case "navigation":
+                            break;
+                        case "splash":
+                            console.log("Call Splash Windows here.");
+                            this._showSplash();
                             break;
                         default:
                             break;
@@ -1008,6 +1012,21 @@ define(["dojo/ready",
                 }
             }
             return deferred.promise;
+        },
+
+        _showSplash: function(){
+            var splashOptions = {
+                content: this.config.splashScreenText,
+                screenRatio: this.config.splashScreenRatio,
+                screenBackgroundColor: this.config.splashScreenBGColor
+            };
+
+            var splash = new Splash(splashOptions);
+            splash.show();
+            // setTimeout(function(){
+            //     splash.hide();
+            // }, 5000);
+
         },
 
         _addLegend: function (tool, toolbar) {

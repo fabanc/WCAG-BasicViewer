@@ -21,11 +21,11 @@ define({
         "appid":  null, //
              //"440b2da51b2b42878e8cb946c2de0326", //Farmers Markets
              //"142adb5e5e1d4bddb578aefc6f6e6deb", // TH Demo
-    "webmap":  "116178b11f0f41bb9b1c7c96aa09fd5a", 
-    		 //"fe35efe129f845ef8de5296c15325118", // MAtt English 
+    "webmap":  "116178b11f0f41bb9b1c7c96aa09fd5a",
+    		 //"fe35efe129f845ef8de5296c15325118", // MAtt English
              //"326320c9eab3489d8d17bc389ce1e023",
 
-    "oauthappid": "", //"i0sXrSseaL5Ifovc", 
+    "oauthappid": "", //"i0sXrSseaL5Ifovc",
     "portalUrl": "https://www.arcgis.com",
     //Group templates must support a group url parameter. This will contain the id of the group.
     //group: "",
@@ -70,11 +70,12 @@ define({
         {"name": "features", "enabled": true},
         {"name": "filter", "enabled": true},
         {"name": "measure", "enabled": true},
-        {"name": "edit", "enabled": true, "toolbar": true}, 
+        {"name": "edit", "enabled": true, "toolbar": true},
         {"name": "share", "enabled": true},
         {"name": "bookmarks", "enabled": true},
         {"name": "navigation", "enabled": true},
-        {"name": "print", "enabled": true, "legend": false, "layouts":false, "format":"pdf"}
+        {"name": "print", "enabled": true, "legend": false, "layouts":false, "format":"pdf"},
+        {"name": "splash", "enabled": true}
     ],
     //Set the active tool on the toolbar. Note home and locate can't be the active tool.
     //Set to "" to display no tools at startup

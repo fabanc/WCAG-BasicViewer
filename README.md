@@ -58,22 +58,22 @@ The template can be configured using the following options:
 
 For addtional customization options view the [wiki](https://github.com/Esri/Viewer/wiki/Viewer-Template-Wiki).
 
-#Requirements
+# Requirements
 
 - Notepad or HTML editor
 - Some background with HTML, CSS and JavaScript
 - Experience with the ArcGIS API for JavaScript is helpful.
 
-#Resources
+# Resources
 
 - [ArcGIS API for JavaScript Resource Center](http://help.arcgis.com/en/webapi/javascript/arcgis/index.html)
 - [Loading a locally-defined webmap, instead of from AGOL](LocalWebmap.md)
 
-#Issues
+# Issues
 
 Found a bug or want to request a new feature? Please let us know by submitting an issue.
 
-#Contributing
+# Contributing
 
 Anyone and everyone is welcome to contribute. A few links to the documentation that can be useful:
 
@@ -81,7 +81,7 @@ Anyone and everyone is welcome to contribute. A few links to the documentation t
 
 
 
-#Licensing
+# Licensing
 
 Copyright 2012 Esri
 

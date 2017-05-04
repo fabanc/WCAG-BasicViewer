@@ -219,7 +219,8 @@
             {
                 "label": "Display Splash Screen",
                 "type": "boolean",
-                "fieldName": "tool_splash"}
+                "fieldName": "tool_splash"
+            }
          ]
       },
       {
@@ -231,14 +232,14 @@
               },
               {
                   "label":"<strong>Percentage of the screen covered by the splash screen.</strong>",
-                  "fieldName":"screen_ratio",
+                  "fieldName":"splashScreenRatio",
                   "type": "int",
                   "value": "75",
                   "tooltip":"The percentage of the screen covered by the spash screen. Must be between 25 and 100."
               },
               {
                   "label":"<strong>Number of seconds the splash screen will be displayed.</strong>",
-                  "fieldName":"seconds",
+                  "fieldName":"splashScreenSeconds",
                   "type": "int",
                   "value": "10",
                   "tooltip":"The number of seconds the splash screen will be displayed."
@@ -246,7 +247,7 @@
 
               {
                  "label":"<strong>Set the text for the splash screen.</strong>",
-                 "fieldName":"text",
+                 "fieldName":"splashScreenText",
                  "type":"string",
                  "placeHolder":"Welcome aboard! This is an accessible app.",
                  "stringFieldOption":"richtext"
@@ -255,7 +256,7 @@
             {
                 "label":"<strong>Background Color:</strong>",
                 "type":"color",
-                "fieldName":"backgroundColor",
+                "fieldName":"splashScreenBGColor",
                 "tooltip":"The splash screen color in the background."
             }
 
