@@ -39,22 +39,16 @@ on, mouse, query, Deferred, Button) {
             //Attach the text to the overlay
             var loadingMessage = domConstruct.create('div', {
                 id: 'splashMessage',
-                'class': 'loadingMessage',
+                'class': 'splashContentCommon splashText',
                 innerHTML: content + '</br>'
             }, loadingOverlay);
 
 
-            var closeButtonDiv = domConstruct.create('div',
-                {id: 'splashButtonDiv'},
-                loadingOverlay
-            )
-            closeButtonDiv.style.position = 'absolute';
-            closeButtonDiv.style.display = 'table-cell';
-            closeButtonDiv.style.width = '90%';
-            closeButtonDiv.style.marginLeft = '5%';
-            closeButtonDiv.style.marginRight = '5%';
-            closeButtonDiv.style.bottom = '10px';
-            closeButtonDiv.style.textAlign = 'right';
+            var closeButtonDiv = domConstruct.create('div', {
+                id: 'splashButtonDiv',
+                'class': 'splashContentCommon splashButton'
+            }, loadingOverlay);
+
 
             //Add a button to the splash container
             var closeButton = new Button({

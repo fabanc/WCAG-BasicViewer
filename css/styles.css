@@ -1954,7 +1954,6 @@ input[type=checkbox].checkbox {
 .loadingMessage {
     margin-top: 5%;
     margin-top: 5%;
-
     color: #999;
     display: table-cell;
     /*display: inline-block;*/
@@ -1966,4 +1965,30 @@ input[type=checkbox].checkbox {
     margin-left: 5%;
     margin-right: 5%;
     position: absolute;
+}
+
+
+.splashContentCommon {
+    margin-top: 5%;
+    margin-top: 5%;
+    color: #999;
+    display: table-cell;
+
+    vertical-align: middle;
+    overflow-y: auto;
+    /*height: 65%;*/
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    position: absolute;
+}
+
+.splashText{
+    height: 65%;
+    text-align: center;
+}
+
+.splashButton{
+    bottom: 10px;
+    text-align: right;
 }
