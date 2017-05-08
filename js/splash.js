@@ -16,7 +16,6 @@ on, mouse, query, Deferred, Button) {
         },
 
         _createOverlayNode: function(content){
-
             //Create the overlay container
             var loadingOverlay = domConstruct.create('div', {
                 id: 'splashOverlay',
@@ -35,7 +34,6 @@ on, mouse, query, Deferred, Button) {
             loadingOverlay.style.height = ratio + "%";
             loadingOverlay.style.width = ratio + "%";
 
-
             //Attach the text to the overlay
             var loadingMessage = domConstruct.create('div', {
                 id: 'splashMessage',
@@ -43,12 +41,10 @@ on, mouse, query, Deferred, Button) {
                 innerHTML: content + '</br>'
             }, loadingOverlay);
 
-
             var closeButtonDiv = domConstruct.create('div', {
                 id: 'splashButtonDiv',
                 'class': 'splashContentCommon splashButton'
             }, loadingOverlay);
-
 
             //Add a button to the splash container
             var closeButton = new Button({
@@ -58,7 +54,6 @@ on, mouse, query, Deferred, Button) {
                     this.hide();
                 })
             });
-            //closeButton.style.marginRight = '0%';
 
             closeButton.startup();
             closeButton.placeAt(closeButtonDiv)
@@ -68,9 +63,6 @@ on, mouse, query, Deferred, Button) {
 
         show: function(){
             // Show the overlay
-            // domStyle.set(this.overlayNode, {
-            //   display: 'block'
-            // });
             if (!this.overlayNode){
                 this.overlayNode = this._createOverlayNode(
                     this.config.content || this.content
@@ -81,9 +73,6 @@ on, mouse, query, Deferred, Button) {
 
         hide: function(){
             // Hide the overlay
-            // domStyle.set(this.overlayNode, {
-            //   display: 'none'
-            // });
             if (this.overlayNode){
                 dojo.destroy(this.overlayNode)
             }
@@ -93,8 +82,6 @@ on, mouse, query, Deferred, Button) {
         _init: function () {
             console.log("Splash initialization");
         }
-
-
 
     });
 });

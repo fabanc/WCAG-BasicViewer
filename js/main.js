@@ -1023,10 +1023,6 @@ define(["dojo/ready",
 
             var splash = new Splash(splashOptions);
             splash.show();
-            // setTimeout(function(){
-            //     splash.hide();
-            // }, 5000);
-
         },
 
         _addLegend: function (tool, toolbar) {
