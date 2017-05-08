@@ -1943,6 +1943,8 @@ input[type=checkbox].checkbox {
     position: absolute;
     z-index: 1001;
     border-style: solid;
+    display: inline-block;
+    /*overflow-y: scroll;*/
 }
 
 .pageOverlay {
@@ -1950,10 +1952,18 @@ input[type=checkbox].checkbox {
 }
 
 .loadingMessage {
-    padding: 25px 40px;
+    margin-top: 5%;
+    margin-top: 5%;
+
     color: #999;
     display: table-cell;
+    /*display: inline-block;*/
     text-align: center;
-    vertical-align: middle !important;
-    verflow-y:auto;
+    vertical-align: middle;
+    overflow-y: auto;
+    height: 65%;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    position: absolute;
 }

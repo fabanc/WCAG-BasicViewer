@@ -35,6 +35,7 @@ on, mouse, query, Deferred, Button) {
             loadingOverlay.style.height = ratio + "%";
             loadingOverlay.style.width = ratio + "%";
 
+
             //Attach the text to the overlay
             var loadingMessage = domConstruct.create('div', {
                 id: 'splashMessage',
@@ -42,6 +43,18 @@ on, mouse, query, Deferred, Button) {
                 innerHTML: content + '</br>'
             }, loadingOverlay);
 
+
+            var closeButtonDiv = domConstruct.create('div',
+                {id: 'splashButtonDiv'},
+                loadingOverlay
+            )
+            closeButtonDiv.style.position = 'absolute';
+            closeButtonDiv.style.display = 'table-cell';
+            closeButtonDiv.style.width = '90%';
+            closeButtonDiv.style.marginLeft = '5%';
+            closeButtonDiv.style.marginRight = '5%';
+            closeButtonDiv.style.bottom = '10px';
+            closeButtonDiv.style.textAlign = 'right';
 
             //Add a button to the splash container
             var closeButton = new Button({
@@ -51,10 +64,10 @@ on, mouse, query, Deferred, Button) {
                     this.hide();
                 })
             });
-
+            //closeButton.style.marginRight = '0%';
 
             closeButton.startup();
-            closeButton.placeAt(loadingMessage)
+            closeButton.placeAt(closeButtonDiv)
 
             return loadingOverlay;
         },
