@@ -9,18 +9,18 @@ on, mouse, query, Deferred, Button) {
     return declare([Evented], {
 
         content: "Loading...",
+        overlayNode: null,
 
-        constructor: function (config) {
+        constructor: function (config, srcNode) {
             this.config = config;
-            this.overlayNode = this._createOverlayNode(this.config.content || this.content);
+            this.overlayNode = srcNode;
+            this._createOverlayNode(this.config.content || this.content);
         },
 
         _createOverlayNode: function(content){
-            //Create the overlay container
-            var loadingOverlay = domConstruct.create('div', {
-                id: 'splashOverlay',
-                'class': 'loadingOverlay pageOverlay'
-              }, win.body());
+            //Create the content of the splash screen
+            var loadingOverlay = dom.byId('splashOverlay');
+            domAttr.set('splashOverlay', 'class', 'loadingOverlay pageOverlay')
 
             //Set the div property. Take into account user options.
             loadingOverlay.style.backgroundColor = this.config.screenBackgroundColor || "White";
@@ -68,14 +68,18 @@ on, mouse, query, Deferred, Button) {
                     this.config.content || this.content
                 );
             }
+            else{
+                domAttr.set('splashOverlay', 'class', 'loadingOverlay pageOverlay')
+            }
             console.log("Show splash");
         },
 
         hide: function(){
             // Hide the overlay
-            if (this.overlayNode){
-                dojo.destroy(this.overlayNode)
-            }
+            // if (this.overlayNode){
+            //     dojo.destroy(this.overlayNode)
+            // }
+            domAttr.set('splashOverlay', 'class', 'splahHidden')
             console.log("Hide splash");
         },
 
