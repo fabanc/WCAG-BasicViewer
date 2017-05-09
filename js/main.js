@@ -487,6 +487,12 @@ define(["dojo/ready",
                     innerHTML: '<b>Alt&nbsp;+&nbsp;6</b> '+this.config.i18n.skip.help,
                     style:'left:20%; top:-75%;'
                 }, dom.byId('panelBottom'));
+
+                domConstruct.create("div", {
+                    class:'goThereHint',
+                    innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+this.config.i18n.skip.splash,
+                    style:'left:20%; top:-75%;'
+                }, dom.byId('splashOverlayContainer'));
             }
 
             var skipTools = query('.skip #skip-tools')[0];
@@ -496,6 +502,7 @@ define(["dojo/ready",
             var skipMap = query('.skip #skip-map')[0];
             var skipInstructions = query('.skip #skip-instructions')[0];
             var skipFeature = query('.skip #skip-feature')[0];
+            var skipSplash = query('.skip #skip-feature')[0];
 
             dojo.html.set(skipTools, "1. "+this.config.i18n.skip.tools);
             dojo.html.set(skipSearch, "2. "+this.config.i18n.skip.search);
@@ -504,6 +511,7 @@ define(["dojo/ready",
             dojo.html.set(skipMap, "5. "+this.config.i18n.skip.map);
             dojo.html.set(skipInstructions, "6. "+this.config.i18n.skip.help);
             dojo.html.set(skipFeature, "7. "+this.config.i18n.skip.featureDetaills);
+            dojo.html.set(skipSplash, "8. "+this.config.i18n.skip.splash);
 
             skipTools.addEventListener('click', function (e) { skipToTools(); });
             skipSearch.addEventListener('click', function (e) { skipToSearch(); });
@@ -512,6 +520,7 @@ define(["dojo/ready",
             skipMap.addEventListener('click', function (e) { skipToMap(); });
             skipInstructions.addEventListener('click', function (e) { skipToInstructions(); });
             skipFeature.addEventListener('click', function (e) { skipToFeature(); });
+            skipSplash.addEventListener('click', function (e) { skipToSplash(); });
 
             query('.skip').forEach(function(h) {
                 h.addEventListener('keydown', function (e) {
@@ -541,6 +550,14 @@ define(["dojo/ready",
 
             skipSkip = function() {
                 dom.byId('skip-tools').focus();
+            };
+
+            skipToSplash = function () {
+                console.log("Skip Splash");
+                //dom.byId('skip-splash').focus();
+                //document.querySelector('#splashOverlay').focus();
+                var splashScreen = registry.byId("splashOverlay");
+                splashScreen.show();
             };
 
             skipToTools = function() {
@@ -1018,10 +1035,11 @@ define(["dojo/ready",
             var splashOptions = {
                 content: this.config.splashScreenText,
                 screenRatio: this.config.splashScreenRatio,
-                screenBackgroundColor: this.config.splashScreenBGColor
+                screenBackgroundColor: this.config.splashScreenBGColor,
+                closeButtonLabel: this.config.i18n.close
             };
 
-            var splash = new Splash(splashOptions);
+            var splash = new Splash(splashOptions, dom.byId("splashOverlay"));
             splash.show();
         },
 

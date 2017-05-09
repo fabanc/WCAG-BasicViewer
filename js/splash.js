@@ -2,14 +2,20 @@ define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/fx",
     "dojo/_base/html", "dojo/_base/lang", "dojo/has", "dojo/dom", "dojo",
     "dojo/dom-class", "dojo/dom-style", "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-geometry",
-    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button"], function (
+    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button", "dijit/_WidgetBase"], function (
 Evented, declare, win, fx, html, lang, has, dom, dojo,
 domClass, domStyle, domAttr, domConstruct, domGeometry,
-on, mouse, query, Deferred, Button) {
-    return declare([Evented], {
+on, mouse, query, Deferred, Button, _WidgetBase) {
+    return declare("SplashScreen", [Evented, _WidgetBase], {
 
+        //Public Members
         content: "Loading...",
         overlayNode: null,
+
+        //Private Members
+        _splashMessageDivIdentifier: 'splashMessage',
+        _splashButtonDivIdentifier: 'splashButtonDiv',
+        _spashButtonIdentifier: 'splashButton',
 
         constructor: function (config, srcNode) {
             this.config = config;
@@ -36,27 +42,34 @@ on, mouse, query, Deferred, Button) {
 
             //Attach the text to the overlay
             var loadingMessage = domConstruct.create('div', {
-                id: 'splashMessage',
+                id: this._splashMessageDivIdentifier,
                 'class': 'splashContentCommon splashText',
                 innerHTML: content + '</br>'
             }, loadingOverlay);
+            loadingMessage.tabIndex = 1;
+            domAttr.set(this._splashMessageDivIdentifier, 'aria-labelledby', content);
 
             var closeButtonDiv = domConstruct.create('div', {
-                id: 'splashButtonDiv',
+                id: this._splashButtonDivIdentifier,
                 'class': 'splashContentCommon splashButton'
             }, loadingOverlay);
 
             //Add a button to the splash container
+            var buttonLabel = this.config.closeButtonLabel||"OK";
             var closeButton = new Button({
-                label: "OK",
+                id: this._spashButtonIdentifier,
+                label: buttonLabel,
                 'class': 'btn',
                 onClick: dojo.hitch(this, function(){
                     this.hide();
                 })
             });
 
+            closeButton.tabIndex = 2;
+
             closeButton.startup();
             closeButton.placeAt(closeButtonDiv)
+            domAttr.set(this._spashButtonIdentifier, 'aria-labelledby', buttonLabel);
 
             return loadingOverlay;
         },
@@ -71,6 +84,8 @@ on, mouse, query, Deferred, Button) {
             else{
                 domAttr.set('splashOverlay', 'class', 'loadingOverlay pageOverlay')
             }
+            dom.byId(this._splashMessageDivIdentifier).focus();
+            this.overlayNode.focus();
             console.log("Show splash");
         },
 

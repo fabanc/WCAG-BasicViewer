@@ -72,14 +72,16 @@ define({
             "splitter" : "Skip to Splitter",
             "map" : "Skip to Map",
             "help" : "Skip to Help",
-            "featureDetaills" : "Skip to Feature Details"
+            "featureDetaills" : "Skip to Feature Details",
+            "splash": "Skip to Splash Screen"
         },
         search : "Search: ",
         searchPlaceholder: "Find address or place",
         searchEnterCriteria : "Enter search term for",
         pressAlt : "Press ALT + 0 to 7 keys for fast navigation",
         instructions:"instructions",
-        wcagViewer : "Accessible Viewer"
+        wcagViewer : "Accessible Viewer",
+        close: "Close"
     }),
 "ar": 1,
 "cs": 1,
