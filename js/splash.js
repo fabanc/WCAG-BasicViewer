@@ -30,15 +30,11 @@ define([
         _splashCheckBoxIdentifier: 'splashCheckBoxIdentifier',
         _loadingMessageClasses: 'loadingOverlay pageOverlay',
 
-
-        //Cookie value must be boolean or null. It is used to populate default value of a checkbox.
-        _cookie: null,
-        //The key of the cookie. It will be generated to be based on the application identifier
-        _cookie_key: null,
-        //The time duration for cookies in seconds. 1 year.
-        _cookie_time: 31536000,
-        //The path to the cookie
-        _cookie_path: '/',
+        /*The cookie information is used to save preferences about showing or not the splash screen.*/
+        _cookie: null, //Cookie value must be boolean or null. It is used to populate default value of a checkbox.
+        _cookie_key: null,//The key of the cookie. It will be generated to be based on the application identifier
+        _cookie_time: 31536000,//The time duration for cookies in seconds. 1 year.
+        _cookie_path: '/',//The path to the cookie
 
 
         /**
@@ -131,7 +127,6 @@ define([
             closeButton.startup();
             closeButton.placeAt(closeButtonDiv)
             domAttr.set(this._spashButtonIdentifier, 'aria-labelledby', buttonLabel);
-
             return loadingOverlay;
         },
 
@@ -211,6 +206,11 @@ define([
           return 'show_splash_' + encodeURIComponent(this._getAppIdFromUrl());
         },
 
+
+        /**
+        * Utility function. Taken from Web App Builder
+        * @return a string representing the app identifier.
+        **/
         _getAppIdFromUrl: function(){
             var isDeployedApp = true,
               href = window.top.location.href;
@@ -249,6 +249,10 @@ define([
           }
       },
 
+      /**
+      * Utility function. Taken from Web App Builder
+      * @return object.
+      **/
       urlToObject: function(url){
         var ih = url.indexOf('#'),
         obj = null;
