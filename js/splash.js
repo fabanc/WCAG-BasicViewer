@@ -2,12 +2,12 @@ define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/fx",
     "dojo/_base/html", "dojo/_base/lang", "dojo/has", "dojo/dom", "dojo",
     "dojo/dom-class", "dojo/dom-style", "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-geometry",
-    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button", "dijit/form/CheckBox",
+    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button", "dijit/form/CheckBox", "application/wabutils",
     "dojo/cookie", "esri/urlUtils", "esri/lang",
     "dijit/_WidgetBase"], function (
     Evented, declare, win, fx, html, lang, has, dom, dojo,
     domClass, domStyle, domAttr, domConstruct, domGeometry,
-    on, mouse, query, Deferred, Button, CheckBox,
+    on, mouse, query, Deferred, Button, CheckBox, wabutils,
     cookie, esriUrlUtils, esriLang,
     _WidgetBase) {
     return declare("SplashScreen", [Evented, _WidgetBase], {
@@ -203,7 +203,8 @@ define([
         },
 
         _getCookieKey: function() {
-          return 'show_splash_' + encodeURIComponent(this._getAppIdFromUrl());
+          var wab = new wabutils();
+          return 'show_splash_' + encodeURIComponent(wab.getAppIdFromUrl());
         },
 
 
@@ -211,62 +212,62 @@ define([
         * Utility function. Taken from Web App Builder
         * @return a string representing the app identifier.
         **/
-        _getAppIdFromUrl: function(){
-            var isDeployedApp = true,
-              href = window.top.location.href;
-            if (href.indexOf("id=") !== -1 || href.indexOf("appid=") !== -1 ||
-              href.indexOf("apps") !== -1) {
-              isDeployedApp = false;
-            }
-
-            if (isDeployedApp === true) {
-              // deployed app use pathname as key
-              return href;
-            } else {
-              // xt or integration use id of app as key
-              var urlParams = this.urlToObject(window.location.href);
-              if (urlParams.query) {
-                if (urlParams.query.id || urlParams.query.appid) {
-                  return urlParams.query.id || urlParams.query.appid;
-                }
-              }
-
-              // if there is no id/appid in url
-              if (window.appInfo) {
-                if (window.appInfo.id) {
-                  //id in appInfo
-                  return window.appInfo.id;
-                } else if (window.appInfo.appPath) {
-                  //parse id from appPath
-                  var list = window.appInfo.appPath.split("/");
-                  if (list.length && list.length > 2) {
-                    return list[list.length - 2];
-                  }
-                } else {
-                  console.error("CAN NOT getAppIdFromUrl");
-                }
-              }
-          }
-      },
+    //     _getAppIdFromUrl: function(){
+    //         var isDeployedApp = true,
+    //           href = window.top.location.href;
+    //         if (href.indexOf("id=") !== -1 || href.indexOf("appid=") !== -1 ||
+    //           href.indexOf("apps") !== -1) {
+    //           isDeployedApp = false;
+    //         }
+      //
+    //         if (isDeployedApp === true) {
+    //           // deployed app use pathname as key
+    //           return href;
+    //         } else {
+    //           // xt or integration use id of app as key
+    //           var urlParams = this.urlToObject(window.location.href);
+    //           if (urlParams.query) {
+    //             if (urlParams.query.id || urlParams.query.appid) {
+    //               return urlParams.query.id || urlParams.query.appid;
+    //             }
+    //           }
+      //
+    //           // if there is no id/appid in url
+    //           if (window.appInfo) {
+    //             if (window.appInfo.id) {
+    //               //id in appInfo
+    //               return window.appInfo.id;
+    //             } else if (window.appInfo.appPath) {
+    //               //parse id from appPath
+    //               var list = window.appInfo.appPath.split("/");
+    //               if (list.length && list.length > 2) {
+    //                 return list[list.length - 2];
+    //               }
+    //             } else {
+    //               console.error("CAN NOT getAppIdFromUrl");
+    //             }
+    //           }
+    //       }
+    //   },
 
       /**
       * Utility function. Taken from Web App Builder
       * @return object.
       **/
-      urlToObject: function(url){
-        var ih = url.indexOf('#'),
-        obj = null;
-        if (ih === -1){
-          obj = esriUrlUtils.urlToObject(url);
-          obj.hash = null;
-        }else {
-          var urlParts = url.split('#');
-          obj = esriUrlUtils.urlToObject(urlParts[0]);
-          obj.hash = urlParts[1] ?
-            (urlParts[1].indexOf('=') > -1 ? ioQuery.queryToObject(urlParts[1]) : urlParts[1]): null;
-        }
-        return obj;
-    },
+    //   urlToObject: function(url){
+    //     var ih = url.indexOf('#'),
+    //     obj = null;
+    //     if (ih === -1){
+    //       obj = esriUrlUtils.urlToObject(url);
+    //       obj.hash = null;
+    //     }else {
+    //       var urlParts = url.split('#');
+    //       obj = esriUrlUtils.urlToObject(urlParts[0]);
+    //       obj.hash = urlParts[1] ?
+    //         (urlParts[1].indexOf('=') > -1 ? ioQuery.queryToObject(urlParts[1]) : urlParts[1]): null;
+    //     }
+    //     return obj;
+    // },
 
     });
 });
