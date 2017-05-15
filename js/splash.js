@@ -2,37 +2,62 @@ define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/fx",
     "dojo/_base/html", "dojo/_base/lang", "dojo/has", "dojo/dom", "dojo",
     "dojo/dom-class", "dojo/dom-style", "dojo/dom-attr", "dojo/dom-construct", "dojo/dom-geometry",
-    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button", "dijit/_WidgetBase"], function (
-Evented, declare, win, fx, html, lang, has, dom, dojo,
-domClass, domStyle, domAttr, domConstruct, domGeometry,
-on, mouse, query, Deferred, Button, _WidgetBase) {
+    "dojo/on", "dojo/mouse", "dojo/query", "dojo/Deferred", "dijit/form/Button", "dijit/form/CheckBox",
+    "dojo/cookie", "esri/urlUtils", "esri/lang",
+    "dijit/_WidgetBase"], function (
+    Evented, declare, win, fx, html, lang, has, dom, dojo,
+    domClass, domStyle, domAttr, domConstruct, domGeometry,
+    on, mouse, query, Deferred, Button, CheckBox,
+    cookie, esriUrlUtils, esriLang,
+    _WidgetBase) {
     return declare("SplashScreen", [Evented, _WidgetBase], {
 
         //Public Members
         content: "Loading...",
+        screenBackgroundColor: null,
+        screenRatio: null,
+        closeButtonLabel: null,
         overlayNode: null,
+        shouldShow: true,
+        checkboxText: "Do not display next time",
 
         //Private Members
         _splashMessageDivIdentifier: 'splashMessage',
+        _splashCheckBoxDivIdentifier: 'splashCheckboxDivIdentifier',
+        _splashCheckBoxLabelIdentifier: 'splashCheckboxLabelIdentifier',
         _splashButtonDivIdentifier: 'splashButtonDiv',
         _spashButtonIdentifier: 'splashButton',
+        _splashCheckBoxIdentifier: 'splashCheckBoxIdentifier',
+        _loadingMessageClasses: 'loadingOverlay pageOverlay',
 
-        constructor: function (config, srcNode) {
-            this.config = config;
-            this.overlayNode = srcNode;
-            this._createOverlayNode(this.config.content || this.content);
-        },
 
+        //Cookie value must be boolean or null. It is used to populate default value of a checkbox.
+        _cookie: null,
+        //The key of the cookie. It will be generated to be based on the application identifier
+        _cookie_key: null,
+        //The time duration for cookies in seconds. 1 year.
+        _cookie_time: 31536000,
+        //The path to the cookie
+        _cookie_path: '/',
+
+
+        /**
+         * Create the content of the splash screen. The splash screen is composed
+         * of a message and a button. Elements are contained in divs stacked
+         * on the top of each other.
+         * @param {Object} content The content of the splash screen that will be displayed
+         * to the user. It can be rich text, html, or plain string.
+         * @return undefined.
+         */
         _createOverlayNode: function(content){
-            //Create the content of the splash screen
-            var loadingOverlay = dom.byId('splashOverlay');
-            domAttr.set('splashOverlay', 'class', 'loadingOverlay pageOverlay')
 
-            //Set the div property. Take into account user options.
-            loadingOverlay.style.backgroundColor = this.config.screenBackgroundColor || "White";
+            //Create the content of the splash screen
+            var loadingOverlay = this.overlayNode;
+            //domAttr.set(this.overlayNode.id, 'class', this._loadingMessageClasses);
+            loadingOverlay.style.backgroundColor = this.screenBackgroundColor || "White";
 
             //Compute the position of the splash screen on the screen
-            var ratio = this.config.screenRatio || 75;
+            var ratio = this.screenRatio || 75;
             var verticalMargin = (100-ratio) / 2 + "%";
             var horizontalMargin = (100-ratio) / 2 + "%";
             loadingOverlay.style.top = verticalMargin;
@@ -49,13 +74,50 @@ on, mouse, query, Deferred, Button, _WidgetBase) {
             loadingMessage.tabIndex = 1;
             domAttr.set(this._splashMessageDivIdentifier, 'aria-labelledby', content);
 
-            var closeButtonDiv = domConstruct.create('div', {
-                id: this._splashButtonDivIdentifier,
+
+            var wrapperDiv = domConstruct.create('div', {
+                id: 'splashFooterDiv',
                 'class': 'splashContentCommon splashButton'
             }, loadingOverlay);
 
+            //Create the container for the checkbox and its text
+            var checkBoxDiv = domConstruct.create('div', {
+                id: this._splashCheckBoxDivIdentifier,
+                'class': 'padded'
+            }, wrapperDiv);
+
+            domConstruct.create('label',{
+                id: this._splashCheckBoxLabelIdentifier,
+                innerHTML: this.checkboxText,
+                'for': "splashHide"
+            }, checkBoxDiv);
+
+            var checkBox = new CheckBox({
+                id: this._splashCheckBoxIdentifier,
+                name: "splashHide",
+                value: "splashHide",
+                checked: false
+            });
+
+            if (this.cookie != null){
+                if (this.cookie === true || this.cookie === false){
+                    checkbox.checked = this.cookie;
+                }else{
+                    console.warn("Invalid cookie value");
+                }
+            }
+
+            checkBox.placeAt(this._splashCheckBoxDivIdentifier);
+            checkBox.startup();
+            domAttr.set(this._splashCheckBoxIdentifier, 'aria-label', this.checkboxText);
+
+            var closeButtonDiv = domConstruct.create('div', {
+                id: this._splashButtonDivIdentifier,
+                'class': 'padded'
+            }, wrapperDiv);
+
             //Add a button to the splash container
-            var buttonLabel = this.config.closeButtonLabel||"OK";
+            var buttonLabel = this.closeButtonLabel||"OK";
             var closeButton = new Button({
                 id: this._spashButtonIdentifier,
                 label: buttonLabel,
@@ -66,7 +128,6 @@ on, mouse, query, Deferred, Button, _WidgetBase) {
             });
 
             closeButton.tabIndex = 2;
-
             closeButton.startup();
             closeButton.placeAt(closeButtonDiv)
             domAttr.set(this._spashButtonIdentifier, 'aria-labelledby', buttonLabel);
@@ -74,33 +135,134 @@ on, mouse, query, Deferred, Button, _WidgetBase) {
             return loadingOverlay;
         },
 
+
+        /**
+         * The constructor of the splash widget.
+         * @param {Object} config The optopms object passed to the constructor. Vaid option are:
+                                    1. screenRatio
+                                    2. content
+                                    3. screenBackgroundColor
+                                    4. closeButtonLabel
+         * @param {Object} srcNode The content of the splash screen that will be displayed
+         * @return undefined.
+         */
+        constructor: function (config, srcNode) {
+            if (config != null){
+                this.content =  config.content;
+                this.screenBackgroundColor = config.screenBackgroundColor;
+                this.screenRatio = config.screenRatio;
+                this.closeButtonLabel = config.closeButtonLabel;
+                this.checkboxText = config.checkboxText;
+            }
+
+            this.overlayNode = srcNode;
+            //Check if there is a cooking for not showing the  splash
+            this._cookie_key = this._getCookieKey();
+            var _cookie = cookie(this._cookie_key);
+            if (esriLang.isDefined(_cookie) && _cookie.toString() === 'false') {
+              this.shouldShow = false;
+            }
+
+            //Show the splash
+            this._createOverlayNode(this.content);
+        },
+
+        /**
+        * Show the splash screen
+        * @return undefined.
+        **/
         show: function(){
-            // Show the overlay
             if (!this.overlayNode){
-                this.overlayNode = this._createOverlayNode(
-                    this.config.content || this.content
-                );
+                this.overlayNode = this._createOverlayNode(this.content);
             }
             else{
-                domAttr.set('splashOverlay', 'class', 'loadingOverlay pageOverlay')
+                domAttr.set('splashOverlay', 'class', this._loadingMessageClasses)
             }
             dom.byId(this._splashMessageDivIdentifier).focus();
             this.overlayNode.focus();
-            console.log("Show splash");
         },
 
+        /**
+        * Hide the splash screen
+        * @return undefined.
+        **/
         hide: function(){
-            // Hide the overlay
-            // if (this.overlayNode){
-            //     dojo.destroy(this.overlayNode)
-            // }
+            //Get the value of the checkbox and set the cookie accordingly.
+            var checkbox = dom.byId(this._splashCheckBoxIdentifier);
+            if (checkbox.checked){
+                //The user has choosen not to see the splash screen
+                cookie(this._cookie_key, false, {
+                  expires: this._cookie_time,
+                  path: this._cookie_path
+                });
+            }else{
+                //The user has choosen to see the splash screen next time
+                cookie(this._cookie_key, true, {
+                  expires: this._cookie_time,
+                  path: this._cookie_path
+                });
+            }
+
+            //Hide the splash screen
             domAttr.set('splashOverlay', 'class', 'splahHidden')
-            console.log("Hide splash");
         },
 
-        _init: function () {
-            console.log("Splash initialization");
+        _getCookieKey: function() {
+          return 'show_splash_' + encodeURIComponent(this._getAppIdFromUrl());
+        },
+
+        _getAppIdFromUrl: function(){
+            var isDeployedApp = true,
+              href = window.top.location.href;
+            if (href.indexOf("id=") !== -1 || href.indexOf("appid=") !== -1 ||
+              href.indexOf("apps") !== -1) {
+              isDeployedApp = false;
+            }
+
+            if (isDeployedApp === true) {
+              // deployed app use pathname as key
+              return href;
+            } else {
+              // xt or integration use id of app as key
+              var urlParams = this.urlToObject(window.location.href);
+              if (urlParams.query) {
+                if (urlParams.query.id || urlParams.query.appid) {
+                  return urlParams.query.id || urlParams.query.appid;
+                }
+              }
+
+              // if there is no id/appid in url
+              if (window.appInfo) {
+                if (window.appInfo.id) {
+                  //id in appInfo
+                  return window.appInfo.id;
+                } else if (window.appInfo.appPath) {
+                  //parse id from appPath
+                  var list = window.appInfo.appPath.split("/");
+                  if (list.length && list.length > 2) {
+                    return list[list.length - 2];
+                  }
+                } else {
+                  console.error("CAN NOT getAppIdFromUrl");
+                }
+              }
+          }
+      },
+
+      urlToObject: function(url){
+        var ih = url.indexOf('#'),
+        obj = null;
+        if (ih === -1){
+          obj = esriUrlUtils.urlToObject(url);
+          obj.hash = null;
+        }else {
+          var urlParts = url.split('#');
+          obj = esriUrlUtils.urlToObject(urlParts[0]);
+          obj.hash = urlParts[1] ?
+            (urlParts[1].indexOf('=') > -1 ? ioQuery.queryToObject(urlParts[1]) : urlParts[1]): null;
         }
+        return obj;
+    },
 
     });
 });

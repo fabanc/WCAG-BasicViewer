@@ -81,7 +81,8 @@ define({
         pressAlt : "Press ALT + 0 to 7 keys for fast navigation",
         instructions:"instructions",
         wcagViewer : "Accessible Viewer",
-        close: "Close"
+        close: "Close",
+        doNotDisplaySplashNextTime: "Hide this splash screen the next time I connect."
     }),
 "ar": 1,
 "cs": 1,

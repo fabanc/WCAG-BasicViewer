@@ -1036,11 +1036,14 @@ define(["dojo/ready",
                 content: this.config.splashScreenText,
                 screenRatio: this.config.splashScreenRatio,
                 screenBackgroundColor: this.config.splashScreenBGColor,
-                closeButtonLabel: this.config.i18n.close
+                closeButtonLabel: this.config.i18n.close,
+                checkboxText: this.config.i18n.doNotDisplaySplashNextTime
             };
 
             var splash = new Splash(splashOptions, dom.byId("splashOverlay"));
-            splash.show();
+            if (splash.shouldShow) {
+                splash.show();
+            }
         },
 
         _addLegend: function (tool, toolbar) {
