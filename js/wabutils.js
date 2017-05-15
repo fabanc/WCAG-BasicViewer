@@ -76,5 +76,6 @@ define([
     },
 
     });
-    return statClass;
+
+    return new statClass();
 });

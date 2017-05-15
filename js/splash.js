@@ -203,8 +203,8 @@ define([
         },
 
         _getCookieKey: function() {
-          var wab = new wabutils();
-          return 'show_splash_' + encodeURIComponent(wab.getAppIdFromUrl());
+          //var wab = new wabutils();
+          return 'show_splash_' + encodeURIComponent(wabutils.getAppIdFromUrl());
         },
 
 
