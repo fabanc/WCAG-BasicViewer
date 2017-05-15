@@ -22,6 +22,7 @@ define([
         checkboxText: "Do not display next time",
 
         //Private Members
+        _splashDisplayCheckbox: null,
         _splashMessageDivIdentifier: 'splashMessage',
         _splashCheckBoxDivIdentifier: 'splashCheckboxDivIdentifier',
         _splashCheckBoxLabelIdentifier: 'splashCheckboxLabelIdentifier',
@@ -88,23 +89,17 @@ define([
                 'for': "splashHide"
             }, checkBoxDiv);
 
-            var checkBox = new CheckBox({
+            this._splashDisplayCheckbox = new CheckBox({
                 id: this._splashCheckBoxIdentifier,
                 name: "splashHide",
                 value: "splashHide",
                 checked: false
             });
 
-            if (this.cookie != null){
-                if (this.cookie === true || this.cookie === false){
-                    checkbox.checked = this.cookie;
-                }else{
-                    console.warn("Invalid cookie value");
-                }
-            }
+            //this._populateCheckBoxValue(checkbox);
 
-            checkBox.placeAt(this._splashCheckBoxDivIdentifier);
-            checkBox.startup();
+            this._splashDisplayCheckbox.placeAt(this._splashCheckBoxDivIdentifier);
+            this._splashDisplayCheckbox.startup();
             domAttr.set(this._splashCheckBoxIdentifier, 'aria-label', this.checkboxText);
 
             var closeButtonDiv = domConstruct.create('div', {
@@ -130,6 +125,27 @@ define([
             return loadingOverlay;
         },
 
+        /**
+         * Populate the checkbox value. Having a separate function is required
+         * since the checkbox value can be updated after the creation of the splash
+         * screen.
+         * @return undefined.
+         */
+        _populateCheckBoxValue: function(){
+
+            if (this._splashDisplayCheckbox == null){
+                console.warn("Checkbox does not exist");
+                return;
+            }
+
+            if (this.cookie != null){
+                if (this.cookie === true || this.cookie === false){
+                    this._splashDisplayCheckbox.checked = this.cookie;
+                }else{
+                    console.warn("Invalid cookie value");
+                }
+            }
+        },
 
         /**
          * The constructor of the splash widget.
@@ -173,6 +189,7 @@ define([
             else{
                 domAttr.set('splashOverlay', 'class', this._loadingMessageClasses)
             }
+            this._populateCheckBoxValue();
             dom.byId(this._splashMessageDivIdentifier).focus();
             this.overlayNode.focus();
         },
