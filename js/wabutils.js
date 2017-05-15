@@ -1,3 +1,10 @@
+/*
+ * Utility functions taken from the Web App Builder. Originally developed to
+ * make the developement of the splash screen and the cookie management easier.
+ * The module returns one instance and "static" functions. Since it is a Utility
+ * module, there is no need to use the keyword "new".
+*/
+
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/fx",
     "dojo/_base/html", "dojo/_base/lang", "dojo/has", "dojo/dom", "dojo",
