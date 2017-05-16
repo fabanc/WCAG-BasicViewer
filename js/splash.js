@@ -15,7 +15,9 @@ define([
         //Public Members
         content: "Loading...",
         screenBackgroundColor: null,
-        screenRatio: null,
+        //screenRatio: null,
+        screenWidthRatio: null,
+        splashScreenHeightRatio: null,
         closeButtonLabel: null,
         overlayNode: null,
         shouldShow: true,
@@ -54,13 +56,15 @@ define([
             loadingOverlay.style.backgroundColor = this.screenBackgroundColor || "White";
 
             //Compute the position of the splash screen on the screen
-            var ratio = this.screenRatio || 75;
-            var verticalMargin = (100-ratio) / 2 + "%";
-            var horizontalMargin = (100-ratio) / 2 + "%";
+            var ratioWidth = this.screenWidthRatio || 75;
+            var ratioHeight = this.splashScreenHeightRatio || 75;
+            var verticalMargin = (100-ratioHeight) / 2 + "%";
+            var horizontalMargin = (100-ratioWidth) / 2 + "%";
             loadingOverlay.style.top = verticalMargin;
             loadingOverlay.style.left = horizontalMargin;
-            loadingOverlay.style.height = ratio + "%";
-            loadingOverlay.style.width = ratio + "%";
+            loadingOverlay.style.width = ratioWidth + "%";
+            loadingOverlay.style.height = ratioHeight + "%";
+
 
             //Attach the text to the overlay
             var loadingMessage = domConstruct.create('div', {
@@ -137,14 +141,7 @@ define([
                 console.warn("Checkbox does not exist");
                 return;
             }
-
-            if (this.cookie != null){
-                if (this.cookie === true || this.cookie === false){
-                    this._splashDisplayCheckbox.checked = this.cookie;
-                }else{
-                    console.warn("Invalid cookie value");
-                }
-            }
+            this._splashDisplayCheckbox.set('checked', !this.shouldShow);
         },
 
         /**
@@ -161,7 +158,8 @@ define([
             if (config != null){
                 this.content =  config.content;
                 this.screenBackgroundColor = config.screenBackgroundColor;
-                this.screenRatio = config.screenRatio;
+                this.screenWidthRatio = config.screenWidthRatio;
+                this.splashScreenHeightRatio = config.splashScreenHeightRatio;
                 this.closeButtonLabel = config.closeButtonLabel;
                 this.checkboxText = config.checkboxText;
             }
@@ -170,6 +168,7 @@ define([
             //Check if there is a cooking for not showing the  splash
             this._cookie_key = this._getCookieKey();
             var _cookie = cookie(this._cookie_key);
+
             if (esriLang.isDefined(_cookie) && _cookie.toString() === 'false') {
               this.shouldShow = false;
             }
@@ -214,6 +213,9 @@ define([
                   path: this._cookie_path
                 });
             }
+
+            //Sync the should show attribute with the checkbox.
+            this.shouldShow = !checkbox.checked;
 
             //Hide the splash screen
             domAttr.set('splashOverlay', 'class', 'splahHidden')

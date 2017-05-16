@@ -231,11 +231,18 @@
                  "value": "Enable/disable the splash screen and optionally set its content."
               },
               {
-                  "label":"<strong>Percentage of the screen covered by the splash screen.</strong>",
-                  "fieldName":"splashScreenRatio",
+                  "label":"<strong>Percentage of the screen width covered by the splash screen.</strong>",
+                  "fieldName":"splashScreenWidthRatio",
                   "type": "int",
                   "value": "75",
-                  "tooltip":"The percentage of the screen covered by the spash screen. Must be between 25 and 100."
+                  "tooltip":"The percentage of the screen width covered by the spash screen. Must be between 25 and 100."
+              },
+              {
+                  "label":"<strong>Percentage of the screen height covered by the splash screen.</strong>",
+                  "fieldName":"splashScreenHeightRatio",
+                  "type": "int",
+                  "value": "75",
+                  "tooltip":"The percentage of the screen height covered by the spash screen. Must be between 25 and 100."
               },
               {
                   "label":"<strong>Number of seconds the splash screen will be displayed.</strong>",

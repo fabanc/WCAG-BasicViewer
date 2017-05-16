@@ -355,7 +355,6 @@ define(["dojo/ready",
                         case "navigation":
                             break;
                         case "splash":
-                            console.log("Call Splash Windows here.");
                             this._showSplash();
                             break;
                         default:
@@ -1034,7 +1033,8 @@ define(["dojo/ready",
         _showSplash: function(){
             var splashOptions = {
                 content: this.config.splashScreenText,
-                screenRatio: this.config.splashScreenRatio,
+                screenWidthRatio: this.config.splashScreenWidthRatio,
+                splashScreenHeightRatio: this.config.splashScreenHeightRatio,
                 screenBackgroundColor: this.config.splashScreenBGColor,
                 closeButtonLabel: this.config.i18n.close,
                 checkboxText: this.config.i18n.doNotDisplaySplashNextTime
