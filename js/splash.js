@@ -93,16 +93,17 @@ define([
                 'for': "splashHide"
             }, checkBoxDiv);
 
-            this._splashDisplayCheckbox = new CheckBox({
+            this._splashDisplayCheckbox = domConstruct.create('input', {
+                type: 'checkbox',
                 id: this._splashCheckBoxIdentifier,
                 name: "splashHide",
                 value: "splashHide",
-                checked: false
-            });
-
+                checked: false,
+                'class': 'scaledElement'
+            }, checkBoxDiv);
             this._splashDisplayCheckbox.tabIndex = 0;
-            this._splashDisplayCheckbox.placeAt(this._splashCheckBoxDivIdentifier);
-            this._splashDisplayCheckbox.startup();
+
+            //domAttr.set(this._splashCheckBoxIdentifier, 'class', 'scaledElement');
             domAttr.set(this._splashCheckBoxIdentifier, 'aria-label', this.checkboxText);
 
             var closeButtonDiv = domConstruct.create('div', {
@@ -140,7 +141,9 @@ define([
                 console.warn("Checkbox does not exist");
                 return;
             }
-            this._splashDisplayCheckbox.set('checked', !this.shouldShow);
+
+            domAttr.set(this._splashCheckBoxIdentifier, 'checked', !this.shouldShow);
+            //this.checked =  !this.shouldShow;
         },
 
         /**
@@ -199,19 +202,10 @@ define([
         hide: function(){
             //Get the value of the checkbox and set the cookie accordingly.
             var checkbox = dom.byId(this._splashCheckBoxIdentifier);
-            if (checkbox.checked){
-                //The user has choosen not to see the splash screen
-                cookie(this._cookie_key, false, {
-                  expires: this._cookie_time,
-                  path: this._cookie_path
-                });
-            }else{
-                //The user has choosen to see the splash screen next time
-                cookie(this._cookie_key, true, {
-                  expires: this._cookie_time,
-                  path: this._cookie_path
-                });
-            }
+            cookie(this._cookie_key, !checkbox.checked, {
+              expires: this._cookie_time,
+              path: this._cookie_path
+            });
 
             //Sync the should show attribute with the checkbox.
             this.shouldShow = !checkbox.checked;
