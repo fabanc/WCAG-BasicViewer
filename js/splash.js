@@ -72,7 +72,7 @@ define([
                 'class': 'splashContentCommon splashText',
                 innerHTML: content + '</br>'
             }, loadingOverlay);
-            loadingMessage.tabIndex = 1;
+            loadingMessage.tabIndex = 0;
             domAttr.set(this._splashMessageDivIdentifier, 'aria-labelledby', content);
 
 
@@ -100,8 +100,7 @@ define([
                 checked: false
             });
 
-            //this._populateCheckBoxValue(checkbox);
-
+            this._splashDisplayCheckbox.tabIndex = 0;
             this._splashDisplayCheckbox.placeAt(this._splashCheckBoxDivIdentifier);
             this._splashDisplayCheckbox.startup();
             domAttr.set(this._splashCheckBoxIdentifier, 'aria-label', this.checkboxText);
@@ -122,7 +121,7 @@ define([
                 })
             });
 
-            closeButton.tabIndex = 2;
+            closeButton.tabIndex = 0;
             closeButton.startup();
             closeButton.placeAt(closeButtonDiv)
             domAttr.set(this._spashButtonIdentifier, 'aria-labelledby', buttonLabel);
@@ -218,7 +217,7 @@ define([
             this.shouldShow = !checkbox.checked;
 
             //Hide the splash screen
-            domAttr.set('splashOverlay', 'class', 'splahHidden')
+            domAttr.set('splashOverlay', 'class', 'splashHidden');
         },
 
         _getCookieKey: function() {
