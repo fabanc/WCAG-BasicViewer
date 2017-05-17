@@ -79,7 +79,9 @@ Anyone and everyone is welcome to contribute. A few links to the documentation t
 
 - [Add parameters to configurable templates](http://doc.arcgis.com/en/arcgis-online/create-maps/configurable-templates.htm)
 
+# Aknowldgement
 
+- The splash windows has been developed by Esri Canada for the need of the military Mapping and Charting Establishment (MCE) who generously accepted to contribute back to the code base.
 
 # Licensing
 

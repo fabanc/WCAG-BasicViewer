@@ -1,3 +1,13 @@
+/*
+ * A splash screen that contains rich text content, a checkbox, and a button.
+ * The checkbox is used to offer the ability to hide the splash screen in the future (information is stored using cookies)
+ * The button is used to close the splash screen.
+ * Special aknowledgment:
+ *    The splash windows has been developed by Esri Canada for the need of
+ *    the military Mapping and Charting Establishment (MCE) who generously
+ *    accepted to contribute back to the code base.
+ */
+
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/window", "dojo/_base/fx",
     "dojo/_base/html", "dojo/_base/lang", "dojo/has", "dojo/dom", "dojo",
