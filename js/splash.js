@@ -15,7 +15,6 @@ define([
         //Public Members
         content: "Loading...",
         screenBackgroundColor: null,
-        //screenRatio: null,
         screenWidthRatio: null,
         splashScreenHeightRatio: null,
         closeButtonLabel: null,
@@ -54,6 +53,9 @@ define([
             var loadingOverlay = this.overlayNode;
             //domAttr.set(this.overlayNode.id, 'class', this._loadingMessageClasses);
             loadingOverlay.style.backgroundColor = this.screenBackgroundColor || "White";
+
+
+
 
             //Compute the position of the splash screen on the screen
             var ratioWidth = this.screenWidthRatio || 75;
@@ -143,7 +145,6 @@ define([
             }
 
             domAttr.set(this._splashCheckBoxIdentifier, 'checked', !this.shouldShow);
-            //this.checked =  !this.shouldShow;
         },
 
         /**
