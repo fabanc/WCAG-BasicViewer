@@ -233,7 +233,7 @@ define([
                         name : pField.fieldName,
                         alias: pField.label,
                     };
-                    if(pField.hasOwnProperty('format')) {
+                    if(pField.hasOwnProperty('format') && pField.format) {
                         var format = pField.format;
                         if(format.hasOwnProperty('dateFormat')) {
                             fieldInfo.dateOptions= {
@@ -348,6 +348,8 @@ define([
 
             //this._addArrowCarrets();
 
+            var tableTitle = query('.esri-feature-table-title')[0];
+
             if(this.layers && this.layers.length > 1) {
                 var menu = new DropDownMenu({ style: "display: none;"});
                 this.layers.forEach(lang.hitch(this, function(layer){
@@ -388,7 +390,7 @@ define([
 
                 this._addArrowCarrets();
 
-                var tableTitle = query('.esri-feature-table-title')[0];
+                // tableTitle = query('.esri-feature-table-title')[0];
                 // domStyle.set(tableTitle,'display', 'none');
                 var titleNodeObserver = new MutationObserver(lang.hitch(this, function(mutations) {
                     // console.log(mutations);
@@ -423,8 +425,6 @@ define([
                     characterData: true 
                 });
             }
-
-
 
 
             var featureTableTools = domConstruct.create('div', {
