@@ -258,18 +258,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             window.tasks = [];
             for(var l = 0; l<this.Layers.length; l++) {
                 layer = this.Layers[l];
-                if(layer.visibility)
-                {
-                    var _query = new Query();
-                    _query.outFields = ["*"];
-                    _query.returnGeometry = false;
-                    _query.spatialRelationship = "esriSpatialRelIntersects";
-                    window.tasks.push({
-                        layer : layer.layerObject,
-                        task : new QueryTask(this.map._layers[layer.id].url),
-                        query : _query
-                    });
-                }   
+
+                var _query = new Query();
+                _query.outFields = ["*"];
+                _query.returnGeometry = false;
+                _query.spatialRelationship = "esriSpatialRelIntersects";
+                window.tasks.push({
+                    layer : layer.layerObject,
+                    task : new QueryTask(this.map._layers[layer.id].url),
+                    query : _query
+                });
             }
 
             window.featurePanZoom = function(el, panOnly) {
