@@ -480,11 +480,15 @@ define(["dojo/ready",
                     style:'left:20%; top:-75%;'
                 }, dom.byId('panelBottom'));
 
-                domConstruct.create("div", {
-                    class:'goThereHint',
-                    innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+this.config.i18n.skip.splash,
-                    style:'left:20%; top:-75%;'
-                }, dom.byId('splashOverlayContainer'));
+                //The number shortcut for the splash screen
+                var splashScreen = registry.byId("splashOverlay");
+                if (splashScreen){
+                    domConstruct.create("div", {
+                        class:'goThereHint',
+                        innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+this.config.i18n.skip.splash,
+                        style:'left:40%; top:40%;z-index: 9999;'
+                    }, dom.byId('splashOverlayContainer'));
+                }
             }
 
             var skipTools = query('.skip #skip-tools')[0];
@@ -494,7 +498,7 @@ define(["dojo/ready",
             var skipMap = query('.skip #skip-map')[0];
             var skipInstructions = query('.skip #skip-instructions')[0];
             var skipFeature = query('.skip #skip-feature')[0];
-            var skipSplash = query('.skip #skip-feature')[0];
+            var skipSplash = query('.skip #skip-splash')[0];
 
             dojo.html.set(skipTools, "1. "+this.config.i18n.skip.tools);
             dojo.html.set(skipSearch, "2. "+this.config.i18n.skip.search);
