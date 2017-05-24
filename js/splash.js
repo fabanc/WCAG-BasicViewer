@@ -23,7 +23,7 @@ define([
     return declare("SplashScreen", [Evented, _WidgetBase], {
 
         //Public Members
-        content: "Loading...",
+        contentText: "Loading...",
         screenBackgroundColor: null,
         screenWidthRatio: null,
         splashScreenHeightRatio: null,
@@ -182,14 +182,14 @@ define([
          * @return undefined.
          */
         constructor: function (config, srcNode) {
-            if (config != null){
-                this.content =  config.content | this.content;
-                this.screenBackgroundColor = config.screenBackgroundColor | this.screenBackgroundColor;
-                this.screenWidthRatio = config.screenWidthRatio | this.screenWidthRatio;
-                this.splashScreenHeightRatio = config.splashScreenHeightRatio | this.splashScreenHeightRatio;
-                this.closeButtonLabel = config.closeButtonLabel| this.closeButtonLabel;
-                this.checkboxText = config.checkboxText | this.checkboxText;
-            }
+
+            //Setup values that can be set from the configuration objects
+            this.contentText = config.content || this.contentText;
+            this.screenBackgroundColor = config.screenBackgroundColor || this.screenBackgroundColor;
+            this.screenWidthRatio = config.screenWidthRatio || this.screenWidthRatio;
+            this.splashScreenHeightRatio = config.splashScreenHeightRatio || this.splashScreenHeightRatio;
+            this.closeButtonLabel = config.closeButtonLabel || this.closeButtonLabel;
+            this.checkboxText = config.checkboxText || this.checkboxText;
 
             this.overlayNode = srcNode;
             //Check if there is a cooking for not showing the  splash
@@ -208,7 +208,7 @@ define([
         show: function(){
             //If not children, then it means that the content has not yet been created.
             if (this.overlayNode.childElementCount === 0){
-                this.overlayNode = this._createOverlayNode(this.content);
+                this.overlayNode = this._createOverlayNode(this.contentText);
             }
 
             domAttr.set('splashOverlay', 'class', this._loadingMessageClasses)

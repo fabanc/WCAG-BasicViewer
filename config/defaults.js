@@ -75,7 +75,7 @@ define({
         {"name": "bookmarks", "enabled": true},
         {"name": "navigation", "enabled": true},
         {"name": "print", "enabled": true, "legend": false, "layouts":false, "format":"pdf"},
-        {"name": "splash", "enabled": true}
+        {"name": "splash", "enabled": false}
     ],
     //Set the active tool on the toolbar. Note home and locate can't be the active tool.
     //Set to "" to display no tools at startup

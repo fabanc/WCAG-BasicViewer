@@ -347,7 +347,7 @@ define(["dojo/ready",
                             break;
                         case "splash":
                             if (this.config.tools[i].enabled){
-                                this._showSplash();
+                                this._addSplash();
                             }
                             break;
                         default:
@@ -1022,7 +1022,7 @@ define(["dojo/ready",
             return deferred.promise;
         },
 
-        _showSplash: function(){
+        _addSplash: function(){
             var splashOptions = {
                 content: this.config.splashScreenText,
                 screenWidthRatio: this.config.splashScreenWidthRatio,
@@ -1320,12 +1320,6 @@ define(["dojo/ready",
                 }
             }));
         },
-
-        // _addSplash: function(){
-        //
-        // },
-
-
 
         _addPrint: function (tool, toolbar) {
             //Add the print widget to the toolbar. TODO: test custom layouts.
