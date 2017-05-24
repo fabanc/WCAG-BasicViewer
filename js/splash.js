@@ -81,7 +81,7 @@ define([
             var loadingMessage = domConstruct.create('div', {
                 id: this._splashMessageDivIdentifier,
                 'class': 'splashContentCommon splashText',
-                innerHTML: content + '</br>'
+                innerHTML: '<div style="vertical-align: middle; height: 100%; display:table; width: 100%"><span style="display: table-cell;vertical-align: middle;line-height: normal">' + content + '</span></div></br>'
             }, loadingOverlay);
             loadingMessage.tabIndex = 0;
             domAttr.set(this._splashMessageDivIdentifier, 'aria-labelledby', content);
