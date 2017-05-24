@@ -131,15 +131,6 @@ define(["dojo/ready",
                 textColor:this.activeColor,
                 showLabel:this.config.languageLabel
             }, dojo.byId('languageSelectNode')).startup();
-
-
-            // var splash = new Splash(this.config);
-            // splash.show();
-            // setTimeout(function(){
-            //     splash.hide();
-            // }, 5000);
-
-
         },
 
         reportError: function (error) {
@@ -355,7 +346,9 @@ define(["dojo/ready",
                         case "navigation":
                             break;
                         case "splash":
-                            this._showSplash();
+                            if (this.config.tools[i].enabled){
+                                this._showSplash();
+                            }
                             break;
                         default:
                             break;
@@ -552,11 +545,10 @@ define(["dojo/ready",
             };
 
             skipToSplash = function () {
-                console.log("Skip Splash");
-                //dom.byId('skip-splash').focus();
-                //document.querySelector('#splashOverlay').focus();
                 var splashScreen = registry.byId("splashOverlay");
-                splashScreen.show();
+                if(splashScreen != null){
+                    splashScreen.show();
+                }
             };
 
             skipToTools = function() {
@@ -1328,6 +1320,12 @@ define(["dojo/ready",
                 }
             }));
         },
+
+        // _addSplash: function(){
+        //
+        // },
+
+
 
         _addPrint: function (tool, toolbar) {
             //Add the print widget to the toolbar. TODO: test custom layouts.

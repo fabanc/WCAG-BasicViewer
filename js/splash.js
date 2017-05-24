@@ -49,6 +49,7 @@ define([
         _cookie_path: '/',//The path to the cookie
 
 
+        //Private methods. Not meant to be called outside of this module.
         /**
          * Create the content of the splash screen. The splash screen is composed
          * of a message and a button. Elements are contained in divs stacked
@@ -63,8 +64,6 @@ define([
             var loadingOverlay = this.overlayNode;
             //domAttr.set(this.overlayNode.id, 'class', this._loadingMessageClasses);
             loadingOverlay.style.backgroundColor = this.screenBackgroundColor || "White";
-
-
 
 
             //Compute the position of the splash screen on the screen
@@ -113,9 +112,9 @@ define([
                 checked: false,
                 'class': 'scaledElement'
             }, checkBoxDiv);
+
             this._splashDisplayCheckbox.tabIndex = 0;
 
-            //domAttr.set(this._splashCheckBoxIdentifier, 'class', 'scaledElement');
             domAttr.set(this._splashCheckBoxIdentifier, 'aria-label', this.checkboxText);
 
             var closeButtonDiv = domConstruct.create('div', {
@@ -158,23 +157,38 @@ define([
         },
 
         /**
-         * The constructor of the splash widget.
+         * Contains the logic to create the cookie key used to create the user parameter
+         * for showing the splash screen.
+         * @return a string representing the cookie key.
+         */
+        _getCookieKey: function() {
+          return 'show_splash_' + encodeURIComponent(wabutils.getAppIdFromUrl());
+        },
+
+
+
+        //Public methods. To be used by client code that manipulates the widget function.
+        /**
+         * The constructor of the splash widget. The content of the splash screen is not created
+         * right away, but on the first time the widget is showed instead. Avoid creating the content
+         * widget if the user does not want to see it.
          * @param {Object} config The optopms object passed to the constructor. Vaid option are:
                                     1. screenRatio
                                     2. content
                                     3. screenBackgroundColor
                                     4. closeButtonLabel
+                                    5. the chheckbox text
          * @param {Object} srcNode The content of the splash screen that will be displayed
          * @return undefined.
          */
         constructor: function (config, srcNode) {
             if (config != null){
-                this.content =  config.content;
-                this.screenBackgroundColor = config.screenBackgroundColor;
-                this.screenWidthRatio = config.screenWidthRatio;
-                this.splashScreenHeightRatio = config.splashScreenHeightRatio;
-                this.closeButtonLabel = config.closeButtonLabel;
-                this.checkboxText = config.checkboxText;
+                this.content =  config.content | this.content;
+                this.screenBackgroundColor = config.screenBackgroundColor | this.screenBackgroundColor;
+                this.screenWidthRatio = config.screenWidthRatio | this.screenWidthRatio;
+                this.splashScreenHeightRatio = config.splashScreenHeightRatio | this.splashScreenHeightRatio;
+                this.closeButtonLabel = config.closeButtonLabel| this.closeButtonLabel;
+                this.checkboxText = config.checkboxText | this.checkboxText;
             }
 
             this.overlayNode = srcNode;
@@ -185,9 +199,6 @@ define([
             if (esriLang.isDefined(_cookie) && _cookie.toString() === 'false') {
               this.shouldShow = false;
             }
-
-            //Show the splash
-            this._createOverlayNode(this.content);
         },
 
         /**
@@ -195,12 +206,12 @@ define([
         * @return undefined.
         **/
         show: function(){
-            if (!this.overlayNode){
+            //If not children, then it means that the content has not yet been created.
+            if (this.overlayNode.childElementCount === 0){
                 this.overlayNode = this._createOverlayNode(this.content);
             }
-            else{
-                domAttr.set('splashOverlay', 'class', this._loadingMessageClasses)
-            }
+
+            domAttr.set('splashOverlay', 'class', this._loadingMessageClasses)
             this._populateCheckBoxValue();
             dom.byId(this._splashMessageDivIdentifier).focus();
             this.overlayNode.focus();
@@ -225,9 +236,14 @@ define([
             domAttr.set('splashOverlay', 'class', 'splashHidden');
         },
 
-        _getCookieKey: function() {
-          return 'show_splash_' + encodeURIComponent(wabutils.getAppIdFromUrl());
-        },
+        /**
+        * Keep the widget node and hid it but destroy all the widget content.
+        * @return undefined.
+        **/
+        destroy: function(){
+            dojo.empty(this.overlayNode.id);
+            domAttr.set('splashOverlay', 'class', 'splashHidden');
+        }
 
     });
 });
