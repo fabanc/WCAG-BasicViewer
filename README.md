@@ -81,7 +81,7 @@ Anyone and everyone is welcome to contribute. A few links to the documentation t
 
 # Aknowldgement
 
-- The splash windows has been developed by Esri Canada for the need of the military Mapping and Charting Establishment (MCE) who generously accepted to contribute back to the code base.
+- The splash screen was  developed by Esri Canada in conjunction with the Canadian Armed Forces,  Mapping and Charting Establishment (MCE) and contributed back to the GIS community.
 
 # Licensing
 

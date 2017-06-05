@@ -3,7 +3,7 @@
  * The checkbox is used to offer the ability to hide the splash screen in the future (information is stored using cookies)
  * The button is used to close the splash screen.
  * Special aknowledgment:
- *    The splash windows has been developed by Esri Canada for the need of
+ *    The splash screen has been developed by Esri Canada for the need of
  *    the military Mapping and Charting Establishment (MCE) who generously
  *    accepted to contribute back to the code base.
  */
