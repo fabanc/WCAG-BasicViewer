@@ -74,13 +74,16 @@ define(
             "featureDetaills" : "Aller aux fonctionnalités détaillées",
             "splash": "Aller à la Page d'accueil"
         },
+        "splash": {
+                "defaultText": "Configurer la section ‘Splash-Screen’ dans l'interface de configuration afin d'ajouter du texte.",
+                "doNotDisplaySplashNextTime": "Je ne souhaite pas voir cette page d'accueil à mes prochaines connections."
+        },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",
         searchEnterCriteria : "Terme recherché pour",
         pressAlt : "Appuyer sur ALT + 0 à 7 pour naviguer rapidement",
         instructions:"instructions.french",
         wcagViewer : "Visualiseur Accessible",
-        close : "Fermer",
-        doNotDisplaySplashNextTime: "Je ne souhaite pas voir cette page d'accueil à mes prochaines connections."
+        close : "Fermer"
     })
 );

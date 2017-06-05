@@ -485,7 +485,7 @@ define(["dojo/ready",
                 if (splashScreen){
                     domConstruct.create("div", {
                         class:'goThereHint',
-                        innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+this.config.i18n.skip.splash,
+                        innerHTML: '<b>Alt&nbsp;+&nbsp;0</b> '+this.config.i18n.skip.splash,
                         style:'left:40%; top:40%;z-index: 9999;'
                     }, dom.byId('splashOverlayContainer'));
                 }
@@ -500,6 +500,7 @@ define(["dojo/ready",
             var skipFeature = query('.skip #skip-feature')[0];
             var skipSplash = query('.skip #skip-splash')[0];
 
+            dojo.html.set(skipSplash, "0. "+this.config.i18n.skip.splash);
             dojo.html.set(skipTools, "1. "+this.config.i18n.skip.tools);
             dojo.html.set(skipSearch, "2. "+this.config.i18n.skip.search);
             dojo.html.set(skipContent, "3. "+this.config.i18n.skip.content);
@@ -507,7 +508,7 @@ define(["dojo/ready",
             dojo.html.set(skipMap, "5. "+this.config.i18n.skip.map);
             dojo.html.set(skipInstructions, "6. "+this.config.i18n.skip.help);
             dojo.html.set(skipFeature, "7. "+this.config.i18n.skip.featureDetaills);
-            dojo.html.set(skipSplash, "8. "+this.config.i18n.skip.splash);
+
 
             skipTools.addEventListener('click', function (e) { skipToTools(); });
             skipSearch.addEventListener('click', function (e) { skipToSearch(); });
@@ -1028,12 +1029,12 @@ define(["dojo/ready",
 
         _addSplash: function(){
             var splashOptions = {
-                content: this.config.splashScreenText,
+                content: this.config.splashScreenText == null ? this.config.i18n.splash.defaultText : this.config.splashScreenText,
                 screenWidthRatio: this.config.splashScreenWidthRatio,
                 splashScreenHeightRatio: this.config.splashScreenHeightRatio,
                 screenBackgroundColor: this.config.splashScreenBGColor,
                 closeButtonLabel: this.config.i18n.close,
-                checkboxText: this.config.i18n.doNotDisplaySplashNextTime
+                checkboxText: this.config.i18n.splash.doNotDisplaySplashNextTime
             };
 
             var splash = new Splash(splashOptions, dom.byId("splashOverlay"));

@@ -75,14 +75,18 @@ define({
             "featureDetaills" : "Skip to Feature Details",
             "splash": "Skip to Splash Screen"
         },
+        "splash": {
+                "defaultText": "Use Template Configuration in ‘Splash-Screen’ tab to add content here",
+                "doNotDisplaySplashNextTime": "Hide this splash screen the next time I connect."
+        },
+
         search : "Search: ",
         searchPlaceholder: "Find address or place",
         searchEnterCriteria : "Enter search term for",
         pressAlt : "Press ALT + 0 to 7 keys for fast navigation",
         instructions:"instructions",
         wcagViewer : "Accessible Viewer",
-        close: "Close",
-        doNotDisplaySplashNextTime: "Hide this splash screen the next time I connect."
+        close: "Close"
     }),
 "ar": 1,
 "cs": 1,
