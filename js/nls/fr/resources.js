@@ -71,13 +71,16 @@ define(
             "splitter" : "Aller au séparateur d’écran",
             "map" : "Aller à la carte",
             "help" : "Aller à l’aide",
-            "featureDetaills" : "Aller aux fonctionnalités détaillées"
+            "featureDetaills" : "Aller aux fonctionnalités détaillées",
+            "splash": "Aller à la Page d'accueil"
         },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",
         searchEnterCriteria : "Terme recherché pour",
         pressAlt : "Appuyer sur ALT + 0 à 7 pour naviguer rapidement",
         instructions:"instructions.french",
-        wcagViewer : "Visualiseur Accessible"
+        wcagViewer : "Visualiseur Accessible",
+        close : "Fermer",
+        doNotDisplaySplashNextTime: "Je ne souhaite pas voir cette page d'accueil à mes prochaines connections."
     })
 );
