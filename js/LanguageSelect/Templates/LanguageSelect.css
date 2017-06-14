@@ -50,3 +50,7 @@
         height:22px; 
     }
 }
+
+#languageSelectNode .dijitButtonNode {
+    border:none;
+}
