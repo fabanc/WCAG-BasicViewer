@@ -325,11 +325,15 @@ define(["dojo/ready",
                         this._saveLeftPanelWidth = this.contentPaneLeft.domNode.clientWidth;
                         dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,0));
                         dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',0));
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id),'aria-hidden','true');
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id+'_splitter'),'aria-hidden','true');
                         domConstruct.place(vSplitterTools, dojo.byId('mapFocus'),'before');
                         domClass.add(vSplitterTools, 'onMap');
                     } else {
                         dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,this._saveLeftPanelWidth));
                         dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',12));
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id),'aria-hidden','false');
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id+'_splitter'),'aria-hidden','false');
                         domConstruct.place(vSplitterTools, dojo.byId('panelTools'),'before');
                         domClass.remove(vSplitterTools, 'onMap');
                     }
