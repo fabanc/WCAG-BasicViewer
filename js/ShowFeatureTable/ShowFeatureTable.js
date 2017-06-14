@@ -649,6 +649,14 @@ define([
             //     console.log("filter event - ", evt);
             // });
 
+            var rolesMenu = query('.dijitPopup');
+            rolesMenu.forEach(function(popup) {
+                domAttr.set(popup,"role","menu");
+            });
+            var rolesPresentation = query('.dijitMenuTable');
+            rolesPresentation.forEach(function(table) {
+                domAttr.set(table,"role","presentation");
+            });
         },
 
         _addArrowCarrets: function() {
