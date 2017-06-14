@@ -129,7 +129,7 @@ define(["dojo/ready",
                 locale: document.documentElement.lang,
                 //location: window.location,
                 languages:languages,
-                textColor:this.activeColor,
+                textColor:this.color,
                 showLabel:this.config.languageLabel
             }, dojo.byId('languageSelectNode')).startup();
         },
