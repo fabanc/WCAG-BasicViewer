@@ -4,6 +4,7 @@ define([
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color",
+    "esri/geometry/Point",
     //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
     // "dojo/i18n!application/nls",
     //SuperNavigator",
@@ -16,7 +17,7 @@ define([
         _WidgetBase, _TemplatedMixin, on, 
         query, Navigation, registry,
         HomeButton, LocateButton, 
-        SimpleLineSymbol, Color,
+        SimpleLineSymbol, Color, Point,
         //SuperNavigatorTemplate, 
         // i18n,
         domClass, domAttr, domStyle, 
@@ -63,23 +64,35 @@ define([
             domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
             dojo.empty(this.navToolBar);
 
+            // var mx = this.map.extent.xmin;
+            // var my = this.map.extent.ymin;
+            // var c = this.map.toScreen(this.map.extent.getCenter());
+            var m = dom.byId('mapDiv').getBoundingClientRect();
+
             var cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             domAttr.set(cursorNav, "id", "mapSuperCursor");
             domAttr.set(cursorNav,"tabindex","0");
             domAttr.set(cursorNav,"width","40");
             domAttr.set(cursorNav,"height","40");
+            domStyle.set(cursorNav,"pointer-events","all");
             domStyle.set(cursorNav,"position","absolute");
-            domStyle.set(cursorNav,"transform","translate(100px, 100px)");
+            domStyle.set(cursorNav,"transform","translate("+((m.right-m.left)/2-20)+"px, "+((m.bottom-m.top)/2-20)+"px)");
 
             var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
             domAttr.set(circle,"cx", "20");
             domAttr.set(circle,"cy", "20");
             domAttr.set(circle,"r", "15");
-            domAttr.set(circle,"stroke", "red");
+            domAttr.set(circle,"stroke", "black");
+            domAttr.set(circle,"stroke-width", "2");
             domAttr.set(circle,"fill", "white");
 
             domConstruct.place(circle,cursorNav);
             domConstruct.place(cursorNav,'mapDiv_layers');
+
+            on(cursorNav, "click", function(e) {
+                domAttr.set(circle,"stroke", "red");
+                cursorNav.focus();
+            });
 
         }
 
