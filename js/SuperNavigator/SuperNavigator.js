@@ -65,6 +65,9 @@ define([
 
             var cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             domAttr.set(cursorNav, "id", "mapSuperCursor");
+            domAttr.set(cursorNav,"tabindex","0");
+            domAttr.set(cursorNav,"width","40");
+            domAttr.set(cursorNav,"height","40");
             domStyle.set(cursorNav,"position","absolute");
             domStyle.set(cursorNav,"transform","translate(100px, 100px)");
 
