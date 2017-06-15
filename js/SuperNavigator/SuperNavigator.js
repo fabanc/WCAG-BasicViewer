@@ -63,15 +63,20 @@ define([
             domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
             dojo.empty(this.navToolBar);
 
-            var cursorNav = domConstruct.create("svg", {
-                    id:'mapSuperCursor',
-                    with: 20,
-                    height: 20,
-                    overflow: 'visible',
-                    innerHTML: '<rect width="20" height="20" style="fill:rgb(0,0,255);stroke-width:1;stroke:rgb(0,0,0)"/>\n'+
-                    'SVG not supported',
-                    style:'position:absolute;'
-                }, dom.byId('mapDiv_layers'));
+            var cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            domAttr.set(cursorNav, "id", "mapSuperCursor");
+            domStyle.set(cursorNav,"position","absolute");
+            domStyle.set(cursorNav,"transform","translate(100px, 100px)");
+
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            domAttr.set(circle,"cx", "20");
+            domAttr.set(circle,"cy", "20");
+            domAttr.set(circle,"r", "15");
+            domAttr.set(circle,"stroke", "red");
+            domAttr.set(circle,"fill", "white");
+
+            domConstruct.place(circle,cursorNav);
+            domConstruct.place(cursorNav,'mapDiv_layers');
 
         }
 
