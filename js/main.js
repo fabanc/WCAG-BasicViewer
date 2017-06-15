@@ -28,7 +28,9 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/resources",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
-    "esri/layers/FeatureLayer", "application/NavToolBar/NavToolBar", 
+    "esri/layers/FeatureLayer", 
+    "application/NavToolBar/NavToolBar", 
+    "application/SuperNavigator/SuperNavigator",
     "application/FeatureList/FeatureList", "application/Filters/Filters", "application/TableOfContents", 
     "application/LanguageSelect/LanguageSelect",
     "application/ShareDialog", //"application/SearchSources",
@@ -49,7 +51,9 @@ define(["dojo/ready",
     Legend, BasemapGallery, 
     i18n, i18n_BaseMapLabels,
     Measurement, OverviewMap, Extent, 
-    FeatureLayer, NavToolBar,
+    FeatureLayer, 
+    NavToolBar,
+    SuperNavigator,
     FeatureList, Filters, TableOfContents, LanguageSelect,
     ShareDialog, //SearchSources,
     SimpleMarkerSymbol, PictureMarkerSymbol, Graphic,
@@ -609,14 +613,21 @@ define(["dojo/ready",
                 id: "newNaviagationToolBar",
             });
             
-            nav = new NavToolBar({
+            // nav = new NavToolBar({
+            //     map: this.map,
+            //     navToolBar: oldNaviagationToolBar,
+            //     iconColor: this.config.icons,
+            //     newIcons: this.config.new_icons?'.new':'',
+            //     zoomColor: this.focusColor,
+            // }, navToolBar);
+            // nav.startup();
+
+            var superNav = new SuperNavigator({
                 map: this.map,
                 navToolBar: oldNaviagationToolBar,
-                iconColor: this.config.icons,
-                newIcons: this.config.new_icons?'.new':'',
-                zoomColor: this.focusColor,
-            }, navToolBar);
-            nav.startup();
+            });
+            superNav.startup();
+
             deferred.resolve(true);
             return deferred.promise;
         },
