@@ -1,6 +1,6 @@
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/kernel", 
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on", "dojo/mouse", "dijit/focus",
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color",
@@ -14,7 +14,7 @@ define([
     
     ], function (
         Evented, declare, lang, has, dom, esriNS,
-        _WidgetBase, _TemplatedMixin, on, 
+        _WidgetBase, _TemplatedMixin, on, mouse, focusUtil,
         query, Navigation, registry,
         HomeButton, LocateButton, 
         SimpleLineSymbol, Color, Point,
@@ -32,8 +32,8 @@ define([
         options: {
             map: null,
             navToolBar:null,
-            cursorColor:"white",
-            // newIcons:'',
+            cursorColor:"black",
+            cursorFocusColor:"red",
             zoomColor:'red',
         },
 
@@ -46,6 +46,7 @@ define([
             this.set("navToolBar", defaults.navToolBar);
             this.set("zoomColor", defaults.zoomColor);
             this.set("cursorColor", defaults.cursorColor);            
+            this.set("cursorFocusColor", defaults.cursorFocusColor);            
             },
 
         startup: function () {
@@ -78,21 +79,38 @@ define([
             domStyle.set(cursorNav,"position","absolute");
             domStyle.set(cursorNav,"transform","translate("+((m.right-m.left)/2-20)+"px, "+((m.bottom-m.top)/2-20)+"px)");
 
-            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            domAttr.set(circle,"cx", "20");
-            domAttr.set(circle,"cy", "20");
-            domAttr.set(circle,"r", "15");
-            domAttr.set(circle,"stroke", "black");
-            domAttr.set(circle,"stroke-width", "2");
-            domAttr.set(circle,"fill", "white");
+            // var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            // domAttr.set(circle,"cx", "20");
+            // domAttr.set(circle,"cy", "20");
+            // domAttr.set(circle,"r", "15");
+            // domAttr.set(circle,"stroke", "black");
+            // domAttr.set(circle,"stroke-width", "2");
+            // domAttr.set(circle,"fill", "white");
 
-            domConstruct.place(circle,cursorNav);
+            // domConstruct.place(circle, cursorNav);
+
+            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            domAttr.set(path,"d", "M20 0 L20 19 M20 21 L20 40 M0 20 L19 20 M21 20 L40 20");
+            domAttr.set(path,"stroke", this.cursorColor);
+            domAttr.set(path,"stroke-width", "2");
+
+            domConstruct.place(path, cursorNav);
+            
             domConstruct.place(cursorNav,'mapDiv_layers');
 
-            on(cursorNav, "click", function(e) {
-                domAttr.set(circle,"stroke", "red");
-                cursorNav.focus();
-            });
+            on(this.map, "mouse-down", lang.hitch(this, function(e) {
+                domAttr.set(path,"stroke", this.cursorFocusColor);
+                path.focus();
+            }));
+            on(this.map, "mouse-up", lang.hitch(this, function(e) {
+                domAttr.set(path,"stroke", this.cursorColor);
+                //cursorNav.focus();
+            }));
+
+            // focusUtil.watch(dom.byId("mapDiv"), function(name, oldValue, newValue){
+            //     debugger;
+            //     console.log("Focused node was", oldValue, "now is", newValue);
+            // });
 
         }
 

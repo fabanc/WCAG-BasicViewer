@@ -625,6 +625,8 @@ define(["dojo/ready",
             var superNav = new SuperNavigator({
                 map: this.map,
                 navToolBar: oldNaviagationToolBar,
+                cursorColor: "black",
+                cursorFocusColor: this.config.focusColor
             });
             superNav.startup();
 
