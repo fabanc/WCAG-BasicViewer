@@ -1943,13 +1943,14 @@ define(["dojo/ready",
                                         _features.forEach(function(f) { features.push(f);});
                                         console.log(features.length);
                                         // debugger;
-                                        this.map.infoWindow.hide();
-                                        this.map.infoWindow.clearFeatures();
+                                        // this.map.infoWindow.hide();
+                                        // this.map.infoWindow.clearFeatures();
+                                        
                                         var c = center.getCenter();
-                                        // this.map.centerAt(c).then(lang.hitch(this, function() {
+                                        this.map.centerAt(c).then(lang.hitch(this, function() {
                                             this.map.infoWindow.setFeatures(features);
                                             this.map.infoWindow.show(c);
-                                        // }));
+                                        }));
                                     })
                                 );
 
