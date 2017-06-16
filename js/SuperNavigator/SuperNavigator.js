@@ -4,7 +4,7 @@ define([
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color",
-    "esri/geometry/Point",
+    "esri/geometry/Point", "esri/tasks/query", "esri/tasks/QueryTask",
     //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
     // "dojo/i18n!application/nls",
     //SuperNavigator",
@@ -17,7 +17,7 @@ define([
         _WidgetBase, _TemplatedMixin, on, mouse, focusUtil,
         query, Navigation, registry,
         HomeButton, LocateButton, 
-        SimpleLineSymbol, Color, Point,
+        SimpleLineSymbol, Color, Point, Query, QueryTask,
         //SuperNavigatorTemplate, 
         // i18n,
         domClass, domAttr, domStyle, 
@@ -79,16 +79,6 @@ define([
             domStyle.set(cursorNav,"position","absolute");
             domStyle.set(cursorNav,"transform","translate("+((m.right-m.left)/2-20)+"px, "+((m.bottom-m.top)/2-20)+"px)");
 
-            // var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            // domAttr.set(circle,"cx", "20");
-            // domAttr.set(circle,"cy", "20");
-            // domAttr.set(circle,"r", "15");
-            // domAttr.set(circle,"stroke", "black");
-            // domAttr.set(circle,"stroke-width", "2");
-            // domAttr.set(circle,"fill", "white");
-
-            // domConstruct.place(circle, cursorNav);
-
             var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
             domAttr.set(path,"d", "M20 0 L20 19 M20 21 L20 40 M0 20 L19 20 M21 20 L40 20");
             domAttr.set(path,"stroke", this.cursorColor);
@@ -98,20 +88,52 @@ define([
             
             domConstruct.place(cursorNav,'mapDiv_layers');
 
-            on(this.map, "mouse-down", lang.hitch(this, function(e) {
-                domAttr.set(path,"stroke", this.cursorFocusColor);
-                path.focus();
-            }));
-            on(this.map, "mouse-up", lang.hitch(this, function(e) {
-                domAttr.set(path,"stroke", this.cursorColor);
-                //cursorNav.focus();
-            }));
+            // on(this.map, "mouse-down", lang.hitch(this, function(e) {
+            //     domAttr.set(path,"stroke", this.cursorFocusColor);
+            //     // path.focus();
+            // }));
+            // on(this.map, "mouse-up", lang.hitch(this, function(e) {
+            //     domAttr.set(path,"stroke", this.cursorColor);
+            //     //cursorNav.focus();
+            // }));
+        },
 
-            // focusUtil.watch(dom.byId("mapDiv"), function(name, oldValue, newValue){
-            //     debugger;
-            //     console.log("Focused node was", oldValue, "now is", newValue);
-            // });
+        getFeaturesAtPoint: function(mapPoint, allLayers, callback) {
 
+            this.features = [];
+            this.callback = callback;
+            var tasks = [];
+            var layers = allLayers.filter(function (l) { return l.hasOwnProperty("url");});
+            for(var l = 0; l<layers.length; l++) {
+                var q = new Query();
+                q.outFields = ["*"];                    
+                q.where = "1=1";
+                q.geometry = mapPoint;
+                q.spatialRelationship = "esriSpatialRelIntersects";
+                q.returnGeometry = true;
+
+                layer = layers[l];
+
+                var t = {
+                    layer : layer.layerObject,
+                    task : new QueryTask(this.map._layers[layer.id].url),
+                    // query : q
+                };
+
+                tasks.push(t);
+
+                t.task.execute(q).then(lang.hitch(this, this._getResults));
+            }
+            return this.features;
+        },
+
+        _getResults: function(ev) {
+            console.log("ev", ev);
+            if(this.callback) {
+                this.callback(ev.features);
+            }
+            // ev.features.forEach(function(f) { this.features.push(f); });
+            // console.log("features", this.features);
         }
 
     });

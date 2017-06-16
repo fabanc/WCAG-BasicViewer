@@ -622,13 +622,13 @@ define(["dojo/ready",
             // }, navToolBar);
             // nav.startup();
 
-            var superNav = new SuperNavigator({
+            this.superNav = new SuperNavigator({
                 map: this.map,
                 navToolBar: oldNaviagationToolBar,
                 cursorColor: "black",
                 cursorFocusColor: this.config.focusColor
             });
-            superNav.startup();
+            this.superNav.startup();
 
             deferred.resolve(true);
             return deferred.promise;
@@ -1278,8 +1278,8 @@ define(["dojo/ready",
                     case 40 : // down
                     case 37 : // left
                     case 39 : // right
-                        var a;
-                        this._moveStopHandler(a);
+                        // var a;
+                        // this._moveStopHandler(a);
                         break;
                 }
                 switch (event.keyCode) {
@@ -1924,6 +1924,38 @@ define(["dojo/ready",
                             this.map._fixedPan(this.map.width * -0.0135, this.map.height * -0.0135);
                             evn.preventDefault();
                             evn.stopPropagation();
+                            break;
+
+                        case 13 : //enter
+
+                        // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
+                            if(this.superNav) {
+                                var center = this.map.extent;//.getCenter();
+                                console.log('Enter Key:', center, this.map);
+
+                                // var features = this.superNav.getFeaturesAtPoint(center, this.config.response.itemInfo.itemData.operationalLayers);
+                                // if(features) {
+                                //     this.map.infoWindow.setFeatures(features);
+                                // }
+                                var features = [];
+                                this.superNav.getFeaturesAtPoint(center, this.config.response.itemInfo.itemData.operationalLayers, 
+                                    lang.hitch(this, function(_features){
+                                        _features.forEach(function(f) { features.push(f);});
+                                        console.log(features.length);
+                                        // debugger;
+                                        this.map.infoWindow.hide();
+                                        this.map.infoWindow.clearFeatures();
+                                        var c = center.getCenter();
+                                        // this.map.centerAt(c).then(lang.hitch(this, function() {
+                                            this.map.infoWindow.setFeatures(features);
+                                            this.map.infoWindow.show(c);
+                                        // }));
+                                    })
+                                );
+
+                                evn.preventDefault();
+                                evn.stopPropagation();
+                            }
                             break;
                     }
                 }));
