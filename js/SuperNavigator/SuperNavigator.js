@@ -61,6 +61,8 @@ define([
                 }));
             }
         },
+
+        cursorNav: null,
     
         _init: function () {
             //if(!dom.byId("navZoomIn")) return;
@@ -70,7 +72,7 @@ define([
 
             var m = dom.byId('mapDiv').getBoundingClientRect();
 
-            var cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            var cursorNav = this.cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             domAttr.set(cursorNav, "id", "mapSuperCursor");
             domAttr.set(cursorNav,"tabindex","0");
             domAttr.set(cursorNav,"width","40");
@@ -105,6 +107,19 @@ define([
             //     domAttr.set(path,"stroke", this.cursorColor);
             //     //cursorNav.focus();
             // }));
+        },
+
+        cursorScroll:function(dx, dy) {
+            if(!this.cursorNav) return;
+            var cursorNav = this.cursorNav;
+            var tr= domStyle.get(cursorNav, 'transform');
+            var regex = /(matrix\(\d+,\s*\d+,\s*\d+,\s*\d+,\s)*(\d+(:?\.\d+)?),\s*(\d+(:?\.\d+)?)\)/ig;
+            var result = regex.exec(tr);
+            //tr=result[1]+(dx+Number(result[2]))+(dy+Number(result[4]))+')';
+
+            // https://stackoverflow.com/questions/2038504/dojo-gfx-matrix-transformation
+            // https://www.google.ca/search?q=dojo+translate&oq=dojo+translate&aqs=chrome..69i57j0l5.4311j0j7&sourceid=chrome&ie=UTF-8#q=dojo+transformation+matrix
+            //cursorNav.translate((dx+Number(result[2])), dy+Number(result[4]));
         },
 
         getFeaturesAtPoint: function(mapPoint, extendRadius, allLayers, callback) {
