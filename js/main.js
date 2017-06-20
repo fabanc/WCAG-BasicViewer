@@ -1935,7 +1935,7 @@ define(["dojo/ready",
                                 this.config.response.itemInfo.itemData.operationalLayers, 
                                 lang.hitch(this, function(results){
                                     results.forEach(function(feature) { 
-                                        if(feature.getLayer().visibleAtMapScale)
+                                        if(feature.getLayer().visible && feature.getLayer().visibleAtMapScale)
                                             features.push(feature);
                                     });
 
