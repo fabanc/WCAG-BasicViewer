@@ -3,8 +3,9 @@ define([
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on", "dojo/mouse", "dijit/focus",
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
-    "esri/symbols/SimpleLineSymbol", "esri/Color",
-    "esri/geometry/Point", "esri/tasks/query", "esri/tasks/QueryTask",
+    "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/symbols/SimpleFillSymbol", 
+    "esri/graphic", "esri/geometry/Point", "esri/geometry/Circle",
+    "esri/layers/FeatureLayer", "esri/tasks/query", //"esri/tasks/QueryTask",
     //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
     // "dojo/i18n!application/nls",
     //SuperNavigator",
@@ -17,7 +18,9 @@ define([
         _WidgetBase, _TemplatedMixin, on, mouse, focusUtil,
         query, Navigation, registry,
         HomeButton, LocateButton, 
-        SimpleLineSymbol, Color, Point, Query, QueryTask,
+        SimpleLineSymbol, Color, SimpleFillSymbol,
+        Graphic, Point, Circle,
+        FeatureLayer, Query, //QueryTask,
         //SuperNavigatorTemplate, 
         // i18n,
         domClass, domAttr, domStyle, 
@@ -62,12 +65,9 @@ define([
         _init: function () {
             //if(!dom.byId("navZoomIn")) return;
 
-            domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
-            dojo.empty(this.navToolBar);
+            // domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
+            // dojo.empty(this.navToolBar);
 
-            // var mx = this.map.extent.xmin;
-            // var my = this.map.extent.ymin;
-            // var c = this.map.toScreen(this.map.extent.getCenter());
             var m = dom.byId('mapDiv').getBoundingClientRect();
 
             var cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -84,6 +84,15 @@ define([
             domAttr.set(path,"stroke", this.cursorColor);
             domAttr.set(path,"stroke-width", "2");
 
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            domAttr.set(circle,"cx", "20");
+            domAttr.set(circle,"cy", "20");
+            domAttr.set(circle,"r", "7");
+            domAttr.set(circle,"stroke", this.cursorFocusColor);
+            domAttr.set(circle,"stroke-width", "1");
+            domAttr.set(circle,"fill", "transparent");
+
+            domConstruct.place(circle, cursorNav);
             domConstruct.place(path, cursorNav);
             
             domConstruct.place(cursorNav,'mapDiv_layers');
@@ -98,43 +107,56 @@ define([
             // }));
         },
 
-        getFeaturesAtPoint: function(mapPoint, allLayers, callback) {
+        getFeaturesAtPoint: function(mapPoint, extendRadius, allLayers, callback) {
 
             this.features = [];
             this.callback = callback;
             var tasks = [];
             var layers = allLayers.filter(function (l) { return l.hasOwnProperty("url");});
+
+            var w = this.map.extent.getWidth()/75;
+            if(extendRadius) w *= 10;
+
+            var circleSymb = new SimpleFillSymbol(
+                  SimpleFillSymbol.STYLE_SOLID,
+                  new SimpleLineSymbol(
+                    SimpleLineSymbol.STYLE_SOLID,
+                    new Color([255, 0, 0]),
+                    1
+                  ), new Color([255, 0, 0, 0.25])
+            );
+
             for(var l = 0; l<layers.length; l++) {
+                var circle = new Circle({
+                    center: mapPoint,
+                    geodesic: false,
+                    radius: w,
+                  });
                 var q = new Query();
                 q.outFields = ["*"];                    
                 q.where = "1=1";
-                q.geometry = mapPoint;
+                q.geometry = circle;
+
+                var graphic = new Graphic(circle, circleSymb);
+                this.map.graphics.clear();
+                this.map.graphics.add(graphic);
+
                 q.spatialRelationship = "esriSpatialRelIntersects";
                 q.returnGeometry = true;
 
                 layer = layers[l];
 
-                var t = {
-                    layer : layer.layerObject,
-                    task : new QueryTask(this.map._layers[layer.id].url),
-                    // query : q
-                };
-
-                tasks.push(t);
-
-                t.task.execute(q).then(lang.hitch(this, this._getResults));
+                layer.layerObject.selectFeatures(
+                    q, FeatureLayer.SELECTION_NEW, 
+                    lang.hitch(this, function(results) {
+                        if(this.callback)
+                            this.callback(results);
+                        }
+                    )
+                );
             }
             return this.features;
         },
-
-        _getResults: function(ev) {
-            console.log("ev", ev);
-            if(this.callback) {
-                this.callback(ev.features);
-            }
-            // ev.features.forEach(function(f) { this.features.push(f); });
-            // console.log("features", this.features);
-        }
 
     });
 

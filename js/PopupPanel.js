@@ -75,7 +75,7 @@ function(
         "title": linkText,
         "href": "javascript: void(0);"
       },"popupFooter");
-      domClass.add(link, ["action"])
+      domClass.add(link, ["action"]);
       on(link, "click", lang.hitch(this, this._zoomToFeature));
 
       //control page zooming when mousing-over popup content 

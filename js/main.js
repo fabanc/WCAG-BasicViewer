@@ -1925,53 +1925,46 @@ define(["dojo/ready",
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
+                        case 13: //Enter
+                            // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
+                            var center = this.map.extent.getCenter();
+                            var features = [];
+                            this.superNav.getFeaturesAtPoint(
+                                center, 
+                                evn.shiftKey, 
+                                this.config.response.itemInfo.itemData.operationalLayers, 
+                                lang.hitch(this, function(results){
+                                    results.forEach(function(feature) { 
+                                        if(feature.getLayer().visibleAtMapScale)
+                                            features.push(feature);
+                                    });
 
-                        case 13 : //enter
+                                    // this.map.infoWindow.hide();
+                                    // this.map.infoWindow.clearFeatures();
 
-                        // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
-                            if(this.superNav) {
-                                var center = this.map.extent;//.getCenter();
-                                console.log('Enter Key:', center, this.map);
-
-                                // var features = this.superNav.getFeaturesAtPoint(center, this.config.response.itemInfo.itemData.operationalLayers);
-                                // if(features) {
-                                //     this.map.infoWindow.setFeatures(features);
-                                // }
-                                var features = [];
-                                this.superNav.getFeaturesAtPoint(center, this.config.response.itemInfo.itemData.operationalLayers, 
-                                    lang.hitch(this, function(_features){
-                                        _features.forEach(function(f) { features.push(f);});
-                                        console.log(features.length);
-                                        // debugger;
-                                        // this.map.infoWindow.hide();
-                                        // this.map.infoWindow.clearFeatures();
-                                        
-                                        var c = center.getCenter();
-                                        this.map.centerAt(c).then(lang.hitch(this, function() {
-                                            this.map.infoWindow.setFeatures(features);
-                                            this.map.infoWindow.show(c);
-                                        }));
-                                    })
-                                );
-
-                                evn.preventDefault();
-                                evn.stopPropagation();
-                            }
+                                    // this.map.centerAt(center).then(lang.hitch(this, function() {
+                                        this.map.infoWindow.setFeatures(features);
+                                        this.map.infoWindow.show(center);
+                                    // }));
+                                })
+                            );
+                            evn.preventDefault();
+                            evn.stopPropagation();
                             break;
                     }
                 }));
                 on(mapDiv, 'keypress', lang.hitch(this, function(evn){
-                  if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return;  
-                  evn.preventDefault();
-                  evn.stopPropagation();
-                  if((evn.keyCode === 43) && !evn.ctrlKey && !evn.altKey)  // Shift-'+'
-                  {
-                      this.map.setLevel(this.map.getLevel() + 1);
-                  }
-                  if((evn.keyCode === 45) && !evn.ctrlKey && !evn.altKey)  // Shift-'-'
-                  {
-                      this.map.setLevel(this.map.getLevel() - 1);
-                  }
+                    if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return;  
+                    evn.preventDefault();
+                    evn.stopPropagation();
+                    if((evn.keyCode === 43) && !evn.ctrlKey && !evn.altKey)  // Shift-'+'
+                    {
+                        this.map.setLevel(this.map.getLevel() + 1);
+                    }
+                    if((evn.keyCode === 45) && !evn.ctrlKey && !evn.altKey)  // Shift-'-'
+                    {
+                        this.map.setLevel(this.map.getLevel() - 1);
+                    }
                 }));
 
                 this.map = response.map;
