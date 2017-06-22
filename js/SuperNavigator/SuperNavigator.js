@@ -4,8 +4,12 @@ define([
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/symbols/SimpleFillSymbol", 
+<<<<<<< HEAD
     "esri/graphic", "esri/geometry/Point", "esri/geometry/ScreenPoint",
     "esri/geometry/Circle",
+=======
+    "esri/graphic", "esri/geometry/Point", "esri/geometry/Circle",
+>>>>>>> origin/Accessible-Navigator
     "esri/layers/FeatureLayer", "esri/tasks/query", //"esri/tasks/QueryTask",
     //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
     // "dojo/i18n!application/nls",
@@ -22,8 +26,12 @@ define([
         query, Navigation, registry,
         HomeButton, LocateButton, 
         SimpleLineSymbol, Color, SimpleFillSymbol,
+<<<<<<< HEAD
         Graphic, Point, ScreenPoint,
         Circle,
+=======
+        Graphic, Point, Circle,
+>>>>>>> origin/Accessible-Navigator
         FeatureLayer, Query, //QueryTask,
         //SuperNavigatorTemplate, 
         // i18n,
@@ -69,13 +77,17 @@ define([
         },
 
         cursorNav: null,
+<<<<<<< HEAD
         cursor: null,
         cursorPos: null,
+=======
+>>>>>>> origin/Accessible-Navigator
     
         _init: function () {
             //if(!dom.byId("navZoomIn")) return;
 
             // domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
+<<<<<<< HEAD
             dojo.empty(this.navToolBar);
 
             var m = this.cursorToCenter();
@@ -137,6 +149,10 @@ define([
         },
 
         cursorToCenter:function() {
+=======
+            // dojo.empty(this.navToolBar);
+
+>>>>>>> origin/Accessible-Navigator
             var m = dom.byId('mapDiv').getBoundingClientRect();
             this.cursorPos = new ScreenPoint(((m.right-m.left)/2), ((m.bottom-m.top)/2));
             return m;
@@ -145,6 +161,7 @@ define([
         cursorScroll:function(dx, dy) {
             var deferred = new Deferred();
 
+<<<<<<< HEAD
             this.cursorPos.x += dx;
             this.cursorPos.y += dy;
             var m = dom.byId('mapDiv').getBoundingClientRect();
@@ -165,6 +182,57 @@ define([
         },
 
         queryZone : null,
+=======
+            var cursorNav = this.cursorNav = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            domAttr.set(cursorNav, "id", "mapSuperCursor");
+            domAttr.set(cursorNav,"tabindex","0");
+            domAttr.set(cursorNav,"width","40");
+            domAttr.set(cursorNav,"height","40");
+            domStyle.set(cursorNav,"pointer-events","all");
+            domStyle.set(cursorNav,"position","absolute");
+            domStyle.set(cursorNav,"transform","translate("+((m.right-m.left)/2-20)+"px, "+((m.bottom-m.top)/2-20)+"px)");
+
+            var path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+            domAttr.set(path,"d", "M20 0 L20 19 M20 21 L20 40 M0 20 L19 20 M21 20 L40 20");
+            domAttr.set(path,"stroke", this.cursorColor);
+            domAttr.set(path,"stroke-width", "2");
+
+            var circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            domAttr.set(circle,"cx", "20");
+            domAttr.set(circle,"cy", "20");
+            domAttr.set(circle,"r", "7");
+            domAttr.set(circle,"stroke", this.cursorFocusColor);
+            domAttr.set(circle,"stroke-width", "1");
+            domAttr.set(circle,"fill", "transparent");
+
+            domConstruct.place(circle, cursorNav);
+            domConstruct.place(path, cursorNav);
+            
+            domConstruct.place(cursorNav,'mapDiv_layers');
+
+            // on(this.map, "mouse-down", lang.hitch(this, function(e) {
+            //     domAttr.set(path,"stroke", this.cursorFocusColor);
+            //     // path.focus();
+            // }));
+            // on(this.map, "mouse-up", lang.hitch(this, function(e) {
+            //     domAttr.set(path,"stroke", this.cursorColor);
+            //     //cursorNav.focus();
+            // }));
+        },
+
+        cursorScroll:function(dx, dy) {
+            if(!this.cursorNav) return;
+            var cursorNav = this.cursorNav;
+            var tr= domStyle.get(cursorNav, 'transform');
+            var regex = /(matrix\(\d+,\s*\d+,\s*\d+,\s*\d+,\s)*(\d+(:?\.\d+)?),\s*(\d+(:?\.\d+)?)\)/ig;
+            var result = regex.exec(tr);
+            //tr=result[1]+(dx+Number(result[2]))+(dy+Number(result[4]))+')';
+
+            // https://stackoverflow.com/questions/2038504/dojo-gfx-matrix-transformation
+            // https://www.google.ca/search?q=dojo+translate&oq=dojo+translate&aqs=chrome..69i57j0l5.4311j0j7&sourceid=chrome&ie=UTF-8#q=dojo+transformation+matrix
+            //cursorNav.translate((dx+Number(result[2])), dy+Number(result[4]));
+        },
+>>>>>>> origin/Accessible-Navigator
 
         getFeaturesAtPoint: function(mapPoint, extendRadius, allLayers, callback) {
 
@@ -196,12 +264,18 @@ define([
                 q.where = "1=1";
                 q.geometry = circle;
 
+<<<<<<< HEAD
                 if(this.queryZone) {
                     this.map.graphics.remove(this.queryZone);
                 }
 
                 this.queryZone = new Graphic(circle, circleSymb);
                 this.map.graphics.add(this.queryZone);
+=======
+                var graphic = new Graphic(circle, circleSymb);
+                this.map.graphics.clear();
+                this.map.graphics.add(graphic);
+>>>>>>> origin/Accessible-Navigator
 
                 q.spatialRelationship = "esriSpatialRelIntersects";
                 q.returnGeometry = true;
@@ -220,6 +294,7 @@ define([
             return this.features;
         },
 
+<<<<<<< HEAD
         showPopup: function(shiftKey, layers) {
             var center = this.map.toMap(this.cursorPos);
             var features = [];
@@ -242,6 +317,8 @@ define([
             );
         }
 
+=======
+>>>>>>> origin/Accessible-Navigator
     });
 
     if (has("extend-esri")) {

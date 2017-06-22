@@ -1940,7 +1940,31 @@ define(["dojo/ready",
                         case 13: //Enter
                             // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
                             if(this.superNav) {
+<<<<<<< HEAD
                                 this.superNav.showPopup(evn.shiftKey, this.config.response.itemInfo.itemData.operationalLayers);
+=======
+                                var center = this.map.extent.getCenter();
+                                var features = [];
+                                this.superNav.getFeaturesAtPoint(
+                                    center, 
+                                    evn.shiftKey, 
+                                    this.config.response.itemInfo.itemData.operationalLayers, 
+                                    lang.hitch(this, function(results){
+                                        results.forEach(function(feature) { 
+                                            if(feature.getLayer().visible && feature.getLayer().visibleAtMapScale)
+                                                features.push(feature);
+                                        });
+
+                                        // this.map.infoWindow.hide();
+                                        // this.map.infoWindow.clearFeatures();
+
+                                        // this.map.centerAt(center).then(lang.hitch(this, function() {
+                                            this.map.infoWindow.setFeatures(features);
+                                            this.map.infoWindow.show(center);
+                                        // }));
+                                    })
+                                );
+>>>>>>> origin/Accessible-Navigator
                                 evn.preventDefault();
                                 evn.stopPropagation();
                             }
@@ -2082,9 +2106,13 @@ define(["dojo/ready",
                 this.map._fixedPan(dx, dy);
             }
             else {
+<<<<<<< HEAD
                 this.superNav.cursorScroll(dx, dy).then(lang.hitch(this, function(cursorPos) {
                     this.map.toMap(cursorPos);
                 }));
+=======
+                this.superNav.cursorScroll(dx, dy);
+>>>>>>> origin/Accessible-Navigator
             }
         }
 
