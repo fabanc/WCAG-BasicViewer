@@ -142,6 +142,10 @@
                      "value":"features"
                   },
                   {  
+                     "label":"InfoPanel",
+                     "value":"infoPanel"
+                  },
+                  {  
                      "label":"Filters",
                      "value":"filter"
                   },
@@ -198,6 +202,9 @@
             {  "label":"Feature List",
                "type":"boolean",
                "fieldName":"tool_features"},
+            {  "label":"Side Info Panel",
+               "type":"boolean",
+               "fieldName":"tool_infoPanel"},
             {  "label":"Filters",
                "type":"boolean",
                "fieldName":"tool_filter"},

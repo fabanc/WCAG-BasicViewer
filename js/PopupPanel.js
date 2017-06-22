@@ -34,6 +34,8 @@ function(
   domUtils, esriLang, Popup
 ) {
 
+// https://developers.arcgis.com/javascript/3/jssamples/popup_sidepanel.html
+
   var PopupPanel = declare(null, {
     declaredClass: "application.PopupPanel",
 
