@@ -313,6 +313,9 @@ define(["dojo/ready",
                         case "instructions":
                             toolList.push(this._addInstructions(this.config.tools[i], toolbar, deferredDetails));
                             break;
+                        case "infoPanel":
+                            toolList.push(this._addInfoPanel(this.config.tools[i], toolbar));
+                            break;
                         case "features":
                             toolList.push(this._addFeatures(this.config.tools[i], toolbar));
                             break;
@@ -1119,6 +1122,107 @@ define(["dojo/ready",
                 } else {
                     deferred.resolve(false);
                 }
+            }
+            return deferred.promise;
+        },
+
+        _addInfoPanel: function (tool, toolbar) {
+            //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
+            var deferred = new Deferred();
+            if (has("infoPanel")) {
+                var infoPanelDiv = toolbar.createTool(tool, "");
+                
+                // var legend = new Legend({
+                //     map: this.map,
+                //     layerInfos: layers
+                // }, domConstruct.create("div", {role:'application'}, legendDiv));//Desc));
+                // domClass.add(legend.domNode, "legend");
+                // legend.startup();
+
+                // on(toolbar, 'updateTool_legend', lang.hitch(this, function(name) {
+                //     fixLegend();
+                //     // dom.byId('pageBody_legend').focus();
+                // }));
+
+                // var fixLegend = function() {
+                //     var tables = legend.domNode.querySelectorAll("table");
+                //     if(tables && tables.length>0)
+                //     {
+                //         for(var t=0; t<tables.length; t++) {
+                //             var table = tables[t];
+                //             domAttr.set(table, 'role', "presentation");
+                //         }
+                //     }
+
+                //     var svgs = legend.domNode.querySelectorAll("svg");
+                //     if(svgs && svgs.length>0)
+                //     {
+                //         for(var s=0; s<svgs.length; s++) {
+                //             var svg = svgs[s];
+                //             domAttr.set(svg, 'title', "symbol");
+                //         }
+                //     }
+
+                //     var LegendServiceLabels = legend.domNode.querySelectorAll(".esriLegendServiceLabel");
+                //     if(LegendServiceLabels && LegendServiceLabels.length>0)
+                //     {
+                //         for(var i=0; i<LegendServiceLabels.length; i++) {
+                //             var LegendServiceLabel = LegendServiceLabels[i];
+                //             if(LegendServiceLabel.nodeName !== 'H2') {
+                //                 var h2 = domConstruct.create("h2",{
+                //                     className: LegendServiceLabel.className,
+                //                     innerHTML: LegendServiceLabel.innerHTML
+                //                 });
+                //                 LegendServiceLabel.parentNode.replaceChild(h2, LegendServiceLabel);
+                //             }
+
+                //                 // var service = LegendServiceLabel.closest('.esriLegendService');
+                //                 // if(service && (!service.style || service.style.display !== 'none')) {
+                //                      domAttr.set(LegendServiceLabel, 'tabindex', 0);
+                //                 // } else {
+                //                 //     domAttr.set(LegendServiceLabel, 'tabindex', -1);
+                //                 // }
+                //         }
+                //     }
+
+                //     var LegendLayers = legend.domNode.querySelectorAll(".esriLegendLayer");
+                //     for(var j=0; j<LegendLayers.length; j++) {
+                //         //var LegendServiceLists = legend.domNode.querySelectorAll(".esriLegendLayer tbody");
+                //         var LegendServiceList = LegendLayers[j].querySelector("tbody");
+
+                //         // if(LegendServiceList.querySelector('.layerHeader')) {
+                //         //     var header = document.createElement("tr");
+                //         //     header.innerHTML = "<th style='display:none;' class='layerHeader'>Layer</th>";
+                //         //     LegendServiceList.insertBefore(header, LegendServiceList.childNodes[0]);
+                //         // }
+                //         domAttr.set(LegendServiceList, "role", "list");
+                //         //domAttr.set(LegendServiceList, "aria-label", LegendServiceLabel.innerHTML);
+
+                //         for(var k=0; k<LegendServiceList.childNodes.length; k++) {
+                //             var item = LegendServiceList.childNodes[k];
+                //             domAttr.set(item, "role", "listitem");
+                //             domAttr.set(item, "tabindex", "0");
+                //         }
+                //     }
+
+                //     var LegendLayerImages = legend.domNode.querySelectorAll(".esriLegendLayer image");
+                //     for(var n = 0; n<LegendLayerImages.length; n++) {
+                //         domAttr.set(LegendLayerImages[n],'alt','');
+                //     }
+
+                //     var messages = legend.domNode.querySelectorAll(".esriLegendMsg");
+                //     for(var m = 0; m<messages.length; m++) {
+                //         domAttr.set(messages[m],'tabindex',0);
+                //     }
+                // };
+                
+                // on(this.map, "extent-change", lang.hitch(this, fixLegend));
+                // // dojo.setAttr(legendDiv, 'tabindex', 0);
+
+                deferred.resolve(true);
+
+            } else {
+                deferred.resolve(false);
             }
             return deferred.promise;
         },

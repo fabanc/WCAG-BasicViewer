@@ -53,6 +53,7 @@ define(
         	"legend": "Légende",
         	"bookmarks": "Géosignets",
         	"layers": "Couches",
+            "infoPanel" : "Panneau d'information",
         	"basemap": "Galerie des Cartes de Base",
         	"overview": "Vue Générale",
         	"measure": "Mesurer",

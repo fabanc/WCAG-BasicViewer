@@ -104,6 +104,22 @@ define(["dojo/has"], function (has) {
         }
         return features;
     });
+    has.add("infoPanel", function (g) {
+        var infoPanel = getTool("infoPanel", g.config);
+        //overwrite the default with app settings
+        if (g.config.hasOwnProperty("tool_infoPanel")) {
+            infoPanel = g.config.tool_infoPanel;
+        }
+        return infoPanel;
+    });
+    has.add("mapKeyboardNavigation", function (g) {
+        var infoPanel = g.config.mapKeyboardNavigation || false;
+        //overwrite the default with app settings
+        if (g.config.hasOwnProperty("tool_mapKeyboardNavigation")) {
+            mapKeyboardNavigation = g.config.tool_mapKeyboardNavigation;
+        }
+        return mapKeyboardNavigation;
+    });
     has.add("filter", function (g) {
         var filter = getTool("filter", g.config);
         //overwrite the default with app settings

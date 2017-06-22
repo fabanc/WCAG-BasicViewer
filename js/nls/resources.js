@@ -52,6 +52,7 @@ define({
         	"locate": "Find my Location",
             "features" : "Feature List",
             "filter" : "Filters",
+            "infoPanel" : "Info Panel",
             "instructions": "Instructions",
             "legend": "Legend",
         	"bookmarks": "Bookmarks",
