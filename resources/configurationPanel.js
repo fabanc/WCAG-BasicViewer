@@ -142,9 +142,18 @@
                      "value":"features"
                   },
                   {  
+                     "label":"FeatureTable",
+                     "value":"featureRable"
+                  },
+                  {  
                      "label":"InfoPanel",
                      "value":"infoPanel"
                   },
+                  {  
+                     "label":"MapKeyboardNavigation",
+                     "value":"mapKeyboardNavigation"
+                  },
+
                   {  
                      "label":"Filters",
                      "value":"filter"
@@ -202,9 +211,15 @@
             {  "label":"Feature List",
                "type":"boolean",
                "fieldName":"tool_features"},
+            {  "label":"Feature Table",
+               "type":"boolean",
+               "fieldName":"tool_featureTable"},
             {  "label":"Side Info Panel",
                "type":"boolean",
                "fieldName":"tool_infoPanel"},
+            {  "label":"Map Keyboard Navigation",
+               "type":"boolean",
+               "fieldName":"tool_mapKeyboardNavigation"},
             {  "label":"Filters",
                "type":"boolean",
                "fieldName":"tool_filter"},
@@ -464,6 +479,10 @@
       "tool_filter":true,
       "tool_legend":true,
       "tool_layers":true,
+      "tool_features":true,
+      "tool_featureTable":true,
+      "tool_infoPanel":false,
+      "tool_mapKeyboardNavigation":false,
       "tool_home":true,
       "tool_locate":true,
       "tool_edit":true,
