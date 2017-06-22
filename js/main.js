@@ -616,14 +616,14 @@ define(["dojo/ready",
                 id: "newNaviagationToolBar",
             });
             
-            // nav = new NavToolBar({
-            //     map: this.map,
-            //     navToolBar: oldNaviagationToolBar,
-            //     iconColor: this.config.icons,
-            //     newIcons: this.config.new_icons?'.new':'',
-            //     zoomColor: this.focusColor,
-            // }, navToolBar);
-            // nav.startup();
+            nav = new NavToolBar({
+                map: this.map,
+                navToolBar: oldNaviagationToolBar,
+                iconColor: this.config.icons,
+                newIcons: this.config.new_icons?'.new':'',
+                zoomColor: this.focusColor,
+            }, navToolBar);
+            nav.startup();
 
             this.superNav = new SuperNavigator({
                 map: this.map,

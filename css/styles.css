@@ -625,7 +625,7 @@ img {
 
 #panelText:focus {
   white-space: inherit;
-  /*font-size: 14px;*/
+  overflow-y: auto;
 }
 
 #panelTitle h1 {

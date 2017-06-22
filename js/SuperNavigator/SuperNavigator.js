@@ -73,10 +73,10 @@ define([
         cursorPos: null,
     
         _init: function () {
-            //if(!dom.byId("navZoomIn")) return;
+            // if(!dom.byId("navZoomIn")) return;
 
             // domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
-            dojo.empty(this.navToolBar);
+            //dojo.empty(this.navToolBar);
 
             var m = this.cursorToCenter();
             // dom.byId('mapDiv').getBoundingClientRect();
