@@ -75,6 +75,10 @@ define({
             "help" : "Skip to Help",
             "featureDetaills" : "Skip to Feature Details"
         },
+        "popupInfo" : {
+            "Next":"Next",
+            "Prev":"Prev"
+        },
         search : "Search: ",
         searchPlaceholder: "Find address or place",
         searchEnterCriteria : "Enter search term for",

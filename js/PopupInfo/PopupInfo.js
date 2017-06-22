@@ -28,6 +28,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var defaults = lang.mixin({}, this.options, options);
             this.domNode = srcRefNode;
             this.map = defaults.map;
+            this._i18n = i18n;
 
             dojo.create("link", {
                 href : "js/PopupInfo/Templates/PopupInfo.css",

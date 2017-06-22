@@ -1,6 +1,7 @@
 .nav {
   padding: 5px 10px;
   border: solid 1px grey;
+  text-decoration: none;
 }
 
 #header {

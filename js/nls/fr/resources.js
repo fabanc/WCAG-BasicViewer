@@ -74,6 +74,10 @@ define(
             "help" : "Aller à l’aide",
             "featureDetaills" : "Aller aux fonctionnalités détaillées"
         },
+        "popupInfo" : {
+            "Next":"Suivant",
+            "Prev":"Précédent"
+        },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",
         searchEnterCriteria : "Terme recherché pour",
