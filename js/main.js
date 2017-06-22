@@ -1135,6 +1135,7 @@ define(["dojo/ready",
                 popupInfo = new PopupInfo(
                 {
                     map: this.map,
+                    toolbar: toolbar
                 }, infoPanelDiv);
                 popupInfo.startup();
 

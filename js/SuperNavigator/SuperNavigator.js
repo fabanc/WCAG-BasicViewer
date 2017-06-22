@@ -236,7 +236,7 @@ define([
 
                     // this.map.centerAt(center).then(lang.hitch(this, function() {
                         this.map.infoWindow.setFeatures(features);
-                        this.map.infoWindow.show(center);
+                        // this.map.infoWindow.show(center);
                     // }));
                 })
             );
