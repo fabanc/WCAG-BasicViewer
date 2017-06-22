@@ -106,7 +106,7 @@ define([
     });
 
     if (has("extend-esri")) {
-        lang.setObject("dijit.ShowFeatureTable", Widget, esriNS);
+        lang.setObject("dijit.ImageToggleButton", Widget, esriNS);
     }
     return Widget;
 });
