@@ -274,6 +274,10 @@ on, mouse, query, Deferred) {
             //     toolbar._closePage();
             // }
         },
+
+        closePage: function() {
+
+        },
         
         // // menu click
         // _menuClick: function () {
