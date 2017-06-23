@@ -38,6 +38,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         // defaults
         templateString: PopupInfoTemplate,
 
+
         options: {
             map: null,
             toolbar: null
@@ -46,6 +47,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         constructor: function (options, srcRefNode) {
             var defaults = lang.mixin({}, this.options, options);
             this.domNode = srcRefNode;
+            this.widgetsInTemplate = true;
 
             this.map = defaults.map;
             this.toolbar = defaults.toolbar;
@@ -87,6 +89,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
+            var content = new ContentPane({
+                // style: "padding:1px;",
+                region: "center",
+                id: "leftPane",
+                tabindex: 0
+            },dom.byId("feature_content"));
+            content.startup();
+
             var popup = this.map.infoWindow;
 
             popup.set("popupWindow", false);
@@ -95,12 +105,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
-                    feature.infoTemplate = feature.getLayer().infoTemplate;
+                    // feature.infoTemplate = feature.getLayer().infoTemplate;
                     
-                    feature_title.innerHTML=feature.getTitle();//content.innerHTML;
                     registry.byId("leftPane").set("content", feature.getContent());
-                    // feature_content.innerHTML=feature.getNode().outerHTML;//getContent().outerHTML;
-                    // console.log(feature.getContent());
                 }
             });
 
