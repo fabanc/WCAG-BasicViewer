@@ -3,6 +3,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/on", 
     "dojo/Deferred", "dojo/query", 
     "dojo/text!application/PopupInfo/templates/PopupInfo.html", 
+    "dojo/text!application/PopupInfo/templates/PopupInfoHeader.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
@@ -18,7 +19,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _WidgetBase, _TemplatedMixin, registry,
         on, 
         Deferred, query,
-        PopupInfoTemplate, 
+        PopupInfoTemplate, PopupInfoHeaderTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
         parser, ready,
         BorderContainer,
@@ -41,7 +42,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         options: {
             map: null,
-            toolbar: null
+            toolbar: null, 
+            header: 'pageHeader_infoPanel',
         },
 
         constructor: function (options, srcRefNode) {
@@ -52,6 +54,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.map = defaults.map;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
+            this.headerNode = dom.byId(defaults.header);
 
             dojo.create("link", {
                 href : "js/PopupInfo/Templates/PopupInfo.css",
@@ -93,14 +96,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 // style: "padding:1px;",
                 region: "center",
                 id: "leftPane",
-                tabindex: 0
+                tabindex: 0,
+
             },dom.byId("feature_content"));
             content.startup();
+
+            dojo.place(PopupInfoHeaderTemplate, this.headerNode);
 
             var popup = this.map.infoWindow;
 
             popup.set("popupWindow", false);
-
 
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');

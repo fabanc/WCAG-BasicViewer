@@ -9,3 +9,19 @@
   height: 60px;
   border-bottom: solid 1px #ccc;
 }
+
+#popupInfoHeader {
+    color: white;
+    float: right;
+    margin-right: 10px;
+    padding-top: 2px;
+}
+
+#popupInfoHeader * {
+	display: inline;
+}
+
+#popupInfoHeader img {
+	height: 12px;
+    width: 12px;
+}
