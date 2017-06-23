@@ -1139,52 +1139,6 @@ define(["dojo/ready",
                 }, infoPanelDiv);
                 popupInfo.startup();
 
-                // this.map.infoWindow.set("popupWindow", false);
-
-                // {
-                //     var popup = this.map.infoWindow;
-
-                //     var displayPopupContent = function (feature) {
-                //         if (feature) {
-                //             var content = feature.getContent();
-                //             dom.byId("pageBody_infoPanel").set("content", content);
-                //         }
-                //     };
-
-                //     var selectPrevious = function () {
-                //       window.map.infoWindow.selectPrevious();
-                //     };
-
-                //     var selectNext = function () {
-                //       window.map.infoWindow.selectNext();
-                //     };
-
-                //     //when the selection changes update the side panel to display the popup info for the 
-                //     //currently selected feature. 
-                //     connect.connect(popup, "onSelectionChange", function() {
-                //         displayPopupContent(popup.getSelectedFeature());
-                //     });
-
-                //     connect.connect(popup, "onClearFeatures", function() {
-                //     //dom.byId replaces dojo.byId
-                //         dom.byId("featureCount").innerHTML = "Click to select feature";
-                //     //registry.byId replaces dijit.byId
-                //         registry.byId("leftPane").set("content", "");
-                //         domUtils.hide(dom.byId("pager"));
-                //     });
-
-                //     connect.connect(popup, "onSetFeatures", function() {
-                //         displayPopupContent(popup.getSelectedFeature());
-                //         if (popup.features.length > 1) {
-                //           dom.byId("featureCount").innerHTML = popup.features.length + " features selected";
-                //           //enable navigation if more than one feature is selected 
-                //           domUtils.show(dom.byId("pager"));
-                //         } else {
-                //           dom.byId("featureCount").innerHTML = popup.features.length + " feature selected";
-                //           domUtils.hide(dom.byId("pager"));
-                //         }
-                //     });
-                // }       
 
                 // require(["application/PopupPanel"], lang.hitch(this,
                 // function (PopupPanel) {

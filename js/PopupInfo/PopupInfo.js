@@ -4,7 +4,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/Deferred", "dojo/query", 
     "dojo/text!application/PopupInfo/templates/PopupInfo.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
-    "dojo/parser",
+    "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",    
     "dojo/string", 
@@ -20,7 +20,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         Deferred, query,
         PopupInfoTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
-        parser,
+        parser, ready,
         BorderContainer,
         ContentPane,
         string,
@@ -28,6 +28,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         domUtils,
         Popup
     ) {
+
+    ready(function(){
+        // Call the parser manually so it runs after our widget is defined, and page has finished loading
+        parser.parse();
+    });
+
     var Widget = declare("esri.dijit.PopupInfo", [_WidgetBase, _TemplatedMixin, Evented], {
         // defaults
         templateString: PopupInfoTemplate,
@@ -40,6 +46,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         constructor: function (options, srcRefNode) {
             var defaults = lang.mixin({}, this.options, options);
             this.domNode = srcRefNode;
+
             this.map = defaults.map;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
@@ -67,8 +74,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
 //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
+
+        content : "content",
+            
+        feature_title : "",
+
+        // _setValueAttr: function(value){
+        //     this.feature_title = value;
+        // },
+
         _init: function () {
-            parser.parse();
 
             this.loaded = true;
 
@@ -80,10 +95,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
-                    // popup.infoTemplate = feature._layer.infoTemplate;
-                    // popup.setTitle(feature.attributes.FID);
-                    var content = feature.getContent();
-                    dom.byId("content").innerHTML=content.innerHTML;
+                    feature.infoTemplate = feature.getLayer().infoTemplate;
+                    
+                    feature_title.innerHTML=feature.getTitle();//content.innerHTML;
+                    registry.byId("leftPane").set("content", feature.getContent());
+                    // feature_content.innerHTML=feature.getNode().outerHTML;//getContent().outerHTML;
+                    // console.log(feature.getContent());
                 }
             });
 

@@ -231,12 +231,12 @@ define([
                             features.push(feature);
                     });
 
-                    // this.map.infoWindow.hide();
-                    // this.map.infoWindow.clearFeatures();
+                    this.map.infoWindow.hide();
+                    this.map.infoWindow.clearFeatures();
 
                     // this.map.centerAt(center).then(lang.hitch(this, function() {
                         this.map.infoWindow.setFeatures(features);
-                        // this.map.infoWindow.show(center);
+                        this.map.infoWindow.show(center);
                     // }));
                 })
             );
