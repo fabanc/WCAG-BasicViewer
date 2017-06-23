@@ -1138,19 +1138,6 @@ define(["dojo/ready",
                     toolbar: toolbar
                 }, infoPanelDiv);
                 popupInfo.startup();
-
-
-                // require(["application/PopupPanel"], lang.hitch(this,
-                // function (PopupPanel) {
-                //     this.map.infoWindow.set("popupWindow", false);
-                //     var popupPane = new PopupPanel({
-                //         popup: dom.byId('pageBody_infoPanel'),
-                //         srcNode: "popupContainer",
-                //         toolbar: toolbar
-                //     });
-                //     popupPane.initPopup();
-                // }));
-
                 
                 deferred.resolve(true);
 
