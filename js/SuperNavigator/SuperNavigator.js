@@ -123,7 +123,6 @@ define([
                 });
             }));
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
-<<<<<<< HEAD
                 this.clear();
             }));
             // on(this.map.infoWindow, 'ClearFeatures', lang.hitch(this, function() {
@@ -132,19 +131,6 @@ define([
             //     }
             // }));
 
-=======
-                if(this.queryZone) {
-                    this.map.graphics.remove(this.queryZone);
-                }
-            }));
-
-            on(this.map.infoWindow, "selection-change", function(ev) {
-                // console.log(ev);
-                // query('.sizer.content').forEach(function(content){
-                //     domAttr.set(content,'tabindex', 0);
-                // });
-            });
->>>>>>> origin/Accessible-Navigator
         },
 
         cursorToCenter:function() {
@@ -152,17 +138,10 @@ define([
             this.cursorPos = new ScreenPoint(((m.right-m.left)/2), ((m.bottom-m.top)/2));
             return m;
         },
-<<<<<<< HEAD
 
         cursorScroll:function(dx, dy) {
             var deferred = new Deferred();
 
-=======
-
-        cursorScroll:function(dx, dy) {
-            var deferred = new Deferred();
-
->>>>>>> origin/Accessible-Navigator
             this.cursorPos.x += dx;
             this.cursorPos.y += dy;
             var m = dom.byId('mapDiv').getBoundingClientRect();
@@ -214,13 +193,7 @@ define([
                 q.where = "1=1";
                 q.geometry = circle;
 
-<<<<<<< HEAD
                 this.clear();
-=======
-                if(this.queryZone) {
-                    this.map.graphics.remove(this.queryZone);
-                }
->>>>>>> origin/Accessible-Navigator
 
                 this.queryZone = new Graphic(circle, circleSymb);
                 this.map.graphics.add(this.queryZone);
@@ -242,15 +215,12 @@ define([
             return this.features;
         },
 
-<<<<<<< HEAD
         clear: function() {
             if(this.queryZone) {
                 this.map.graphics.remove(this.queryZone);
             }
         },
 
-=======
->>>>>>> origin/Accessible-Navigator
         showPopup: function(shiftKey, layers) {
             var center = this.map.toMap(this.cursorPos);
             var features = [];
