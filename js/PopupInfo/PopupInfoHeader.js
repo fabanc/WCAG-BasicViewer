@@ -5,7 +5,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/text!application/PopupInfo/templates/PopupInfoHeader.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
-    // "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",    
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
@@ -21,7 +20,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         PopupInfoHeaderTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
         parser, ready,
-        // BorderContainer,
         ContentPane,
         string,
         i18n,
@@ -35,9 +33,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     // });
 
     var Widget = declare("esri.dijit.PopupInfoHeader", [_WidgetBase, _TemplatedMixin, Evented], {
-        // defaults
         templateString: PopupInfoHeaderTemplate,
-
 
         options: {
             map: null,
@@ -109,21 +105,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }));
 
             on(popup, "SetFeatures", lang.hitch(this, function() {
-                this.setTotal((popup.features && popup.features.length > 0) ? popup.features.length : 0);
-                // var msgNode = dojo.byId("popupMessage");
-                // var ctrlNode = dojo.byId("popupControls");
-                // if (popup.features && popup.features.length >= 1) {
-                //     domStyle.set(msgNode, 'display', 'none');
-                //     domStyle.set(ctrlNode, 'display', 'initial');
-                //     this.total = popup.features.length;
-                //     domStyle.set(dojo.byId("popupPager"), 'display', (this.total > 1 ? 'initial' : 'none'));
-                // } else {
-                //     this.total = 0;
-                //     domStyle.set(msgNode, 'display', 'initial');
-                //     domStyle.set(ctrlNode, 'display', 'none');
-                // }
-                // dom.byId('totalFeatures').innerHTML = this.total;
-                // console.log(this.total);
+                if(popup.features && popup.features.length > 0) {
+                    this.setTotal(popup.features.length);
+                }
+                else {
+                    this.clearFeatures();
+
+                }
             }));
 
             this.setTotal(0);
@@ -163,7 +151,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         toMap : function(ev) {
-            this.panZoom(true);
+            var popup = this.map.infoWindow;
+            if(popup.selectedIndex>=0) {
+                var geometry = popup.features[popup.selectedIndex].geometry;
+                if(geometry.type === 'point')
+                    this.panZoom(true);
+            }
             // this.clearFeatures({});
             dojo.byId('mapDiv').focus();
        },
@@ -174,6 +167,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         panZoom: function(panOnly) {
             var popup = this.map.infoWindow;
+            if(popup.selectedIndex<0) return;
             var geometry = popup.features[popup.selectedIndex].geometry;
             if(panOnly) {
                 if (geometry.type !== "point") {
