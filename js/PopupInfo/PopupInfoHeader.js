@@ -90,11 +90,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             var prev = query('.popupInfoButton.prev')[0];
                             prev.focus();
                             prev.click();
+                            ev.stopPropagation();
+                            ev.preventDefault();
                             break;
                         case 39: // >
                             var next = query('.popupInfoButton.next')[0];
                             next.focus();
                             next.click();
+                            ev.stopPropagation();
+                            ev.preventDefault();
                             break;
                     }
                 }));
