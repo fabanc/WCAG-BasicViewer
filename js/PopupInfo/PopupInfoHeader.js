@@ -85,6 +85,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     switch(ev.keyCode) {
                         case 13: 
                             btn.click();
+                            ev.stopPropagation();
+                            ev.preventDefault();
                             break;
                         case 37: // <
                             var prev = query('.popupInfoButton.prev')[0];
@@ -100,6 +102,30 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
+                        case 40: // down
+                            dojo.byId("leftPane").focus();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            break;
+                        case 90: // Z
+                            query('.popupInfoButton.zoom')[0].focus();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            break;
+                        case 77: // M
+                        case 80: // P
+                            query('.popupInfoButton.map')[0].focus();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            break;
+                        case 88: // X
+                        case 67: // C
+                        case 69: // E
+                            query('.popupInfoButton.clear')[0].focus();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                            break;
+
                     }
                 }));
             });
