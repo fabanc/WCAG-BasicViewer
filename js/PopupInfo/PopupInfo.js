@@ -9,7 +9,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",    
     "dojo/string", 
-    "dojo/i18n!application/nls/resources",
+    "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
     "esri/dijit/Popup", "application/PopupInfo/PopupInfoHeader","application/SuperNavigator/SuperNavigator",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"

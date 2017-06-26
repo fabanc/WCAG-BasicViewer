@@ -36,3 +36,12 @@
 .next {
 	  content: "\e808";
 }
+
+.esriViewPopup .mainSection .attrTable td.attrName {
+  color: black;
+}
+
+.esriViewPopup .mainSection .attrTable td.attrValue {
+  color: black;
+  font-weight: bold;
+}

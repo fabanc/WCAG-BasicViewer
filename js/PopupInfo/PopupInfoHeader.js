@@ -8,7 +8,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     // "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane",    
     "dojo/string", 
-    "dojo/i18n!application/nls/resources",
+    "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
     "esri/dijit/Popup",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
@@ -141,6 +141,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             domStyle.set(dojo.byId("popupPager"), 'display', (this.total > 1 ? 'inline' : 'none'));
 
             dom.byId('totalFeatures').innerHTML = this.total;
+
+            if(this.total===0) {
+                popupInfo.clear();
+            }
         },
 
         selectPrevious : function () {
