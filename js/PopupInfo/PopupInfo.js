@@ -7,7 +7,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
-    "dijit/layout/ContentPane",    
+    "dojox/layout/ContentPane",    
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
@@ -99,9 +99,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 region: "center",
                 id: "leftPane",
                 tabindex: 0,
-
             },dom.byId("feature_content"));
             content.startup();
+            
+            // content.domNode.onchange = function() {
+            //     console.log('changed');
+            // };
+            // content.set("href", "myHtml.html");
+
 
             // dojo.place(PopupInfoHeaderTemplate, this.headerNode);
             var popupInfoHeader = new PopupInfoHeader({
@@ -120,7 +125,53 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 if (feature) {
                     // feature.infoTemplate = feature.getLayer().infoTemplate;
                     
-                    registry.byId("leftPane").set("content", feature.getContent());
+                    registry.byId("leftPane").set("content", feature.getContent()).then(lang.hitch(this, function() {
+                        var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
+                        if(mainSection) {
+                            var header = query('.header', mainSection[0]);
+                            if(header) {
+                                domAttr.set(header[0], 'tabindex', 0);
+                            }
+
+                            var attrTable = query('.attrTable', mainSection[0]);
+                            if(attrTable && attrTable.length > 0) {
+                                var rows = query('tr', attrTable[0]);
+                                if(rows) {
+                                    rows.forEach(function(row) {domAttr.set(row, 'tabindex', 0);});
+                                }
+                            } 
+                            else {
+                                var description = query('[dojoattachpoint=_description]', mainSection[0]);
+                                if(description) {
+                                    domAttr.set(description[0], 'tabindex', 0);
+                                }
+                            }
+
+                            var editSummarySection = query('.esriViewPopup .editSummarySection', dojo.byId('leftPane'));
+                            if(editSummarySection) {
+                                var editSummary =  query('.editSummary', editSummarySection[0]);
+                                if(editSummary) {
+                                    editSummary.forEach(function(edit) { domAttr.set(edit, 'tabindex', 0);});
+                                }
+                            }
+                            var images = query('.esriViewPopup img', dojo.byId('leftPane'));
+                            if(images) {
+                                // console.log(images);
+                                images.forEach(function(img) {
+                                    var alt = domAttr.get(img, 'alt');
+                                    if(!alt) {
+                                        domAttr.set(img,'alt','');
+                                    } else {
+                                        domAttr.set(img,'tabindex',0);
+                                        if(!domAttr.get(img, 'title'))
+                                        {
+                                            domAttr.set(img,'title',alt);
+                                        }
+                                    }
+                                });
+                            }
+                        }
+                    }));
                 }
             });
 
