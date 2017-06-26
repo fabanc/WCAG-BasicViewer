@@ -102,6 +102,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 dom.byId('featureIndex').innerHTML = popup.selectedIndex + 1;
+                if(popup.selectedIndex<0) {
+                    this.clearFeatures();
+                }
             }));
 
             on(popup, "SetFeatures", lang.hitch(this, function() {
@@ -110,7 +113,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
                 else {
                     this.clearFeatures();
-
                 }
             }));
 

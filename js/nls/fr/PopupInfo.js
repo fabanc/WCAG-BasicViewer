@@ -9,7 +9,8 @@ define({
             "zoomTo": "Zoom sur caractéristique",
             "map": "Aller à la carte",
             "clear": "Effacer la sélection",
-            "noFeatures": "Pas de caractéristiques"
+            "noFeatures": "Pas de caractéristiques",
+            "instructions" : "Cliquez sur la carte ou <br/>Passez à la carte et appuyez sur Entrée."
         })
     })
 });

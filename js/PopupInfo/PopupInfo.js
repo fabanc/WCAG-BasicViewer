@@ -143,7 +143,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         clear: function() {
             this.map.infoWindow.clearFeatures();
-            registry.byId("leftPane").set("content", null);
+            registry.byId("leftPane").set("content", i18n.widgets.popupInfo.instructions);
             if(this.superNavigator) {
                 this.superNavigator.clear();
             }

@@ -10,7 +10,8 @@ define({
             "zoomTo": "Zoom to Feature",
             "map": "Skip to Map",
             "clear": "Clear Selection",
-            "noFeatures": "No features"
+            "noFeatures": "No features",
+            "instructions" : "Click the map to select features <br/>or <i>Skip to Map</i> and press Enter."
             }
         })
     }),
