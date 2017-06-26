@@ -201,7 +201,15 @@ on, mouse, query, Deferred) {
             return pageBody;
         },
 
-       _toolClick: function (name) {
+        _toolOpen: function(name) {
+            var page = dom.byId("page_"+name);
+            var hidden = page.classList.contains("hideAttr");
+            if(!hidden) return;
+            var btn = dom.byId('toolButton_'+name);
+            this._toolClick(name);
+        },
+
+        _toolClick: function (name) {
             
             var defaultBtns = dojo.query(".panelToolDefault");
             var defaultBtn;
@@ -273,6 +281,10 @@ on, mouse, query, Deferred) {
             // else {
             //     toolbar._closePage();
             // }
+        },
+
+        closePage: function() {
+
         },
         
         // // menu click

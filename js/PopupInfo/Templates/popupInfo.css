@@ -1,0 +1,38 @@
+.nav {
+  padding: 5px 10px;
+  border: solid 1px grey;
+  text-decoration: none;
+}
+
+#header {
+    text-align: center;
+    height: 60px;
+    border-bottom: solid 1px #ccc;
+}
+
+.popupInfoHeader {
+    color: white;
+    float: right;
+    margin-right: 10px;
+    margin-top: 4px;
+    font-size: 15px;
+}
+
+.popupInfoHeader * {
+	  display: inline;
+}
+
+.popupInfoHeader img {
+	  height: 12px;
+    width: 12px;
+}
+
+.titleButton {
+	  width: 12px;
+    height: 12px;
+    display: inline-block !important;
+}
+
+.next {
+	  content: "\e808";
+}

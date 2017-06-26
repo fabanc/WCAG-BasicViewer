@@ -53,6 +53,7 @@ define(
         	"legend": "Légende",
         	"bookmarks": "Géosignets",
         	"layers": "Couches",
+            "infoPanel" : "Panneau d'information",
         	"basemap": "Galerie des Cartes de Base",
         	"overview": "Vue Générale",
         	"measure": "Mesurer",
@@ -72,6 +73,17 @@ define(
             "map" : "Aller à la carte",
             "help" : "Aller à l’aide",
             "featureDetaills" : "Aller aux fonctionnalités détaillées"
+        },
+        "popupInfo" : {
+            "Next":"Caractéristique suivante",
+            "Prev":"Caractéristique précédente",
+            "clickToSelect":"Cliquez sur la carte pour sélectionner des caractéristiques",
+            "current":"Caractéristique actuelle",
+            "total": "Le total du caractéristiques sélectionnées",
+            "zoomTo": "Zoom sur caractéristique",
+            "map": "Aller à la carte",
+            "clear": "Effacer la sélection",
+            "noFeatures": "Pas de caractéristiques"
         },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",

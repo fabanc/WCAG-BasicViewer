@@ -66,6 +66,8 @@ define({
         {"name": "overview", "enabled": true},
         {"name": "legend", "enabled": true},
         {"name": "layers", "enabled": true},
+        {"name": "mapKeyboardNavigation", "enabled": false},
+        {"name": "infoPanel", "enabled": false},
         {"name": "basemap", "enabled": true},
         {"name": "features", "enabled": true},
         {"name": "filter", "enabled": true},

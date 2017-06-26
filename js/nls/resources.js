@@ -52,6 +52,7 @@ define({
         	"locate": "Find my Location",
             "features" : "Feature List",
             "filter" : "Filters",
+            "infoPanel" : "Info Panel",
             "instructions": "Instructions",
             "legend": "Legend",
         	"bookmarks": "Bookmarks",
@@ -73,6 +74,17 @@ define({
             "map" : "Skip to Map",
             "help" : "Skip to Help",
             "featureDetaills" : "Skip to Feature Details"
+        },
+        "popupInfo" : {
+            "Next":"Next Feature",
+            "Prev":"Previous Feature",
+            "clickToSelect":"Click on map to select features",
+            "current":"Current Feature",
+            "total": "Total Features",
+            "zoomTo": "Zoom to Feature",
+            "map": "Skip to Map",
+            "clear": "Clear Selection",
+            "noFeatures": "No features"
         },
         search : "Search: ",
         searchPlaceholder: "Find address or place",
