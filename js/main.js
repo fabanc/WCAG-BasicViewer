@@ -518,14 +518,10 @@ define(["dojo/ready",
 
             query('.skip a').forEach(function(a) {
                 a.onfocus = lang.hitch(a, function () {
-                    console.log(this);
                     domAttr.set(this, "aria-hidden", "false");
-                    console.log(this);
                 });
                 a.onblur = lang.hitch(a, function () {
-                    console.log(this);
                     domAttr.set(this, "aria-hidden", "true");
-                    console.log(this);
                 });
             });
 
