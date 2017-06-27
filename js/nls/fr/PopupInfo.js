@@ -9,8 +9,16 @@ define({
             "zoomTo": "Zoom sur caractéristique",
             "map": "Aller à la carte",
             "clear": "Effacer la sélection",
-            "noFeatures": "Pas de caractéristiques",
-            "instructions" : "Cliquez sur la carte ou <br/>Passez à la carte et appuyez sur Entrée."
+            "noFeatures": "Pas des caractéristiques",
+            "instructions" : "Cliquez sur la carte pour sélectionner des caractéristiques, <br/>ou <br/><i>Aller à la carte</i> et:"+
+            "<ul>"+
+            "<li>déplacer la carte avec <myKey>flèches</myKey>, ou</li>"+
+            "<li>déplacer le curseur de carte avec <myKey>MAJ</myKey> + <myKey>flèches</myKey>, puis</li>"+
+            "<li>appuyez sur <myKey>Entrée</myKey> pour sélectionner au curseur,</li>"+
+            "<li>appuyez <myKey>MAJ</myKey> + <myKey>Entrée</myKey> pour sélectionner au curseur (x 10),</li>"+
+            "<li>appuyez <myKey aria-label='Contrôle'>CTRL</myKey> + <myKey>Entrée</myKey> pour sélectionner toute dans l'étendue de la carte,</li>"+
+            "<li>appuyez <myKey aria-label='Contrôle'>CTRL</myKey> + <myKey>MAJ</myKey> + <myKey>Entrée</myKey> pour sélectionner l'intérieur de la caractéristique sélectionnée.</li>"+
+            "</ul>"
         })
     })
 });
