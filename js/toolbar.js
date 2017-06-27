@@ -172,7 +172,7 @@ on, mouse, query, Deferred) {
 
             if(loaderImg && loaderImg !=="") {
                 domConstruct.create('img',{
-                    src: 'images/reload1.gif',
+                    src: 'images/'+loaderImg,//reload1.gif',
                     alt: 'Reloading',
                     title: 'Reloading'
                 }, domConstruct.create("div", {

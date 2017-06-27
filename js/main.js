@@ -1126,7 +1126,7 @@ define(["dojo/ready",
             //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
             var deferred = new Deferred();
             if (has("infoPanel")) {
-                var infoPanelDiv = toolbar.createTool(tool, "");
+                var infoPanelDiv = toolbar.createTool(tool, "", "reload1.gif", "");
 
                 popupInfo = new PopupInfo(
                 {
@@ -1961,7 +1961,9 @@ define(["dojo/ready",
                         case 13: //Enter
                             // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
                             if(this.superNav) {
-                                this.superNav.showPopup(evn.shiftKey, this.config.response.itemInfo.itemData.operationalLayers);
+                                this.superNav.showPopup(
+                                    evn,
+                                    this.config.response.itemInfo.itemData.operationalLayers);
                                 evn.preventDefault();
                                 evn.stopPropagation();
                             }

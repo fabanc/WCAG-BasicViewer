@@ -6,12 +6,13 @@ define([
     "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/symbols/SimpleFillSymbol", 
     "esri/graphic", "esri/geometry/Point", "esri/geometry/ScreenPoint",
     "esri/geometry/Circle",
+    "esri/geometry/Extent",
     "esri/layers/FeatureLayer", "esri/tasks/query", //"esri/tasks/QueryTask",
     //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
     // "dojo/i18n!application/nls",
     //SuperNavigator",
     "dojox/gfx", // "dojox/gfx/fx",
-    "dojo/Deferred", 
+    "dojo/Deferred", "dojo/promise/all",
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dojo/dom-construct", "dojo/_base/event", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
@@ -23,12 +24,12 @@ define([
         HomeButton, LocateButton, 
         SimpleLineSymbol, Color, SimpleFillSymbol,
         Graphic, Point, ScreenPoint,
-        Circle,
+        Circle, Extent,
         FeatureLayer, Query, //QueryTask,
         //SuperNavigatorTemplate, 
         // i18n,
         gfx, // gfxFx,
-        Deferred,
+        Deferred, all,
         domClass, domAttr, domStyle, 
         domConstruct, event
     ) {
@@ -163,56 +164,83 @@ define([
 
         queryZone : null,
 
-        getFeaturesAtPoint: function(mapPoint, extendRadius, allLayers, callback) {
+        getFeaturesAtPoint: function(mapPoint, mode, layers) {
+
+            var deferred = new Deferred();
 
             this.features = [];
-            this.callback = callback;
-            var tasks = [];
-            var layers = allLayers.filter(function (l) { return l.hasOwnProperty("url");});
+            if(!layers || layers.length === 0)
+                deferred.resolve(this.features);
+            else {
 
-            var w = this.map.extent.getWidth()/75;
-            if(extendRadius) w *= 10;
-
-            var circleSymb = new SimpleFillSymbol(
-                  SimpleFillSymbol.STYLE_SOLID,
-                  new SimpleLineSymbol(
+                var circleSymb = new SimpleFillSymbol(
+                    SimpleFillSymbol.STYLE_SOLID,
+                    new SimpleLineSymbol(
                     SimpleLineSymbol.STYLE_SOLID,
-                    new Color([255, 0, 0]),
-                    1
-                  ), new Color([255, 0, 0, 0.25])
-            );
-
-            for(var l = 0; l<layers.length; l++) {
-                var circle = new Circle({
-                    center: mapPoint,
-                    geodesic: false,
-                    radius: w,
-                  });
-                var q = new Query();
-                q.outFields = ["*"];                    
-                q.where = "1=1";
-                q.geometry = circle;
-
-                this.clear();
-
-                this.queryZone = new Graphic(circle, circleSymb);
-                this.map.graphics.add(this.queryZone);
-
-                q.spatialRelationship = "esriSpatialRelIntersects";
-                q.returnGeometry = true;
-
-                layer = layers[l];
-
-                layer.layerObject.selectFeatures(
-                    q, FeatureLayer.SELECTION_NEW, 
-                    lang.hitch(this, function(results) {
-                        if(this.callback)
-                            this.callback(results);
-                        }
-                    )
+                        new Color([255, 0, 0]), 1
+                    ), new Color([255, 0, 0, 0.25])
                 );
+
+                var shape = this.map.extent;
+                // if(!mapPoint) mapPoint = shape.getCenter();
+                var w = shape.getWidth()/75;
+                var selectedFeature = this.map.infoWindow.getSelectedFeature();
+                
+                switch(mode) {
+                    case 'point':
+                        shape = new Circle({
+                            center: mapPoint,
+                            geodesic: false,
+                            radius: w,
+                        });
+                        break;
+                    case 'disk':
+                        shape = new Circle({
+                            center: mapPoint,
+                            geodesic: false,
+                            radius: w * 10,
+                        });
+                        break;
+                    case 'extent':
+                        shape = this.map.extent;
+                        break;
+                    case 'selection':
+                        shape = this.map.infoWindow.getSelectedFeature().geometry;
+                        var extent = shape.getExtent().expand(1.5);
+                        this.map.setExtent(extent);
+                        break;
+                }
+
+                var deferrs = [];
+                for(var l = 0; l<layers.length; l++) {
+                    var q = new Query();
+                    q.outFields = ["*"];                    
+                    q.where = "1=1";
+                    q.geometry = shape;
+
+                    this.clear();
+
+                    this.queryZone = new Graphic(shape, circleSymb);
+                    this.map.graphics.add(this.queryZone);
+
+                    q.spatialRelationship = "esriSpatialRelIntersects";
+                    q.returnGeometry = true;
+
+                    layer = layers[l];
+
+                    var def = layer.layerObject.selectFeatures(
+                        q, FeatureLayer.SELECTION_NEW, 
+                        lang.hitch(this, function(results) {
+                            this.features = this.features.concat(results);
+                        })
+                    );
+                    deferrs.push(def);
+                }
+                all(deferrs).then(lang.hitch(this, function() {
+                    deferred.resolve(this.features);
+                }));
             }
-            return this.features;
+            return deferred.promise;
         },
 
         clear: function() {
@@ -221,26 +249,36 @@ define([
             }
         },
 
-        showPopup: function(shiftKey, layers) {
+        showPopup: function(evn, layers) {
             var center = this.map.toMap(this.cursorPos);
             var features = [];
-            this.getFeaturesAtPoint(
-                center, shiftKey, layers, 
-                lang.hitch(this, function(results){
-                    results.forEach(function(feature) { 
-                        if(feature.getLayer().visible && feature.getLayer().visibleAtMapScale)
-                            features.push(feature);
-                    });
+            var visibleLayers = layers.filter(function (l) { 
+                return l.hasOwnProperty("url") &&  l.layerObject && l.layerObject.visible && l.layerObject.visibleAtMapScale;
+            });
 
-                    this.map.infoWindow.hide();
-                    this.map.infoWindow.clearFeatures();
+            var mode = "point";
+            if(evn.shiftKey && !evn.ctrlKey) {
+                mode = 'disk';
+            }
+            else 
+            if(!evn.shiftKey && evn.ctrlKey) {
+                mode = 'extent';
+            }
+            else 
+            if(evn.shiftKey && evn.ctrlKey) {
+                mode = 'selection';
+            }
 
-                    // this.map.centerAt(center).then(lang.hitch(this, function() {
-                        this.map.infoWindow.setFeatures(features);
-                        this.map.infoWindow.show(center);
-                    // }));
-                })
-            );
+            this.getFeaturesAtPoint(center, mode, visibleLayers)
+            .then(lang.hitch(this, function(features){
+                this.map.infoWindow.hide();
+                this.map.infoWindow.clearFeatures();
+
+                // this.map.centerAt(center).then(lang.hitch(this, function() {
+                    this.map.infoWindow.setFeatures(features);
+                    // this.map.infoWindow.show(center);
+                // }));
+            }));
         }
 
     });

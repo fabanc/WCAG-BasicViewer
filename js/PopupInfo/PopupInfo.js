@@ -188,7 +188,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // }));
 
             on(popup, "SetFeatures", lang.hitch(this, function() {
-                displayPopupContent(popup.getSelectedFeature());
+                // displayPopupContent(popup.getSelectedFeature());
             }));
         },
 
@@ -199,7 +199,31 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.superNavigator.clear();
             }
             dojo.byId('mapDiv').focus();
-       }
+        },
+
+
+        _reloadList : function(ext) {
+            if(!this._isVisible()) return;
+            var loading_features = this.domNode.parentNode.parentNode.querySelector('#loading_infoPopu');
+
+            domClass.replace(loading_features, "showLoading", "hideLoading");
+
+            this.__reloadList(ext).then(function(results) {
+                domClass.replace(loading_features, "hideLoading", "showLoading");
+            });
+        },
+
+        showBadge : function(show) {
+            var indicator = dom.byId('badge_featureSelected');
+            if (show) {
+                domStyle.set(indicator,'display','');
+                domAttr.set(indicator, "title", i18n.widgets.featureList.featureSelected);
+                domAttr.set(indicator, "alt", i18n.widgets.featureList.featureSelected);
+            } else {
+                domStyle.set(indicator,'display','none');
+            }
+        },
+
 
     });
     if (has("extend-esri")) {
