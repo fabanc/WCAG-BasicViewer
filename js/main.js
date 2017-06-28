@@ -1126,7 +1126,7 @@ define(["dojo/ready",
             //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
             var deferred = new Deferred();
             if (has("infoPanel")) {
-                var infoPanelDiv = toolbar.createTool(tool, "", "reload1.gif", "");
+                var infoPanelDiv = toolbar.createTool(tool, "", "reload1.gif", "followTheMapMode");
 
                 popupInfo = new PopupInfo(
                 {

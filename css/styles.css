@@ -1539,7 +1539,7 @@ main {
 .setIndicator {
   width: 15px;
   height: 15px;
-  top: -3px;
+  /*top: -1px;*/
   right: -6px;
   position: absolute;
   /*pointer-events: none;*/

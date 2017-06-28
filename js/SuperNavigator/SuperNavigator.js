@@ -273,6 +273,7 @@ define([
 
         showPopup: function(evn, layers, mode) {
             var deferred = new Deferred();
+
             var center = this.map.toMap(this.cursorPos);
             var features = [];
             this.layers = layers;
@@ -314,6 +315,8 @@ define([
             return deferred.promise;
         },
 
+        badge:null,
+        
         followTheMapMode: function(show) {
             if(show) {
                 if(!this._followTheMapSignal) {
@@ -325,13 +328,17 @@ define([
                     this._followTheMapSignal = null;
                 }
             }
+            if(this.badge) 
+                this.badge(show);
         },
 
         _followTheMapSignal : null,
         _followTheMap: function() {
             if(this.layers) {
                 this.showPopup(null, this.layers, 'extent')
-                .then(lang.hitch(this, this.clear()));
+                .then(
+                    this.clear()
+                );
             }
         }
 
