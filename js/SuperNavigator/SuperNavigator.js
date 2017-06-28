@@ -87,7 +87,7 @@ define([
             var mapSuperCursor = domConstruct.create('div', {
                 id: 'mapSuperCursor',
                 style:'position:absolute;',
-                // tabindex: 0
+                onclick:"dojo.byId('mapDiv').focus()"
             }, 'mapDiv_layers');
             this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);//m.right-m.left, m.bottom-m.top);
             this.cursor = this.cursorNav.createGroup();
