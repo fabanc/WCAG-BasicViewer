@@ -1941,6 +1941,7 @@ input[type=checkbox].checkbox {
 
 myKey {
     display: inline;
+    text-transform: uppercase;
     border: #a1a1a1 1px solid;
     border-radius: 3px;
     padding: 0 4px;

@@ -10,7 +10,8 @@ define({
             "map": "Aller à la carte",
             "clear": "Effacer la sélection",
             "noFeatures": "Pas des caractéristiques",
-            "instructions" : "Cliquez sur la carte pour sélectionner des caractéristiques, <br/>ou <br/><i>Aller à la carte</i> et:"+
+            "instructions" : "Cliquez sur la carte pour sélectionner des caractéristiques, <br/>ou <br/>"+
+            "<a href='#' onclick='dojo.byId(\"mapDiv\").focus();'>Aller à la carte</a> et:"+
             "<ul>"+
             "<li>déplacer la carte avec <myKey>flèches</myKey>, ou</li>"+
             "<li>déplacer le curseur de carte avec <myKey>MAJ</myKey> + <myKey>flèches</myKey>, puis</li>"+
