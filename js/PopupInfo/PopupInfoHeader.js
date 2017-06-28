@@ -90,16 +90,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.preventDefault();
                             break;
                         case 37: // <
-                            var prev = query('.popupInfoButton.prev')[0];
-                            prev.focus();
-                            prev.click();
+                            var _prev = query('.popupInfoButton.prev')[0];
+                            _prev.focus();
+                            _prev.click();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
                         case 39: // >
-                            var next = query('.popupInfoButton.next')[0];
-                            next.focus();
-                            next.click();
+                            var _next = query('.popupInfoButton.next')[0];
+                            _next.focus();
+                            _next.click();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
@@ -115,9 +115,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             break;
                         case 77: // M
                         case 80: // P
-                            query('.popupInfoButton.map')[0].focus();
+                            var _toMap = query('.popupInfoButton.map')[0];
+                            _toMap.focus();
+                            _toMap.click();
                             ev.stopPropagation();
                             ev.preventDefault();
+
                             break;
                         case 88: // X
                         case 67: // C
@@ -184,6 +187,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         clearFeatures : function(ev) {
+            this.superNavigator.followTheMapMode(false);
             this.setTotal(0);
             popupInfo.clear();
         },
@@ -196,6 +200,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     this.panZoom(true);
             }
             // this.clearFeatures({});
+            this.superNavigator.followTheMapMode(false);
             dojo.byId('mapDiv').focus();
             this.clearSuperNavigator();
        },

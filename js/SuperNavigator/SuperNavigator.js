@@ -269,25 +269,35 @@ define([
             }
         },
 
-        showPopup: function(evn, layers) {
+        layers: null,
+
+        showPopup: function(evn, layers, mode) {
+            var deferred = new Deferred();
             var center = this.map.toMap(this.cursorPos);
             var features = [];
+            this.layers = layers;
             var visibleLayers = layers.filter(function (l) { 
                 return l.hasOwnProperty("url") &&  l.layerObject && l.layerObject.visible && l.layerObject.visibleAtMapScale;
             });
 
-            var mode = "point";
-            if(evn.shiftKey && !evn.ctrlKey) {
-                mode = 'disk';
+            if(!mode) {
+                if(!evn.shiftKey && !evn.ctrlKey) {
+                    mode = 'point';
+                }
+                else 
+                if(evn.shiftKey && !evn.ctrlKey) {
+                    mode = 'disk';
+                }
+                else 
+                if(!evn.shiftKey && evn.ctrlKey) {
+                    mode = 'extent';
+                }
+                else 
+                if(evn.shiftKey && evn.ctrlKey) {
+                    mode = 'selection';
+                }
             }
-            else 
-            if(!evn.shiftKey && evn.ctrlKey) {
-                mode = 'extent';
-            }
-            else 
-            if(evn.shiftKey && evn.ctrlKey) {
-                mode = 'selection';
-            }
+            this.followTheMapMode(mode === 'extent');
 
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){
@@ -298,7 +308,31 @@ define([
                     this.map.infoWindow.setFeatures(features);
                     // this.map.infoWindow.show(center);
                 // }));
+
+                deferred.resolve();
             }));
+            return deferred.promise;
+        },
+
+        followTheMapMode: function(show) {
+            if(show) {
+                if(!this._followTheMapSignal) {
+                    this._followTheMapSignal =  on(this.map, 'extent-change', lang.hitch(this, this._followTheMap));
+                }
+            } else {
+                if(this._followTheMapSignal) {
+                    this._followTheMapSignal.remove();
+                    this._followTheMapSignal = null;
+                }
+            }
+        },
+
+        _followTheMapSignal : null,
+        _followTheMap: function() {
+            if(this.layers) {
+                this.showPopup(null, this.layers, 'extent')
+                .then(lang.hitch(this, this.clear()));
+            }
         }
 
     });
