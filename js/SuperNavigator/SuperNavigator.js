@@ -165,7 +165,7 @@ define([
         queryZone : null,
 
         getFeaturesAtPoint: function(mapPoint, mode, layers) {
-
+            this.loading(true);
             var deferred = new Deferred();
 
             this.features = [];
@@ -247,10 +247,21 @@ define([
                 }
                 all(deferrs).then(lang.hitch(this, function() {
                     deferred.resolve(this.features);
+                    this.loading(false);
                 }));
             }
             return deferred.promise;
         },
+
+        loading: function (show){
+            var loading_infoPanel = dojo.byId('loading_infoPanel');
+            if(!loading_infoPanel) return;
+
+            if(show)
+                domClass.replace(loading_infoPanel, "showLoading", "hideLoading");
+            else
+                domClass.replace(loading_infoPanel, "hideLoading", "showLoading");
+            },
 
         clear: function() {
             if(this.queryZone) {

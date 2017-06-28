@@ -40,6 +40,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             toolbar: null, 
             header: 'pageHeader_infoPanel',
             popupInfo: null,
+            superNavigator: null,
         },
 
         constructor: function (options, srcRefNode) {
@@ -131,9 +132,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             });
             
             on(popup, "SelectionChange", lang.hitch(this, function() {
-                dom.byId('featureIndex').innerHTML = popup.selectedIndex + 1;
-                if(popup.selectedIndex<0) {
-                    this.clearFeatures();
+                if(popup.selectedIndex>=0) {
+                    dom.byId('featureIndex').innerHTML = popup.selectedIndex + 1;
                 }
             }));
 
@@ -165,16 +165,22 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if(this.total===0) {
                 popupInfo.clear();
             }
+
+            if(this.total > 0) {
+                query('.popupInfoButton.next')[0].focus();
+            }
         },
 
         selectPrevious : function () {
             // console.log('Prev');
             this.map.infoWindow.selectPrevious();
+            this.clearSuperNavigator();
         },
 
         selectNext : function () {
             // console.log('Next');
             this.map.infoWindow.selectNext();
+            this.clearSuperNavigator();
         },
 
         clearFeatures : function(ev) {
@@ -191,10 +197,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
             // this.clearFeatures({});
             dojo.byId('mapDiv').focus();
+            this.clearSuperNavigator();
        },
 
         zoomTo : function(ev) {
             this.panZoom(false);
+            this.clearSuperNavigator();
         },
 
         panZoom: function(panOnly) {
@@ -214,7 +222,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     this.map.setExtent(extent);
                 }
             }
-        }
+        },
+
+        clearSuperNavigator: function() {
+            if(this.superNavigator) this.superNavigator.clear();
+        },
+
 
     });
     if (has("extend-esri")) {

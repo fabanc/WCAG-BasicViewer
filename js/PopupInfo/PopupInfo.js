@@ -79,36 +79,19 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-//https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
-
-
-        content : "content",
-            
-        feature_title : "",
-
-        // _setValueAttr: function(value){
-        //     this.feature_title = value;
-        // },
-
         _init: function () {
 
             this.loaded = true;
 
+            //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
+
             var content = new ContentPane({
-                // style: "padding:1px;",
                 region: "center",
                 id: "leftPane",
                 tabindex: 0,
-            },dom.byId("feature_content"));
+            }, dom.byId("feature_content"));
             content.startup();
             
-            // content.domNode.onchange = function() {
-            //     console.log('changed');
-            // };
-            // content.set("href", "myHtml.html");
-
-
-            // dojo.place(PopupInfoHeaderTemplate, this.headerNode);
             var popupInfoHeader = new PopupInfoHeader({
                 map: this.map,
                 toolbar: this.toolbar, 
@@ -123,8 +106,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
-                    // feature.infoTemplate = feature.getLayer().infoTemplate;
-                    
                     registry.byId("leftPane").set("content", feature.getContent()).then(lang.hitch(this, function() {
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
                         if(mainSection) {
@@ -156,7 +137,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             }
                             var images = query('.esriViewPopup img', dojo.byId('leftPane'));
                             if(images) {
-                                // console.log(images);
                                 images.forEach(function(img) {
                                     var alt = domAttr.get(img, 'alt');
                                     if(!alt) {
@@ -180,16 +160,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 displayPopupContent(popup.getSelectedFeature());
             }));
-
-            // on(popup, "ClearFeatures", lang.hitch(this, function() {
-            //     // dom.byId("featureCount").innerHTML = this._i18n.popupInfo.clickToSelect;
-            //     // this.domNode.innerHTML = "";
-            //     domUtils.hide(dom.byId("pager"));
-            // }));
-
-            on(popup, "SetFeatures", lang.hitch(this, function() {
-                // displayPopupContent(popup.getSelectedFeature());
-            }));
         },
 
         clear: function() {
@@ -200,30 +170,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
             dojo.byId('mapDiv').focus();
         },
-
-
-        _reloadList : function(ext) {
-            if(!this._isVisible()) return;
-            var loading_features = this.domNode.parentNode.parentNode.querySelector('#loading_infoPopu');
-
-            domClass.replace(loading_features, "showLoading", "hideLoading");
-
-            this.__reloadList(ext).then(function(results) {
-                domClass.replace(loading_features, "hideLoading", "showLoading");
-            });
-        },
-
-        showBadge : function(show) {
-            var indicator = dom.byId('badge_featureSelected');
-            if (show) {
-                domStyle.set(indicator,'display','');
-                domAttr.set(indicator, "title", i18n.widgets.featureList.featureSelected);
-                domAttr.set(indicator, "alt", i18n.widgets.featureList.featureSelected);
-            } else {
-                domStyle.set(indicator,'display','none');
-            }
-        },
-
 
     });
     if (has("extend-esri")) {
