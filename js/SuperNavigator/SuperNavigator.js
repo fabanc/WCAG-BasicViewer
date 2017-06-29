@@ -74,16 +74,7 @@ define([
         cursorPos: null,
     
         _init: function () {
-            // if(!dom.byId("navZoomIn")) return;
-
-            // domStyle.set(dom.byId('mapDiv_zoom_slider'), 'background-color', 'transparent');
-            //dojo.empty(this.navToolBar);
-
             var m = this.cursorToCenter();
-            // dom.byId('mapDiv').getBoundingClientRect();
-            // this.cursorPos = new ScreenPoint(((m.right-m.left)/2), ((m.bottom-m.top)/2));
-
-            // https://dojotoolkit.org/documentation/tutorials/1.10/gfx/
             var mapSuperCursor = domConstruct.create('div', {
                 id: 'mapSuperCursor',
                 style:'position:absolute;',
@@ -126,12 +117,6 @@ define([
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
                 this.clear();
             }));
-            // on(this.map.infoWindow, 'ClearFeatures', lang.hitch(this, function() {
-            //     if(this.queryZone) {
-            //         this.map.graphics.remove(this.queryZone);
-            //     }
-            // }));
-
         },
 
         cursorToCenter:function() {
@@ -154,7 +139,32 @@ define([
                     deferred.resolve(this.cursorPos);
                 }));
             }
-            else {
+            else if (this.cursorPos.x > dom.byId('mapDiv').getBoundingClientRect().width - 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                    this.cursorToCenter();
+                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
+                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    deferred.resolve(this.cursorPos);
+                }));
+            }
+            if(this.cursorPos.y < 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                    this.cursorToCenter();
+                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
+                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    deferred.resolve(this.cursorPos);
+                }));
+            }
+            else if (this.cursorPos.y > dom.byId('mapDiv').getBoundingClientRect().height - 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                    this.cursorToCenter();
+                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
+                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    deferred.resolve(this.cursorPos);
+                }));
+            }
+            else 
+            {
                 domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
                 domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
                 deferred.resolve(this.cursorPos);
