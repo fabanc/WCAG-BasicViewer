@@ -117,6 +117,10 @@ define([
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
                 this.clear();
             }));
+
+            on(this, "updateTool", lang.hitch(this, function(name) {
+                console.log('updateTool', name);
+            }));
         },
 
         cursorToCenter:function() {

@@ -164,6 +164,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 displayPopupContent(popup.getSelectedFeature());
             }));
+
+            on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
+                //console.log('updateTool', name);
+                if(this.superNavigator && name !== 'infoPanel') {
+                    this.superNavigator.followTheMapMode(false);
+                }
+            }));
         },
 
         clear: function() {

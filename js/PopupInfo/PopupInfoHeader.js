@@ -193,14 +193,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         toMap : function(ev) {
-            var popup = this.map.infoWindow;
-            if(popup.selectedIndex>=0) {
-                var geometry = popup.features[popup.selectedIndex].geometry;
-                if(geometry.type === 'point')
-                    this.panZoom(true);
-            }
-            // this.clearFeatures({});
-            this.superNavigator.followTheMapMode(false);
             dojo.byId('mapDiv').focus();
             this.clearSuperNavigator();
        },
