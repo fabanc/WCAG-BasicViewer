@@ -73,47 +73,35 @@ define([
                 style:'position:absolute;',
                 onclick:"dojo.byId('mapDiv').focus()"
             }, 'mapDiv_layers');
-            this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);//m.right-m.left, m.bottom-m.top);
+
+            this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);
             this.cursor = this.cursorNav.createGroup();
             var circle = this.cursor.createCircle({cx:20, cy:20, r:7}).setFill("transparent").setStroke(this.cursorFocusColor);
             var path = this.cursor.createPath("M20 0 L20 19 M20 21 L20 40 M0 20 L19 20 M21 20 L40 20").setStroke({color:"black", width:2});
 
             domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
             domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
-            //this.cursor.setTransform([gfx.matrix.translate(this.cursorPos.x-20, (this.cursorPos.y-20) )]);  
 
             this.map.onResize = lang.hitch(this, function(ev) {
                 var m = dom.byId('mapDiv').getBoundingClientRect();
                 this.cursorPos = {x: ((m.right-m.left)/2), y: ((m.bottom-m.top)/2)};
                 domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
                 domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
-                // console.log('map resize',ev);
             });
+
+            on(this.map, 'click', lang.hitch(this, function(ev) {
+                this.setCursorPos(new ScreenPoint(ev.offsetX, ev.offsetY));
+                this.clear();
+            }));
 
             on(this.map.infoWindow, 'show', lang.hitch(this, function() {
                 if(this.queryZone) {
                     this.map.graphics.add(this.queryZone);
                 }
-                // query('.titleButton').forEach(function(btn){
-                //     domAttr.set(btn,'tabindex', 0);
-                //     on(btn,'keypress', lang.hitch(this, function(ev) {
-                //         // console.log(ev);
-                //         if(ev.keyCode == 13) {
-                //             ev.srcElement.click();
-                //         }
-                //     }));
-                // });
-                // query('.sizer.content').forEach(function(content){
-                //     domAttr.set(content,'tabindex', 0);
-                //     domStyle.set(content,'color', 'black');
-                // });
-            }));
-            on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
-                this.clear();
             }));
 
-            on(this, "updateTool", lang.hitch(this, function(name) {
-                console.log('updateTool', name);
+            on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
+                this.clear();
             }));
         },
 
@@ -132,42 +120,45 @@ define([
             if(this.cursorPos.x < 20) {
                 this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                     this.cursorToCenter();
-                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
-                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    this.setCursorPos();
                     deferred.resolve(this.cursorPos);
                 }));
             }
             else if (this.cursorPos.x > dom.byId('mapDiv').getBoundingClientRect().width - 20) {
                 this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                     this.cursorToCenter();
-                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
-                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    this.setCursorPos();
                     deferred.resolve(this.cursorPos);
                 }));
             }
             if(this.cursorPos.y < 20) {
                 this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                     this.cursorToCenter();
-                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
-                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    this.setCursorPos();
                     deferred.resolve(this.cursorPos);
                 }));
             }
             else if (this.cursorPos.y > dom.byId('mapDiv').getBoundingClientRect().height - 20) {
                 this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                     this.cursorToCenter();
-                    domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
-                    domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                    this.setCursorPos();
                     deferred.resolve(this.cursorPos);
                 }));
             }
             else 
             {
-                domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
-                domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+                this.setCursorPos();
                 deferred.resolve(this.cursorPos);
             }
             return deferred.promise;
+        },
+
+        setCursorPos: function(screenPoint) {
+            if(screenPoint) {
+                this.cursorPos = screenPoint;
+            }
+            domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
+            domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
         },
 
         queryZone : null,
@@ -328,7 +319,7 @@ define([
         
         followTheMapMode: function(show) {
             if(!has('infoPanel')) return;
-            
+
             if(show) {
                 if(!this._followTheMapSignal) {
                     this._followTheMapSignal =  on(this.map, 'extent-change', lang.hitch(this, this._followTheMap));
