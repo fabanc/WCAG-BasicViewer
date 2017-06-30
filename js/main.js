@@ -363,8 +363,6 @@ define(["dojo/ready",
                 }
     
                 all(toolList).then(lang.hitch(this, function (results) {
-
-
                     var tools = array.some(results, function (r) {
                         return r;
                     });
@@ -439,7 +437,6 @@ define(["dojo/ready",
                     default:
                         break;
                 }
-                
             });
 
             on(document.body, 'keyup', function(event) {
@@ -1150,9 +1147,29 @@ define(["dojo/ready",
                 deferred.resolve(true);
 
             } else {
+                this._takeCareOfInfoWindow();
                 deferred.resolve(false);
             }
             return deferred.promise;
+        },
+
+        _takeCareOfInfoWindow: function() {
+            on(this.map.infoWindow, 'show', lang.hitch(this, function(ev) {
+                query('.esriPopup .titleButton').forEach(function(btn){
+                    domAttr.set(btn,'tabindex', 0);
+                    on(btn,'keypress', lang.hitch(this, function(ev) {
+                        // console.log(ev);
+                        if(ev.keyCode == 13) {
+                            ev.srcElement.click();
+                        }
+                    }));
+                });
+                query('.esriPopup .sizer.content').forEach(function(content){
+                    domAttr.set(content,'tabindex', 0);
+                    domStyle.set(content,'color', 'black');
+                });
+                // query('.esriPopup.light .sizer.content')[0].focus();
+            }));
         },
 
         _addMeasure: function (tool, toolbar) {

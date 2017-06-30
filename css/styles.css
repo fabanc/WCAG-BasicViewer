@@ -1953,3 +1953,7 @@ myKey {
     margin: 0 1px;
     filter: drop-shadow(1px 1px 2px rgba(127,127,127,0.9));
 }
+
+.esriPopup.light .titlePane, .dj_ie7 .esriPopup.light .titlePane .title, .esriPopup.light .contentPane, .esriPopup.light .actionsPane {
+    color: black;
+}

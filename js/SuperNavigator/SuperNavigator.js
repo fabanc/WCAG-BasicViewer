@@ -94,18 +94,19 @@ define([
                 if(this.queryZone) {
                     this.map.graphics.add(this.queryZone);
                 }
-                query('.titleButton').forEach(function(btn){
-                    domAttr.set(btn,'tabindex', 0);
-                    on(btn,'keypress', lang.hitch(this, function(ev) {
-                        console.log(ev);
-                        if(ev.keyCode == 13) {
-                            ev.srcElement.click();
-                        }
-                    }));
-                });
-                query('.sizer.content').forEach(function(content){
-                    domAttr.set(content,'tabindex', 0);
-                });
+                // query('.titleButton').forEach(function(btn){
+                //     domAttr.set(btn,'tabindex', 0);
+                //     on(btn,'keypress', lang.hitch(this, function(ev) {
+                //         // console.log(ev);
+                //         if(ev.keyCode == 13) {
+                //             ev.srcElement.click();
+                //         }
+                //     }));
+                // });
+                // query('.sizer.content').forEach(function(content){
+                //     domAttr.set(content,'tabindex', 0);
+                //     domStyle.set(content,'color', 'black');
+                // });
             }));
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
                 this.clear();
@@ -314,7 +315,8 @@ define([
 
                 // this.map.centerAt(center).then(lang.hitch(this, function() {
                     this.map.infoWindow.setFeatures(features);
-                    // this.map.infoWindow.show(center);
+                    if(!has('infoPanel'))
+                        this.map.infoWindow.show(center);
                 // }));
 
                 deferred.resolve();
@@ -325,6 +327,8 @@ define([
         badge:null,
         
         followTheMapMode: function(show) {
+            if(!has('infoPanel')) return;
+            
             if(show) {
                 if(!this._followTheMapSignal) {
                     this._followTheMapSignal =  on(this.map, 'extent-change', lang.hitch(this, this._followTheMap));
