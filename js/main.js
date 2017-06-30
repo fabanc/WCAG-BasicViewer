@@ -302,11 +302,17 @@ define(["dojo/ready",
 
                 // set map so that it can be repositioned when page is scrolled
                 toolbar.map = this.map;
-                var toolList = [this._addNavigation("navigation", query("#mapDiv_zoom_slider")[0], navDeferred = new Deferred())];
+                var toolList = [
+                    this._addNavigation("navigation", query("#mapDiv_zoom_slider")[0], navDeferred = new Deferred()),
+                    ];
 
                 var deferredDetails = new Deferred();
                 for (var i = 0; i < this.config.tools.length; i++) {
                     switch (this.config.tools[i].name) {
+                        case "mapKeyboardNavigation":
+                            if(has("mapKeyboardNavigation"))
+                                this._addNapKeyboardNavigation();
+                            break;
                         case "details":
                             toolList.push(this._addDetails(this.config.tools[i], toolbar, deferredDetails));
                             break;
@@ -621,20 +627,25 @@ define(["dojo/ready",
             }, navToolBar);
             nav.startup();
 
+            // this.superNav = new SuperNavigator({
+            //     map: this.map,
+            //     navToolBar: oldNaviagationToolBar,
+            //     cursorColor: "black",
+            //     cursorFocusColor: this.config.focusColor
+            // });
+            // this.superNav.startup();
+
+            deferred.resolve(true);
+            return deferred.promise;
+        },
+
+        _addNapKeyboardNavigation : function() {
             this.superNav = new SuperNavigator({
                 map: this.map,
-                navToolBar: oldNaviagationToolBar,
                 cursorColor: "black",
                 cursorFocusColor: this.config.focusColor
             });
             this.superNav.startup();
-
-            // on(dom.byId('mapDiv'), 'mouseover', function(ev) {
-            //     console.log(ev);
-            // });
-
-            deferred.resolve(true);
-            return deferred.promise;
         },
 
         _addFilter: function (tool, toolbar) {

@@ -80,7 +80,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         postCreate : function() {
-            this.superNavigator.badge = this.showBadge;
+            if(this.superNavigator)
+                this.superNavigator.badge = this.showBadge;
         },
 
         _init: function () {

@@ -113,7 +113,7 @@ define(["dojo/has"], function (has) {
         return infoPanel;
     });
     has.add("mapKeyboardNavigation", function (g) {
-        var infoPanel = g.config.mapKeyboardNavigation || false;
+        var mapKeyboardNavigation = g.config.tool_mapKeyboardNavigation || false;
         //overwrite the default with app settings
         if (g.config.hasOwnProperty("tool_mapKeyboardNavigation")) {
             mapKeyboardNavigation = g.config.tool_mapKeyboardNavigation;

@@ -1,17 +1,14 @@
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/kernel", 
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on", "dojo/mouse", "dijit/focus",
+    "dijit/_WidgetBase", "dojo/on", "dojo/mouse", "dijit/focus",
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color", "esri/symbols/SimpleFillSymbol", 
     "esri/graphic", "esri/geometry/Point", "esri/geometry/ScreenPoint",
     "esri/geometry/Circle",
     "esri/geometry/Extent",
-    "esri/layers/FeatureLayer", "esri/tasks/query", //"esri/tasks/QueryTask",
-    //"dojo/text!application/SuperNavigator/templates/SuperNavigator.html", 
-    // "dojo/i18n!application/nls",
-    //SuperNavigator",
-    "dojox/gfx", // "dojox/gfx/fx",
+    "esri/layers/FeatureLayer", "esri/tasks/query", 
+    "dojox/gfx", 
     "dojo/Deferred", "dojo/promise/all",
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dojo/dom-construct", "dojo/_base/event", 
@@ -19,26 +16,22 @@ define([
     
     ], function (
         Evented, declare, lang, has, dom, esriNS,
-        _WidgetBase, _TemplatedMixin, on, mouse, focusUtil,
+        _WidgetBase, on, mouse, focusUtil,
         query, Navigation, registry,
         HomeButton, LocateButton, 
         SimpleLineSymbol, Color, SimpleFillSymbol,
         Graphic, Point, ScreenPoint,
         Circle, Extent,
-        FeatureLayer, Query, //QueryTask,
-        //SuperNavigatorTemplate, 
-        // i18n,
-        gfx, // gfxFx,
+        FeatureLayer, Query, 
+        gfx, 
         Deferred, all,
         domClass, domAttr, domStyle, 
         domConstruct, event
     ) {
     var Widget = declare("esri.dijit.SuperNavigator", [
         _WidgetBase, 
-        // _TemplatedMixin, 
         Evented], {
-        // templateString: SuperNavigator,
-
+        
         options: {
             map: null,
             navToolBar:null,
