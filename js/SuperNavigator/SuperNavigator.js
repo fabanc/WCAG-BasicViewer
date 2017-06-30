@@ -38,6 +38,13 @@ define([
             cursorColor:"black",
             cursorFocusColor:"red",
             zoomColor:'red',
+            selectionSymbol: new SimpleFillSymbol(
+                SimpleFillSymbol.STYLE_SOLID,
+                new SimpleLineSymbol(
+                SimpleLineSymbol.STYLE_SOLID,
+                    new Color([255, 0, 0]), 1
+                ), new Color([255, 0, 0, 0.25])
+            )
         },
 
         constructor: function (options, srcRefNode) {
@@ -49,8 +56,9 @@ define([
             this.set("navToolBar", defaults.navToolBar);
             this.set("zoomColor", defaults.zoomColor);
             this.set("cursorColor", defaults.cursorColor);            
-            this.set("cursorFocusColor", defaults.cursorFocusColor);            
-            },
+            this.set("cursorFocusColor", defaults.cursorFocusColor);    
+            this.set("selectionSymbol", defaults.selectionSymbol);    
+        },
 
         startup: function () {
             if (this.map.loaded) {
@@ -172,14 +180,6 @@ define([
                 deferred.resolve(this.features);
             else {
 
-                var circleSymb = new SimpleFillSymbol(
-                    SimpleFillSymbol.STYLE_SOLID,
-                    new SimpleLineSymbol(
-                    SimpleLineSymbol.STYLE_SOLID,
-                        new Color([255, 0, 0]), 1
-                    ), new Color([255, 0, 0, 0.25])
-                );
-
                 var shape = this.map.extent;
                 // if(!mapPoint) mapPoint = shape.getCenter();
                 var w = shape.getWidth()/75;
@@ -228,7 +228,7 @@ define([
 
                     this.clear();
 
-                    this.queryZone = new Graphic(shape, circleSymb);
+                    this.queryZone = new Graphic(shape, this.selectionSymbol);
                     this.map.graphics.add(this.queryZone);
 
                     q.spatialRelationship = "esriSpatialRelIntersects";
