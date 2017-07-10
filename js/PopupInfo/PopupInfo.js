@@ -88,6 +88,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
+            var popup = this.map.infoWindow;
+
+            popup.set("popupWindow", false);
+
             //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
             var content = new ContentPane({
@@ -104,10 +108,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }, domConstruct.create('Div', {}, this.headerNode));
             popupInfoHeader.startup();
 
-            var popup = this.map.infoWindow;
-
-            popup.set("popupWindow", false);
-
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
@@ -121,6 +121,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
                             var attrTable = query('.attrTable', mainSection[0]);
                             if(attrTable && attrTable.length > 0) {
+                                domAttr.set(attrTable[0], 'role', 'presentation');
                                 var rows = query('tr', attrTable[0]);
                                 if(rows) {
                                     rows.forEach(function(row) {domAttr.set(row, 'tabindex', 0);});
@@ -172,6 +173,40 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     this.superNavigator.followTheMapMode(false);
                 }
             }));
+
+            on(dojo.byId('pageBody_infoPanel'), 'keydown', lang.hitch(this, function(ev) {
+                switch(ev.keyCode) {
+                    case 37: // <
+                        popupInfoHeader.ToPrev();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                    case 39: // >
+                        popupInfoHeader.ToNext();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                    case 90: // Z
+                        popupInfoHeader.ToZoom();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                    case 77: // M
+                    case 80: // P
+                        popupInfoHeader.ToMap();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+
+                        break;
+                    case 88: // X
+                    case 67: // C
+                    case 69: // E
+                        popupInfoHeader.ToClear();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+
+                }}));
         },
 
         clear: function() {

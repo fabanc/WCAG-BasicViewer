@@ -35,7 +35,7 @@ define(["dojo/ready",
     "application/LanguageSelect/LanguageSelect",
     "application/ShareDialog", //"application/SearchSources",
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", "esri/graphic",
-    "esri/dijit/InfoWindow",
+    "esri/dijit/InfoWindow", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"], 
     function (
     ready, 

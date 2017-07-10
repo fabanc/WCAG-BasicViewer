@@ -38,20 +38,26 @@ define([
             cursorColor:"black",
             cursorFocusColor:"red",
             zoomColor:'red',
-            selectionSymbol: new SimpleFillSymbol(
-                SimpleFillSymbol.STYLE_SOLID,
-                new SimpleLineSymbol(
-                SimpleLineSymbol.STYLE_SOLID,
-                    new Color([255, 0, 0]), 1
-                ), new Color([255, 0, 0, 0.25])
-            )
+            selectionSymbol: null
         },
 
         constructor: function (options, srcRefNode) {
             var defaults = lang.mixin({}, this.options, options);
+            if(!defaults.selectionSymbol) {
+                var selectioneColor = new Color().setColor(
+                    defaults.map.infoWindow.lineSymbol.color);
+                    //defaults.cursorFocusColor);
+                selectioneColor.a = 0.225;
+                
+                defaults.selectionSymbol = new SimpleFillSymbol(
+                    SimpleFillSymbol.STYLE_SOLID,
+                    null,
+                    //new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color('White'), 2), 
+                    selectioneColor);
+            }
+            
             // this._i18n = i18n;
             // this.domNode = srcRefNode;
-
             this.set("map", defaults.map);
             this.set("navToolBar", defaults.navToolBar);
             this.set("zoomColor", defaults.zoomColor);
@@ -78,8 +84,7 @@ define([
             var m = this.cursorToCenter();
             var mapSuperCursor = domConstruct.create('div', {
                 id: 'mapSuperCursor',
-                style:'position:absolute;',
-                onclick:"dojo.byId('mapDiv').focus()"
+                style:'position:absolute; pointer-events:none;',
             }, 'mapDiv_layers');
 
             this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);

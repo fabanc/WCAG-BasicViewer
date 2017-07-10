@@ -81,7 +81,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var popup = this.map.infoWindow;
 
             var buttons = query(".popupInfoButton");
-            buttons.forEach(function (btn) {
+            buttons.forEach(lang.hitch(this, function (btn) {
                 on(btn,'keydown', lang.hitch(this, function(ev) {
                     switch(ev.keyCode) {
                         case 13: 
@@ -90,16 +90,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.preventDefault();
                             break;
                         case 37: // <
-                            var _prev = query('.popupInfoButton.prev')[0];
-                            _prev.focus();
-                            _prev.click();
+                            this.ToPrev();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
                         case 39: // >
-                            var _next = query('.popupInfoButton.next')[0];
-                            _next.focus();
-                            _next.click();
+                            this.ToNext();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
@@ -109,30 +105,26 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.preventDefault();
                             break;
                         case 90: // Z
-                            query('.popupInfoButton.zoom')[0].focus();
+                            this.ToZoom();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
                         case 77: // M
                         case 80: // P
-                            var _toMap = query('.popupInfoButton.map')[0];
-                            _toMap.focus();
-                            _toMap.click();
+                            this.ToMap();
                             ev.stopPropagation();
                             ev.preventDefault();
-
                             break;
                         case 88: // X
                         case 67: // C
                         case 69: // E
-                            query('.popupInfoButton.clear')[0].focus();
+                            this.ToClear();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
-
                     }
                 }));
-            });
+            }));
             
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 if(popup.selectedIndex>=0) {
@@ -150,6 +142,38 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }));
 
             this.setTotal(0);
+        },
+
+        pagerIsVisible : function() {
+            return domStyle.get(dojo.byId('popupPager'),'display') !== 'none';
+        },
+
+        ToPrev: function() {
+            if(!this.pagerIsVisible()) return;
+            var _prev = query('.popupInfoButton.prev')[0];
+            _prev.focus();
+            _prev.click();        
+        },
+
+        ToNext:function() {
+            if(!this.pagerIsVisible()) return;
+            var _next = query('.popupInfoButton.next')[0];
+            _next.focus();
+            _next.click();
+        },
+
+        ToZoom: function() {
+            query('.popupInfoButton.zoom')[0].focus();
+        },
+
+        ToMap : function() {
+            var _toMap = query('.popupInfoButton.map')[0];
+            _toMap.focus();
+            _toMap.click();
+        },
+
+        ToClear : function() {
+            query('.popupInfoButton.clear')[0].focus();
         },
 
         setTotal : function(count) {
