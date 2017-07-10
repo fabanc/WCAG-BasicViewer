@@ -385,7 +385,7 @@ define(["dojo/ready",
                         } else {
                             //activate the popup and destroy editor if necessary
                             this._destroyEditor();
-                            this.map.setInfoWindowOnClick(true);
+                            this.map.setInfoWindowOnClick(true); // ? With InfoPopup!
                         }
 
 
@@ -1147,13 +1147,13 @@ define(["dojo/ready",
                 deferred.resolve(true);
 
             } else {
-                this._takeCareOfInfoWindow();
+                this._fixFocusOnNativeInfoWindows();
                 deferred.resolve(false);
             }
             return deferred.promise;
         },
 
-        _takeCareOfInfoWindow: function() {
+        _fixFocusOnNativeInfoWindows: function() {
             on(this.map.infoWindow, 'show', lang.hitch(this, function(ev) {
                 query('.esriPopup .titleButton').forEach(function(btn){
                     domAttr.set(btn,'tabindex', 0);
@@ -1706,7 +1706,6 @@ define(["dojo/ready",
                             defaultSources.push(source);
                             searchLayers = true;
                         }
-
                     }));
                 }
 

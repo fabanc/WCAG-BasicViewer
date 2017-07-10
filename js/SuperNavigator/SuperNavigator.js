@@ -209,17 +209,20 @@ define([
                         shape = this.map.extent;
                         break;
                     case 'selection':
-                        shape = this.map.infoWindow.getSelectedFeature().geometry;
-                        if(shape.type==='point') {
-                            shape = new Circle({
-                                center: shape,
-                                geodesic: false,
-                                radius: w * 10,
-                            });
-                        }
-                        else {
-                            var extent = shape.getExtent().expand(1.5);
-                            this.map.setExtent(extent);
+                        var feature = this.map.infoWindow.getSelectedFeature();
+                        if(feature) {
+                            shape = feature.geometry;
+                            if(shape.type==='point') {
+                                shape = new Circle({
+                                    center: shape,
+                                    geodesic: false,
+                                    radius: w * 10,
+                                });
+                            }
+                            else {
+                                var extent = shape.getExtent().expand(1.5);
+                                this.map.setExtent(extent);
+                            }
                         }
                         break;
                 }

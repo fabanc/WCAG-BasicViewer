@@ -168,7 +168,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }));
 
             on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
-                //console.log('updateTool', name);
                 if(this.superNavigator && name !== 'infoPanel') {
                     this.superNavigator.followTheMapMode(false);
                 }
