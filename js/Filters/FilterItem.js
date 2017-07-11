@@ -1,7 +1,7 @@
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/dom-construct", "dojo/parser", "dojo/ready",
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/_base/lang", "dojo/has", "esri/kernel",
-    "dojo/text!application/Filters/templates/FilterItem.html",
+    "dojo/text!application/Filters/Templates/FilterItem.html",
     "dojo/i18n!application/nls/FilterDialog",
     "application/Filters/FilterString",
     "application/Filters/FilterDate",
