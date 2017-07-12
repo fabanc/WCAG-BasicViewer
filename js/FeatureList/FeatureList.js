@@ -141,14 +141,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var list = query("#featuresList")[0];
             this.map.graphics.clear();
             window.tasks.filter(function(t) { 
-                return t.layer.visible && t.layer.visibleAtMapScale;
+                return t.layer.visible && t.layer.visibleAtMapScale && t.layer.infoTemplate;
             }).forEach(lang.hitch(this.map, function(t) {
                 t.query.geometry = ext.extent;
                 var exp=t.layer.getDefinitionExpression();
                 t.query.where = exp;
                 t.result = t.task.execute(t.query);
             }));
-            promises = all(window.tasks.map(function(t) {return t.result;}));
+            var promises = all(window.tasks.map(function(t) {return t.result;}));
             promises.then(
                 function(results) {
                     list.innerHTML = "";
@@ -158,54 +158,56 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         var layer = window.tasks[i].layer;
                         if(layer.visible && layer.visibleAtMapScale && layer.infoTemplate) {
                             r = results[i];
-                            var content = '';
-                            if(!layer.infoTemplate) {
-                                var x = 1;
-                            }
-                            var fieldsMap = layer.infoTemplate._fieldsMap;
-                            for(var p in layer.infoTemplate._fieldsMap) {
-                                if(fieldsMap.hasOwnProperty(p) && fieldsMap[p].visible)
-                                {
-                                    var pField = fieldsMap[p];
-                                    var fieldName = '${'+pField.fieldName+'}';
-                                    var fieldValue = fieldName;
-                                    if(pField.format)
-                                    { 
-                                        if(pField.format.dateFormat) {
-                                            fieldValue='FORMAT_DATE('+fieldName+',"'+pField.format.dateFormat+'")';
+                            if(r) {
+                                var content = '';
+                                if(!layer.infoTemplate) {
+                                    var x = 1;
+                                }
+                                var fieldsMap = layer.infoTemplate._fieldsMap;
+                                for(var p in layer.infoTemplate._fieldsMap) {
+                                    if(fieldsMap.hasOwnProperty(p) && fieldsMap[p].visible)
+                                    {
+                                        var pField = fieldsMap[p];
+                                        var fieldName = '${'+pField.fieldName+'}';
+                                        var fieldValue = fieldName;
+                                        if(pField.format)
+                                        { 
+                                            if(pField.format.dateFormat) {
+                                                fieldValue='FORMAT_DATE('+fieldName+',"'+pField.format.dateFormat+'")';
+                                            }
+                                            else if(pField.format.time) {
+                                                fieldValue='FORMAT_TIME('+fieldName+',"'+pField.format.time+'")';
+                                            }
+                                            else if(pField.format.hasOwnProperty("digitSeparator")) {
+                                                fieldValue='FORMAT_NUM('+fieldName+',"'+pField.format.places+'|'+pField.format.digitSeparator+'")';
+                                            }
+                                            else {
+                                                fieldValue=fieldName;
+                                            }
                                         }
-                                        else if(pField.format.time) {
-                                            fieldValue='FORMAT_TIME('+fieldName+',"'+pField.format.time+'")';
-                                        }
-                                        else if(pField.format.hasOwnProperty("digitSeparator")) {
-                                            fieldValue='FORMAT_NUM('+fieldName+',"'+pField.format.places+'|'+pField.format.digitSeparator+'")';
-                                        }
-                                        else {
-                                            fieldValue=fieldName;
-                                        }
+
+                                        content+='<tr class="featureItem_${_layerId}_${_featureId} hideAttr" tabindex="0" aria-label="'+pField.label+', '+fieldValue+',"">\n';
+                                        content+='    <td valign="top"></td>\n';
+                                        content+='    <td valign="top" align="right">'+pField.label+'</td>\n';
+                                        content+='    <td valign="top">:</td>\n';
+                                        content+='    <td valign="top">'+fieldValue+'</td>\n';
+                                        content+='</tr>\n';
+                                    }
+                                }
+                                for(var j = 0; j<r.features.length; j++) {
+                                    var f = r.features[j];
+                                    if(window._prevSelected && window._prevSelected.split('_')[1] == f.attributes[r.objectIdFieldName]) {
+                                        preselected = f;
                                     }
 
-                                    content+='<tr class="featureItem_${_layerId}_${_featureId} hideAttr" tabindex="0" aria-label="'+pField.label+', '+fieldValue+',"">\n';
-                                    content+='    <td valign="top"></td>\n';
-                                    content+='    <td valign="top" align="right">'+pField.label+'</td>\n';
-                                    content+='    <td valign="top">:</td>\n';
-                                    content+='    <td valign="top">'+fieldValue+'</td>\n';
-                                    content+='</tr>\n';
-                                }
-                            }
-                            for(var j = 0; j<r.features.length; j++) {
-                                var f = r.features[j];
-                                if(window._prevSelected && window._prevSelected.split('_')[1] == f.attributes[r.objectIdFieldName]) {
-                                    preselected = f;
-                                }
-
-                                var featureListItem = this._getFeatureListItem(i, f, r.objectIdFieldName, layer, content, listTemplate);
-                                if(featureListItem)
-                                {
-                                    domConstruct.create("li", {
-                                        // tabindex : 0,
-                                        innerHTML : featureListItem
-                                    }, list);
+                                    var featureListItem = this._getFeatureListItem(i, f, r.objectIdFieldName, layer, content, listTemplate);
+                                    if(featureListItem)
+                                    {
+                                        domConstruct.create("li", {
+                                            // tabindex : 0,
+                                            innerHTML : featureListItem
+                                        }, list);
+                                    }
                                 }
                             }
                         }

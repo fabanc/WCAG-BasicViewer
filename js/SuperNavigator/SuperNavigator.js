@@ -230,31 +230,36 @@ define([
                         break;
                 }
 
+                this.clear();
+                this.queryZone = new Graphic(shape, this.selectionSymbol);
+                this.map.graphics.add(this.queryZone);
+
                 var deferrs = [];
-                for(var l = 0; l<layers.length; l++) {
+                layers
+                .map(function(layer) {
+                    return layer.layerObject;
+                })
+                .filter(function(layer) { 
+                    return layer && layer.selectFeatures && layer.selectFeatures !== undefined;
+                })
+                .forEach(lang.hitch(this, function(layer) {
                     var q = new Query();
                     q.outFields = ["*"];                    
                     q.where = "1=1";
                     q.geometry = shape;
 
-                    this.clear();
-
-                    this.queryZone = new Graphic(shape, this.selectionSymbol);
-                    this.map.graphics.add(this.queryZone);
-
                     q.spatialRelationship = "esriSpatialRelIntersects";
                     q.returnGeometry = true;
 
-                    layer = layers[l];
-
-                    var def = layer.layerObject.selectFeatures(
+                    var def = layer.selectFeatures(
                         q, FeatureLayer.SELECTION_NEW, 
                         lang.hitch(this, function(results) {
                             this.features = this.features.concat(results);
                         })
                     );
                     deferrs.push(def);
-                }
+                }));
+
                 all(deferrs).then(lang.hitch(this, function() {
                     deferred.resolve(this.features);
                     this.loading(false);
@@ -310,16 +315,17 @@ define([
             }
             this.followTheMapMode(mode === 'extent');
 
+            this.map.infoWindow.clearFeatures();
+            this.map.infoWindow.show();
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){
-                this.map.infoWindow.hide();
-                this.map.infoWindow.clearFeatures();
 
-                // this.map.centerAt(center).then(lang.hitch(this, function() {
-                    this.map.infoWindow.setFeatures(features);
-                    if(!has('infoPanel'))
-                        this.map.infoWindow.show(center);
-                // }));
+            this.map.infoWindow.setFeatures(features);
+            if(features && !this.map.infoWindow.features)
+                this.map.infoWindow.setFeatures(features);
+
+            if(!has('infoPanel'))
+                this.map.infoWindow.show(center);
 
                 deferred.resolve();
             }));
