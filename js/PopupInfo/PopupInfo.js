@@ -164,7 +164,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             //when the selection changes update the side panel to display the popup info for the 
             //currently selected feature. 
             on(popup, "SelectionChange", lang.hitch(this, function() {
-                displayPopupContent(popup.getSelectedFeature());
+                var selectedFeature = popup.getSelectedFeature();
+                if(selectedFeature && selectedFeature !== undefined)
+                    displayPopupContent(selectedFeature);
+            }));
+
+            on(popup, "SetFeatures", lang.hitch(this, function() {
             }));
 
             on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {

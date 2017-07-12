@@ -110,11 +110,11 @@ define([
                 this.clear();
             }));
 
-            on(this.map.infoWindow, 'show', lang.hitch(this, function() {
-                if(this.queryZone) {
-                    this.map.graphics.add(this.queryZone);
-                }
-            }));
+            // on(this.map.infoWindow, 'show', lang.hitch(this, function() {
+            //     if(this.queryZone) {
+            //         this.map.graphics.add(this.queryZone);
+            //     }
+            // }));
 
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
                 this.clear();
