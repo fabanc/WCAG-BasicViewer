@@ -72,13 +72,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
         total:0,
-        // _setTotalAttr: { node: "totalNode", type: "innerHTML" },
 
         _init: function () {
 
             this.loaded = true;
 
             var popup = this.map.infoWindow;
+
+            on(query('.popupInfoButton.prev')[0], 'click', lang.hitch(this, this.selectPrevious));
+            on(query('.popupInfoButton.next')[0], 'click', lang.hitch(this, this.selectNext));
+            on(query('.popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
+            on(query('.popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
+            on(query('.popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearFeatures));
 
             var buttons = query(".popupInfoButton");
             buttons.forEach(lang.hitch(this, function (btn) {
@@ -125,12 +130,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
                 }));
             }));
-
-            on(query('.popupInfoButton.prev')[0], 'click', lang.hitch(this, this.selectPrevious));
-            on(query('.popupInfoButton.next')[0], 'click', lang.hitch(this, this.selectNext));
-            on(query('.popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
-            on(query('.popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
-            on(query('.popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearFeatures));
 
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 if(popup.selectedIndex>=0) {
@@ -189,9 +188,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var ctrlNode = dojo.byId("popupControls");
             var pagerNode = dojo.byId("popupPager");
 
-            domStyle.set(dojo.byId("popupMessage"), 'display', (this.total === 0 ? 'inline' : 'none'));
-            domStyle.set(dojo.byId("popupControls"), 'display', (this.total > 0 ? 'inline' : 'none'));
-            domStyle.set(dojo.byId("popupPager"), 'display', (this.total > 1 ? 'inline' : 'none'));
+            domStyle.set(msgNode, 'display', (this.total <= 0 ? 'inline' : 'none'));
+            domStyle.set(ctrlNode, 'display', (this.total > 0 ? 'inline' : 'none'));
+            domStyle.set(pagerNode, 'display', (this.total > 1 ? 'inline' : 'none'));
 
             dom.byId('totalFeatures').innerHTML = this.total;
 
