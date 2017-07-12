@@ -148,7 +148,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 t.query.where = exp;
                 t.result = t.task.execute(t.query);
             }));
-            promises = all(window.tasks.map(function(t) {return t.result;}));
+            var promises = all(window.tasks.map(function(t) {return t.result;}));
             promises.then(
                 function(results) {
                     list.innerHTML = "";
