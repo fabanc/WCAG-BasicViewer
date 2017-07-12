@@ -104,10 +104,11 @@
       {  
          "category":"Tools",
          "fields":[  
-            {  "label":"Active Tool:",
-               "type":"string",
-               "fieldName":"activeTool",
-               "tooltip":"Active Tool",
+            {  
+            // "label":"Active Tool:",
+            // "type":"string",
+            // "fieldName":"activeTool",
+            // "tooltip":"Active Tool",
                "options":[  
                   {  
                      "label":"None",
@@ -459,7 +460,7 @@
       "tool_layers":true,
       "tool_home":true,
       "tool_locate":true,
-      "tool_edit":true,
+      "tool_edit":false,
       "tool_edit_toolbar":false,
       "tool_bookmarks":true,
       "tool_basemap":true,
