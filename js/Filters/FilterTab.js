@@ -170,7 +170,7 @@ define([
                 }                          
             }
             
-            var badgeindicator = query('#badge_somefilters')[0];
+            var badgeindicator = query('#badge_someFilters')[0];
                 if (window.filtersOn.length>0) {
                     domStyle.set(badgeindicator,'display','');
                     domAttr.set(badgeindicator, "title", i18n.widgets.FilterTab.someFilters);
