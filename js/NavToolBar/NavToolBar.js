@@ -4,7 +4,7 @@ define([
     "dojo/query", "esri/toolbars/navigation", "dijit/registry",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/symbols/SimpleLineSymbol", "esri/Color",
-    "dojo/text!application/NavToolBar/templates/NavToolBar.html", 
+    "dojo/text!application/NavToolBar/Templates/NavToolBar.html", 
     "dojo/i18n!application/nls/NavToolBar",
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dojo/dom-construct", "dojo/_base/event", 

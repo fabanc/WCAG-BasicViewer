@@ -4,7 +4,7 @@ define([
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/_WidgetsInTemplateMixin",
     "dojo/_base/lang", "dojo/has", "esri/kernel",
     "dojo/dom-style", "esri/tasks/query", "esri/tasks/QueryTask",
-    "dojo/text!./templates/FilterNumber.html",
+    "dojo/text!./Templates/FilterNumber.html",
     "dojo/i18n!application/nls/FilterDialog",
 ], function(
     declare, domConstruct, parser, ready, 
