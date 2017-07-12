@@ -104,82 +104,6 @@
       {  
          "category":"Tools",
          "fields":[  
-            {  "label":"Active Tool:",
-               "type":"string",
-               "fieldName":"activeTool",
-               "tooltip":"Active Tool",
-               "options":[  
-                  {  
-                     "label":"None",
-                     "value":""
-                  },
-                  {  
-                     "label":"Bookmarks",
-                     "value":"bookmarks"
-                  },
-                  {  
-                     "label":"Basemap",
-                     "value":"basemap"
-                  },
-                  {  
-                     "label":"Details",
-                     "value":"details"
-                  },
-                  {  
-                     "label":"Instructions",
-                     "value":"instructions"
-                  },                 
-                  {  
-                     "label":"Edit",
-                     "value":"edit"
-                  },
-                  {  
-                     "label":"Layers",
-                     "value":"layers"
-                  },
-                  {  
-                     "label":"Features",
-                     "value":"features"
-                  },
-                  {  
-                     "label":"FeatureTable",
-                     "value":"featureRable"
-                  },
-                  {  
-                     "label":"InfoPanel",
-                     "value":"infoPanel"
-                  },
-                  {  
-                     "label":"MapKeyboardNavigation",
-                     "value":"mapKeyboardNavigation"
-                  },
-
-                  {  
-                     "label":"Filters",
-                     "value":"filter"
-                  },
-                  {  
-                     "label":"Legend",
-                     "value":"legend"
-                  },
-                  {  
-                     "label":"Measure",
-                     "value":"measure"
-                  },
-                  {  
-                     "label":"Overview",
-                     "value":"overview"
-                  },
-                  {  
-                     "label":"Print",
-                     "value":"print"
-                  },
-                  {  
-                     "label":"Share",
-                     "value":"share"
-                  }
-               ]},
-            
             {  "label":"Details",
                "type":"boolean",
                "fieldName":"tool_details"},
@@ -485,7 +409,7 @@
       "tool_mapKeyboardNavigation":false,
       "tool_home":true,
       "tool_locate":true,
-      "tool_edit":true,
+      "tool_edit":false,
       "tool_edit_toolbar":false,
       "tool_bookmarks":true,
       "tool_basemap":true,
