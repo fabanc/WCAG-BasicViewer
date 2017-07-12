@@ -87,6 +87,9 @@ define([
                 style:'position:absolute; pointer-events:none;',
             }, 'mapDiv_layers');
 
+            this.map.isKeyboardNavigation = false;
+            this.map.isPan = false;
+
             this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);
             this.cursor = this.cursorNav.createGroup();
             var circle = this.cursor.createCircle({cx:20, cy:20, r:7}).setFill("transparent").setStroke(this.cursorFocusColor);

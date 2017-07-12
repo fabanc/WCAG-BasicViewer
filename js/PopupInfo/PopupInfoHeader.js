@@ -72,7 +72,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
         total:0,
-        _setTotalAttr: { node: "totalNode", type: "innerHTML" },
+        // _setTotalAttr: { node: "totalNode", type: "innerHTML" },
 
         _init: function () {
 
@@ -125,7 +125,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
                 }));
             }));
-            
+
+            on(query('.popupInfoButton.prev')[0], 'click', lang.hitch(this, this.selectPrevious));
+            on(query('.popupInfoButton.next')[0], 'click', lang.hitch(this, this.selectNext));
+            on(query('.popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
+            on(query('.popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
+            on(query('.popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearFeatures));
+
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 if(popup.selectedIndex>=0) {
                     dom.byId('featureIndex').innerHTML = popup.selectedIndex + 1;
@@ -141,7 +147,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
             }));
 
-            this.setTotal(0);
+            this.setTotal(-1);
         },
 
         pagerIsVisible : function() {
