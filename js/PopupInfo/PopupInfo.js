@@ -162,6 +162,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             });
 
             // on(popup, "SetFeatures", lang.hitch(this, function() {
+            //     console.log("SetFeatures");
             // }));
 
             on(popup, "SelectionChange", lang.hitch(this, function() {

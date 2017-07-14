@@ -191,7 +191,7 @@ define([
                 var shape = this.map.extent;
                 // if(!mapPoint) mapPoint = shape.getCenter();
                 var w = shape.getWidth()/75;
-                var selectedFeature = this.map.infoWindow.getSelectedFeature();
+                // var selectedFeature = this.map.infoWindow.getSelectedFeature();
                 
                 switch(mode) {
                     case 'point':
@@ -315,7 +315,7 @@ define([
             }
             this.followTheMapMode(mode === 'extent');
 
-            this.map.infoWindow.clearFeatures();
+            // this.map.infoWindow.clearFeatures();
             this.map.infoWindow.show();
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){
