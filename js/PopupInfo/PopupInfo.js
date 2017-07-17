@@ -169,9 +169,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var selectedFeature = popup.getSelectedFeature();
                 if(selectedFeature && selectedFeature !== undefined)
                     displayPopupContent(selectedFeature);
-                else {
-                    popupInfoHeader.clearFeatures();
-                }
             }));
 
             on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {

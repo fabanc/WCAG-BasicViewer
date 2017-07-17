@@ -204,13 +204,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         selectPrevious : function () {
-            // console.log('Prev');
             this.map.infoWindow.selectPrevious();
             this.clearSuperNavigator();
         },
 
         selectNext : function () {
-            // console.log('Next');
             this.map.infoWindow.selectNext();
             this.clearSuperNavigator();
         },
