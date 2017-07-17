@@ -113,8 +113,9 @@ define([
                 domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
             });
 
-            on(this.map, 'click', lang.hitch(this, function(ev) {
-                this.setCursorPos(new ScreenPoint(ev.offsetX, ev.offsetY));
+            on(this.map, 'click', lang.hitch(this, function(evn) {
+                this.followTheMapMode(false);
+                this.setCursorPos(new ScreenPoint(evn.offsetX, evn.offsetY));
                 this.clearZone();
             }));
 
@@ -150,7 +151,7 @@ define([
 
         cursorScroll:function(evn, dx, dy) {
             var deferred = new Deferred();
-            
+
             if(!evn.shiftKey) {
                 deferred.reject("pan");
             }
