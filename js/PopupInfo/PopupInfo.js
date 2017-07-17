@@ -85,6 +85,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         popupInfoHeader : null,
+        contentPanel : null,
 
         _init: function () {
 
@@ -96,12 +97,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
-            var content = new ContentPane({
+            contentPanel = new ContentPane({
                 region: "center",
                 id: "leftPane",
                 tabindex: 0,
             }, dom.byId("feature_content"));
-            content.startup();
+            contentPanel.startup();
+            contentPanel.set("content", i18n.widgets.popupInfo.instructions);
             
             this.popupInfoHeader = new PopupInfoHeader({
                 map: this.map,
@@ -113,7 +115,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
-                    registry.byId("leftPane").set("content", feature.getContent()).then(lang.hitch(this, function() {
+                    contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
                         if(mainSection) {
                             var header = query('.header', mainSection[0]);
@@ -168,9 +170,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }));
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
-                console.log("ClearFeatures", popup.features);
-
-                registry.byId("leftPane").set("content", i18n.widgets.popupInfo.instructions);
+                contentPanel.set("content", i18n.widgets.popupInfo.instructions);
                 if(this.superNavigator) {
                     this.superNavigator.clearZone();
                 }
