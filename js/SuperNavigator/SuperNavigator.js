@@ -148,44 +148,49 @@ define([
             return m;
         },
 
-        cursorScroll:function(dx, dy) {
+        cursorScroll:function(evn, dx, dy) {
             var deferred = new Deferred();
-
-            this.cursorPos.x += dx;
-            this.cursorPos.y += dy;
-            var m = dom.byId('mapDiv').getBoundingClientRect();
-            if(this.cursorPos.x < 20) {
-                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                    this.cursorToCenter();
+            
+            if(!evn.shiftKey) {
+                deferred.reject("pan");
+            }
+            else {
+                this.cursorPos.x += dx;
+                this.cursorPos.y += dy;
+                var m = dom.byId('mapDiv').getBoundingClientRect();
+                if(this.cursorPos.x < 20) {
+                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                        this.cursorToCenter();
+                        this.setCursorPos();
+                        deferred.resolve(this.cursorPos);
+                    }));
+                }
+                else if (this.cursorPos.x > dom.byId('mapDiv').getBoundingClientRect().width - 20) {
+                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                        this.cursorToCenter();
+                        this.setCursorPos();
+                        deferred.resolve(this.cursorPos);
+                    }));
+                }
+                if(this.cursorPos.y < 20) {
+                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                        this.cursorToCenter();
+                        this.setCursorPos();
+                        deferred.resolve(this.cursorPos);
+                    }));
+                }
+                else if (this.cursorPos.y > dom.byId('mapDiv').getBoundingClientRect().height - 20) {
+                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
+                        this.cursorToCenter();
+                        this.setCursorPos();
+                        deferred.resolve(this.cursorPos);
+                    }));
+                }
+                else 
+                {
                     this.setCursorPos();
                     deferred.resolve(this.cursorPos);
-                }));
-            }
-            else if (this.cursorPos.x > dom.byId('mapDiv').getBoundingClientRect().width - 20) {
-                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                    this.cursorToCenter();
-                    this.setCursorPos();
-                    deferred.resolve(this.cursorPos);
-                }));
-            }
-            if(this.cursorPos.y < 20) {
-                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                    this.cursorToCenter();
-                    this.setCursorPos();
-                    deferred.resolve(this.cursorPos);
-                }));
-            }
-            else if (this.cursorPos.y > dom.byId('mapDiv').getBoundingClientRect().height - 20) {
-                this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                    this.cursorToCenter();
-                    this.setCursorPos();
-                    deferred.resolve(this.cursorPos);
-                }));
-            }
-            else 
-            {
-                this.setCursorPos();
-                deferred.resolve(this.cursorPos);
+                }
             }
             return deferred.promise;
         },

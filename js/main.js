@@ -169,6 +169,9 @@ define(["dojo/ready",
             return outputColor;
         },
 
+        stepX: null,
+        stepY: null,
+
         _mapLoaded: function () {
             // this.map.resize();
             // this.map.reposition();
@@ -190,6 +193,8 @@ define(["dojo/ready",
                 this._initPopup(this.map.infoWindow.domNode);
             }));
 
+            this.stepX = this.map.width * 0.0135;
+            this.stepY = this.map.height * 0.0135;
         },
 
         _initPopup : function (node) {
@@ -634,7 +639,8 @@ define(["dojo/ready",
                 map: this.map,
                 cursorColor: "black",
                 selectionColor: this.config.mapSelectionColor,
-                cursorFocusColor: this.config.focusColor
+                cursorFocusColor: this.config.focusColor,
+                operationalLayers: this.config.response.itemInfo.itemData.operationalLayers
             });
             this.superNav.startup();
         },
@@ -887,6 +893,10 @@ define(["dojo/ready",
                 var pageBody = dojo.byId('pageBody_details');
                 var detailDiv = dojo.byId('detailDiv');
                 detailDiv.style.maxHeight=(pageBody.clientHeight-instructionsDiv.clientHeight - 30) + 'px';
+
+                this.stepX = x * this.map.width * 0.0135;
+                this.stepY = y * this.map.height * 0.0135;
+
             } catch (e) {
                 /* ignore instructionDiv not defined error: will come defined next time! */      
             }
@@ -1932,62 +1942,44 @@ define(["dojo/ready",
                     if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return; 
                     switch(evn.keyCode)  {
                         case 40 : //down
-                            this._mapScroll(evn.shiftKey, 0, 1);
-                            //this.map._fixedPan(0, this.map.height * 0.0135);
+                            this._mapScroll(evn, 0, 1);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 38 : //up
-                            this._mapScroll(evn.shiftKey, 0, -1);
-                            //this.map._fixedPan(0, this.map.height * -0.0135);
+                            this._mapScroll(evn, 0, -1);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 37 : //left
-                            this._mapScroll(evn.shiftKey, -1, 0);
-                            //this.map._fixedPan(this.map.width * -0.0135, 0);
+                            this._mapScroll(evn, -1, 0);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 39 : //right
-                            this._mapScroll(evn.shiftKey, 1, 0);
-                            //this.map._fixedPan(this.map.width * 0.0135, 0);
+                            this._mapScroll(evn, 1, 0);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 33 : //pgup
-                            this._mapScroll(evn.shiftKey, 1, -1);
-                            //this.map._fixedPan(this.map.width * 0.0135, this.map.height * -0.0135);
+                            this._mapScroll(evn, 1, -1);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 34 : //pgdn
-                            this._mapScroll(evn.shiftKey, 1, 1);
-                            //this.map._fixedPan(this.map.width * 0.0135, this.map.height * 0.0135);
+                            this._mapScroll(evn, 1, 1);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 35 : //end
-                            this._mapScroll(evn.shiftKey, -1, 1);
-                            //this.map._fixedPan(this.map.width * -0.0135, this.map.height * 0.0135);
+                            this._mapScroll(evn, -1, 1);
                             evn.preventDefault();
                             evn.stopPropagation();
                             break;
                         case 36 : //home
-                            this._mapScroll(evn.shiftKey, -1, -1);
-                            //this.map._fixedPan(this.map.width * -0.0135, this.map.height * -0.0135);
+                            this._mapScroll(evn, -1, -1);
                             evn.preventDefault();
                             evn.stopPropagation();
-                            break;
-                        case 13: //Enter
-                            // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
-                            if(this.superNav) {
-                                this.superNav.showPopup(
-                                    evn,
-                                    this.config.response.itemInfo.itemData.operationalLayers);
-                                evn.preventDefault();
-                                evn.stopPropagation();
-                            }
                             break;
                     }
                 }));
@@ -2119,16 +2111,20 @@ define(["dojo/ready",
             }));
         },
 
-        _mapScroll: function(shiftKey, x, y){
-            var dx = x * this.map.width * 0.0135;
-            var dy = y * this.map.height * 0.0135;
-            if(!this.superNav || !shiftKey) {
-                this.map._fixedPan(dx, dy);
+        _mapScroll: function(evn, x, y){
+            if(!this.superNav) {
+                this.map._fixedPan(x * this.stepX, y * this.stepY);
             }
             else {
-                this.superNav.cursorScroll(dx, dy).then(lang.hitch(this, function(cursorPos) {
-                    this.map.toMap(cursorPos);
-                }));
+                this.superNav.cursorScroll(evn, x * this.stepX, y * this.stepY)
+                .then(
+                    lang.hitch(this, function(cursorPos) {
+                        this.map.toMap(cursorPos);
+                    }),
+                    lang.hitch(this, function(err) {
+                        this.map._fixedPan(x * this.stepX, y * this.stepY);
+                    })
+                );
             }
         }
 
