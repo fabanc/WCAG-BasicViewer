@@ -194,9 +194,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             dom.byId('totalFeatures').innerHTML = this.total;
 
-            if(this.total===0) {
-                popupInfo.clear();
-            }
+            // if(this.total===0) {
+            //     popupInfo.clear();
+            // }
 
             if(this.total > 0) {
                 query('.popupInfoButton.next')[0].focus();
@@ -249,7 +249,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         clearSuperNavigator: function() {
-            if(this.superNavigator) this.superNavigator.clear();
+            if(this.superNavigator) this.superNavigator.clearZone();
         },
 
 

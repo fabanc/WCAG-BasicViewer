@@ -84,6 +84,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.superNavigator.badge = this.showBadge;
         },
 
+        popupInfoHeader : null,
+
         _init: function () {
 
             this.loaded = true;
@@ -101,12 +103,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }, dom.byId("feature_content"));
             content.startup();
             
-            var popupInfoHeader = new PopupInfoHeader({
+            this.popupInfoHeader = new PopupInfoHeader({
                 map: this.map,
                 toolbar: this.toolbar, 
                 superNavigator : this.superNavigator,
             }, domConstruct.create('Div', {}, this.headerNode));
-            popupInfoHeader.startup();
+            this.popupInfoHeader.startup();
 
             var displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
@@ -161,9 +163,21 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
             });
 
-            // on(popup, "SetFeatures", lang.hitch(this, function() {
-            //     console.log("SetFeatures");
-            // }));
+            on(popup, "SetFeatures", lang.hitch(this, function() {
+                // console.log("SetFeatures", popup.features);
+            }));
+
+            on(popup, "ClearFeatures", lang.hitch(this, function() {
+                console.log("ClearFeatures", popup.features);
+
+                registry.byId("leftPane").set("content", i18n.widgets.popupInfo.instructions);
+                if(this.superNavigator) {
+                    this.superNavigator.clearZone();
+                }
+                if(this.popupInfoHeader) {
+                    this.popupInfoHeader.setTotal(0);
+                }
+            }));
 
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 var selectedFeature = popup.getSelectedFeature();
@@ -180,23 +194,23 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             on(dojo.byId('pageBody_infoPanel'), 'keydown', lang.hitch(this, function(ev) {
                 switch(ev.keyCode) {
                     case 37: // <
-                        popupInfoHeader.ToPrev();
+                        this.popupInfoHeader.ToPrev();
                         ev.stopPropagation();
                         ev.preventDefault();
                         break;
                     case 39: // >
-                        popupInfoHeader.ToNext();
+                        this.popupInfoHeader.ToNext();
                         ev.stopPropagation();
                         ev.preventDefault();
                         break;
                     case 90: // Z
-                        popupInfoHeader.ToZoom();
+                        this.popupInfoHeader.ToZoom();
                         ev.stopPropagation();
                         ev.preventDefault();
                         break;
                     case 77: // M
                     case 80: // P
-                        popupInfoHeader.ToMap();
+                        this.popupInfoHeader.ToMap();
                         ev.stopPropagation();
                         ev.preventDefault();
 
@@ -204,7 +218,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     case 88: // X
                     case 67: // C
                     case 69: // E
-                        popupInfoHeader.ToClear();
+                        this.popupInfoHeader.ToClear();
                         ev.stopPropagation();
                         ev.preventDefault();
                         break;
@@ -214,10 +228,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         clear: function() {
             this.map.infoWindow.clearFeatures();
-            registry.byId("leftPane").set("content", i18n.widgets.popupInfo.instructions);
-            if(this.superNavigator) {
-                this.superNavigator.clear();
-            }
+
             dojo.byId('mapDiv').focus();
         },
 

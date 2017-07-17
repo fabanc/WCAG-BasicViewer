@@ -113,14 +113,14 @@ define([
 
             on(this.map, 'click', lang.hitch(this, function(ev) {
                 this.setCursorPos(new ScreenPoint(ev.offsetX, ev.offsetY));
-                this.clear();
+                this.clearZone();
             }));
 
             // on(this.map.infoWindow, 'show', lang.hitch(this, function() {
             // }));
 
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
-                this.clear();
+                this.clearZone();
             }));
         },
 
@@ -233,7 +233,7 @@ define([
                         break;
                 }
 
-                this.clear();
+                this.clearZone();
                 this.queryZone = new Graphic(shape, this.selectionSymbol);
                 this.map.graphics.add(this.queryZone);
 
@@ -281,7 +281,7 @@ define([
                 domClass.replace(loading_infoPanel, "hideLoading", "showLoading");
             },
 
-        clear: function() {
+        clearZone: function() {
             if(this.queryZone) {
                 this.map.graphics.remove(this.queryZone);
             }
@@ -322,9 +322,10 @@ define([
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){
 
-            this.map.infoWindow.setFeatures(features);
-            if(features && !this.map.infoWindow.features)
+            if(features && features !== undefined && features.length > 0)
                 this.map.infoWindow.setFeatures(features);
+            else 
+                this.map.infoWindow.clearFeatures();
 
             if(!has('infoPanel'))
                 this.map.infoWindow.show(center);
@@ -358,7 +359,7 @@ define([
             if(this.layers) {
                 this.showPopup(null, this.layers, 'extent')
                 .then(
-                    this.clear()
+                    this.clearZone()
                 );
             }
         }
