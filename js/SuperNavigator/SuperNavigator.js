@@ -38,22 +38,29 @@ define([
             cursorColor:"black",
             cursorFocusColor:"red",
             zoomColor:'red',
+            selectionColor: '#00008f',
             selectionSymbol: null
         },
 
         constructor: function (options, srcRefNode) {
             var defaults = lang.mixin({}, this.options, options);
             if(!defaults.selectionSymbol) {
-                var selectioneColor = new Color().setColor(
-                    defaults.map.infoWindow.lineSymbol.color);
-                    //defaults.cursorFocusColor);
-                selectioneColor.a = 0.225;
+                
+                if(defaults.selectionColor && defaults.selectionColor !== undefined) {
+                    defaults.map.infoWindow.fillSymbol.outline.color = 
+                    defaults.map.infoWindow.markerSymbol.outline.color = 
+                    defaults.map.infoWindow.lineSymbol.color = 
+                        defaults.selectionColor;
+                }
+
+                var selectionColor = new Color().setColor(defaults.map.infoWindow.lineSymbol.color);
+                selectionColor.a = 0.225;
                 
                 defaults.selectionSymbol = new SimpleFillSymbol(
                     SimpleFillSymbol.STYLE_SOLID,
                     null,
                     //new SimpleLineSymbol(SimpleLineSymbol.STYLE_SOLID, new Color('White'), 2), 
-                    selectioneColor);
+                    selectionColor);
             }
             
             // this._i18n = i18n;
@@ -88,8 +95,7 @@ define([
             }, 'mapDiv_layers');
 
             this.map.isKeyboardNavigation = false;
-            this.map.isPan = false;
-
+            
             this.cursorNav = gfx.createSurface("mapSuperCursor", 40, 40);
             this.cursor = this.cursorNav.createGroup();
             var circle = this.cursor.createCircle({cx:20, cy:20, r:7}).setFill("transparent").setStroke(this.cursorFocusColor);
@@ -111,9 +117,6 @@ define([
             }));
 
             // on(this.map.infoWindow, 'show', lang.hitch(this, function() {
-            //     if(this.queryZone) {
-            //         this.map.graphics.add(this.queryZone);
-            //     }
             // }));
 
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
@@ -315,7 +318,6 @@ define([
             }
             this.followTheMapMode(mode === 'extent');
 
-            // this.map.infoWindow.clearFeatures();
             this.map.infoWindow.show();
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){

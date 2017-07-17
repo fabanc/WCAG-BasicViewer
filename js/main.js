@@ -189,6 +189,7 @@ define(["dojo/ready",
             on(this.map.infoWindow, "selection-change", lang.hitch(this, function() {
                 this._initPopup(this.map.infoWindow.domNode);
             }));
+
         },
 
         _initPopup : function (node) {
@@ -311,7 +312,7 @@ define(["dojo/ready",
                     switch (this.config.tools[i].name) {
                         case "mapKeyboardNavigation":
                             if(has("mapKeyboardNavigation"))
-                                this._addNapKeyboardNavigation();
+                                this._addMapKeyboardNavigation();
                             break;
                         case "details":
                             toolList.push(this._addDetails(this.config.tools[i], toolbar, deferredDetails));
@@ -624,22 +625,15 @@ define(["dojo/ready",
             }, navToolBar);
             nav.startup();
 
-            // this.superNav = new SuperNavigator({
-            //     map: this.map,
-            //     navToolBar: oldNaviagationToolBar,
-            //     cursorColor: "black",
-            //     cursorFocusColor: this.config.focusColor
-            // });
-            // this.superNav.startup();
-
             deferred.resolve(true);
             return deferred.promise;
         },
 
-        _addNapKeyboardNavigation : function() {
+        _addMapKeyboardNavigation : function() {
             this.superNav = new SuperNavigator({
                 map: this.map,
                 cursorColor: "black",
+                selectionColor: this.config.mapSelectionColor,
                 cursorFocusColor: this.config.focusColor
             });
             this.superNav.startup();

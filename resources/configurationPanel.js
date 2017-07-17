@@ -85,6 +85,10 @@
                "type":"color",
                "fieldName":"activeColor",
                "tooltip":"Selection color"},
+            {  "label":"Map Selection Color:",
+               "type":"color",
+               "fieldName":"mapSelectionColor",
+               "tooltip":"Map Info Popup Selection color"},
             {  "label":"Icon color:",
                "type":"string",
                "fieldName":"icons",
@@ -388,6 +392,7 @@
       "hoverColor":"#00A9E6",
       "focusColor":"#FF7700",
       "activeColor":"#00b9f6",
+      "mapSelectionColor": "#00ffff",
       "theme":"#005ce6",
 
       "activeTool":"details",
