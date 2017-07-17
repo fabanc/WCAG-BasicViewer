@@ -53,7 +53,7 @@ define([
                         defaults.selectionColor;
                 }
 
-                var selectionColor = new Color().setColor(defaults.map.infoWindow.lineSymbol.color);
+                var selectionColor = new Color().setColor(defaults.map.infoWindow.markerSymbol.outline.color);
                 selectionColor.a = 0.225;
                 
                 defaults.selectionSymbol = new SimpleFillSymbol(
