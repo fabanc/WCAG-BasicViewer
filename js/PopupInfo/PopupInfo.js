@@ -171,9 +171,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
                 contentPanel.set("content", i18n.widgets.popupInfo.instructions);
-                if(this.superNavigator) {
-                    this.superNavigator.clearZone();
-                }
+                // if(this.superNavigator) {
+                //     this.superNavigator.clearZone();
+                // }
                 if(this.popupInfoHeader) {
                     this.popupInfoHeader.setTotal(0);
                 }

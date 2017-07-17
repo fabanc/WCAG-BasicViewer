@@ -39,7 +39,8 @@ define([
             cursorFocusColor:"red",
             zoomColor:'red',
             selectionColor: '#00008f',
-            selectionSymbol: null
+            selectionSymbol: null,
+            operationalLayers: null,
         },
 
         constructor: function (options, srcRefNode) {
@@ -70,7 +71,8 @@ define([
             this.set("zoomColor", defaults.zoomColor);
             this.set("cursorColor", defaults.cursorColor);            
             this.set("cursorFocusColor", defaults.cursorFocusColor);    
-            this.set("selectionSymbol", defaults.selectionSymbol);    
+            this.set("selectionSymbol", defaults.selectionSymbol);  
+            this.set("operationalLayers", defaults.operationalLayers);
         },
 
         startup: function () {
@@ -122,6 +124,22 @@ define([
             on(this.map.infoWindow, 'hide', lang.hitch(this, function() {
                 this.clearZone();
             }));
+
+            var mapDiv = document.querySelector('#mapDiv');
+            on(mapDiv, 'keydown', lang.hitch(this, function(evn){
+                if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return; 
+                switch(evn.keyCode)  {
+                    case 13: //Enter
+                        // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
+                        this.showPopup(
+                            evn,
+                            this.operationalLayers);
+                        evn.preventDefault();
+                        evn.stopPropagation();
+                        break;
+                }
+            }));
+
         },
 
         cursorToCenter:function() {

@@ -249,7 +249,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         clearSuperNavigator: function() {
-            if(this.superNavigator) this.superNavigator.clearZone();
+            if(this.superNavigator) 
+                this.superNavigator.clearZone();
         },
 
 
