@@ -220,7 +220,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         toMap : function(ev) {
-            dojo.byId('mapDiv').focus();
+            this.map.container.focus();
             this.clearSuperNavigator();
        },
 

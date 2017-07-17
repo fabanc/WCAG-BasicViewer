@@ -287,7 +287,7 @@ define(["dojo/ready",
                 region: "center",
                 splitter: "true",
                 class: "bg",
-                content: dojo.byId("mapDiv"),
+                content: this.map.container,
             });
             borderContainer.addChild(contentPaneRight);
 
@@ -482,7 +482,7 @@ define(["dojo/ready",
                     class:'goThereHint',
                     innerHTML: '<b>Alt&nbsp;+&nbsp;5</b> '+this.config.i18n.skip.map,
                     style:'left:10%; top:30%'
-                }, dom.byId('mapDiv'));
+                }, this.map.container);
 
                 domConstruct.create("div", {
                     class:'goThereHint',
@@ -559,10 +559,10 @@ define(["dojo/ready",
                 dom.byId('dijit_layout_ContentPane_1_splitter').focus();
             };
 
-            skipToMap = function() {
+            skipToMap = lang.hitch(this, function() {
                 //document.querySelector('.esriSimpleSliderIncrementButton input').focus();
-                dojo.byId('mapDiv').focus();
-            };
+                this.map.container.focus();
+            });
 
             skipToInstructions = function() {
                 var activeTool = query('.panelToolActive');
@@ -1608,7 +1608,7 @@ define(["dojo/ready",
                 var searchLayers = false;
                 var search = new Search(options, domConstruct.create("div", {
                     id: "search"
-                }, "mapDiv"));
+                }, this.map.container));
                 var defaultSources = [];
 
                 //setup geocoders defined in common config 
@@ -1937,9 +1937,11 @@ define(["dojo/ready",
                 bingMapsKey: this.config.bingKey
             }).then(lang.hitch(this, function (response) {
 
-                var mapDiv = document.querySelector('#mapDiv');
+                var mapDiv = response.map.container;
+                    //document.querySelector('#mapDiv');
                 on(mapDiv, 'keydown', lang.hitch(this, function(evn){
-                    if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return; 
+                    var focusElement = document.querySelector(':focus');
+                    if(!focusElement || focusElement.id !== mapDiv.id) return; 
                     switch(evn.keyCode)  {
                         case 40 : //down
                             this._mapScroll(evn, 0, 1);
@@ -1984,16 +1986,19 @@ define(["dojo/ready",
                     }
                 }));
                 on(mapDiv, 'keypress', lang.hitch(this, function(evn){
-                    if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return;  
-                    evn.preventDefault();
-                    evn.stopPropagation();
+                    var focusElement = document.querySelector(':focus');
+                    if(!focusElement || focusElement.id !== mapDiv.id) return; 
                     if((evn.keyCode === 43) && !evn.ctrlKey && !evn.altKey)  // Shift-'+'
                     {
                         this.map.setLevel(this.map.getLevel() + 1);
+                        evn.preventDefault();
+                        evn.stopPropagation();
                     }
                     if((evn.keyCode === 45) && !evn.ctrlKey && !evn.altKey)  // Shift-'-'
                     {
                         this.map.setLevel(this.map.getLevel() - 1);
+                        evn.preventDefault();
+                        evn.stopPropagation();
                     }
                 }));
 

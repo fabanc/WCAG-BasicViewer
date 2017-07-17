@@ -107,7 +107,7 @@ define([
             domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
 
             this.map.onResize = lang.hitch(this, function(ev) {
-                var m = dom.byId('mapDiv').getBoundingClientRect();
+                var m = this.map.container.getBoundingClientRect();
                 this.cursorPos = {x: ((m.right-m.left)/2), y: ((m.bottom-m.top)/2)};
                 domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
                 domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
@@ -126,9 +126,11 @@ define([
                 this.clearZone();
             }));
 
-            var mapDiv = document.querySelector('#mapDiv');
+            var mapDiv = this.map.container;
+                //document.querySelector('#mapDiv');
             on(mapDiv, 'keydown', lang.hitch(this, function(evn){
-                if(!document.querySelector(':focus') || document.querySelector(':focus').id !== "mapDiv") return; 
+                var focusElement = document.querySelector(':focus');
+                if(!focusElement || focusElement.id !== mapDiv.id) return; 
                 switch(evn.keyCode)  {
                     case 13: //Enter
                         // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
@@ -144,7 +146,7 @@ define([
         },
 
         cursorToCenter:function() {
-            var m = dom.byId('mapDiv').getBoundingClientRect();
+            var m = this.map.container.getBoundingClientRect();
             this.cursorPos = new ScreenPoint(((m.right-m.left)/2), ((m.bottom-m.top)/2));
             return m;
         },
@@ -158,7 +160,7 @@ define([
             else {
                 this.cursorPos.x += dx;
                 this.cursorPos.y += dy;
-                var m = dom.byId('mapDiv').getBoundingClientRect();
+                var m = this.map.container.getBoundingClientRect();
                 if(this.cursorPos.x < 20) {
                     this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                         this.cursorToCenter();
