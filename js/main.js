@@ -1938,10 +1938,9 @@ define(["dojo/ready",
             }).then(lang.hitch(this, function (response) {
 
                 var mapDiv = response.map.container;
-                    //document.querySelector('#mapDiv');
                 on(mapDiv, 'keydown', lang.hitch(this, function(evn){
                     var focusElement = document.querySelector(':focus');
-                    if(!focusElement || focusElement.id !== mapDiv.id) return; 
+                    if(!focusElement || focusElement !== mapDiv) return; 
                     switch(evn.keyCode)  {
                         case 40 : //down
                             this._mapScroll(evn, 0, 1);
@@ -1987,7 +1986,7 @@ define(["dojo/ready",
                 }));
                 on(mapDiv, 'keypress', lang.hitch(this, function(evn){
                     var focusElement = document.querySelector(':focus');
-                    if(!focusElement || focusElement.id !== mapDiv.id) return; 
+                    if(!focusElement || focusElement !== mapDiv) return; 
                     if((evn.keyCode === 43) && !evn.ctrlKey && !evn.altKey)  // Shift-'+'
                     {
                         this.map.setLevel(this.map.getLevel() + 1);

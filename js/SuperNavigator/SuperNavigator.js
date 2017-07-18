@@ -127,16 +127,13 @@ define([
             }));
 
             var mapDiv = this.map.container;
-                //document.querySelector('#mapDiv');
             on(mapDiv, 'keydown', lang.hitch(this, function(evn){
                 var focusElement = document.querySelector(':focus');
-                if(!focusElement || focusElement.id !== mapDiv.id) return; 
+                if(!focusElement || focusElement !== mapDiv) return; 
                 switch(evn.keyCode)  {
                     case 13: //Enter
                         // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
-                        this.showPopup(
-                            evn,
-                            this.operationalLayers);
+                        this.showPopup(evn, this.operationalLayers);
                         evn.preventDefault();
                         evn.stopPropagation();
                         break;
@@ -168,7 +165,7 @@ define([
                         deferred.resolve(this.cursorPos);
                     }));
                 }
-                else if (this.cursorPos.x > dom.byId('mapDiv').getBoundingClientRect().width - 20) {
+                else if (this.cursorPos.x > this.map.container.getBoundingClientRect().width - 20) {
                     this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                         this.cursorToCenter();
                         this.setCursorPos();
@@ -182,7 +179,7 @@ define([
                         deferred.resolve(this.cursorPos);
                     }));
                 }
-                else if (this.cursorPos.y > dom.byId('mapDiv').getBoundingClientRect().height - 20) {
+                else if (this.cursorPos.y > this.map.container.getBoundingClientRect().height - 20) {
                     this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
                         this.cursorToCenter();
                         this.setCursorPos();
