@@ -1,4 +1,4 @@
-li[role='menuitem']:hover, 
+li[role='menuitem']:hover,
 div[role='button']:not(.searchBtn):not(.searchClear):not(.home):not(.zoomLocateButton):hover,
 .no-touch .esriMeasurement .esriButton .dijitButtonNode:hover,
 #dijit_form_ComboButton_0_arrow:hover,
@@ -20,9 +20,9 @@ button:hover, .navBtn:hover,
 INTERNET EXPLORER and FIREFOX : not supported or buggy:
 http://reference.sitepoint.com/css/outline-color
 */
-:focus {
+*:focus {
     /*--outline: -webkit-focus-ring-color auto 5px !important;*/
-    outline-width: 2px;
+    outline-width: 6px;
     outline-offset: -1px;
     outline-style: solid;
     outline-color: invert;
@@ -30,20 +30,23 @@ http://reference.sitepoint.com/css/outline-color
     }
 }
 
-.esriSimpleSliderIncrementButton:focus, 
+
+
+
+.esriSimpleSliderIncrementButton:focus,
 .esriSimpleSliderHomeButton:hover,
 .esriSimpleSliderDecrementButton:focus{
     outline-offset: 2px;
 }
 
-.homeContainer input:focus, .locateContainer input:focus 
+.homeContainer input:focus, .locateContainer input:focus
 {
 }
 
 .panelTool input[type="image" i]:focus
 {
     /*--outline: -webkit-focus-ring-color auto 5px !important;*/
-    outline-width: 2px;
+    outline-width: 5px;
 }
 
 .ovwHighlight:focus{
@@ -63,7 +66,7 @@ http://reference.sitepoint.com/css/outline-color
 }
 
 .activeMarker,
-.panelToolActive, 
+.panelToolActive,
 .esriBasemapGallerySelectedNode,
 .dijitSplitterThumb {
   background-color: rgba(0, 0, 0, 0.7);
@@ -81,6 +84,3 @@ http://reference.sitepoint.com/css/outline-color
 .searchBtn:focus, .searchClear:focus, .searchInput:focus {
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
-
-
-

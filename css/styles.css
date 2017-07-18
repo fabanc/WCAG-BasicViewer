@@ -115,6 +115,10 @@ blockquote {
     /*padding: 1px;*/
 }
 
+#mapDiv:focus {
+    margin: 5px!important;
+}
+
 .map .container {
   /*padding:1px;
   background-color: transparent !important;*/
