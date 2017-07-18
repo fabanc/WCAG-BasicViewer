@@ -62,7 +62,7 @@ define({
         	"edit": "Edit",
         	"time": "Time",
         	"print": "Print",
-        	"details": "Details",
+        	"details": "Help",
         	"share": "Share"
         },
         "skip":{

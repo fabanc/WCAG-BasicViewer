@@ -59,7 +59,7 @@ define(
         	"edit": "Modifier",
         	"time": "Heure",
         	"print": "Imprimer",
-        	"details": "Détails",
+        	"details": "Aide",
         	"share": "Partager",
             "filter": "Filtres",
             "features": "Liste des Caractéristiques"
