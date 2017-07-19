@@ -1537,9 +1537,10 @@ define(["dojo/ready",
 
                 var searchLayers = false;
                 var search = new Search(options, domConstruct.create("div", {
-                    id: "search"
-                }, "mapDiv"));
-                search.zoomScale = 25000;
+                    id: "search",
+                    zoomScale: 25000
+                }, "panelGeocoder"));
+                // search.zoomScale = 25000;
                 var defaultSources = [];
 
                 //setup geocoders defined in common config
@@ -1660,7 +1661,7 @@ define(["dojo/ready",
                 search.startup();
 
                 if (search && search.domNode) {
-                    domConstruct.place(search.domNode, "panelGeocoder");
+                    // domConstruct.place(search.domNode, "panelGeocoder");
 
                     var esriIconDownArrowNode = dojo.query(".searchIcon.esri-icon-down-arrow")[0];
                     if(esriIconDownArrowNode)
