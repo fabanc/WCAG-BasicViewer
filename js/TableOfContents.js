@@ -1,14 +1,14 @@
-define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel",
+define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on",
-    "dojo/text!application/dijit/templates/TableOfContents.html",
-    "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event",
+    "dojo/text!application/dijit/templates/TableOfContents.html", 
+    "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/_base/array",
     "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "esri/layers/LabelLayer"
     ], function (
         Evented, declare, lang, has, esriNS,
-        _WidgetBase, _TemplatedMixin, on,
-        dijitTemplate,
-        domClass, domAttr, domStyle, domConstruct, event,
+        _WidgetBase, _TemplatedMixin, on, 
+        dijitTemplate, 
+        domClass, domAttr, domStyle, domConstruct, event, 
         array,
         TextSymbol, SimpleRenderer, LabelLayer
     ) {
@@ -150,14 +150,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     var titleDiv = domConstruct.create("div", {
                         className: this.css.title,
                     }, layerDiv);
-
+                    
                     // title container
                     var titleContainerDiv = domConstruct.create("div", {
                         className: this.css.titleContainer,
                         tabindex: -1,
                     }, titleDiv);
-
-                    titleCheckbox = domConstruct.create("input",
+                    
+                    titleCheckbox = domConstruct.create("input", 
                     {
                         id: "layer_ck_"+i,
                         className: titleCheckBoxClass, //this.css.titleCheckbox,
@@ -188,8 +188,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     var settingsDiv, settingsIcon;
                     if (layer.layerObject &&
                         dojo.exists("settings", layer) &&
-                        layer.layerObject.isEditable())
-                    {
+                        layer.layerObject.isEditable()) 
+                    { 
                         settingsDiv = domConstruct.create("div", {
                             className: this.css.settings,
                             id: layer.settings
@@ -207,7 +207,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     var clearCSS = domConstruct.create("div", {
                         className: this.css.clear
                     }, titleContainerDiv);
-
+                    
                     // lets save all the nodes for events
                     var nodesObj = {
                         checkbox: titleCheckbox,
@@ -229,9 +229,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _atachSpaceKey: function(onButton, clickButton) {
             on(onButton, 'keyup', lang.hitch(clickButton, function(event){
-                console.log("Typed key: " + event.keyCode);
                 if(event.keyCode=='32')
-                    this.setAttribute('value',true);
+                    this.click();
             }));
         },
 
@@ -261,7 +260,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // update checkbox and layer visibility classes
             domClass.toggle(this._nodes[index].layer, this.css.visible, visible);
             domClass.toggle(this._nodes[index].checkbox, this.css.checkboxCheck, visible);
-
+            
             this.emit("toggle", {
                 index: index,
                 visible: visible
@@ -395,8 +394,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         _checkboxEvent: function (index) {
-            // when checkbox value is changed
-            var checkEvent = on(this._nodes[index].checkbox, "change", lang.hitch(this,
+            // when checkbox is clicked
+            var checkEvent = on(this._nodes[index].checkbox, "click", lang.hitch(this, 
                 function (evt) {
                 // toggle layer visibility
                 this._toggleLayer(index);
