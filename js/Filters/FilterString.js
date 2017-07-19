@@ -2,7 +2,7 @@ define([
     "dojo/_base/declare", "dojo/dom-construct", "dojo/parser", "dojo/ready",
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/_base/lang", "dojo/has", "esri/kernel",
     "dojo/dom-style", "esri/tasks/query", "esri/tasks/QueryTask",
-    "dojo/text!./templates/FilterString.html",
+    "dojo/text!./Templates/FilterString.html",
     "dojo/i18n!application/nls/FilterDialog",
 ], function(
     declare, domConstruct, parser, ready, 

@@ -3,7 +3,7 @@ define([
     "dojo/on", "esri/tasks/query", "esri/tasks/QueryTask", "esri/graphicsUtils",
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/_base/lang", "dojo/has", "esri/kernel", 
     "dojo/dom", "dojo/query", "dojo/dom-attr", "dojo/dom-style",
-    "dojo/text!application/Filters/templates/FilterTab.html",
+    "dojo/text!application/Filters/Templates/FilterTab.html",
     "dojo/i18n!application/nls/FilterDialog"
 ], function(
     Evented, declare, domConstruct, domClass, parser, ready, 
@@ -170,7 +170,7 @@ define([
                 }                          
             }
             
-            var badgeindicator = query('#badge_somefilters')[0];
+            var badgeindicator = query('#badge_someFilters')[0];
                 if (window.filtersOn.length>0) {
                     domStyle.set(badgeindicator,'display','');
                     domAttr.set(badgeindicator, "title", i18n.widgets.FilterTab.someFilters);

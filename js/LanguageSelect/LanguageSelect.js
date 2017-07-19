@@ -2,7 +2,7 @@ define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on",
     "dojo/query", "dijit/registry",
-    "dojo/text!application/LanguageSelect/templates/LanguageSelect.html", 
+    "dojo/text!application/LanguageSelect/Templates/LanguageSelect.html", 
     "dojo/i18n!application/nls/LanguageSelect",
     "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem",
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 

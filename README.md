@@ -5,7 +5,7 @@ This template includes many WCAG 2.0 A, AA and AAA capabilities, which serves as
 
 ![Screen Shot](https://github.com/EsriCanada/WCAG-BasicViewer/blob/master/WCAGViewer.png)
 
-[View it live] (http://apps.esri.ca/templates/WCAGViewer/index.html?appid=94caadf44ba447a89998b1f3828f006f)
+[View it live] (http://apps.esri.ca/templates/WCAGViewer/index.html?appid=877de1d2f9e24976a0fa612e547065ee)
 
 #Features
 The template can be configured using the following options:

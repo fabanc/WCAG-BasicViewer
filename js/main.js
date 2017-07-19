@@ -649,7 +649,7 @@ define(["dojo/ready",
             //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
             var deferred = new Deferred();
             if (has("filter")) {
-                var filterDiv = toolbar.createTool(tool, "", "", "somefilters");
+                var filterDiv = toolbar.createTool(tool, "", "", "someFilters");
 
                 var layers = this.config.response.itemInfo.itemData.operationalLayers;
                 
