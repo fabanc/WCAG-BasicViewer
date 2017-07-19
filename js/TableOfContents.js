@@ -174,7 +174,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         //"title" : layer.title
                     }, titleContainerDiv);
 
-                    this._atachSpaceKey(titleContainerDiv, titleCheckbox);
+                    //this._atachSpaceKey(titleContainerDiv, titleCheckbox);
 
                     var accountText = '';
                     if (layer.account) {
@@ -230,7 +230,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _atachSpaceKey: function(onButton, clickButton) {
             on(onButton, 'keyup', lang.hitch(clickButton, function(event){
                 if(event.keyCode=='32')
-                    this.click();
+                    //this.click();
+                    this.setAttribute('value', true);
             }));
         },
 
@@ -395,7 +396,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _checkboxEvent: function (index) {
             // when checkbox is clicked
-            var checkEvent = on(this._nodes[index].checkbox, "click", lang.hitch(this, 
+            var checkEvent = on(this._nodes[index].checkbox, "change", lang.hitch(this, 
                 function (evt) {
                 // toggle layer visibility
                 this._toggleLayer(index);

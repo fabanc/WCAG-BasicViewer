@@ -1539,6 +1539,7 @@ define(["dojo/ready",
                 var search = new Search(options, domConstruct.create("div", {
                     id: "search"
                 }, "mapDiv"));
+                search.zoomScale = 25000;
                 var defaultSources = [];
 
                 //setup geocoders defined in common config 
