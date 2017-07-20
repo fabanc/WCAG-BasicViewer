@@ -353,27 +353,27 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 markerGeometry = graphic.geometry;
                                 marker = markerSymbol;
                                 break;
-                        case "extent":
-                            markerGeometry = graphic.getCenter();
-                            // marker = new SimpleMarkerSymbol
-                            break;
-                        case "polyline" :
-                            markerGeometry = graphic.geometry;
-                            marker = new CartographicLineSymbol(
-                                CartographicLineSymbol.STYLE_SOLID, new Color([0, 127, 255]), 10, 
-                                CartographicLineSymbol.CAP_ROUND,
-                                CartographicLineSymbol.JOIN_ROUND, 5);
-                            break;
-                        default:
-                            // if the graphic is a polygon
-                            markerGeometry = graphic.geometry;
-                            marker = new SimpleFillSymbol(
-                                SimpleFillSymbol.STYLE_SOLID, 
-                                new SimpleLineSymbol(
-                                    SimpleLineSymbol.STYLE_SOLID,
-                                    new Color([0, 127, 255]), 3),
-                                    new Color([0, 127, 255, 0.25]));
-                            break;
+                            case "extent":
+                                markerGeometry = graphic.getCenter();
+                                // marker = new SimpleMarkerSymbol
+                                break;
+                            case "polyline" :
+                                markerGeometry = graphic.geometry;
+                                marker = new CartographicLineSymbol(
+                                    CartographicLineSymbol.STYLE_SOLID, new Color([0, 127, 255]), 10, 
+                                    CartographicLineSymbol.CAP_ROUND,
+                                    CartographicLineSymbol.JOIN_ROUND, 5);
+                                break;
+                            default:
+                                // if the graphic is a polygon
+                                markerGeometry = graphic.geometry;
+                                marker = new SimpleFillSymbol(
+                                    SimpleFillSymbol.STYLE_SOLID, 
+                                    new SimpleLineSymbol(
+                                        SimpleLineSymbol.STYLE_SOLID,
+                                        new Color([0, 127, 255]), 3),
+                                        new Color([0, 127, 255, 0.25]));
+                                break;
                         }
 
                         var gr = new Graphic(markerGeometry, marker);
