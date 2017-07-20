@@ -1957,3 +1957,9 @@ myKey {
 .esriPopup.light .titlePane, .dj_ie7 .esriPopup.light .titlePane .title, .esriPopup.light .contentPane, .esriPopup.light .actionsPane {
     color: black;
 }
+
+.esriScalebarLabel {
+    color: #444444;
+    width: initial;
+    height: initial;
+}
