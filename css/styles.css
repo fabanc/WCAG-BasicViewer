@@ -1939,4 +1939,8 @@ input[type=checkbox].checkbox {
     }
 }
 
-
+.esriScalebarLabel {
+    color: #444444;
+    width: initial;
+    height: initial;
+}
