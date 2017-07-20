@@ -119,7 +119,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
                         if(mainSection) {
                             var header = query('.header', mainSection[0]);
-                            if(header) {
+                            if(header && header.length > 0) {
                                 domAttr.set(header[0], 'tabindex', 0);
                             }
 
@@ -133,7 +133,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             } 
                             else {
                                 var description = query('[dojoattachpoint=_description]', mainSection[0]);
-                                if(description) {
+                                if(description && description.length > 0) {
                                     domAttr.set(description[0], 'tabindex', 0);
                                 }
                             }
