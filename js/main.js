@@ -28,16 +28,13 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/resources",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
-
     "esri/layers/FeatureLayer", 
     "application/NavToolBar/NavToolBar", 
     "application/SuperNavigator/SuperNavigator", "application/PopupInfo/PopupInfo", 
-
     "application/ImageToggleButton/ImageToggleButton", 
-
     "application/FeatureList/FeatureList", "application/Filters/Filters", "application/TableOfContents", 
     "application/LanguageSelect/LanguageSelect",
-    "application/ShareDialog", //"application/SearchSources",
+    "application/ShareDialog",
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", "esri/graphic",
     "esri/dijit/InfoWindow", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"], 
@@ -58,11 +55,9 @@ define(["dojo/ready",
     FeatureLayer, 
     NavToolBar,
     SuperNavigator, PopupInfo,
-
     ImageToggleButton,
-
     FeatureList, Filters, TableOfContents, LanguageSelect,
-    ShareDialog, //SearchSources,
+    ShareDialog, 
     SimpleMarkerSymbol, PictureMarkerSymbol, Graphic,
     InfoWindow) {
 
@@ -300,18 +295,6 @@ define(["dojo/ready",
 
             borderContainer.placeAt(document.body);
             borderContainer.startup();
-
-            // var vSplitter = dojo.byId('dijit_layout_ContentPane_1_splitter');
-            // var vSplitterTools = domConstruct.create('div', {
-            //     id: 'vSplitterTools',
-            // }, vSplitter);
-            // var collapseLeftPanelButton = new ImageToggleButton({
-            //     id: 'collapseLeftPanelButton',
-            //     imgSelected: 'images/icons_black/right.png',
-            //     imgUnselected: 'images/icons_black/left.png',
-            //     titleUnselected: i18n.leftCollapse, 
-            //     titleSelected: i18n.leftExpand, 
-            // }, domConstruct.create('div', {}, vSplitterTools));
 
             aspect.after(contentPaneRight, "resize", lang.hitch(this, function() {
                 this.map.emit('parentSize_changed', {});
