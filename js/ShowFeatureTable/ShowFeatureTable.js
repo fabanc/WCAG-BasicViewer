@@ -704,6 +704,17 @@ define([
         // },
 
 
+        showBadge : function(show) {
+            var indicator = dom.byId('badge_Table');
+            if (show) {
+                domStyle.set(indicator,'display','');
+                domAttr.set(indicator, "title", i18n.widgets.featureList.featureSelected);
+                domAttr.set(indicator, "alt", i18n.widgets.featureList.featureSelected);
+            } else {
+                domStyle.set(indicator,'display','none');
+            }
+        },
+
     });
 
     if (has("extend-esri")) {

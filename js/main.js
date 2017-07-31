@@ -1070,7 +1070,7 @@ define(["dojo/ready",
                 if (has("layers")) {
                     panelClass = "";
 
-                    var layersDivDesc = toolbar.createTool(tool);
+                    var layersDivDesc = toolbar.createTool(tool, "", "reload1.gif", "Table");
                     // var layersDivDesc = domConstruct.create("div", {class:'margin'}, layersDiv);
 
                     var toc = new TableOfContents({
