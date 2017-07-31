@@ -1508,7 +1508,7 @@ html, body {
 .setIndicator {
   width: 15px;
   height: 15px;
-  /*top: -1px;*/
+  top: -1px;
   right: -6px;
   position: absolute;
   /*pointer-events: none;*/
