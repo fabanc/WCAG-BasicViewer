@@ -294,7 +294,7 @@ define(["dojo/ready",
                 region: "center",
                 splitter: "true",
                 class: "bg",
-                content: this.map.container,
+                content: dojo.byId("mapPlace"),
             });
             borderContainer.addChild(contentPaneRight);
 
