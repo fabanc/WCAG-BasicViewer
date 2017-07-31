@@ -526,7 +526,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var indicator = dojo.byId('badge_Table'); // !
             if (show) {
                 domStyle.set(indicator,'display','');
-                // domAttr.set(indicator, "title", i18n.widgets.tableOfContents.showFeatureTable);
+                domAttr.set(indicator, "title", i18n.widgets.tableOfContents.showFeatureTable);
                 domAttr.set(indicator, "alt", '');
             } else {
                 domStyle.set(indicator,'display','none');
