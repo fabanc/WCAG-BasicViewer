@@ -140,8 +140,7 @@ define(["dojo/ready",
                 //location: window.location,
                 languages:languages,
 
-                textColor:this.textColor,
-                // textColor:this.color,
+                textColor:this.color,
 
                 showLabel:this.config.languageLabel
             }, dojo.byId('languageSelectNode')).startup();
