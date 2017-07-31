@@ -135,14 +135,26 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             return dojo.hasClass(page, "showAttr");
         },
 
+        _clearMarker: function() {
+            //this.map.graphics.clear();
+            this.map.graphics.graphics.forEach(lang.hitch(this, function(gr) { 
+                if(gr.name && gr.name === 'featureMarker') {
+                    this.map.graphics.remove(gr);
+                }
+            }));
+        },
+
         __reloadList : function(ext) {
             var deferred = new Deferred();
 
             var list = query("#featuresList")[0];
-            this.map.graphics.clear();
+
+            this._clearMarker();
             window.tasks.filter(function(t) { 
                 return t.layer.visible && t.layer.visibleAtMapScale && t.layer.infoTemplate;
+                // return t.layer.visible && t.layer.visibleAtMapScale;
             }).forEach(lang.hitch(this.map, function(t) {
+
                 t.query.geometry = ext.extent;
                 var exp=t.layer.getDefinitionExpression();
                 t.query.where = exp;
@@ -158,6 +170,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         var layer = window.tasks[i].layer;
                         if(layer.visible && layer.visibleAtMapScale && layer.infoTemplate) {
                             r = results[i];
+
                             if(r) {
                                 var content = '';
                                 if(!layer.infoTemplate) {
@@ -184,6 +197,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                             else {
                                                 fieldValue=fieldName;
                                             }
+
                                         }
 
                                         content+='<tr class="featureItem_${_layerId}_${_featureId} hideAttr" tabindex="0" aria-label="'+pField.label+', '+fieldValue+',"">\n';
@@ -252,7 +266,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             window.tasks = [];
             for(var l = 0; l<this.Layers.length; l++) {
                 layer = this.Layers[l];
-                
                 var _query = new Query();
                 _query.outFields = ["*"];
                 _query.returnGeometry = false;
@@ -323,15 +336,21 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var objectIdFieldName = r.layer.objectIdField;
                 var fid = values[1];
                 var layer = r.layer;
-                layer._map.graphics.clear();
+                // layer._map.graphics.clear();
+                layer._map.graphics.graphics.forEach(lang.hitch(layer._map.graphics, function(gr) { 
+                    if(gr.name && gr.name === 'featureMarker') {
+                        this.remove(gr);
+                    }
+                }));
 
                 lang.hitch(window._this, window._this.showBadge(checkBox.checked));
+                //lang.hitch(this, this.showBadge(checkBox.checked));
                     
                 if(checkBox.checked)
                 {
                     _prevSelected = values[0]+'_'+fid;
                     dojo.query('.featureItem_'+_prevSelected).forEach(function(e) {
-                        dojo.addClass(e, 'showAttr');
+                        //dojo.addClass(e, 'showAttr');
                         dojo.removeClass(e, 'hideAttr');
                         var li = query(e).closest('li');
                         li.addClass('borderLi');
@@ -377,6 +396,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         }
 
                         var gr = new Graphic(markerGeometry, marker);
+                        gr.name = 'featureMarker';
                         layer._map.graphics.add(gr);
                     });
                     // layer.selectFeatures(q, FeatureLayer.SELECTION_NEW).then(function(f) {

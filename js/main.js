@@ -28,9 +28,13 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/resources",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
+
     "esri/layers/FeatureLayer", 
     "application/NavToolBar/NavToolBar", 
     "application/SuperNavigator/SuperNavigator", "application/PopupInfo/PopupInfo", 
+
+    "application/ImageToggleButton/ImageToggleButton", 
+
     "application/FeatureList/FeatureList", "application/Filters/Filters", "application/TableOfContents", 
     "application/LanguageSelect/LanguageSelect",
     "application/ShareDialog", //"application/SearchSources",
@@ -54,6 +58,9 @@ define(["dojo/ready",
     FeatureLayer, 
     NavToolBar,
     SuperNavigator, PopupInfo,
+
+    ImageToggleButton,
+
     FeatureList, Filters, TableOfContents, LanguageSelect,
     ShareDialog, //SearchSources,
     SimpleMarkerSymbol, PictureMarkerSymbol, Graphic,
@@ -132,7 +139,10 @@ define(["dojo/ready",
                 locale: document.documentElement.lang,
                 //location: window.location,
                 languages:languages,
+
                 textColor:this.textColor,
+                // textColor:this.color,
+
                 showLabel:this.config.languageLabel
             }, dojo.byId('languageSelectNode')).startup();
         },
@@ -254,26 +264,24 @@ define(["dojo/ready",
             }
         },
 
+        _saveLeftPanelWidth:-1,
         // Create UI
         _createUI: function () {
-            var borderContainer = new BorderContainer({
-                //design:'sidebar',
-                gutters:'false', 
-                liveSplitters:'false',
+            var borderContainer = this.mainBorderContainer = new BorderContainer({
+                gutters:false, 
+                liveSplitters:true,
                 id:"borderContainer"
             });
              
             var contentPaneTop = new ContentPane({
                 region: "top",
-                splitter: 'false',
+                splitter: false,
                 style: "padding:0;",
-                //gutters: 'false',
                 content: dojo.byId("layoutTopPanel"),
-                //class: "splitterContent",
             });
             borderContainer.addChild(contentPaneTop);
               
-            var contentPaneLeft = new ContentPane({
+            var contentPaneLeft = this.contentPaneLeft = new ContentPane({
                 region: "leading",
                 splitter: 'true',
                 style: "width:425px; padding:0; overflow: none;",
@@ -282,7 +290,7 @@ define(["dojo/ready",
             });
             borderContainer.addChild(contentPaneLeft);
               
-            var contentPaneRight = new ContentPane({
+            var contentPaneRight = this.contentPaneRight = new ContentPane({
                 style: "padding:1px;",
                 region: "center",
                 splitter: "true",
@@ -294,9 +302,20 @@ define(["dojo/ready",
             borderContainer.placeAt(document.body);
             borderContainer.startup();
 
-            domConstruct.destroy('dijit_layout_ContentPane_0_splitter');
+            // var vSplitter = dojo.byId('dijit_layout_ContentPane_1_splitter');
+            // var vSplitterTools = domConstruct.create('div', {
+            //     id: 'vSplitterTools',
+            // }, vSplitter);
+            // var collapseLeftPanelButton = new ImageToggleButton({
+            //     id: 'collapseLeftPanelButton',
+            //     imgSelected: 'images/icons_black/right.png',
+            //     imgUnselected: 'images/icons_black/left.png',
+            //     titleUnselected: i18n.leftCollapse, 
+            //     titleSelected: i18n.leftExpand, 
+            // }, domConstruct.create('div', {}, vSplitterTools));
 
             aspect.after(contentPaneRight, "resize", lang.hitch(this, function() {
+                this.map.emit('parentSize_changed', {});
                 this.map.resize();
                 this.map.reposition();
             }));
@@ -305,6 +324,40 @@ define(["dojo/ready",
             //Add tools to the toolbar. The tools are listed in the defaults.js file
             var toolbar = new Toolbar(this.config);
             toolbar.startup().then(lang.hitch(this, function () {
+
+                var vSplitterTools = domConstruct.create('div', {
+                    id: 'vSplitterTools',
+                    class: 'bg',
+                }, dojo.byId('panelTools'));
+                var collapseLeftPanelButton = this.collapseLeftPanelButton = new ImageToggleButton({
+                    id: 'collapseLeftPanelButton',
+                    imgSelected: 'images/icons_white/right.png',
+                    imgUnselected: 'images/icons_white/left.png',
+                    titleUnselected: i18n.leftCollapse, 
+                    titleSelected: i18n.leftExpand, 
+                }, domConstruct.create('div', {}, vSplitterTools));
+                collapseLeftPanelButton.startup();
+
+                on(collapseLeftPanelButton, 'change', lang.hitch(this, function(ev) {
+                    var vSplitterTools = dojo.byId('vSplitterTools');
+                    if(collapseLeftPanelButton.isChecked()) {
+                        this._saveLeftPanelWidth = this.contentPaneLeft.domNode.clientWidth;
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,0));
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',0));
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id),'aria-hidden','true');
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id+'_splitter'),'aria-hidden','true');
+                        domConstruct.place(vSplitterTools, dojo.byId('mapFocus'),'before');
+                        domClass.add(vSplitterTools, 'onMap');
+                    } else {
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id,this._saveLeftPanelWidth));
+                        dojo.hitch(this.mainBorderContainer, this.mainBorderContainer._layoutChildren(this.contentPaneLeft.id+'_splitter',12));
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id),'aria-hidden','false');
+                        domAttr.set(dojo.byId(this.contentPaneLeft.id+'_splitter'),'aria-hidden','false');
+                        domConstruct.place(vSplitterTools, dojo.byId('panelTools'),'before');
+                        domClass.remove(vSplitterTools, 'onMap');
+                    }
+                    collapseLeftPanelButton.focus();
+                }));
 
                 // set map so that it can be repositioned when page is scrolled
                 toolbar.map = this.map;
@@ -373,9 +426,6 @@ define(["dojo/ready",
                         return r;
                     });
 
-                    var home = has("home");
-                    var locate = has("locate");
-
                     this._updateTheme();
 
                     toolbar._activateDefautTool();
@@ -412,7 +462,7 @@ define(["dojo/ready",
                 }));
             }));
 
-            on(document.body, 'keydown', function(event) {
+            on(document.body, 'keydown', lang.hitch(this, function(event) {
                 if(event.altKey) {
                     query('.goThereHint').forEach(function(h) {
                         domStyle.set(h, 'display','inline-table');
@@ -422,6 +472,7 @@ define(["dojo/ready",
                     case 'Esc' :
                     case 'Escape' :
                         var activeElement = focusUtil.curNode;
+                        if(!activeElement) break;
                         if(dojo.hasClass(activeElement, 'pageBody')) {
                             var id=activeElement.id.replace('pageBody','toolButton');
                             var toolBtn = document.querySelector("#"+id+" input[type='image'").focus();
@@ -432,7 +483,7 @@ define(["dojo/ready",
                         if(upper && upper.length>= 1) {
                             upper[0].focus();
                         } else {
-                            skipToMap();
+                            this.skipToMap();
                         }
                         break;
                     case '0' :
@@ -443,7 +494,7 @@ define(["dojo/ready",
                     default:
                         break;
                 }
-            });
+            }));
 
             on(document.body, 'keyup', function(event) {
                 if(!event.altKey) {
@@ -469,14 +520,14 @@ define(["dojo/ready",
                 domConstruct.create("div", {
                     class:'goThereHint',
                     innerHTML: '<b>Alt&nbsp;+&nbsp;3</b> '+this.config.i18n.skip.content,
-                    style:'left:20%; top:50%;'
+                    style:'left:20%; top:45%;'
                 }, dom.byId('panelPages'));
 
                 domConstruct.create("div", {
                     class:'goThereHint',
-                    innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.splitter,
-                    style:'left:-30px; top:40%;'
-                }, dom.byId('dijit_layout_ContentPane_1_splitter'));
+                    innerHTML: '<b>Alt&nbsp;+&nbsp;4</b> '+this.config.i18n.skip.vsplitter,
+                    style:'right:5px; top:55%; z-index:1000;'
+                }, dom.byId('leftPanel'));
 
                 domConstruct.create("div", {
                     class:'goThereHint',
@@ -494,26 +545,32 @@ define(["dojo/ready",
             var skipTools = query('.skip #skip-tools')[0];
             var skipSearch = query('.skip #skip-search')[0];
             var skipContent = query('.skip #skip-content')[0];
-            var skipSplitter = query('.skip #skip-splitter')[0];
+            var skipVSplitter = query('.skip #skip-Vsplitter')[0];
             var skipMap = query('.skip #skip-map')[0];
             var skipInstructions = query('.skip #skip-instructions')[0];
             var skipFeature = query('.skip #skip-feature')[0];
+            var skipHSplitter = query('.skip #skip-Hsplitter')[0];
+            var skipTable = query('.skip #skip-table')[0];
 
             dojo.html.set(skipTools, "1. "+this.config.i18n.skip.tools);
             dojo.html.set(skipSearch, "2. "+this.config.i18n.skip.search);
             dojo.html.set(skipContent, "3. "+this.config.i18n.skip.content);
-            dojo.html.set(skipSplitter, "4. "+this.config.i18n.skip.splitter);
+            dojo.html.set(skipVSplitter, "4. "+this.config.i18n.skip.vsplitter);
             dojo.html.set(skipMap, "5. "+this.config.i18n.skip.map);
             dojo.html.set(skipInstructions, "6. "+this.config.i18n.skip.help);
             dojo.html.set(skipFeature, "7. "+this.config.i18n.skip.featureDetaills);
+            dojo.html.set(skipHSplitter, "8. "+this.config.i18n.skip.hsplitter);
+            dojo.html.set(skipTable, "9. "+this.config.i18n.skip.table);
 
-            skipTools.addEventListener('click', function (e) { skipToTools(); });
-            skipSearch.addEventListener('click', function (e) { skipToSearch(); });
-            skipContent.addEventListener('click', function (e) { skipToContent(); });
-            skipSplitter.addEventListener('click', function (e) { skipToSplitter(); });
-            skipMap.addEventListener('click', function (e) { skipToMap(); });
-            skipInstructions.addEventListener('click', function (e) { skipToInstructions(); });
-            skipFeature.addEventListener('click', function (e) { skipToFeature(); });
+            skipTools.addEventListener('click', lang.hitch(this, this.skipToTools));
+            skipSearch.addEventListener('click', lang.hitch(this, this.skipToSearch));
+            skipContent.addEventListener('click', lang.hitch(this, this.skipToContent));
+            skipVSplitter.addEventListener('click', lang.hitch(this, this.skipToVSplitter));
+            skipMap.addEventListener('click', lang.hitch(this, this.skipToMap));
+            skipInstructions.addEventListener('click', lang.hitch(this, this.skipToInstructions));
+            skipFeature.addEventListener('click', lang.hitch(this, this.skipToFeature));
+            skipHSplitter.addEventListener('click', lang.hitch(this, this.skipToHSplitter));
+            skipTable.addEventListener('click', lang.hitch(this, this.skipToTable));
 
             query('.skip').forEach(function(h) {
                 h.addEventListener('keydown', function (e) {
@@ -541,43 +598,70 @@ define(["dojo/ready",
                 dom.byId('skip-tools').focus();
             };
 
-            skipToTools = function() {
-                query('#panelTools .panelToolActive input[type="image"]')[0].focus();
-                //dom.byId('panelTools').focus();
-            };
-
-            skipToSearch = function() {
-                dom.byId('search_input').focus();
-            };
-
-            skipToContent = function() {
-                //dom.byId('panelPages').focus();
-                dojo.query(".page.showAttr .pageBody")[0].focus();
-            };
-
-            skipToSplitter = function() {
-                dom.byId('dijit_layout_ContentPane_1_splitter').focus();
-            };
-
             skipToMap = lang.hitch(this, function() {
                 //document.querySelector('.esriSimpleSliderIncrementButton input').focus();
                 this.map.container.focus();
             });
+        },
 
-            skipToInstructions = function() {
-                var activeTool = query('.panelToolActive');
-                if(activeTool && activeTool.length>0) {
-                    activeTool = activeTool[0].childNodes[0];
-                    activeTool.click();
-                }
-                dom.byId('instructionsDiv').focus();            
-            };
+        skipToTools : function() {
+            this.collapseLeftPanelButton.preset(false);
+            query('#panelTools .panelToolActive input[type="image"]')[0].focus();
+            //dom.byId('panelTools').focus();
+        },
 
-            skipToFeature = function() {
-                if(featureList) {
-                    featureList.FocusDetails();
-                }
-            };
+        skipToSearch: function() {
+            this.collapseLeftPanelButton.preset(false);
+            dom.byId('search_input').focus();
+        },
+
+        skipToContent: function() {
+            this.collapseLeftPanelButton.preset(false);
+            //dom.byId('panelPages').focus();
+            dojo.query(".page.showAttr .pageBody")[0].focus();
+        },
+
+        skipToVSplitter: function() {
+            this.collapseLeftPanelButton.preset(false);
+            dojo.byId('dijit_layout_ContentPane_1_splitter').focus();
+        },
+
+        skipToMap: function() {
+            // console.log(dojo.byId('mapDiv'));
+            dojo.byId('mapDiv').focus();
+        },
+
+        skipToInstructions: function() {
+            this.collapseLeftPanelButton.preset(false);
+            var activeTool = query('.panelToolActive');
+            if(activeTool && activeTool.length>0) {
+                activeTool = activeTool[0].childNodes[0];
+                activeTool.click();
+            }
+            dom.byId('instructionsDiv').focus();            
+        },
+
+        skipToFeature: function() {
+            if(featureList) {
+                this.collapseLeftPanelButton.preset(false);
+                featureList.FocusDetails();
+            }
+        },
+
+        skipToHSplitter: function() {
+            var featureTableContainer = dojo.byId('featureTableContainer');
+            if(!featureTableContainer || featureTableContainer.clientHeight === 0) return;
+            dojo.byId('featureTableContainer_splitter').focus();
+        },
+
+        skipToTable: function() {
+            var featureTableContainer = dojo.byId('featureTableContainer');
+            if(!featureTableContainer || featureTableContainer.clientHeight === 0) return;
+            var header = query("#featureTableNode div.dgrid-header");
+            if(header && header.length>0)
+            {
+                header[0].focus();
+            }
         },
 
         featureList : null,
@@ -825,7 +909,7 @@ define(["dojo/ready",
 
                     var detailDiv = toolbar.createTool(tool);
                         domConstruct.create('div',{
-                        tabindex:0
+                        tabindex:0,
                     });
                     detailDiv.innerHTML = "<div tabindex=0 id='detailDiv'>"+description+"</div>";
                     detailDiv = dojo.query("#detailDiv")[0];
@@ -889,14 +973,11 @@ define(["dojo/ready",
         },
 
         _adjustDetails :function() {
-            try {
+            try 
+            {
                 var pageBody = dojo.byId('pageBody_details');
                 var detailDiv = dojo.byId('detailDiv');
                 detailDiv.style.maxHeight=(pageBody.clientHeight-instructionsDiv.clientHeight - 30) + 'px';
-
-                this.stepX = x * this.map.width * 0.0135;
-                this.stepY = y * this.map.height * 0.0135;
-
             } catch (e) {
                 /* ignore instructionDiv not defined error: will come defined next time! */      
             }
@@ -1045,85 +1126,90 @@ define(["dojo/ready",
                     domClass.add(legend.domNode, "legend");
                     legend.startup();
 
-                    on(toolbar, 'updateTool_legend', lang.hitch(this, function(name) {
-                        fixLegend();
-                        // dom.byId('pageBody_legend').focus();
-                    }));
-
-                    var fixLegend = function() {
-                        var tables = legend.domNode.querySelectorAll("table");
-                        if(tables && tables.length>0)
+                    var fixLegend = function(node) {
+                        var tables = node.querySelectorAll("table");
+                        if(tables)
                         {
-                            for(var t=0; t<tables.length; t++) {
-                                var table = tables[t];
-                                domAttr.set(table, 'role', "presentation");
-                            }
+                            tables.forEach(function(table) {
+                                domAttr.set(table, 'role', 'presentation');
+                            });
                         }
 
-                        var svgs = legend.domNode.querySelectorAll("svg");
-                        if(svgs && svgs.length>0)
+                        var svgs = node.querySelectorAll("svg");
+                        if(svgs)
                         {
-                            for(var s=0; s<svgs.length; s++) {
-                                var svg = svgs[s];
-                                domAttr.set(svg, 'title', "symbol");
-                            }
+                            svgs.forEach(function(svg) {
+                                domAttr.set(svg, 'title', 'symbol');
+                            });
                         }
 
-                        var LegendServiceLabels = legend.domNode.querySelectorAll(".esriLegendServiceLabel");
-                        if(LegendServiceLabels && LegendServiceLabels.length>0)
+                        var legendServiceLabels = node.querySelectorAll(".esriLegendServiceLabel");
+                        if(legendServiceLabels)
                         {
-                            for(var i=0; i<LegendServiceLabels.length; i++) {
-                                var LegendServiceLabel = LegendServiceLabels[i];
-                                if(LegendServiceLabel.nodeName !== 'H2') {
-                                    var h2 = domConstruct.create("h2",{
-                                        className: LegendServiceLabel.className,
-                                        innerHTML: LegendServiceLabel.innerHTML
+                            legendServiceLabels.forEach(function(legendServiceLabel) {
+                                var service = legendServiceLabel.closest('.esriLegendService');
+                                var tabindex = (service && (!service.style || service.style.display !== 'none')) ? 0 : -1;
+
+                                if(legendServiceLabel.nodeName !== 'H2') {
+                                    var h2 = domConstruct.create('h2',{
+                                        className: legendServiceLabel.className,
+                                        innerHTML: legendServiceLabel.innerHTML,
+                                        tabindex: tabindex
                                     });
-                                    LegendServiceLabel.parentNode.replaceChild(h2, LegendServiceLabel);
+                                    legendServiceLabel.parentNode.replaceChild(h2, legendServiceLabel);
                                 }
-
-                                    // var service = LegendServiceLabel.closest('.esriLegendService');
-                                    // if(service && (!service.style || service.style.display !== 'none')) {
-                                         domAttr.set(LegendServiceLabel, 'tabindex', 0);
-                                    // } else {
-                                    //     domAttr.set(LegendServiceLabel, 'tabindex', -1);
-                                    // }
-                            }
+                                else {
+                                    domAttr.set(legendServiceLabel, 'tabindex', tabindex);
+                                }
+                            });
                         }
 
-                        var LegendLayers = legend.domNode.querySelectorAll(".esriLegendLayer");
-                        for(var j=0; j<LegendLayers.length; j++) {
-                            //var LegendServiceLists = legend.domNode.querySelectorAll(".esriLegendLayer tbody");
-                            var LegendServiceList = LegendLayers[j].querySelector("tbody");
+                        var legendLayers = node.querySelectorAll(".esriLegendLayer");
+                        for(var j=0; j<legendLayers.length; j++) {
+                            var legendServiceList = legendLayers[j].querySelector("tbody");
 
-                            // if(LegendServiceList.querySelector('.layerHeader')) {
-                            //     var header = document.createElement("tr");
-                            //     header.innerHTML = "<th style='display:none;' class='layerHeader'>Layer</th>";
-                            //     LegendServiceList.insertBefore(header, LegendServiceList.childNodes[0]);
-                            // }
-                            domAttr.set(LegendServiceList, "role", "list");
-                            //domAttr.set(LegendServiceList, "aria-label", LegendServiceLabel.innerHTML);
+                            domAttr.set(legendServiceList, "role", "list");
+                            //domAttr.set(legendServiceList, "aria-label", legendServiceLabel.innerHTML);
 
-                            for(var k=0; k<LegendServiceList.childNodes.length; k++) {
-                                var item = LegendServiceList.childNodes[k];
+                            for(var k=0; k<legendServiceList.childNodes.length; k++) {
+                                var item = legendServiceList.childNodes[k];
                                 domAttr.set(item, "role", "listitem");
                                 domAttr.set(item, "tabindex", "0");
                             }
                         }
 
-                        var LegendLayerImages = legend.domNode.querySelectorAll(".esriLegendLayer image");
-                        for(var n = 0; n<LegendLayerImages.length; n++) {
-                            domAttr.set(LegendLayerImages[n],'alt','');
+                        var legendLayerImages = node.querySelectorAll(".esriLegendLayer image");
+                        if(legendLayerImages) {
+                            legendLayerImages.forEach(function(image) {
+                                domAttr.set(image,'alt','');
+                            });
                         }
 
-                        var messages = legend.domNode.querySelectorAll(".esriLegendMsg");
-                        for(var m = 0; m<messages.length; m++) {
-                            domAttr.set(messages[m],'tabindex',0);
+                        var messages = node.querySelectorAll(".esriLegendMsg");
+                        if(messages) {
+                            messages.forEach(function(message) {
+                                domAttr.set(message,'tabindex',0);
+                            });
                         }
                     };
                     
-                    on(this.map, "extent-change", lang.hitch(this, fixLegend));
-                    // dojo.setAttr(legendDiv, 'tabindex', 0);
+                    this.legendNodeObserver = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if(mutation.addedNodes && mutation.addedNodes.length>=1) {
+                                mutation.addedNodes.forEach(function(node) {
+                                    if(domStyle.get(node, 'display') !== 'none') {
+                                        fixLegend(node);
+                                    }
+                                });
+                            }
+                        });    
+                    });
+
+                    this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
+                        attributes: true, 
+                        childList: true, 
+                        characterData: false 
+                    });
 
                     deferred.resolve(true);
 
@@ -1223,15 +1309,15 @@ define(["dojo/ready",
 
                 areaIconNode = measureDiv.querySelector('.areaIcon');
                 domClass.remove(areaIconNode, 'areaIcon');
-                areaIconNode.innerHTML = '<img src="images\\area_measure.png" alt="Area"/>';
+                areaIconNode.innerHTML = '<img src="images/area_measure.png" alt="Area Button"/>';
 
                 distanceIconNode = measureDiv.querySelector('.distanceIcon');
                 domClass.remove(distanceIconNode, 'distanceIcon');
-                distanceIconNode.innerHTML = '<img src="images\\dist_measure.png" alt="Distance"/>';
+                distanceIconNode.innerHTML = '<img src="images/dist_measure.png" alt="Distance Button"/>';
 
                 locationIconNode = measureDiv.querySelector('.locationIcon');
                 domClass.remove(locationIconNode, 'locationIcon');
-                locationIconNode.innerHTML = '<img src="images\\dist_point.png" alt="Distance"/>';
+                locationIconNode.innerHTML = '<img src="images/dist_point.png" alt="Location Button"/>';
 
                 deferred.resolve(true);
             } else {
@@ -1468,6 +1554,13 @@ define(["dojo/ready",
                         domConstruct.place(print.printDomNode, printDiv, "first");
 
                         print.startup();
+
+                        var arrowButton = dojo.query('.PrintDialog .dijitArrowButtonInner')[0];
+                        domConstruct.create('img', {
+                            // role: 'presentation',
+                            src: 'images/icons_black/carret-down.32.png',
+                            alt: 'carret-down',
+                        }, arrowButton);
 
                         deferred.resolve(true);
                         return;
@@ -1747,7 +1840,8 @@ define(["dojo/ready",
                     {
                         domClass.remove(esriIconZoomNode, "searchIcon esri-icon-search");
                         esriIconZoomNode.innerHTML = 
-                        '<img src="images\\searchZoom.png" alt="Search" width="20" height="20">';
+                        // '<img src="images\\searchZoom.png" alt="Search" width="20" height="20">';
+                        '<img src="images\\searchZoom.png" alt="Search Button" width="20" height="20">';
                     }
 
                     var esriIconCloseNode = dojo.query(".searchIcon.esri-icon-close.searchClose")[0]; 
@@ -1855,10 +1949,14 @@ define(["dojo/ready",
                         // }
                         //focus
                         if(rule.selectorText.indexOf(':focus') >= 0) {
-                            // rule.style.outlineStyle = 'none';
-                            // rule.style.outlineColor = 'transparent';
-                            // rule.style.boxShadow = '0 0 0 2px '+this.focusColor+' inset';
-                            rule.style.outlineColor = this._rgbaColor(this.focusColor);
+                            if(rule.selectorText.indexOf('#mapDiv') >= 0) {
+                                rule.style.outlineStyle = 'none';
+                                rule.style.outlineColor = 'transparent';
+                                rule.style.boxShadow = 'inset rgba(255, 170, 0, 0.901961) 0px 0px 0px 2px';
+                            }
+                            else {
+                                rule.style.outlineColor = this._rgbaColor(this.focusColor);
+                            }
                         }
                         if(rule.selectorText.indexOf('.goThereHint') >= 0) {
                             rule.style.borderColor = this._rgbaColor(this.focusColor);
@@ -2025,7 +2123,9 @@ define(["dojo/ready",
                     var panelLogo = domConstruct.create("div", {
                         id: "panelLogo",
                         TabIndex:0, 
-                        innerHTML: "<img id='logo' src=" + this.config.logo + " alt='" + altText + "' Title='" + altText + "' aria-label='" + altText + "'></>"
+                        innerHTML: "<img id='logo' src=" + this.config.logo + " alt='" + altText + 
+                        //"' Title='" + altText + 
+                        "' aria-label='" + altText + "'></>"
                     }, dom.byId("panelTitle"));//, "first");
                     //domClass.add("panelTop", "largerTitle");
                     dojo.place(panelLogo, dojo.byId('panelText'), 'before');

@@ -14,10 +14,10 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="default">
 		<!-- End Responsive -->
 		<!-- Use protocol relative urls that way if the browser is viewing the page via HTTPS the js/css file will be requested using the HTTPS protocol -->
-		<link rel="stylesheet" href="//js.arcgis.com/3.13/esri/css/calcite/calcite.css">
-		<!-- <link rel="stylesheet" href="//js.arcgis.com/3.13/dijit/themes/claro/claro.css"> -->
-    	
-        <link rel="stylesheet"  href="//js.arcgis.com/3.13/esri/css/esri.css">
+		<link rel="stylesheet" href="//js.arcgis.com/3.19/dijit/themes/claro/claro.css">
+		<!-- <link rel="stylesheet" href="css/theme.css"> -->
+  		<link rel="stylesheet" href="//js.arcgis.com/3.19/esri/css/esri.css">
+		
 		<!-- Load any application specific styles -->
 		<link rel="stylesheet" href="css/styles.css">
 		<link rel="stylesheet" href="css/styles1.css">
@@ -31,7 +31,7 @@
 		<link rel="icon" type="image/png" href="images/favicon.png">
 		
 	</head>
-	<body class="calcite app-loading no-touch">
+	<body class="claro app-loading no-touch">
 		<!-- Loading Indicator -->
 		<div class="loading-indicator" role="presentation">
 			<div class="loading-message" id="loading_message"></div>
@@ -43,27 +43,27 @@
 
 		<div style="display:none;">
 			<div id="layoutTopPanel">
-				<div id="panelTitle" class="fc bg borderBottom" style="display: flex; flex-direction: row;">
-					<h1 id="panelText" class="fc" style="flex:1">&nbsp;</h1>
-					<div class="skip" role="banner">
+				<header id="panelTitle" class="fc bg borderBottom" style="display: flex; flex-direction: row;" role="banner">
+					<h1 id="panelText" class="fc bg" style="flex:1">&nbsp;</h1>
+					<div class="skip">
 						<a accesskey="1" href="#" tabindex="0" aria-hidden=true id="skip-tools">1. Skip to Tools</a>
 						<a accesskey="2" href="#" tabindex="0" aria-hidden=true id="skip-search">2. Skip to Search</a>
 						<a accesskey="3" href="#" tabindex="0" aria-hidden=true id="skip-content">3. Skip to Content</a>
-						<a accesskey="4" href="#" tabindex="0" aria-hidden=true id="skip-splitter">4. Skip to Splitter</a>
+						<a accesskey="4" href="#" tabindex="0" aria-hidden=true id="skip-Vsplitter">4. Skip to Vertical Splitter</a>
 						<a accesskey="5" href="#" tabindex="0" aria-hidden=true id="skip-map">5. Skip to Map</a>
 						<a accesskey="6" href="#" tabindex="0" aria-hidden=true id="skip-instructions">6. Skip to Help</a>
 						<a accesskey="7" href="#" tabindex="0" aria-hidden=true id="skip-feature">7. Skip to Feature Details</a>
+						<a accesskey="8" href="#" tabindex="0" aria-hidden=true id="skip-Hsplitter">8. Skip to Horizontal Splitter</a>
+						<a accesskey="9" href="#" tabindex="0" aria-hidden=true id="skip-table">9. Skip to Table</a>
 				    </div>
-				    <div id="languageSelectNode">
-				    </div>
-				</div>
+				    <footer id="languageSelectNode">
+				    </footer>
+				</header>
 			</div>
 		</div>
 
-		<div id="leftPanel" class="leftWrapper">
-			<header id="panelTop" class="bg" style="color:transparent !important;">
-				<!-- Panel Title -->
-				<!-- Panel Tools -->
+		<div id="leftPanel" class="leftWrapper leftPanelMin">
+			<div id="panelTop" class="bg" style="color:transparent !important;">
 				<div id="panelTools" class="fc bg borderBottom" role="toolbar">
 					<!--Tools are created programatically-->
 				</div>
@@ -71,7 +71,7 @@
 					<div class="searchLabel"><label id="searchLabel" for="search_input">Search: </label></div>
 					<div id="panelGeocoder"></div>
 				</div>
-			</header>
+			</div>
 			<main id="panelPages" tabindex="0" class="bg leftContent">
 				<!-- <div id="fixContent" class="page showAttr">
 				</div> -->
@@ -82,8 +82,11 @@
 			</footer>
 		</div>
 
-		<div id="mapDiv" dir="ltr" tabindex=0></div>
-
+		<div id="mapPlace" style="height: 100%; width: 100%;">
+			<div id="mapDiv" dir="ltr" tabindex=0>
+				<div id="mapFocus" class="mapFocus"></div>
+			</div>
+		</div>
 
 		<script type="text/javascript" src="js/utils.js">
 		</script>
@@ -115,18 +118,14 @@
             }]
          };
 		</script>
-		<script type="text/javascript" src="//js.arcgis.com/3.13/"></script>
-		<!-- <script type="text/javascript" src="js/autologin.js"></script> -->
-
+		<script src="//js.arcgis.com/3.19/" type="text/javascript" data-dojo-config="async:true, parseOnLoad:false"></script> 
+		
         <script type="text/javascript">
 	        require([
 	            "dojo/parser",
 	            "config/templateConfig",
 	            "application/template",
-	            "application/main",
-	            "dijit/layout/BorderContainer",
-	            "dijit/layout/ContentPane",
-	            "dijit/layout/StackContainer"
+	            "application/main"
 	        ], function(
 	            parser,
 	            templateConfig,

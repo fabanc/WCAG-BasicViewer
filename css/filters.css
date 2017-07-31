@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Ubuntu+Mono');
+
 .filterButtons{
   /* position: absolute; */
   /* bottom: 0px; */
@@ -19,18 +21,19 @@
 .filterAdd {/* border-color: aquamarine; *//* border-style: solid; */position: inherit;/* padding-top: 4px; */padding-bottom: 10px;/* bottom: 30px; */position: relative;width: 100%;}
 
 .filterAdd select {
-  font-size: 16px;
-  width: calc(100% - 130px);
+    font-size: 18px;
+    width: calc(100% - 136px);
+    margin-top: 1px;
+    font-family: 'Roboto Condensed', sans-serif;
 }
 
 .tabContent ul {list-style-type: none;-webkit-margin-before: 0;-webkit-margin-after: 0;-webkit-margin-start: 0px;-webkit-margin-end: 0px;-webkit-padding-start: 0;/* border-color: gray; *//* border-width: 1px; *//* border-style: solid; */padding: 5px;/* max-height: calc(100% - 66px); */width: calc(100% - 10px);overflow-y: auto;position: relative;/* top: 35px; */}
 .tabContent ul li {
-    border-color: gray;
     border-width: 1px;
     border-style: solid;
-    padding: 10px;
-    margin-bottom: 10px;
-    width: calc(100% - 22px);
+    padding: 2px 2px 10px 2px;
+    margin-bottom: 12px;
+    width: calc(100% - 2px);
   }
 
 ._filter {
@@ -40,13 +43,13 @@
 }
 
 ._filter ._fieldExamples {
-  max-height: 80px;
+  max-height: 175px;
   overflow: auto;
-  width: calc(100% - 30px);
-  border-width: 1px;
-  border-style: solid;
+  width: calc(100% - 34px);
+  border: 1px solid black;
   margin: 0;
   margin-top: 4px;
+  margin-left: 4px;
 }
 
 .filterTabs{
@@ -55,34 +58,19 @@
    position: absolute;
    width: calc(100% - 14px);
    height: calc(100% - 20px);
-   margin: 10px;
-   margin-right: 0;
+   margin: 4px 0px -6px 4px;
 }
-
-.selectOpenParan {
-  position: relative;
-  top: -20px;
-  left: calc(100% - 120px);
-}
-
-.selectCloseParan {
-  position: absolute;
-  margin=top: 10px;
-  left: calc(100% - 75px);
-}
-
-.selectAndOr {position: absolute;right: 25px;}
 
 .filterTabsZone {
   display: -webkit-box;
   display:  -moz-box;
   display:  -ms-flexbox;
-  height: 50px;
+  height: 53px;
   overflow-x: auto;
   overflow-y: hidden;
   margin-top: -6px;
   position: absolute;
-  top: calc(100% - 50px);
+  top: calc(100% - 53px);
   width: 100%;
 }
 
@@ -90,7 +78,7 @@
     width: calc(100% - 22px);
     /* left: 1px; */
     /* top: 0px; */
-    height: calc(100% - 73px);
+    height: calc(100% - 76px);
     border: 1px solid black;
     border-top-right-radius: 8px;
     padding: 10px;
@@ -98,16 +86,78 @@
     overflow-y: auto;
 }
 
-.dijitCalendarYearContainer {
-  display: initial !important;
-}
-.dijitCalendarYearLabel {
-    position: absolute;
-    bottom: 0;
-}
-
 .dijitTooltipContainer {
-  background-color: red !important;
+  background-color: #b60000 !important;
   color:white !important;
   margin-left: 10px;
+}
+
+.showErrors {
+    position: absolute;
+    padding: 2px 4px;
+    background-color: white;
+    color: #b60000;
+    border: #b60000 solid 2px;
+    font-size: 11px;
+    border-radius: 4px;
+    right: 8px;
+    font-weight: bold;
+}
+
+.claro ._filter .dijitTextBox {
+    border: 1px solid black;
+}
+
+.claro ._filter .dijitTextBox .dijitInputInner {
+    padding:0;
+    width: 100px !important;
+}
+
+.claro ._filter .dijitValidationIcon {
+    width: 11px !important;
+}
+
+.claro ._filter._date .dijitInputField {
+   padding: 0px;
+}
+
+.filterCriteria {
+    margin-left: 4px;
+    border: 1px solid black;
+}
+
+.filterTextBox {
+    border: 1px solid black;
+}
+
+.claro .dijitCalendarPreviousMonth, 
+.claro .dijitCalendarNextMonth {
+    /*text-decoration: line-through;
+    border: solid 1px silver;*/
+    font-weight: normal;
+}
+
+.claro .dijitCalendarPreviousMonth .dijitCalendarDateLabel, 
+.claro .dijitCalendarNextMonth .dijitCalendarDateLabel {
+    color: white;
+    background-color: grey;
+    font-weight: normal;
+}
+
+.claro .dijitCalendarDateTemplate {
+    background-color: #ffffff;
+    border: 1px solid gray;
+}
+
+.claro .dijitCalendar {
+    border: solid 2px silver;
+    /*-moz-border-radius: 4px;*/
+    background-color: silver;
+    background-image: none; 
+    /* padding: 6px 5px 3px 5px; */
+}
+
+.claro .dijitCalendar:hover {
+    background-color: silver;
+    border: solid 2px black;
 }

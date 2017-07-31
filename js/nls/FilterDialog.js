@@ -20,7 +20,13 @@ define({
                 lessThen: "Less Then",
                 moreThen: "More Then",
                 between: "Between",
-                notBetween: "Not Between"
+                notBetween: "Not Between",
+                enterValueToMatch: "Enter value to match",
+                enterLastValue:"Enter last value",
+                invalidNumber: "Invalid number format",
+                enterDateToMatch: "Enter date to match",
+                enterLastDate:"Enter last date",
+                invalidDate: "Invalid date format",
             }
         }
     }),
