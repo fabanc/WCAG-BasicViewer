@@ -176,8 +176,6 @@ define([
             // on(dom.byId("testBtn"), "click", lang.hitch(this, function(e) {
             //     this.map._createLabelLayer();
             // }));
-
-
         },
 
         //disTabs : 1,
@@ -191,14 +189,6 @@ define([
             dojo.setStyle(div, "cursor", crs);
             dojo.setStyle(dis, "cursor", crs);
             dojo.setAttr(btn, "tabIndex", disable?-1:0);
-            // if(this.disTabs>=0 && disable) {
-            //     this.disTabs-=1;
-            // } else {
-            //     dojo.setAttr(dis, "tabIndex", disable?-1:0);
-            // }
-            //dojo.setStyle(btn, "pointer-events", disable?"none":"all");
-            // if(disable && dojo.getStyle(dis, "display") !== "none" )
-            //     this.blurAll();//dojo.getAttr(dis, 'aria-label'));
             dojo.setStyle(dis, "display", disable?"inherit":"none");
             return disable;
         },
@@ -207,7 +197,6 @@ define([
             if(text===undefined) 
                 text='';
             var tmp = domConstruct.create("div", {tabindex:0, 'aria-label':text}, document.body);
-            //document.body.appendChild(tmp);
             tmp.focus();
             document.body.removeChild(tmp);
         }
