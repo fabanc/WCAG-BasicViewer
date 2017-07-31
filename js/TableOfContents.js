@@ -259,9 +259,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _layerShowTable: function(arg)  {
             var checked = arg.checked;
+            this.showBadge(checked);
             if(!checked) {
                 this.featureTable.destroy();
-                this.showBadge(false);
                 return;
             }
 
@@ -523,14 +523,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 collapseLeftPanelButton.preset(show);
             }
 
-            // var indicator = dojo.byId('badge_featureTableSelected'); // !
-            // if (show) {
-            //     domStyle.set(indicator,'display','');
-            //     // domAttr.set(indicator, "title", i18n.widgets.tableOfContents.showFeatureTable);
-            //     domAttr.set(indicator, "alt", '');
-            // } else {
-            //     domStyle.set(indicator,'display','none');
-            // }
+            var indicator = dojo.byId('badge_Table'); // !
+            if (show) {
+                domStyle.set(indicator,'display','');
+                // domAttr.set(indicator, "title", i18n.widgets.tableOfContents.showFeatureTable);
+                domAttr.set(indicator, "alt", '');
+            } else {
+                domStyle.set(indicator,'display','none');
+            }
         },    
 
     });
