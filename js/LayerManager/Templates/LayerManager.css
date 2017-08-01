@@ -17,19 +17,15 @@
 }
 
 .LayerManager .toc-title-container {
-  background: none;
-  color: black;
-  position: relative;
-  padding-left: 4px;
+    background: none;
+    color: black;
+    position: relative;
+    padding-left: 4px;
 }
 
 .LayerManager {
-	font-family: 'Roboto Condensed', sans-serif;
-	--padding-bottom: 100px;
-	--position: relative;
-	--width: 297px;
-	--overflow: auto; 
-	background: white;
+	  font-family: 'Roboto Condensed', sans-serif;
+	  background: white;
 }
 
 .LayerManager label.checkbox {
@@ -43,20 +39,10 @@
 }
 
 .LayerManager .labelText {
-	max-width: calc(100% - 60px); 
-	display: inline-block;
-	padding: 0px 4px;
+    max-width: calc(100% - 60px); 
+    display: inline-block;
+    padding: 0px 4px;
     margin-top: 4px;
-    /*margin-left: 4px;*/
-}
-
-@media screen and (max-width: 300px) {
-  	.LayerManager {
-    	width: auto; 
-	}
-	label.checkbox {
-	    width: 60%; 
-	} 
 }
 
 .LayerManager .toc-settings {
@@ -137,10 +123,13 @@
   background-color: transparent !important; 
 }
 
-.LayerManager input[type="checkbox"].cbToggleBtn:checked + label img.tableBtn.SelectedToggleImg {
-	/*box-shadow: 2px 2px 4px black;*/
-	filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.75));
-	-webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.75));
+.LayerManager input[type="checkbox"].cbToggleBtn + label img.tableBtn {
+    opacity:0.25;
+
+}.LayerManager input[type="checkbox"].cbToggleBtn:checked + label img.tableBtn.SelectedToggleImg {
+  /*box-shadow: 2px 2px 4px black;*/
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.75));
+    -webkit-filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.75));
     opacity:1;
 }
 

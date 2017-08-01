@@ -441,19 +441,19 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     // tabindex:0,
                 }, titleBaseContainerDiv);
 
-                var titleBasemapCheckbox = domConstruct.create("input", 
-                {
-                    type: "checkbox",
-                    id: "layer_ck_baseMap",
-                    className: titleBaseCheckBoxClass, 
-                    tabindex: 0,
-                    checked: this.baseMap.baseMapLayers[0].visibility,
-                }, titleBaseText);
+                // var titleBasemapCheckbox = domConstruct.create("input", 
+                // {
+                //     type: "checkbox",
+                //     id: "layer_ck_baseMap",
+                //     className: titleBaseCheckBoxClass, 
+                //     tabindex: 0,
+                //     checked: this.baseMap.baseMapLayers[0].visibility,
+                // }, titleBaseText);
 
                 var baseMapLabel = domConstruct.create('label',{
-                    for: 'layer_ck_baseMap',
+                    // for: 'layer_ck_baseMap',
                     class: 'labelText',
-                    style: 'font-style: italic;',
+                    style: 'font-style: italic; font-weight: bold;',
                     tabindex: 0,
                     innerHTML: this.baseMap.title,
                     title : "BaseMap: "+this.baseMap.title,
@@ -478,17 +478,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     class: 'hideBasemapArea',
                 }, titleBaseDiv);
 
-                on(titleBasemapCheckbox, "click", lang.hitch(this, function (evt) {
-                    var cb = dojo.byId('layer_ck_baseMap');
-                    var action = cb.checked;
+                // on(titleBasemapCheckbox, "click", lang.hitch(this.baseMap, function (evt) {
+                //     var cb = dojo.byId('layer_ck_baseMap');
+                //     var action = cb.checked;
 
-                    hideBasemapArea.style.display = action?'block':'none';
-                    domStyle.set(dojo.byId('basemapsBtn'), 'display', action?'table':'none');
+                //     hideBasemapArea.style.display = action?'block':'none';
+                //     domStyle.set(dojo.byId('basemapsBtn'), 'display', action?'table':'none');
 
-                    this.baseMap.baseMapLayers.forEach(function(bmLayer) {
-                        bmLayer.layerObject.setVisibility(action);
-                    });
-                }));
+                //     this.baseMapLayers.forEach(function(bmLayer) {
+                //         bmLayer.layerObject.setVisibility(action);
+                //     });
+                // }));
 
                 var basemapSlider = domConstruct.create('input', {
                     type: 'range',

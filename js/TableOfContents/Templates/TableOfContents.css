@@ -1,10 +1,12 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed|Ubuntu+Mono');
 
 .TableOfContents .toc-title {
-	/*border-top: 1px solid silver;*/
-	font-size: 16px;
-	-webkit-user-select: none;
-	-moz-user-select: none;
+  border-bottom: 1px solid gray;
+  font-size: 16px;
+  line-height: 16px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  margin: 1px 2px;
  	min-height: 30px;
 }
 
@@ -27,7 +29,7 @@
 	font-family: 'Roboto Condensed', sans-serif;
 	--padding-bottom: 100px;
 	--position: relative;
-	--width: 297px;
+	width: auto;
 	--overflow: auto; 
 	background: white;
 }
