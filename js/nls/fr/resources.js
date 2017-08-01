@@ -62,22 +62,26 @@ define(
         	"details": "Détails",
         	"share": "Partager",
             "filter": "Filtres",
-            "features": "Liste des Caractéristiques"
+            "features": "Liste d’entités sur la carte"
         },
         "skip":{
             "tools" : "Aller au outils",
             "search" : "Aller à la recherche",
             "content" : "Aller au contenu",
-            "splitter" : "Aller au séparateur d’écran",
+            "hsplitter" : "Aller au diviseur d’écran horizontal",
             "map" : "Aller à la carte",
             "help" : "Aller à l’aide",
-            "featureDetaills" : "Aller aux fonctionnalités détaillées"
+            "featureDetaills" : "Aller aux fonctionnalités détaillées",
+            "vsplitter" : "Aller au diviseur d’écran vertical",
+            "table" : "Aller à la table des fonctionnalités",
         },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",
         searchEnterCriteria : "Terme recherché pour",
         pressAlt : "Appuyer sur ALT + 0 à 7 pour naviguer rapidement",
         instructions:"instructions.french",
-        wcagViewer : "Visualiseur Accessible"
+        wcagViewer : "Visualiseur Accessible",
+        leftCollapse: "Réduire le panneau gauche",
+        leftExpand: "Révéler le panneau gauche",
     })
 );

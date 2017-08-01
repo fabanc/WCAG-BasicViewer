@@ -54,8 +54,10 @@ define([
             }
         },
         
+        __init:false,
+
         _init: function () {
-            //if(!dom.byId("navZoomIn")) return;
+            if(this.__init) return;
             this.nav.setZoomSymbol(new SimpleLineSymbol("SOLID", new Color(this.zoomColor), 4));
 
             dojo.empty(this.navToolBar);
@@ -173,14 +175,8 @@ define([
                 }
             }));
 
-            // on(dom.byId("testBtn"), "click", lang.hitch(this, function(e) {
-            //     this.map._createLabelLayer();
-            // }));
-
-
+            this.__init = true;
         },
-
-        //disTabs : 1,
 
         tryDisableBtn:function(id, disable) {
             var div = query("#"+id)[0];

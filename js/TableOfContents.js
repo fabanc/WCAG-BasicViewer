@@ -1,5 +1,8 @@
 define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on",
+    "application/ShowFeatureTable/ShowFeatureTable", 
+    "application/ImageToggleButton/ImageToggleButton", 
+    "dojo/i18n!application/nls/TableOfContents",
     "dojo/text!application/dijit/templates/TableOfContents.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/_base/array",
@@ -7,7 +10,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     ], function (
         Evented, declare, lang, has, esriNS,
         _WidgetBase, _TemplatedMixin, on, 
-        dijitTemplate, 
+        ShowFeatureTable, ImageToggleButton,
+        i18n, dijitTemplate, 
         domClass, domAttr, domStyle, domConstruct, event, 
         array,
         TextSymbol, SimpleRenderer, LabelLayer
@@ -44,7 +48,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 layer: "toc-layer",
                 firstLayer: "toc-first-layer",
                 title: "toc-title",
-                titleContainer: "toc-title-container",
+                //titleContainer: "toc-title-container",
                 content: "toc-content",
                 titleCheckbox: "checkbox",
                 checkboxCheck: "icon-check-1",
@@ -52,11 +56,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 accountText: "toc-account",
                 visible: "toc-visible",
                 settingsIcon: "icon-cog",
-                settings: "toc-settings",
+                //settings: "toc-settings",
                 actions: "toc-actions",
                 account: "toc-account",
                 clear: "clear"
             };
+
+            dojo.create("link", {
+                href : "js/TableOfContents/Templates/TableOfContents.css",
+                type : "text/css",
+                rel : "stylesheet",
+            }, document.head);
+
         },
 
         // start widget. called by user
@@ -152,19 +163,19 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }, layerDiv);
                     
                     // title container
-                    var titleContainerDiv = domConstruct.create("div", {
-                        className: this.css.titleContainer,
+                    var tocTitleContainer = domConstruct.create("div", {
+                        className: "toc-title-container",
                         tabindex: -1,
                     }, titleDiv);
                     
                     titleCheckbox = domConstruct.create("input", 
                     {
                         id: "layer_ck_"+i,
-                        className: titleCheckBoxClass, //this.css.titleCheckbox,
+                        className: titleCheckBoxClass, 
                         type: "checkbox",
                         tabindex: 0,
                         checked: layer.visibility,
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
 
                     var titleText = domConstruct.create("label", {
                         "for": "layer_ck_"+i,
@@ -172,9 +183,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         "innerHTML": layer.title,
                         role: "presentation",
                         //"title" : layer.title
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
 
-                    // this._atachSpaceKey(titleContainerDiv, titleCheckbox);
+                    this._atachSpaceKey(tocTitleContainer, titleCheckbox);
 
                     var accountText = '';
                     if (layer.account) {
@@ -185,38 +196,57 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
 
                     // settings
-                    var settingsDiv, settingsIcon;
-                    if (layer.layerObject &&
+                    var tocSettings, settingsIcon;
+                    if ((layer.layerObject &&
                         dojo.exists("settings", layer) &&
-                        layer.layerObject.isEditable()) 
+                        layer.layerObject.isEditable()) || has("featureTable")) 
                     { 
-                        settingsDiv = domConstruct.create("div", {
-                            className: this.css.settings,
-                            id: layer.settings
-                        }, titleContainerDiv);
+                        tocSettings = domConstruct.create("div", {
+                            className: "toc-settings",
+                            //id: layer.settings
+                        }, tocTitleContainer);
 
-                        settingsIcon = domConstruct.create("img", {
-                            'src' : 'images/icon-cog.png',
-                            alt:'Configuration',
-                            role: "button,",
-                            tabindex:0,
-                        }, settingsDiv);
+                        if(layer.layerObject &&
+                        dojo.exists("settings", layer) &&
+                        layer.layerObject.isEditable())
+                        {
+                            settingsIcon = domConstruct.create("img", {
+                                'src' : 'images/icon-cog.png',
+                                alt:'Configuration',
+                                role: "button,",
+                                tabindex:0,
+                            }, tocSettings);
+                        }
+
+                        if(has("featureTable")) {
+                            var cbShowTable = new ImageToggleButton({
+                                imgSelected: 'images/icons_black/TableClose.Red.png',
+                                imgUnselected: 'images/icons_black/Table.png',
+                                value: layer.id,
+                                class: 'cbShowTable',
+                                imgClass: 'tableBtn',
+                                titleSelected: i18n.widgets.tableOfContents.hideFeatureTable,
+                                titleUnselected: i18n.widgets.tableOfContents.showFeatureTable,
+                            }, domConstruct.create('div',{}, tocSettings));
+                            cbShowTable.startup();
+                            on(cbShowTable, 'change', lang.hitch(this, this._layerShowTable));
+                        }
                     }
 
                     // clear css
                     var clearCSS = domConstruct.create("div", {
                         className: this.css.clear
-                    }, titleContainerDiv);
+                    }, tocTitleContainer);
                     
                     // lets save all the nodes for events
                     var nodesObj = {
                         checkbox: titleCheckbox,
                         title: titleDiv,
-                        titleContainer: titleContainerDiv,
+                        titleContainer: tocTitleContainer,
                         titleText: titleText,
                         accountText: accountText,
                         settingsIcon: settingsIcon,
-                        settingsDiv: settingsDiv,
+                        tocSettings: tocSettings,
                         layer: layerDiv
                     };
                     this._nodes.push(nodesObj);
@@ -227,14 +257,46 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-        // _atachSpaceKey: function(onButton, clickButton) {
-        //     on(onButton, 'keyup', lang.hitch(clickButton, function(event){
-        //         if(event.keyCode===32) {
-        //             clickButton.click();
-        //             event.stopPropagation();
-        //         }
-        //     }));
-        // },
+        _layerShowTable: function(arg)  {
+            var checked = arg.checked;
+            this.showBadge(checked);
+            if(!checked) {
+                this.featureTable.destroy();
+                return;
+            }
+
+            this._loadTableByLayerId(arg.value);
+        },
+
+        _loadTableByLayerId:function(layerId) {
+            var cbToggleBtns = dojo.query('.cbShowTable .cbToggleBtn');
+            array.forEach(cbToggleBtns, function(cb) {
+                cb.checked = cb.value === layerId;
+            });
+
+            for(var i = 0, m = null; i < this.layers.length; ++i) {
+                if(this.layers[i].id === layerId) {
+                    if(this.featureTable) {
+                        this.featureTable.destroy();
+                        domConstruct.create("div", { 
+                            id: 'featureTableNode',
+                            //tabindex: 0
+                        }, dojo.byId('featureTableContainer'));
+                    }
+                    this.featureTable.loadTable(this.layers[i]);
+
+                    this.showBadge(true);
+                    break;
+                }
+            }
+        },
+
+        _atachSpaceKey: function(onButton, clickButton) {
+            on(onButton, 'keyup', lang.hitch(clickButton, function(event){
+                if(event.keyCode=='32')
+                    this.click();
+            }));
+        },
 
         _refreshLayers: function () {
             this.refresh();
@@ -406,9 +468,36 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this._checkEvents.push(checkEvent);
         },
 
+        _forceClose: function() {
+            var checkedBtns = dojo.query('.TableOfContents .cbShowTable input:checked');
+            array.forEach(checkedBtns, function(checkedBtn) {
+                checkedBtn.click();
+            });
+        },
+
         _init: function () {
             this._visible();
             this._createList();
+
+            if(has('featureTable')) {
+                var ft = this.featureTable = new ShowFeatureTable({
+                    map: this.map,
+                    layers: this.layers, 
+                }, dojo.byId('mapPlace'));
+                ft.startup();
+                on(ft, "destroy", lang.hitch(this, function(evy) {
+                    this._forceClose();
+                }));
+                on(ft, "change", lang.hitch(this, function(evt) {
+                    this._forceClose();
+                    this._loadTableByLayerId(evt.layerId);
+                }));
+      
+                on(ft, "destroied", lang.hitch(this, function(evt) {
+                    this.showBadge(false);
+                }));
+            }
+
             this.set("loaded", true);
             this.emit("load", {});
         },
@@ -426,7 +515,24 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             } else {
                 domStyle.set(this.domNode, "display", "none");
             }
-        }
+        },
+
+        showBadge: function(show) {
+            var collapseLeftPanelButton = dijit.byId('collapseLeftPanelButton');
+            if(collapseLeftPanelButton) {
+                collapseLeftPanelButton.preset(show);
+            }
+
+            var indicator = dojo.byId('badge_Table'); // !
+            if (show) {
+                domStyle.set(indicator,'display','');
+                domAttr.set(indicator, "title", i18n.widgets.tableOfContents.showFeatureTable);
+                domAttr.set(indicator, "alt", '');
+            } else {
+                domStyle.set(indicator,'display','none');
+            }
+        },    
+
     });
     if (has("extend-esri")) {
         lang.setObject("dijit.TableOfContents", Widget, esriNS);

@@ -17,6 +17,8 @@ define(["dojo/has"], function (has) {
     };
 
     /*App capabilities*/
+    has.add("layerManager", function (g) { return true; });
+
     has.add("navigation", function (g) {
         var navigation = getTool("navigation", g.config);
         //overwrite the default with app settings
@@ -119,6 +121,14 @@ define(["dojo/has"], function (has) {
             layers = g.config.tool_layers;
         }
         return layers;
+    });
+    has.add("featureTable", function (g) {
+        var featureTable = getTool("featureTable", g.config);
+        //overwrite the default with app settings
+        if (g.config.hasOwnProperty("tool_featureTable")) {
+            featureTable = g.config.tool_featureTable;
+        }
+        return featureTable;
     });
     has.add("instructions", function (g) {
         var instructions = getTool("instructions", g.config);

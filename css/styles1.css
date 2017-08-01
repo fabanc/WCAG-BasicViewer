@@ -82,5 +82,10 @@ http://reference.sitepoint.com/css/outline-color
   background-color: rgba(0, 0, 0, 0.7) !important;
 }
 
+.esri-feature-table .esri-feature-table-menu .dijitDropDownButton .dijitButtonNode:hover {
+}
 
-
+#mapDiv:focus div.mapFocus {
+  z-index:1;
+  pointer-events: none;
+}
