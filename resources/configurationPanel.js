@@ -183,7 +183,7 @@
                "fieldName": "tool_legend"
             },
             {
-               "label": "LayerManager",
+               "label": "Layer Manager",
                "type": "boolean",
                "fieldName": "tool_layerManager"
             },

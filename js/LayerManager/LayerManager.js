@@ -259,7 +259,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     var layerHandleDiv = domConstruct.create("div", {
                         className: 'dragabble',
                         //draggable: true,
-                        title: i18n.widgets.LayerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
+                        title: i18n.widgets.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
                         tabindex:0,
                     }, titleText);
 
@@ -313,8 +313,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 value: layer.id,
                                 class: 'cbShowTable',
                                 imgClass: 'tableBtn',
-                                titleSelected: i18n.widgets.LayerManager.hideFeatureTable,
-                                titleUnselected: i18n.widgets.LayerManager.showFeatureTable,
+                                titleSelected: i18n.widgets.hideFeatureTable,
+                                titleUnselected: i18n.widgets.showFeatureTable,
                             }, domConstruct.create('div',{}, settingsDiv));
                             cbShowTable.startup();
                             on(cbShowTable, 'change', lang.hitch(this, this._layerShowTable));
@@ -346,8 +346,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 imgUnselected: 'images/icons_black/up.png',
                                 value: i,
                                 class: 'showLegendBtn',
-                                titleSelected: i18n.widgets.LayerManager.hideLegend,
-                                titleUnselected: i18n.widgets.LayerManager.showLegend,
+                                titleSelected: i18n.widgets.hideLegend,
+                                titleUnselected: i18n.widgets.showLegend,
                             }, domConstruct.create('div',{},
                                 domConstruct.create('div',{
                                 id: 'legendBtn_'+i,
@@ -366,12 +366,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             class:'layerOpacitySlider',
                             value:100,
                             'data-layerid':layer.id,
-                            title: i18n.widgets.LayerManager.opacity,
+                            title: i18n.widgets.opacity,
                         }, layerExpandArea);
                         //dojo.place(slider, expandLegendBtn, 'after');
                         on(slider, 'input', lang.hitch(this, this._layerSliderChanged));
 
-                        var legendTitle = i18n.widgets.LayerManager.legendFor+layer.title;
+                        var legendTitle = i18n.widgets.legendFor+layer.title;
                         var legend = new Legend({
                             map: this.map,
                             layerInfos: [{
@@ -464,8 +464,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     imgUnselected: 'images/icons_black/up.png',
                     //value: i,
                     class: 'showLegendBtn',
-                    titleSelected: i18n.widgets.LayerManager.hideLegend,
-                    titleUnselected: i18n.widgets.LayerManager.showLegend,
+                    titleSelected: i18n.widgets.hideLegend,
+                    titleUnselected: i18n.widgets.showLegend,
                 }, domConstruct.create('div',{},
                     domConstruct.create('div',{
                     id: 'basemapsBtn',
@@ -496,7 +496,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     class:'layerOpacitySlider',
                     value:100,
                     //'data-layerid':layer.id,
-                    title: i18n.widgets.LayerManager.baseMapOpacity,
+                    title: i18n.widgets.baseMapOpacity,
                     style: 'display:none;',
                 }, hideBasemapArea);
 
@@ -825,7 +825,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var svgs = legend.querySelectorAll("svg");
                 array.forEach(svgs, function(svg) {
                     var description = svg.closest('tr').children[1].children[0].children[0].children[0].children[0].innerHTML;
-                    var symbol = i18n.widgets.LayerManager.symbol;
+                    var symbol = i18n.widgets.symbol;
                     var alt = (description==='') ? symbol : '';
                     domAttr.set(svg, 'alt', alt);
                     domAttr.set(svg, 'title', symbol);
@@ -898,7 +898,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var indicator = dojo.byId('badge_featureTableSelected'); // !
             if (show) {
                 domStyle.set(indicator,'display','');
-                // domAttr.set(indicator, "title", i18n.widgets.LayerManager.showFeatureTable);
+                // domAttr.set(indicator, "title", i18n.widgets.showFeatureTable);
                 domAttr.set(indicator, "alt", '');
             } else {
                 domStyle.set(indicator,'display','none');

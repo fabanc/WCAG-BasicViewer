@@ -355,7 +355,6 @@ define(["dojo/ready",
                 var toolList = [this._addNavigation("navigation", query("#mapDiv_zoom_slider")[0], navDeferred = new Deferred())];
 
                 var deferredDetails = new Deferred();
-                toolList.push(this._addLayerManager("LayerManager", toolbar));
                 for (var i = 0; i < this.config.tools.length; i++) {
                     switch (this.config.tools[i].name) {
                         case "details":
@@ -372,6 +371,9 @@ define(["dojo/ready",
                             break;
                         case "legend":
                             toolList.push(this._addLegend(this.config.tools[i], toolbar));
+                            break;
+                        case "layerManager":
+                            toolList.push(this._addLayerManager(this.config.tools[i], toolbar));
                             break;
                         case "layers":
                             toolList.push(this._addLayers(this.config.tools[i], toolbar));
