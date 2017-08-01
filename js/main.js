@@ -732,7 +732,10 @@ define(["dojo/ready",
 
         _addBasemapGallery: function (tool, toolbar) {
             var deferred = new Deferred();
-            if (has("basemap")) {
+            if(has("layerManager")) {
+                deferred.resolve(true);
+            }
+            else if (has("basemap")) {
                 var basemapDiv = toolbar.createTool(tool);
                 var basemap = new BasemapGallery({
                     id: "basemapGallery",
@@ -1054,7 +1057,7 @@ define(["dojo/ready",
 
             var layers = this.config.response.itemInfo.itemData.operationalLayers;
 
-            if (layers.length === 0) {
+            if (layers.length === 0 || has("layerManager")) {
                 deferred.resolve(false);
             } else {
                 if (has("layers")) {
@@ -1119,7 +1122,7 @@ define(["dojo/ready",
             var deferred = new Deferred();
             var layers = arcgisUtils.getLegendLayers(this.config.response);
 
-            if (layers.length === 0) {
+            if (layers.length === 0 || has("layerManager")) {
                 deferred.resolve(false);
             } else {
                 if (has("legend")) {
