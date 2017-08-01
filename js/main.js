@@ -1092,11 +1092,7 @@ define(["dojo/ready",
                 if (has("layerManager")) {
                     panelClass = "";
 
-                    var layersDivDesc = toolbar.createTool(tool, {
-                        badgeName:"featureTableSelected",
-                        badgeIcon: "images/Table.png",
-                        iconsSet:this.config.icons,
-                    });
+                    var layersDivDesc = toolbar.createTool(tool, "", "reload1.gif", "Table");
 
                     var toc = new LayerManager({
                         map: this.map,

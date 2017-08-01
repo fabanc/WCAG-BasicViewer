@@ -64,8 +64,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // this.watch("layers", this._refreshLayers);
             //this.watch("map", this.refresh);
             // classes
-            this.toolsDiv = dojo.byId('tools_layers');
-            this.iconset = this.toolsDiv.dataset.iconset;
+            
+            // this.toolsDiv = dojo.byId('tools_layers');
+            // this.iconset = this.toolsDiv.dataset.iconset;
         },
 
         // start widget. called by user

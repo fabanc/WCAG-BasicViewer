@@ -296,7 +296,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         if(layer.layerType === "VectorTileLayer")
                         {
                             domConstruct.create("img", {
-                                src: 'images/icons_black/VectorTiles.png',
+                                src: 'images/VectorTiles.png',
                                 class: 'VectorTilesBtn',
                                 alt:'Vector Tiles',
                                 //role: "button",
@@ -313,8 +313,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 value: layer.id,
                                 class: 'cbShowTable',
                                 imgClass: 'tableBtn',
-                                titleSelected: i18n.widgets.hideFeatureTable,
-                                titleUnselected: i18n.widgets.showFeatureTable,
+                                titleSelected: i18n.widgets.layerManager.hideFeatureTable,
+                                titleUnselected: i18n.widgets.layerManager.showFeatureTable,
                             }, domConstruct.create('div',{}, settingsDiv));
                             cbShowTable.startup();
                             on(cbShowTable, 'change', lang.hitch(this, this._layerShowTable));
@@ -346,8 +346,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 imgUnselected: 'images/icons_black/up.png',
                                 value: i,
                                 class: 'showLegendBtn',
-                                titleSelected: i18n.widgets.hideLegend,
-                                titleUnselected: i18n.widgets.showLegend,
+                                titleSelected: i18n.widgets.layerManager.hideLegend,
+                                titleUnselected: i18n.widgets.layerManager.showLegend,
                             }, domConstruct.create('div',{},
                                 domConstruct.create('div',{
                                 id: 'legendBtn_'+i,
@@ -464,8 +464,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     imgUnselected: 'images/icons_black/up.png',
                     //value: i,
                     class: 'showLegendBtn',
-                    titleSelected: i18n.widgets.hideLegend,
-                    titleUnselected: i18n.widgets.showLegend,
+                    titleSelected: i18n.widgets.layerManager.hideLegend,
+                    titleUnselected: i18n.widgets.layerManager.showLegend,
                 }, domConstruct.create('div',{},
                     domConstruct.create('div',{
                     id: 'basemapsBtn',
@@ -577,9 +577,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _layerShowTable: function(arg)  {
             var checked = arg.checked;
+            this.showBadge(checked);
             if(!checked) {
                 this.featureTable.destroy();
-                this.showBadge(false);
                 return;
             }
 
@@ -895,10 +895,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         showBadge: function(show) {
-            var indicator = dojo.byId('badge_featureTableSelected'); // !
+            var collapseLeftPanelButton = dijit.byId('collapseLeftPanelButton');
+            if(collapseLeftPanelButton) {
+                collapseLeftPanelButton.preset(show);
+            }
+
+            var indicator = dojo.byId('badge_Table'); // !
             if (show) {
                 domStyle.set(indicator,'display','');
-                // domAttr.set(indicator, "title", i18n.widgets.showFeatureTable);
+                domAttr.set(indicator, "title", i18n.widgets.layerManager.showFeatureTable);
                 domAttr.set(indicator, "alt", '');
             } else {
                 domStyle.set(indicator,'display','none');

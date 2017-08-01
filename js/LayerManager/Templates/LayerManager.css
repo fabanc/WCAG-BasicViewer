@@ -62,7 +62,7 @@
 .LayerManager .toc-settings {
   	float: right;
     margin-right: 4px;
-    margin-top: -4px;
+    margin-top: -2px;
 }
 
 .LayerManager .toc-settings img{
@@ -117,10 +117,6 @@
 .LayerManager input[type=checkbox].checkbox {
     display: none;
     margin: 4px 0px 0px 4px;
-}
-
-.LayerManager .tableBtn {
-	opacity:0.25;
 }
 
 .LayerManager .VectorTilesBtn {
@@ -238,6 +234,7 @@
     width: 30%;
     background-color: silver;
     margin-left: -4px;
+    margin-top: -6px;
     /*border-bottom-left-radius: 5px;*/
     border-bottom-right-radius: 5px;
     cursor: pointer;
