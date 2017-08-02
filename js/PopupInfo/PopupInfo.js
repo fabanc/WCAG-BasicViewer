@@ -66,9 +66,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         startup: function () {
-            if (!this.map || !this.toolbar) {
+            if (!this.map) {
                 this.destroy();
-                console.log("PopupInfo: map or toolbar required");
+                console.error("Map required");
+                return;
+            }
+            if (!this.toolbar) {
+                this.destroy();
+                console.error("Toolbar required");
+                return;
             }
             if (this.map.loaded) {
                 this._init();

@@ -29,10 +29,15 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
     "esri/layers/FeatureLayer", 
+
+    "application/LayerManager/LayerManager",
     "application/NavToolBar/NavToolBar", 
     "application/SuperNavigator/SuperNavigator", "application/PopupInfo/PopupInfo", 
     "application/ImageToggleButton/ImageToggleButton", 
-    "application/FeatureList/FeatureList", "application/Filters/Filters", "application/TableOfContents", 
+    "application/FeatureList/FeatureList", 
+    "application/Filters/Filters", 
+    "application/TableOfContents/TableOfContents", 
+
     "application/LanguageSelect/LanguageSelect",
     "application/ShareDialog",
     "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", "esri/graphic",
@@ -130,6 +135,7 @@ define(["dojo/ready",
                     appId:this.config.lang3appId
                 }
             ];
+            
             new LanguageSelect({
                 locale: document.documentElement.lang,
                 //location: window.location,
@@ -371,6 +377,9 @@ define(["dojo/ready",
                             break;
                         case "legend":
                             toolList.push(this._addLegend(this.config.tools[i], toolbar));
+                            break;
+                        case "layerManager":
+                            toolList.push(this._addLayerManager(this.config.tools[i], toolbar));
                             break;
                         case "layers":
                             toolList.push(this._addLayers(this.config.tools[i], toolbar));
@@ -742,7 +751,10 @@ define(["dojo/ready",
         
         _addBasemapGallery: function (tool, toolbar) {
             var deferred = new Deferred();
-            if (has("basemap")) {
+            if(has("layerManager")) {
+                deferred.resolve(true);
+            }
+            else if (has("basemap")) {
                 var basemapDiv = toolbar.createTool(tool);
                 var basemap = new BasemapGallery({
                     id: "basemapGallery",
@@ -1064,7 +1076,7 @@ define(["dojo/ready",
 
             var layers = this.config.response.itemInfo.itemData.operationalLayers;
 
-            if (layers.length === 0) {
+            if (layers.length === 0 || has("layerManager")) {
                 deferred.resolve(false);
             } else {
                 if (has("layers")) {
@@ -1091,12 +1103,45 @@ define(["dojo/ready",
             return deferred.promise;
         },
 
+        _addLayerManager: function (tool, toolbar) {
+            var deferred = new Deferred();
+
+            var layers = this.config.response.itemInfo.itemData.operationalLayers;
+
+            if (layers.length === 0) {
+                deferred.resolve(false);
+            } else {
+                if (has("layerManager")) {
+                    panelClass = "";
+
+                    var layersDivDesc = toolbar.createTool(tool, "", "reload1.gif", "Table");
+
+                    var toc = new LayerManager({
+                        map: this.map,
+                        layers: layers,
+                        dataItems: this.config.response.itemInfo.itemData,
+                        hasLegend: has("legend"),
+                        hasFeatureTable: has("featureTable"),
+                        hasBasemapGallery: has("basemap"),
+                        mapNode: dojo.byId('mapPlace'),
+                        toolbar: toolbar,
+                    }, domConstruct.create("div", {}, layersDivDesc));
+                    toc.startup();
+
+                    deferred.resolve(true);
+                } else {
+                    deferred.resolve(false);
+                }
+            }
+            return deferred.promise;        
+        },
+
         _addLegend: function (tool, toolbar) {
             //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
             var deferred = new Deferred();
             var layers = arcgisUtils.getLegendLayers(this.config.response);
 
-            if (layers.length === 0) {
+            if (layers.length === 0 || has("layerManager")) {
                 deferred.resolve(false);
             } else {
                 if (has("legend")) {

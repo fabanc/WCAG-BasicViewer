@@ -65,6 +65,7 @@ define({
         {"name": "details", "enabled": false},
         {"name": "overview", "enabled": true},
         {"name": "legend", "enabled": true},
+        {"name": "layerManager", "enabled": true},
         {"name": "layers", "enabled": true},
         {"name": "mapKeyboardNavigation", "enabled": false},
         {"name": "infoPanel", "enabled": false},

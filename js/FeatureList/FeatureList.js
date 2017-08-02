@@ -148,13 +148,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var deferred = new Deferred();
 
             var list = query("#featuresList")[0];
-
             this._clearMarker();
             window.tasks.filter(function(t) { 
-                return t.layer.visible && t.layer.visibleAtMapScale && t.layer.infoTemplate;
+                return t.layer.visible && t.layer.visibleAtMapScale;// && t.layer.infoTemplate;
                 // return t.layer.visible && t.layer.visibleAtMapScale;
             }).forEach(lang.hitch(this.map, function(t) {
-
                 t.query.geometry = ext.extent;
                 var exp=t.layer.getDefinitionExpression();
                 t.query.where = exp;
@@ -197,7 +195,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                             else {
                                                 fieldValue=fieldName;
                                             }
-
                                         }
 
                                         content+='<tr class="featureItem_${_layerId}_${_featureId} hideAttr" tabindex="0" aria-label="'+pField.label+', '+fieldValue+',"">\n';
