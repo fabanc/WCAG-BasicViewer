@@ -3,7 +3,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "application/ShowFeatureTable/ShowFeatureTable", 
     "application/ImageToggleButton/ImageToggleButton", 
     "dojo/i18n!application/nls/TableOfContents",
-    "dojo/text!application/dijit/templates/TableOfContents.html", 
+    "dojo/text!application/TableOfContents/Templates/TableOfContents.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/_base/array",
     "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "esri/layers/LabelLayer"
@@ -121,7 +121,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         /* ----------------- */
 
         _createList: function () {
-            var layers = this.get("layers");
+            var layers = this.layers;
             this._nodes = [];
             // kill events
             this._removeEvents();
@@ -269,7 +269,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         _loadTableByLayerId:function(layerId) {
-            var cbToggleBtns = dojo.query('.cbShowTable .cbToggleBtn');
+            var cbToggleBtns = dojo.query('.TableOfContents .cbShowTable .cbToggleBtn');
             array.forEach(cbToggleBtns, function(cb) {
                 cb.checked = cb.value === layerId;
             });

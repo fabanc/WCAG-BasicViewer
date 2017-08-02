@@ -78,8 +78,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 clear: "clear"
             };
 
-            // this.toolsDiv = dojo.byId('tools_layers');
-            // this.iconset = this.toolsDiv.dataset.iconset;
         },
 
         // start widget. called by user
@@ -202,27 +200,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             domAttr.set(this._layersNode, "role", "list");
             // if we got layers
             if (layers && layers.length) {
-                var toolsDiv = dojo.byId('tools_layers');
 
                 for (var i = 0; i < layers.length; i++) {
                     var layer = layers[i];
 
                     // ceckbox class
                     var titleCheckBoxClass = "checkbox";
-                    // layer class
-                    //var layerClass = "toc-layer";
-                    // first layer
-                    // if (i === (layers.length - 1)) {
-                    //     layerClass += " ";
-                    //     layerClass += this.css.firstLayer;
-                    // }
-                    // if (layer.visibility) {
-                    //     layerClass += " ";
-                    //     layerClass += this.css.visible;
-                    //     titleCheckBoxClass += " ";
-                    //     titleCheckBoxClass += this.css.checkboxCheck;
-                    // }
-
                     // layer node
                     var layerDiv = domConstruct.create("div", {
                         className: "toc-layer",
@@ -303,7 +286,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 //tabindex:0,
                                 title: 'Vector Tiles',
                             }, settingsDiv);
-
                         }
                         else 
                         {
@@ -787,6 +769,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if(this.defaults.hasFeatureTable) {
                 var ft = new ShowFeatureTable({
                     map: this.map,
+                    layers: this.layers,
                 }, this.defaults.mapNode);
                 ft.startup();
                 this.featureTable = ft;
@@ -796,6 +779,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         checkedBtn.click();
                     });
                 }));
+                on(ft, "change", lang.hitch(this, function(evt) {
+                    this._forceClose();
+                    this._loadTableByLayerId(evt.layerId);
+                }));
+      
                 on(ft, "destroied", lang.hitch(this, function(evt) {
                     this.showBadge(false);
                 }));
@@ -805,6 +793,36 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.set("loaded", true);
             this.emit("load", {});
+        },
+
+        _forceClose: function() {
+            var checkedBtns = dojo.query('.LayerManager .cbShowTable input:checked');
+            array.forEach(checkedBtns, function(checkedBtn) {
+                checkedBtn.click();
+            });
+        },
+
+        _loadTableByLayerId:function(layerId) {
+            var cbToggleBtns = dojo.query('.LayerManager .cbShowTable .cbToggleBtn');
+            array.forEach(cbToggleBtns, function(cb) {
+                cb.checked = cb.value === layerId;
+            });
+
+            for(var i = 0, m = null; i < this.layers.length; ++i) {
+                if(this.layers[i].id === layerId) {
+                    if(this.featureTable) {
+                        this.featureTable.destroy();
+                        domConstruct.create("div", { 
+                            id: 'featureTableNode',
+                            //tabindex: 0
+                        }, dojo.byId('featureTableContainer'));
+                    }
+                    this.featureTable.loadTable(this.layers[i]);
+
+                    this.showBadge(true);
+                    break;
+                }
+            }
         },
 
         _delay: function(ms) {
