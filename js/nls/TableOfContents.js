@@ -3,14 +3,7 @@ define({
         widgets: ({
             tableOfContents: ({
                 hideFeatureTable : 'Hide Feature Table',
-                showFeatureTable : 'Showing Feature Table',
-                dragLayer: 'Drag to change layers\' order, or\nclick and use up/down arrow keys.',
-                opacity: 'Layer Opacity',
-                baseMapOpacity: 'Base Map Opacity',
-                showLegend : 'Show Legend',
-                hideLegend : 'Hide Legend',
-                legendFor : 'Legend for: ',
-                symbol: 'Symbol',
+                showFeatureTable : 'Show Feature Table',
             })
         })
     }),
