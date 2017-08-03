@@ -1907,23 +1907,14 @@ define(["dojo/ready",
             }
         },
  
-        _adjustPopupSize: function () {
-            if (!this.map) {
-                return;
-            }
-            var box = domGeometry.getContentBox(this.map.container);
+        _adjustPopupSize: function (evn) {
+            // if (!this.map)  return;
+            // var box = domGeometry.getContentBox(this.map.container);
+            // if(box.w === 0 || box.h === 0) return;
 
-            var width = 270,
-            height = 300,
-            newWidth = Math.round(box.w * 0.50),
-            newHeight = Math.round(box.h * 0.35);
-            if (newWidth < width) {
-                width = newWidth;
-            }
-            if (newHeight < height) {
-                height = newHeight;
-            }
-            this.map.infoWindow.resize(width, height);
+            // var width = Math.round(box.w * 0.50);
+            // var height = Math.round(box.h * 0.35);
+            // this.map.infoWindow.resize(width, height);
         },
  
         _createWebMap: function (itemInfo) {
