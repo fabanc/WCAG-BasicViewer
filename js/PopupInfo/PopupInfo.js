@@ -69,7 +69,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if (!this.map) {
                 this.destroy();
                 console.error("Map required");
-                return;
+                // return;
             }
             if (!this.toolbar) {
                 this.destroy();

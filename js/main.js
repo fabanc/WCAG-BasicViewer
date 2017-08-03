@@ -57,11 +57,15 @@ define(["dojo/ready",
     Legend, BasemapGallery, 
     i18n, i18n_BaseMapLabels,
     Measurement, OverviewMap, Extent, 
-    FeatureLayer, 
+    FeatureLayer,
+
+    LayerManager, 
     NavToolBar,
     SuperNavigator, PopupInfo,
     ImageToggleButton,
-    FeatureList, Filters, TableOfContents, LanguageSelect,
+    FeatureList, Filters, TableOfContents, 
+
+    LanguageSelect,
     ShareDialog, 
     SimpleMarkerSymbol, PictureMarkerSymbol, Graphic,
     InfoWindow) {
@@ -135,7 +139,7 @@ define(["dojo/ready",
                     appId:this.config.lang3appId
                 }
             ];
-            
+
             new LanguageSelect({
                 locale: document.documentElement.lang,
                 //location: window.location,
@@ -291,10 +295,10 @@ define(["dojo/ready",
             borderContainer.addChild(contentPaneLeft);
               
             var contentPaneRight = this.contentPaneRight = new ContentPane({
-                style: "padding:1px;",
+                style: "padding:1px; background-color:white;",
                 region: "center",
                 splitter: "true",
-                class: "bg",
+                // class: "bg",
                 content: dojo.byId("mapPlace"),
             });
             borderContainer.addChild(contentPaneRight);
@@ -1937,7 +1941,7 @@ define(["dojo/ready",
             query(".bg").style("backgroundColor", this.theme.toString());
             query(".esriPopup .pointer").style("backgroundColor", this.theme.toString());
             query(".esriPopup .titlePane").style("backgroundColor", this.theme.toString());
-
+            query(".dijitSplitter").style("borderColor", this.theme.toString());
 
             //Set the font color using the configured color value
             query(".fc").style("color", this.color.toString());

@@ -502,7 +502,7 @@ img {
   height: calc(100% - 95px);
   overflow: auto;
   /*margin-left: 1px;*/
-  padding: 0 1px;
+  /*padding: 0 1px;*/
 }
 
 .page {
@@ -1149,19 +1149,33 @@ html, body {
 }
 
 .claro .dijitSplitterV {
-    background: white;
-    border: 1px solid gray;
+background: white;
+    /* border: 1px solid gray; */
+    border-color: white;
+    border-width: 1.5px;
+    border-style: solid;
+    border-top-style: none;
+    border-bottom-style: none;
     width: 10px;
     margin: 0;
     -webkit-tap-highlight-color: transparent;
 }
 
-.claro .dijitSplitterH, .claro .dijitGutterH {
+.claro .dijitSplitterH, 
+.claro .dijitGutterH {
     background: white;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
+    border-color: white;
+    border-width: 1.5px;
+    border-style: solid;
+    border-left-style: none;
+    border-right-style: none;    
     height: 10px; 
     margin: 0;
+}
+
+.claro .dijitSplitterCover {
+    background:black;
+    opacity:0.25;
 }
 
 .claro .dijitSplitterV .dijitSplitterThumb {

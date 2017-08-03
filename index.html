@@ -72,7 +72,7 @@
 					<div id="panelGeocoder"></div>
 				</div>
 			</div>
-			<main id="panelPages" tabindex="0" class="bg leftContent">
+			<main id="panelPages" tabindex="0" class="leftContent">
 				<!-- <div id="fixContent" class="page showAttr">
 				</div> -->
 			</main>
@@ -143,8 +143,9 @@
 	            // The config object contains the following properties: helper services, (optionally)
 	            // i18n, appid, webmap and any custom values defined by the application.
 	            // In this example we have one called theme.
-				myApp.startup(config);
-	          }, function (error) {
+
+                myApp.startup(config);
+	         }, function (error) {
 	            // something went wrong. Let's report it.
 	            myApp.reportError(error);
 	          });
