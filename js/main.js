@@ -1949,6 +1949,9 @@ define(["dojo/ready",
                 '.dijitSplitter {\n'+
                 '  border-color:' + this.theme.toString() +' !important;\n'+
                 '}\n'+
+                '.dijitSplitterThumb{\n'+
+                '   background-color:' + this.activeColor.toString() +' !important;\n'+
+                '}\n'+
                 '';
                 // '</style>';
 
@@ -2001,15 +2004,6 @@ define(["dojo/ready",
                         if(rule.selectorText.indexOf('.goThereHint') >= 0) {
                             rule.style.borderColor = this._rgbaColor(this.focusColor);
                             //rule.style.boxShadow = "3px 3px 10px "+this._rgbaColor(this.focusColor);
-                        }
-                        //active
-                        if(rule.selectorText.indexOf('.activeMarker') >= 0 || 
-                            //rule.selectorText.indexOf('.goThereHint') >= 0 ||
-                            rule.selectorText.indexOf('dijitSplitterThumb') >= 0) {
-                            rule.style.backgroundColor = this._rgbaColor(this.activeColor);
-                            rule.style.outlineStyle = 'none';
-                            rule.style.outlineColor = 'transparent';
-                            rule.style.boxShadow = '0 0 15px 15px '+this.activeColor+' inset';
                         }
                     }
                 }
