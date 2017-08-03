@@ -1745,16 +1745,36 @@ define(["dojo/ready",
 
         _updateTheme: function () {
 
-            //Set the background color using the configured theme value
-            query(".bg").style("backgroundColor", this.theme.toString());
-            query(".esriPopup .pointer").style("backgroundColor", this.theme.toString());
-            query(".esriPopup .titlePane").style("backgroundColor", this.theme.toString());
+            if(!dojo.byId("themeColors")) {
+                var themeCss = 
+                // '<style id="themeColors">' +
+                '.bg, .esriPopup .pointer, .esriPopup .titlePane {\n' +
+                '   background-color:' + this.theme.toString() +';\n'+
+                '}\n'+
+                '.fc, .esriPopup .titlePane, .esriPopup .titleButton {\n' +
+                '   color:' + this.color.toString() +';\n'+
+                '}\n'+
+                // '.dijitSplitter {\n'+
+                // '  border-color:' + this.theme.toString() +' !important;\n'+
+                // '}\n'+
+                '';
+                // '</style>';
+
+                dojo.create("style", {
+                    id:"themeColors",
+                    innerHTML:themeCss
+                }, document.head);
+            }
+            // //Set the background color using the configured theme value
+            // query(".bg").style("backgroundColor", this.theme.toString());
+            // query(".esriPopup .pointer").style("backgroundColor", this.theme.toString());
+            // query(".esriPopup .titlePane").style("backgroundColor", this.theme.toString());
 
 
-            //Set the font color using the configured color value
-            query(".fc").style("color", this.color.toString());
-            query(".esriPopup .titlePane").style("color", this.color.toString());
-            query(".esriPopup. .titleButton").style("color", this.color.toString());
+            // //Set the font color using the configured color value
+            // query(".fc").style("color", this.color.toString());
+            // query(".esriPopup .titlePane").style("color", this.color.toString());
+            // query(".esriPopup. .titleButton").style("color", this.color.toString());
 
 
             //Set the Slider +/- color to match the icon style. Valid values are white and black
