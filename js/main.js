@@ -1957,16 +1957,6 @@ define(["dojo/ready",
                     innerHTML:themeCss
                 }, document.head);
             }
-            // //Set the background color using the configured theme value
-            // query(".bg").style("backgroundColor", this.theme.toString());
-            // query(".esriPopup .pointer").style("backgroundColor", this.theme.toString());
-            // query(".esriPopup .titlePane").style("backgroundColor", this.theme.toString());
-
-            // //Set the font color using the configured color value
-            // query(".fc").style("color", this.color.toString());
-            // query(".esriPopup .titlePane").style("color", this.color.toString());
-            // query(".esriPopup. .titleButton").style("color", this.color.toString());
-
 
             //Set the Slider +/- color to match the icon style. Valid values are white and black
             // White is default so we just need to update if using black.
