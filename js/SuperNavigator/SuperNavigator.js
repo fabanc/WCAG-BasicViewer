@@ -115,7 +115,7 @@ define([
 
             on(this.map, 'click', lang.hitch(this, function(evn) {
                 this.followTheMapMode(false);
-                this.setCursorPos(new ScreenPoint(evn.offsetX, evn.offsetY));
+                this.setCursorPos(this.map.toScreen(evn.mapPoint));
                 this.clearZone();
             }));
 
