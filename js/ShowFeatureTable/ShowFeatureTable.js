@@ -447,17 +447,6 @@ define([
             }, featureTableEndTools);
             on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
-            var SelectOnMapOrView = new ImageToggleButton({
-                id:'btnSelectOnMapOrView',
-                type:'radio',
-                group:'selectOn',
-                imgSelected: 'images/SelectOnView.png',
-                imgUnselected: 'images/SelectOnMap.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
-            }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnMapOrView.startup();
-
             var SelectOnRectangle = new ImageToggleButton({
                 id:'btnSelectOnRectangle',
                 type:'radio',
@@ -479,6 +468,17 @@ define([
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
             SelectOnRegion.startup();
+
+            var SelectOnMapOrView = new ImageToggleButton({
+                id:'btnSelectOnMapOrView',
+                type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/SelectOnView.png',
+                imgUnselected: 'images/SelectOnMap.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnMapOrView.startup();
 
             on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 // console.log(ev.checked, SelectOnMapOrView.isChecked());
@@ -502,8 +502,10 @@ define([
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
-                    this._selectSignal.remove();
                 }
+                if(this._selectSignal) 
+                    this._selectSignal.remove();
+
                 if(SelectOnRectangle.isChecked()) {
                     require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
                         var toolbar = new Draw(this.map);
@@ -512,7 +514,9 @@ define([
                         });
                         this.map.setMapCursor("url(images/Select.cur),auto");
                         this.map.hideZoomSlider();
+                        SelectOnRectangle.ShowMessage('Use cursor on map to select a rectangle.', 'warning');
                         toolbar.on("draw-end", lang.hitch(this, function(evt) {
+                            SelectOnRectangle.HideMessage();
                             this.map.setMapCursor("default");
                             var symbol;
                             toolbar.deactivate();
@@ -534,8 +538,10 @@ define([
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
-                    this._selectSignal.remove();
                 }
+                if(this._selectSignal) 
+                    this._selectSignal.remove();
+
                 if(SelectOnRegion.isChecked()) {
                     var feature = this.map.infoWindow.getSelectedFeature();
                     if(!feature || feature.geometry.type==='point') {
@@ -557,7 +563,6 @@ define([
                         this.map.setExtent(extent);
                     }
                 }
-
             }));
 
             this.set('show', true);
