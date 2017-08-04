@@ -454,7 +454,8 @@ define([
                 imgSelected: 'images/SearchList.Checked.png',
                 imgUnselected: 'images/SearchList.Unchecked.png',
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromRectangle,
+                autoCloseMessage: false, 
             }, domConstruct.create('div', {}, featureTableTools));
             SelectOnRectangle.startup();
 
@@ -465,7 +466,7 @@ define([
                 imgSelected: 'images/Region.Checked.png',
                 imgUnselected: 'images/Region.Unchecked.png',
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
             }, domConstruct.create('div', {}, featureTableTools));
             SelectOnRegion.startup();
 
@@ -514,7 +515,7 @@ define([
                         });
                         this.map.setMapCursor("url(images/Select.cur),auto");
                         this.map.hideZoomSlider();
-                        SelectOnRectangle.ShowMessage('Use cursor on map to select a rectangle.', 'warning');
+                        SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
                         toolbar.on("draw-end", lang.hitch(this, function(evt) {
                             SelectOnRectangle.HideMessage();
                             this.map.setMapCursor("default");
@@ -545,7 +546,7 @@ define([
                 if(SelectOnRegion.isChecked()) {
                     var feature = this.map.infoWindow.getSelectedFeature();
                     if(!feature || feature.geometry.type==='point') {
-                        SelectOnRegion.ShowMessage('Select first a polygon feature.', 'error');
+                        SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
                         SelectOnRegion.Check(false);
                     }
                     else {

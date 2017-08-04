@@ -36,6 +36,7 @@ define([
             imgUnselectedClass: '',
             titleSelected: 'Selected',
             titleUnselected: 'Unselected',
+            autoCloseMessage: true,
         },
 
         constructor: function (options, srcRefNode) {
@@ -71,9 +72,11 @@ define([
                 });
             }));
 
-            on(this.message, 'click', lang.hitch(this, this.HideMessage));
-            on(this.message, 'focusout', lang.hitch(this, this.HideMessage));
-            on(this.message, 'keydown', lang.hitch(this, this.HideMessage));
+            if(this.defaults.autoCloseMessage) {
+                on(this.message, 'click', lang.hitch(this, this.HideMessage));
+                on(this.message, 'focusout', lang.hitch(this, this.HideMessage));
+                on(this.message, 'keydown', lang.hitch(this, this.HideMessage));
+            }
         },
 
         focus: function() {
