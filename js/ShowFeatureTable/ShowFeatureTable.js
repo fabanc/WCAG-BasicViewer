@@ -449,27 +449,41 @@ define([
             on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
             var SelectOnMapOrView = new ImageToggleButton({
+                id:'btnSelectOnMapOrView',
+                type:'radio',
+                group:'selectOn',
                 imgSelected: 'images/SelectOnView.png',
                 imgUnselected: 'images/SelectOnMap.png',
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
-
             SelectOnMapOrView.startup();
 
             var SelectOnRectangle = new ImageToggleButton({
+                id:'btnSelectOnRectangle',
+                type:'radio',
+                group:'selectOn',
                 imgSelected: 'images/SearchList.Checked.png',
                 imgUnselected: 'images/SearchList.Unchecked.png',
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
-
             SelectOnRectangle.startup();
+
+            var SelectOnRegion = new ImageToggleButton({
+                id:'btnSelectOnRegion',
+                type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/Region.Checked.png',
+                imgUnselected: 'images/Region.Unchecked.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnRegion.startup();
 
             on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 // console.log(ev.checked, SelectOnMapOrView.isChecked());
                 if(SelectOnMapOrView.isChecked()) {
-                    SelectOnRectangle.Check(false);
                     this._selectViewIds();
                     this._selectSignal = on(this.map, "extent-change", 
                         lang.hitch(this, function() {this._selectViewIds();}));
@@ -478,11 +492,10 @@ define([
                     this.myFeatureTable.clearFilter();
                 }
             }));
+
             on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
                 if(SelectOnRectangle.isChecked()) {
-                    SelectOnMapOrView.Check(false);
-
                     require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
                         var toolbar = new Draw(this.map);
                         toolbar.activate(Draw.EXTENT, {
@@ -514,6 +527,13 @@ define([
                 }
             }));
 
+            on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
+                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(SelectOnRegion.isChecked()) {
+                    SelectOnRegion.ShowMessage('Select first a polygon feature.', 'error');
+                }
+
+            }));
 
             this.set('show', true);
 
