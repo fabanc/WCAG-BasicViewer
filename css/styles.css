@@ -112,6 +112,7 @@ blockquote {
 #mapDiv {
     width: calc(100% - 0px) !important;
     height: calc(100% - 0px) !important;
+    background-color: white;
     /*padding: 1px;*/
 }
 
