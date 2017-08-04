@@ -30,3 +30,28 @@
 {
     display: none;
 }
+
+.toggleBtnMessage {
+    position: absolute;
+    display: none;
+    top: 0;
+    padding: 10px;
+    background-color: red;
+    color: white;
+}
+
+.toggleBtnMessage.normal {
+    background-color: white;
+    color: black;
+    display: initial;
+}
+.toggleBtnMessage.warning {
+    background-color: orange;
+    color: black;
+    display: initial;
+}
+.toggleBtnMessage.error {
+    background-color: red;
+    color: white;
+    display: initial;
+}
