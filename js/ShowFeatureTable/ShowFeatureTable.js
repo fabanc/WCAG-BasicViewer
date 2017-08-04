@@ -530,7 +530,9 @@ define([
             on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
                 if(SelectOnRegion.isChecked()) {
+
                     SelectOnRegion.ShowMessage('Select first a polygon feature.', 'error');
+                    SelectOnRegion.Check(false);
                 }
 
             }));
