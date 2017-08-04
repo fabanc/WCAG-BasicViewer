@@ -1941,10 +1941,10 @@ define(["dojo/ready",
                 var themeCss = 
                 // '<style id="themeColors">' +
                 '.bg, .esriPopup .pointer, .esriPopup .titlePane {\n' +
-                '   background-color:' + this.theme.toString() +';\n'+
+                '   background-color:' + this.theme.toString() +' !important;\n'+
                 '}\n'+
                 '.fc, .esriPopup .titlePane, .esriPopup .titleButton {\n' +
-                '   color:' + this.color.toString() +';\n'+
+                '   color:' + this.color.toString() +' !important;\n'+
                 '}\n'+
                 '.dijitSplitter {\n'+
                 '  border-color:' + this.theme.toString() +' !important;\n'+
