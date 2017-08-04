@@ -426,7 +426,6 @@ define([
                 });
             }
 
-
             var featureTableTools = domConstruct.create('div', {
                 class:'esri-feature-table-menu-item',
                 id: 'featureTableTools',
@@ -483,18 +482,28 @@ define([
 
             on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+
                 if(SelectOnMapOrView.isChecked()) {
                     this._selectViewIds();
                     this._selectSignal = on(this.map, "extent-change", 
                         lang.hitch(this, function() {this._selectViewIds();}));
                 } else {
                     this._selectSignal.remove();
-                    this.myFeatureTable.clearFilter();
+                    // this.myFeatureTable.clearFilter();
                 }
             }));
 
             on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                    this._selectSignal.remove();
+                }
                 if(SelectOnRectangle.isChecked()) {
                     require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
                         var toolbar = new Draw(this.map);
@@ -518,21 +527,35 @@ define([
                         }));
                     }));
                 }
-                else 
-                {
-                    if(this._rectangleGr) {
-                        this.map.graphics.remove(this._rectangleGr);
-                        this.myFeatureTable.clearFilter();
-                    }
-                }
             }));
 
             on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                    this._selectSignal.remove();
+                }
                 if(SelectOnRegion.isChecked()) {
+                    var feature = this.map.infoWindow.getSelectedFeature();
+                    if(!feature || feature.geometry.type==='point') {
+                        SelectOnRegion.ShowMessage('Select first a polygon feature.', 'error');
+                        SelectOnRegion.Check(false);
+                    }
+                    else {
+                        var shape = feature.geometry;
+                        this.map.infoWindow.hide();
+                        this.map.infoWindow.clearFeatures();
 
-                    SelectOnRegion.ShowMessage('Select first a polygon feature.', 'error');
-                    SelectOnRegion.Check(false);
+                        symbol = new SimpleLineSymbol().setColor('red');
+                        this._rectangleGr = new Graphic(shape, symbol);
+                        this._rectangleGr.name = 'rectView';
+                        this._selectViewIds(this._rectangleGr.geometry);
+                        this.map.graphics.add(this._rectangleGr);
+
+                        var extent = shape.getExtent().expand(1.5);
+                        this.map.setExtent(extent);
+                    }
                 }
 
             }));
