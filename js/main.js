@@ -1876,17 +1876,29 @@ define(["dojo/ready",
 
         _updateTheme: function () {
 
-            //Set the background color using the configured theme value
-            query(".bg").style("backgroundColor", this.theme.toString());
-            query(".esriPopup .pointer").style("backgroundColor", this.theme.toString());
-            query(".esriPopup .titlePane").style("backgroundColor", this.theme.toString());
-
-
-            //Set the font color using the configured color value
-            query(".fc").style("color", this.color.toString());
-            query(".esriPopup .titlePane").style("color", this.color.toString());
-            query(".esriPopup. .titleButton").style("color", this.color.toString());
-
+            if(!dojo.byId("themeColors")) {
+                var themeCss = 
+                // '<style id="themeColors">' +
+                '.bg, .esriPopup .pointer, .esriPopup .titlePane {\n' +
+                '   background-color:' + this.theme.toString() +';\n'+
+                '}\n'+
+                '.fc, .esriPopup .titlePane, .esriPopup .titleButton {\n' +
+                '   color:' + this.color.toString() +';\n'+
+                '}\n'+
+                // '.dijitSplitter {\n'+
+                // '  border-color:' + this.theme.toString() +' !important;\n'+
+                // '}\n'+
+                '.dijitSplitterThumb{\n'+
+                '   background-color:' + this.activeColor.toString() +' !important;\n'+
+                '}\n'+
+                '';
+                // '</style>';
+        
+                dojo.create("style", {
+                    id:"themeColors",
+                    innerHTML:themeCss
+                }, document.head);
+            }
 
             //Set the Slider +/- color to match the icon style. Valid values are white and black
             // White is default so we just need to update if using black.
@@ -1931,15 +1943,6 @@ define(["dojo/ready",
                         if(rule.selectorText.indexOf('.goThereHint') >= 0) {
                             rule.style.borderColor = this._rgbaColor(this.focusColor);
                             //rule.style.boxShadow = "3px 3px 10px "+this._rgbaColor(this.focusColor);
-                        }
-                        //active
-                        if(rule.selectorText.indexOf('.activeMarker') >= 0 ||
-                            //rule.selectorText.indexOf('.goThereHint') >= 0 ||
-                            rule.selectorText.indexOf('dijitSplitterThumb') >= 0) {
-                            rule.style.backgroundColor = this._rgbaColor(this.activeColor);
-                            rule.style.outlineStyle = 'none';
-                            rule.style.outlineColor = 'transparent';
-                            rule.style.boxShadow = '0 0 15px 15px '+this.activeColor+' inset';
                         }
                     }
                 }
