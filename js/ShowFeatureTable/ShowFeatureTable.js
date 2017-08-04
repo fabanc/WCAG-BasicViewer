@@ -426,7 +426,6 @@ define([
                 });
             }
 
-
             var featureTableTools = domConstruct.create('div', {
                 class:'esri-feature-table-menu-item',
                 id: 'featureTableTools',
@@ -448,41 +447,67 @@ define([
             }, featureTableEndTools);
             on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
+            var SelectOnRectangle = new ImageToggleButton({
+                id:'btnSelectOnRectangle',
+                type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/SearchList.Checked.png',
+                imgUnselected: 'images/SearchList.Unchecked.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromRectangle,
+                autoCloseMessage: false, 
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnRectangle.startup();
+
+            var SelectOnRegion = new ImageToggleButton({
+                id:'btnSelectOnRegion',
+                type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/Region.Checked.png',
+                imgUnselected: 'images/Region.Unchecked.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnRegion.startup();
+
             var SelectOnMapOrView = new ImageToggleButton({
+                id:'btnSelectOnMapOrView',
+                type:'radio',
+                group:'selectOn',
                 imgSelected: 'images/SelectOnView.png',
                 imgUnselected: 'images/SelectOnMap.png',
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
-
             SelectOnMapOrView.startup();
-
-            var SelectOnRectangle = new ImageToggleButton({
-                imgSelected: 'images/SearchList.Checked.png',
-                imgUnselected: 'images/SearchList.Unchecked.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
-            }, domConstruct.create('div', {}, featureTableTools));
-
-            SelectOnRectangle.startup();
 
             on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+
                 if(SelectOnMapOrView.isChecked()) {
-                    SelectOnRectangle.Check(false);
                     this._selectViewIds();
                     this._selectSignal = on(this.map, "extent-change", 
                         lang.hitch(this, function() {this._selectViewIds();}));
                 } else {
                     this._selectSignal.remove();
-                    this.myFeatureTable.clearFilter();
+                    // this.myFeatureTable.clearFilter();
                 }
             }));
+
             on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(SelectOnRectangle.isChecked()) {
-                    SelectOnMapOrView.Check(false);
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+                if(this._selectSignal) 
+                    this._selectSignal.remove();
 
+                if(SelectOnRectangle.isChecked()) {
                     require(["esri/toolbars/draw"], lang.hitch(this, function(Draw) { 
                         var toolbar = new Draw(this.map);
                         toolbar.activate(Draw.EXTENT, {
@@ -490,7 +515,9 @@ define([
                         });
                         this.map.setMapCursor("url(images/Select.cur),auto");
                         this.map.hideZoomSlider();
+                        SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
                         toolbar.on("draw-end", lang.hitch(this, function(evt) {
+                            SelectOnRectangle.HideMessage();
                             this.map.setMapCursor("default");
                             var symbol;
                             toolbar.deactivate();
@@ -505,15 +532,39 @@ define([
                         }));
                     }));
                 }
-                else 
-                {
-                    if(this._rectangleGr) {
-                        this.map.graphics.remove(this._rectangleGr);
-                        this.myFeatureTable.clearFilter();
+            }));
+
+            on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
+                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+                if(this._selectSignal) 
+                    this._selectSignal.remove();
+
+                if(SelectOnRegion.isChecked()) {
+                    var feature = this.map.infoWindow.getSelectedFeature();
+                    if(!feature || feature.geometry.type==='point') {
+                        SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
+                        SelectOnRegion.Check(false);
+                    }
+                    else {
+                        var shape = feature.geometry;
+                        this.map.infoWindow.hide();
+                        this.map.infoWindow.clearFeatures();
+
+                        symbol = new SimpleLineSymbol().setColor('red');
+                        this._rectangleGr = new Graphic(shape, symbol);
+                        this._rectangleGr.name = 'rectView';
+                        this._selectViewIds(this._rectangleGr.geometry);
+                        this.map.graphics.add(this._rectangleGr);
+
+                        var extent = shape.getExtent().expand(1.5);
+                        this.map.setExtent(extent);
                     }
                 }
             }));
-
 
             this.set('show', true);
 

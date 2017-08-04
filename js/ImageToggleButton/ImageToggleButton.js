@@ -36,6 +36,7 @@ define([
             imgUnselectedClass: null,
             titleSelected: 'Selected',
             titleUnselected: 'Unselected',
+            autoCloseMessage: true,
         },
 
         constructor: function (options, srcRefNode) {
@@ -46,7 +47,6 @@ define([
             this.name = this.type==='radio' ? " name='"+this.defaults.group+"'":'';
             this._value = this.defaults.value !== '' ? " value="+this.defaults.value:'';
             this._class = this.defaults.class !== ''? " class='"+this.defaults.class+"'":'';
-
 
             var cssFile = "js/ImageToggleButton/Templates/ImageToggleButton.css";
             if(query('html link[href="'+cssFile+'"]').length===0) {
@@ -61,6 +61,7 @@ define([
         startup: function() {
             var cbInput = this.cbInput = dojo.byId(this.id+'_cb');
             if(!cbInput) return;
+            this.message = dojo.byId(this.id+'_msg');
             var cbLabel = this.cbLabel = dojo.byId(this.id+'_lbl');
             on(cbLabel, 'keydown', lang.hitch(this, this._keyDown));
 
@@ -70,6 +71,12 @@ define([
                     value: cbInput.value,
                 });
             }));
+
+            if(this.defaults.autoCloseMessage) {
+                on(this.message, 'click', lang.hitch(this, this.HideMessage));
+                on(this.message, 'focusout', lang.hitch(this, this.HideMessage));
+                on(this.message, 'keydown', lang.hitch(this, this.HideMessage));
+            }
         },
 
         focus: function() {
@@ -87,9 +94,25 @@ define([
                 case " " :
                 case "Enter" :
                     evt.preventDefault();
-                    this.cbInput.click();
+                    if(this.type === 'radio' && this.isChecked())
+                        this._uncheck();
+                    else
+                        this.cbInput.click();
+                    break;
+                case "Escape" :
+                    evt.preventDefault();
+                    this._uncheck();
                     break;
             }
+        },
+
+        _uncheck: function() {
+            this.cbInput.checked = false;
+            this.HideMessage();
+            this.emit('change', {
+                checked: false, 
+                value: this.cbInput.value,
+            });
         },
 
         isChecked : function() {
@@ -99,9 +122,29 @@ define([
         Check: function(value) {
             if(this.cbInput.checked !== value) {
                 this.cbInput.checked = value;
-                this.emit('change', {checked: this.cbInput.checked});
+                this.emit('change', {
+                    checked: this.cbInput.checked,
+                    value: this.cbInput.value
+                });
             }
-        }
+        },
+
+        msgType : null,
+        ShowMessage: function(message, messageType) {
+            if(!this.message) return;
+            domClass.add(this.message, this.msgType = messageType);
+            this.message.innerHTML = message;
+            this.message.focus();
+        },
+
+        HideMessage: function(evn) {
+            if(!this.msgType || !this.message || this.message==='') return;
+            if(this.message === document.activeElement) {
+                this.focus();
+            }
+            domClass.remove(this.message, this.msgType);
+            this.msgType = null;
+        },
 
     });
 
