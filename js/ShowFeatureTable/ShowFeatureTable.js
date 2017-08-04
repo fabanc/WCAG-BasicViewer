@@ -519,15 +519,19 @@ define([
                         toolbar.on("draw-end", lang.hitch(this, function(evt) {
                             SelectOnRectangle.HideMessage();
                             this.map.setMapCursor("default");
-                            var symbol;
+                            
                             toolbar.deactivate();
                             this.map.showZoomSlider();
-                            symbol = new SimpleLineSymbol().setColor('red');
+
+                            var symbol = new SimpleLineSymbol().setColor('red');
                             this._rectangleGr = new Graphic(evt.geometry, symbol);
                             this._rectangleGr.name = 'rectView';
-                            this._selectViewIds(this._rectangleGr.geometry);
                             this.map.graphics.add(this._rectangleGr);
-                            var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
+
+                            this._selectViewIds(this._rectangleGr.geometry);
+
+                            // var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
+                            var extent = evt.geometry.getExtent().expand(1.5);
                             this.map.setExtent(extent);
                         }));
                     }));
@@ -550,15 +554,17 @@ define([
                         SelectOnRegion.Check(false);
                     }
                     else {
-                        var shape = feature.geometry;
                         this.map.infoWindow.hide();
                         this.map.infoWindow.clearFeatures();
 
-                        symbol = new SimpleLineSymbol().setColor('red');
+                        var shape = feature.geometry;
+
+                        var symbol = new SimpleLineSymbol().setColor('red');
                         this._rectangleGr = new Graphic(shape, symbol);
                         this._rectangleGr.name = 'rectView';
-                        this._selectViewIds(this._rectangleGr.geometry);
                         this.map.graphics.add(this._rectangleGr);
+
+                        this._selectViewIds(shape);
 
                         var extent = shape.getExtent().expand(1.5);
                         this.map.setExtent(extent);
@@ -739,7 +745,7 @@ define([
             q = new Query();
             q.outFields = [objectIdFieldName];
             q.geometry = geometry ? geometry : this.map.extent;
-            var exp=this.layer.layerObject.getDefinitionExpression() || null;
+            var exp=this.layer.layerObject.getDefinitionExpression() || "1=1";
             q.where = exp;
             q.returnGeometry = true;
             new QueryTask(this.layer.layerObject.url).execute(q).then(lang.hitch(this, function(ev) {
