@@ -1,14 +1,11 @@
 define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", 
     "esri/arcgis/utils", "dojo/has", "dojo/dom","esri/kernel", 
-    //"dijit/_WidgetBase",
     "dijit/layout/_LayoutWidget", 
     "esri/layers/FeatureLayer",
-    "esri/dijit/FeatureTable", "application/ImageToggleButton/ImageToggleButton", 
-    //"dstore/RequestMemory",
+    "esri/dijit/FeatureTable", 
+    "application/ImageToggleButton/ImageToggleButton", 
     "esri/map", "dojo/_base/array", 
-    //"dijit/_TemplatedMixin", 
-    //"dojo/text!application/ShowFeatureTable/templates/ShowFeatureTable.html", 
     "dojo/i18n!application/nls/ShowFeatureTable",
     "dojo/i18n!application/nls/resources",
     "dojo/on", "dojo/query", 
@@ -26,13 +23,11 @@ define([
     
     ], function (
         Evented, declare, lang, arcgisUtils, has, dom, esriNS,
-        //_WidgetBase, 
         _LayoutWidget,
-        FeatureLayer, FeatureTable, ImageToggleButton,
-        //RequestMemory,
+        FeatureLayer, 
+        FeatureTable, 
+        ImageToggleButton,
         Map, array,
-        //_TemplatedMixin, 
-        //ShowFeatureTableTemplate, 
         i18n, Ri18n,
         on, query, 
         Query, QueryTask,
@@ -47,13 +42,10 @@ define([
         Graphic, Color, graphicsUtils
     ) {
     var Widget = declare("esri.dijit.ShowFeatureTable", [
-        //_WidgetBase, 
         _LayoutWidget,
-        //_TemplatedMixin, 
         Evented], {
 
         widgetsInTemplate: true, // ?
-        //templateString: ShowFeatureTableTemplate,
 
         options: {
             map: null,
@@ -494,7 +486,6 @@ define([
                         lang.hitch(this, function() {this._selectViewIds();}));
                 } else {
                     this._selectSignal.remove();
-                    // this.myFeatureTable.clearFilter();
                 }
             }));
 
@@ -523,18 +514,7 @@ define([
                             toolbar.deactivate();
                             this.map.showZoomSlider();
 
-                            var symbol = new SimpleLineSymbol()
-                                .setColor(this.map.infoWindow.lineSymbol.color)
-                                .setWidth(this.map.infoWindow.lineSymbol.width);
-                            this._rectangleGr = new Graphic(evt.geometry, symbol);
-                            this._rectangleGr.name = 'rectView';
-                            this.map.graphics.add(this._rectangleGr);
-
-                            this._selectViewIds(this._rectangleGr.geometry);
-
-                            // var extent = graphicsUtils.graphicsExtent([this._rectangleGr]).expand(1.2);
-                            var extent = evt.geometry.getExtent().expand(1.5);
-                            this.map.setExtent(extent);
+                            this._setSelectSymbol(evt.geometry);
                         }));
                     }));
                 }
@@ -559,19 +539,7 @@ define([
                         this.map.infoWindow.hide();
                         this.map.infoWindow.clearFeatures();
 
-                        var shape = feature.geometry;
-
-                        var symbol = new SimpleLineSymbol()
-                            .setColor(this.map.infoWindow.lineSymbol.color)
-                            .setWidth(this.map.infoWindow.lineSymbol.width);
-                        this._rectangleGr = new Graphic(shape, symbol);
-                        this._rectangleGr.name = 'rectView';
-                        this.map.graphics.add(this._rectangleGr);
-
-                        this._selectViewIds(shape);
-
-                        var extent = shape.getExtent().expand(1.5);
-                        this.map.setExtent(extent);
+                        this._setSelectSymbol(feature.geometry);
                     }
                 }
             }));
@@ -614,7 +582,7 @@ define([
             // });
 
             on(this.myFeatureTable, "error", function(evt){
-                console.log("error event - ", evt);
+                console.error("error event - ", evt);
             });
 
             on(this.myFeatureTable, "row-select", lang.hitch(this, function(evt){
@@ -638,19 +606,19 @@ define([
                                 markerGeometry = graphic.geometry;
                                 marker = this.pointMarker;
                                 break;
-                        //case "extent":
-                            // markerGeometry = graphic.getCenter();
-                            // marker = new SimpleMarkerSymbol();
-                            // break;
-                        case "polyline" :
-                            markerGeometry = graphic.geometry;
-                            marker = this.lineMarker;
-                            break;
-                        default:
-                            // if the graphic is a polygon
-                            markerGeometry = graphic.geometry;
-                            marker = this.polygonMarker;
-                            break;
+                            //case "extent":
+                                // markerGeometry = graphic.getCenter();
+                                // marker = new SimpleMarkerSymbol();
+                                // break;
+                            case "polyline" :
+                                markerGeometry = graphic.geometry;
+                                marker = this.lineMarker;
+                                break;
+                            default:
+                                // if the graphic is a polygon
+                                markerGeometry = graphic.geometry;
+                                marker = this.polygonMarker;
+                                break;
                         }
 
                         var gr = new Graphic(markerGeometry, marker);
@@ -658,10 +626,12 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!SelectOnMapOrView.isChecked() && ! SelectOnRectangle.isChecked()) {
-                            var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
-                            var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
-                            this.map.setExtent(extent);
+                        if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked() && !SelectOnRegion.isChecked()) {
+                            var grs = array.filter(this.map.graphics.graphics, function(gr){ 
+                                return gr.name && gr.name === 'ftMarker'; 
+                            });
+
+                            this._fitToMapExtent(graphicsUtils.graphicsExtent(grs));
                         }
                     }));
                 }));
@@ -720,6 +690,34 @@ define([
             });
         },
 
+        _setSelectSymbol : function(shape) {
+            var symbol = new SimpleLineSymbol()
+                .setColor(this.map.infoWindow.lineSymbol.color)
+                .setWidth(this.map.infoWindow.lineSymbol.width);
+            this._rectangleGr = new Graphic(shape, symbol);
+            this._rectangleGr.name = 'rectView';
+            this.map.graphics.add(this._rectangleGr);
+
+            this._selectViewIds(shape);
+
+            this._fitToMapExtent(shape.getExtent());
+        },
+
+        _fitToMapExtent : function(extent) {
+            var f=1.1;
+            this.map.setExtent(extent.expand(f)).then(lang.hitch(this, function() {
+                var w = extent.getWidth(), h = extent.getHeight();
+                var W = this.map.extent.getWidth(), H = this.map.extent.getHeight();
+
+                while((W*f < w*1.05 || H*f < h*1.05) && f < 5.0) {
+                    f*=1.05;
+                }
+                this.map.setExtent(extent.expand(f));
+                // console.log('  f',f);
+            }));
+            // console.log('f',f);
+        },
+
         _addArrowCarrets: function() {
             var arrowButtons = query('.esri-feature-table .dijitArrowButtonInner');
             if(arrowButtons) {
@@ -749,11 +747,13 @@ define([
             q = new Query();
             q.outFields = [objectIdFieldName];
             q.geometry = geometry ? geometry : this.map.extent;
-            var exp=this.layer.layerObject.getDefinitionExpression() || "1=1";
-            q.where = exp;
+            var exp=this.layer.layerObject.getDefinitionExpression() || null;
+            if(exp) q.where = exp;
             q.returnGeometry = true;
             new QueryTask(this.layer.layerObject.url).execute(q).then(lang.hitch(this, function(ev) {
-                var selectedIds = ev.features.map(function(f) {return f.attributes[objectIdFieldName];});
+                var selectedIds = ev.features.map(function(f) {
+                    return f.attributes[objectIdFieldName];
+                });
                 this.myFeatureTable.filterRecordsByIds(selectedIds);
             }));
         },
@@ -763,7 +763,6 @@ define([
         //     setTimeout(function() {deferred.resolve(true);}, ms);
         //     return deferred.promise;
         // },
-
 
         showBadge : function(show) {
             var indicator = dom.byId('badge_Table');
