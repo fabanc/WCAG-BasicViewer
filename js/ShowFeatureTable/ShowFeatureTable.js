@@ -709,7 +709,7 @@ define([
                 var w = extent.getWidth(), h = extent.getHeight();
                 var W = this.map.extent.getWidth(), H = this.map.extent.getHeight();
 
-                while((W < w/f || H < h/f) && f < 5.0) {
+                while((W*f < w*1.05 || H*f < h*1.05) && f < 5.0) {
                     f*=1.05;
                 }
                 this.map.setExtent(extent.expand(f));
