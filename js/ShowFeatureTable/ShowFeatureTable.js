@@ -754,7 +754,7 @@ define([
                 var selectedIds = ev.features.map(function(f) {
                     return f.attributes[objectIdFieldName];
                 });
-                this.myFeatureTable.filterRecordsByIds(selectedIds);
+                this.myFeatureTable.filterRecordsByIds(selectedIds.length>0 ? selectedIds : [0]);
             }));
         },
 
