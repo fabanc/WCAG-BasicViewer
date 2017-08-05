@@ -67,7 +67,7 @@ define([
 
             on(cbInput, 'change', lang.hitch(this, function(ev) {
                 if(this.type === "checkbox" && this.defaults.group && cbInput.checked) {
-                    var elements = query(".ImageToggleButton .cbToggleBtn[name="+this.defaults.group+"]:checked:not(#"+this.id+"_cb)");
+                    var elements = query(".ImageToggleButton .cbToggleBtn[name="+this.defaults.group+"]:not(#"+this.id+"_cb):checked");
                     // console.log('elements', elements);
                     if(elements)
                         elements.forEach(function(cb) {
