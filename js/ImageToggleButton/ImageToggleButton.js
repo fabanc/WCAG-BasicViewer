@@ -28,7 +28,7 @@ define([
             class: '',
             value: '',
             type: 'checkbox',
-            group: '',
+            group: null,
             imgSelected: '',
             imgUnselected: '',
             imgClass: '',
@@ -44,7 +44,7 @@ define([
             this.id = this.defaults.id || dijit.registry.getUniqueId(this.declaredClass);
             this.domNode = srcRefNode;
             this.type = this.defaults.type;
-            this.name = this.type==='radio' ? " name='"+this.defaults.group+"'":'';
+            this.name = this.defaults.group ? " name="+this.defaults.group : "";
             this._value = this.defaults.value !== '' ? " value="+this.defaults.value:'';
             this._class = this.defaults.class !== ''? " class='"+this.defaults.class+"'":'';
 
@@ -66,6 +66,14 @@ define([
             on(cbLabel, 'keydown', lang.hitch(this, this._keyDown));
 
             on(cbInput, 'change', lang.hitch(this, function(ev) {
+                if(this.type === "checkbox" && this.defaults.group && cbInput.checked) {
+                    var elements = query(".ImageToggleButton .cbToggleBtn[name="+this.defaults.group+"]:checked:not(#"+this.id+"_cb)");
+                    // console.log('elements', elements);
+                    if(elements)
+                        elements.forEach(function(cb) {
+                            cb.checked = false;
+                        });
+                }
                 this.emit('change', {
                     checked: cbInput.checked,
                     value: cbInput.value,

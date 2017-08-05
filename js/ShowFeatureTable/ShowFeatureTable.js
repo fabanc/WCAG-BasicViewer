@@ -441,7 +441,7 @@ define([
 
             var SelectOnRectangle = new ImageToggleButton({
                 id:'btnSelectOnRectangle',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/SearchList.Checked.png',
                 imgUnselected: 'images/SearchList.Unchecked.png',
@@ -453,7 +453,7 @@ define([
 
             var SelectOnRegion = new ImageToggleButton({
                 id:'btnSelectOnRegion',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/Region.Checked.png',
                 imgUnselected: 'images/Region.Unchecked.png',
@@ -464,7 +464,7 @@ define([
 
             var SelectOnMapOrView = new ImageToggleButton({
                 id:'btnSelectOnMapOrView',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/SelectOnView.png',
                 imgUnselected: 'images/SelectOnMap.png',
