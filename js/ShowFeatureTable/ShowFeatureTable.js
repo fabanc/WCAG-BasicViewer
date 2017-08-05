@@ -523,7 +523,9 @@ define([
                             toolbar.deactivate();
                             this.map.showZoomSlider();
 
-                            var symbol = new SimpleLineSymbol().setColor('red');
+                            var symbol = new SimpleLineSymbol()
+                                .setColor(this.map.infoWindow.lineSymbol.color)
+                                .setWidth(this.map.infoWindow.lineSymbol.width);
                             this._rectangleGr = new Graphic(evt.geometry, symbol);
                             this._rectangleGr.name = 'rectView';
                             this.map.graphics.add(this._rectangleGr);
@@ -559,7 +561,9 @@ define([
 
                         var shape = feature.geometry;
 
-                        var symbol = new SimpleLineSymbol().setColor('red');
+                        var symbol = new SimpleLineSymbol()
+                            .setColor(this.map.infoWindow.lineSymbol.color)
+                            .setWidth(this.map.infoWindow.lineSymbol.width);
                         this._rectangleGr = new Graphic(shape, symbol);
                         this._rectangleGr.name = 'rectView';
                         this.map.graphics.add(this._rectangleGr);
