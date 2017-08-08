@@ -37,6 +37,7 @@ define([
             titleSelected: 'Selected',
             titleUnselected: 'Unselected',
             autoCloseMessage: true,
+            domMessage: null,
         },
 
         constructor: function (options, srcRefNode) {
@@ -62,6 +63,9 @@ define([
             var cbInput = this.cbInput = dojo.byId(this.id+'_cb');
             if(!cbInput) return;
             this.message = dojo.byId(this.id+'_msg');
+            if(this.defaults.domMessage) {
+                domConstruct.place(this.message, this.defaults.domMessage);
+            }
             var cbLabel = this.cbLabel = dojo.byId(this.id+'_lbl');
             on(cbLabel, 'keydown', lang.hitch(this, this._keyDown));
 

@@ -34,11 +34,11 @@
 .toggleBtnMessage {
     position: absolute;
     display: none;
-    top: 0;
     padding: 10px;
-    background-color: red;
-    color: white;
-}
+    z-index: 10000;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;}
 
 .toggleBtnMessage.normal {
     background-color: white;
