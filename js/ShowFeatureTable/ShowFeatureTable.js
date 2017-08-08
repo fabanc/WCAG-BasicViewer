@@ -441,7 +441,7 @@ define([
 
             var SelectOnRectangle = new ImageToggleButton({
                 id:'btnSelectOnRectangle',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/SearchList.Checked.png',
                 imgUnselected: 'images/SearchList.Unchecked.png',
@@ -453,7 +453,7 @@ define([
 
             var SelectOnRegion = new ImageToggleButton({
                 id:'btnSelectOnRegion',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/Region.Checked.png',
                 imgUnselected: 'images/Region.Unchecked.png',
@@ -464,7 +464,7 @@ define([
 
             var SelectOnMapOrView = new ImageToggleButton({
                 id:'btnSelectOnMapOrView',
-                type:'radio',
+                // type:'radio',
                 group:'selectOn',
                 imgSelected: 'images/SelectOnView.png',
                 imgUnselected: 'images/SelectOnMap.png',
@@ -754,7 +754,7 @@ define([
                 var selectedIds = ev.features.map(function(f) {
                     return f.attributes[objectIdFieldName];
                 });
-                this.myFeatureTable.filterRecordsByIds(selectedIds);
+                this.myFeatureTable.filterRecordsByIds(selectedIds.length>0 ? selectedIds : [0]);
             }));
         },
 
