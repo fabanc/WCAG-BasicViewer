@@ -93,7 +93,7 @@ define([
             var m = this.cursorToCenter();
             var mapSuperCursor = domConstruct.create('div', {
                 id: 'mapSuperCursor',
-                style:'position:absolute; pointer-events:none;',
+                style:'position:absolute; pointer-events:none; display:none;',
             }, 'mapDiv_layers');
 
             this.map.isKeyboardNavigation = false;
@@ -112,6 +112,14 @@ define([
                 domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
                 domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
             });
+
+            on(this.map.container,'focus', lang.hitch(this, function() {
+                domStyle.set('mapSuperCursor', 'display', 'initial');
+            }));
+
+            on(this.map.container,'blur', lang.hitch(this, function() {
+                domStyle.set('mapSuperCursor', 'display', 'none');
+            }));
 
             on(this.map, 'click', lang.hitch(this, function(evn) {
                 this.followTheMapMode(false);
