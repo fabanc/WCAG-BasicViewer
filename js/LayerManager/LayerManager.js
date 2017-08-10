@@ -172,11 +172,36 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         _flipLayers: function(evt) {
-            console.log('_flipLayers', evt);
+            // console.log('_flipLayers', evt);
+            var startTarget = evt.target.closest('.toc-title');
+            var indexStart = this._getLayerPosition(startTarget);
+            var indexDrop = null;
+            var dropTarget = null;
+            var layers = dojo.query('.toc-title[data-layerid]', dojo.byId('pageBody_layers'));
             switch(evt.key) {
                 case "ArrowDown" :
+                    if(layers && indexStart<layers.length-1) {
+                        indexDrop = indexStart+1;
+                        // console.log('indexStart indexEnd',indexStart, indexEnd);
+                        dropTarget = layers[indexDrop];
+                        dojo.place(startTarget, dropTarget, indexStart<indexDrop?"after":"before");
+                        this.map.reorderLayer(startTarget.dataset.layerid, indexDrop);
+                        evt.target.focus();
+                    }
+                    evt.stopPropagation();
+                    evt.preventDefault();
                     break;
                 case "ArrowUp" :
+                    if(indexStart>0) {
+                        indexDrop = indexStart-1;
+                        // console.log('indexStart indexEnd',indexStart, indexEnd);
+                        dropTarget = layers[indexDrop];
+                        dojo.place(startTarget, dropTarget, indexStart<indexDrop?"after":"before");
+                        this.map.reorderLayer(startTarget.dataset.layerid, indexDrop);
+                        evt.target.focus();
+                    }
+                    evt.stopPropagation();
+                    evt.preventDefault();
                     break;
             }
         },
@@ -191,6 +216,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
             return -1;
         },
+
         _drop: function (evt) {
             var indexStart = this._getLayerPosition(this._startTarget);
             var indexDrop = this._getLayerPosition(this._dropTarget);
