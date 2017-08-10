@@ -249,7 +249,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         var layerHandleDiv = domConstruct.create("div", {
                             className: 'dragabble',
                             //draggable: true,
-                            title: i18n.widgets.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
+                            title: i18n.widgets.layerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
                             tabindex:0,
                         }, titleText);
                         on(titleContainerDiv, 'dragstart', lang.hitch(this, this._drag));
@@ -362,12 +362,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             class:'layerOpacitySlider',
                             value:100,
                             'data-layerid':layer.id,
-                            title: i18n.widgets.opacity,
+                            title: i18n.widgets.layerManager.opacity,
                         }, layerExpandArea);
                         //dojo.place(slider, expandLegendBtn, 'after');
                         on(slider, 'input', lang.hitch(this, this._layerSliderChanged));
 
-                        var legendTitle = i18n.widgets.legendFor+layer.title;
+                        var legendTitle = i18n.widgets.layerManager.legendFor+layer.title;
                         var legend = new Legend({
                             map: this.map,
                             layerInfos: [{
@@ -492,7 +492,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     class:'layerOpacitySlider',
                     value:100,
                     //'data-layerid':layer.id,
-                    title: i18n.widgets.baseMapOpacity,
+                    title: i18n.widgets.layerManager.baseMapOpacity,
                     style: 'display:none;',
                 }, hideBasemapArea);
 
@@ -852,7 +852,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var svgs = legend.querySelectorAll("svg");
                 array.forEach(svgs, function(svg) {
                     var description = svg.closest('tr').children[1].children[0].children[0].children[0].children[0].innerHTML;
-                    var symbol = i18n.widgets.symbol;
+                    var symbol = i18n.widgets.layerManager.symbol;
                     var alt = (description==='') ? symbol : '';
                     domAttr.set(svg, 'alt', alt);
                     domAttr.set(svg, 'title', symbol);
