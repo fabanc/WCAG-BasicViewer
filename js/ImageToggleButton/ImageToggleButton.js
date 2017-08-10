@@ -158,6 +158,15 @@ define([
             this.msgType = null;
         },
 
+        AreSomeChecked: function(group) {
+            var checked = query(".ImageToggleButton .cbToggleBtn[name="+group+"]:not(#"+this.id+"_cb):checked");
+            return checked && checked.length>0;
+        },
+
+        areSomeChecked: function() {
+            return this.CheckAny(this.default.group);
+        },
+
     });
 
     if (has("extend-esri")) {
