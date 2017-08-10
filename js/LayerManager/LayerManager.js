@@ -293,7 +293,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 imgSelected: 'images/icons_black/TableClose.Red.png',
                                 imgUnselected: 'images/icons_black/Table.png',
                                 value: layer.id,
+                                id: layer.id+'_btn',
                                 class: 'cbShowTable',
+                                group: 'grShowTable',
                                 imgClass: 'tableBtn',
                                 titleSelected: i18n.widgets.layerManager.hideFeatureTable,
                                 titleUnselected: i18n.widgets.layerManager.showFeatureTable,
@@ -564,11 +566,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.featureTable.destroy();
                 return;
             }
-
-            var cbToggleBtns = dojo.query('.cbShowTable .cbToggleBtn');
-            array.forEach(cbToggleBtns, function(cb) {
-                cb.checked = cb.value === arg.value;
-            });
 
             var layerId = arg.value;
             for(var i = 0, m = null; i < this.layers.length; ++i) {
