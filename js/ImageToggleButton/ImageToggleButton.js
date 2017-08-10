@@ -158,13 +158,13 @@ define([
             this.msgType = null;
         },
 
-        AreSomeChecked: function(group) {
-            var checked = query(".ImageToggleButton .cbToggleBtn[name="+group+"]:not(#"+this.id+"_cb):checked");
+        IsCheckedAny: function(group) {
+            var checked = query(".ImageToggleButton .cbToggleBtn[name="+group+"]:checked");
             return checked && checked.length>0;
         },
 
-        areSomeChecked: function() {
-            return this.AreSomeChecked(this.group);
+        isCheckedAny: function() {
+            return this.IsCheckedAny(this.group);
         },
 
     });

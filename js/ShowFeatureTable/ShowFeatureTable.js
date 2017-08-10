@@ -641,7 +641,7 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!SelectOnMapOrView.areSomeChecked()) { 
+                        if(!SelectOnMapOrView.isCheckedAny()) { 
                             var grs = array.filter(this.map.graphics.graphics, function(gr){ 
                                 return gr.name && gr.name === 'ftMarker'; 
                             });
@@ -664,7 +664,7 @@ define([
                     }));
                 }));
 
-                if(!SelectOnMapOrView.areSomeChecked()) { 
+                if(!SelectOnMapOrView.isCheckedAny()) { 
                     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
                     if(grs && grs.length>=2) {
                         var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
