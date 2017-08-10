@@ -171,6 +171,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             //console.log(this, evt);
         },
 
+        _flipLayers: function(evt) {
+            console.log('_flipLayers', evt);
+            switch(evt.key) {
+                case "ArrowDown" :
+                    break;
+                case "ArrowUp" :
+                    break;
+            }
+        },
+
         _getLayerPosition:function(layer) {
             var layers = dojo.query('.toc-title', dojo.byId('pageBody_layers'));
             var layersIds = layers.map(function(l) {return l.id;});
@@ -227,10 +237,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         draggable: true,
                         id: 'titleContainerDiv_'+i,
                     }, titleDiv);
-                    on(titleContainerDiv, 'dragstart', lang.hitch(this, this._drag));
-                    //on(titleContainerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                    on(titleContainerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                    on(titleContainerDiv, 'dragend', lang.hitch(this, this._drop));
                     
                     var titleText = domConstruct.create("div", {
                         className: "checkbox",
@@ -239,12 +245,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         tabindex:-1,
                     }, titleContainerDiv);
 
-                    var layerHandleDiv = domConstruct.create("div", {
-                        className: 'dragabble',
-                        //draggable: true,
-                        title: i18n.widgets.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
-                        tabindex:0,
-                    }, titleText);
+                    if(layers.length > 1) {
+                        var layerHandleDiv = domConstruct.create("div", {
+                            className: 'dragabble',
+                            //draggable: true,
+                            title: i18n.widgets.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
+                            tabindex:0,
+                        }, titleText);
+                        on(titleContainerDiv, 'dragstart', lang.hitch(this, this._drag));
+                        on(titleContainerDiv, 'dragover', lang.hitch(this, this._allowDrop));
+                        on(titleContainerDiv, 'dragend', lang.hitch(this, this._drop));
+                        on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
+                    }
 
                     var titleCheckbox = domConstruct.create("input", 
                     {
