@@ -456,60 +456,6 @@ define([
             }, domConstruct.create('div', {}, featureTableTools));
             SelectOnRectangle.startup();
 
-            var SelectOnRegion = new ImageToggleButton({
-                id:'btnSelectOnRegion',
-                // type:'radio',
-                group:'selectOn',
-                imgSelected: 'images/ListRegion.Selected.png',
-                imgUnselected: 'images/ListRegion.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
-                domMessage: this.map.container,
-            }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnRegion.startup();
-
-            var SelectOnMapOrView = new ImageToggleButton({
-                id:'btnSelectOnMapOrView',
-                // type:'radio',
-                group:'selectOn',
-                imgSelected: 'images/ListExtent.Selected.png',
-                imgUnselected: 'images/ListExtent.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
-            }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnMapOrView.startup();
-
-            var _endDraw = lang.hitch(this, function(evt) {
-                SelectOnRectangle.HideMessage();
-                this.map.setMapCursor("default");
-                
-                this.draw.deactivate();
-                this.map.showZoomSlider();
-
-                if(evt && evt.geometry) {
-                    this._setSelectSymbol(evt.geometry);
-                }
-            });
-
-            on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
-                // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(this._rectangleGr) {
-                    this.map.graphics.remove(this._rectangleGr);
-                    this.myFeatureTable.clearFilter();
-                }
-
-                if(SelectOnMapOrView.isChecked()) {
-                    if(this.draw) {
-                        _endDraw();
-                    }
-                    this._selectViewIds();
-                    this._selectSignal = on(this.map, "extent-change", 
-                        lang.hitch(this, function() {this._selectViewIds();}));
-                } else {
-                    this._selectSignal.remove();
-                }
-            }));
-
             on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
                 if(this._rectangleGr) {
@@ -530,6 +476,18 @@ define([
                     this.draw.on("draw-end", _endDraw);
                 }
             }));
+
+            var SelectOnRegion = new ImageToggleButton({
+                id:'btnSelectOnRegion',
+                // type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/ListRegion.Selected.png',
+                imgUnselected: 'images/ListRegion.Unselected.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
+                domMessage: this.map.container,
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnRegion.startup();
 
             on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
                 // // console.log(ev.checked, SelectOnMapOrView.isChecked());
@@ -558,6 +516,48 @@ define([
                     }
                 }
             }));
+
+            var SelectOnMapOrView = new ImageToggleButton({
+                id:'btnSelectOnMapOrView',
+                // type:'radio',
+                group:'selectOn',
+                imgSelected: 'images/ListExtent.Selected.png',
+                imgUnselected: 'images/ListExtent.Unselected.png',
+                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+            }, domConstruct.create('div', {}, featureTableTools));
+            SelectOnMapOrView.startup();
+
+            on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
+                // console.log(ev.checked, SelectOnMapOrView.isChecked());
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+
+                if(SelectOnMapOrView.isChecked()) {
+                    if(this.draw) {
+                        _endDraw();
+                    }
+                    this._selectViewIds();
+                    this._selectSignal = on(this.map, "extent-change", 
+                        lang.hitch(this, function() {this._selectViewIds();}));
+                } else {
+                    this._selectSignal.remove();
+                }
+            }));
+
+            var _endDraw = lang.hitch(this, function(evt) {
+                SelectOnRectangle.HideMessage();
+                this.map.setMapCursor("default");
+                
+                this.draw.deactivate();
+                this.map.showZoomSlider();
+
+                if(evt && evt.geometry) {
+                    this._setSelectSymbol(evt.geometry);
+                }
+            });
 
             this.set('show', true);
 
@@ -641,7 +641,7 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked() && !SelectOnRegion.isChecked()) {
+                        if(!SelectOnMapOrView.areSomeChecked()) { 
                             var grs = array.filter(this.map.graphics.graphics, function(gr){ 
                                 return gr.name && gr.name === 'ftMarker'; 
                             });
@@ -664,7 +664,7 @@ define([
                     }));
                 }));
 
-                if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked()) {
+                if(!SelectOnMapOrView.areSomeChecked()) { 
                     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
                     if(grs && grs.length>=2) {
                         var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
