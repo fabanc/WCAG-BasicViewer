@@ -9,8 +9,12 @@ define({
                 datePattern: "MMMM d, y",
                 shortDatePattern: "M/d/yyyy",
                 shortTimePattern: "H:mm a",
-                listFromMap: "List all features from map.",
+                listFromMap: "List all features from map or according to other option selected.",
                 listFromView: "List just the features from view.",
+                listFromRectangle: "List only features from the highlighted rectangle.",
+                listFromPolygon: "List only features from the highlighted feature.",
+                selectOnRectangle: 'Use cursor on map to select a rectangle.',
+                selectOnRegion: "Select first a polygon feature.",
             })
         })
     }),
