@@ -164,7 +164,7 @@ define([
         },
 
         areSomeChecked: function() {
-            return this.CheckAny(this.default.group);
+            return this.AreSomeChecked(this.group);
         },
 
     });
