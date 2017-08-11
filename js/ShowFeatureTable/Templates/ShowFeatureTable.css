@@ -160,3 +160,8 @@ div#featureTableContainer {
 .claro .esri-feature-table .dijitArrowButtonInner {
     padding: 0; 
 }
+
+.menuItemDisabled {
+    text-decoration: line-through;
+    pointer-events: none;
+}
