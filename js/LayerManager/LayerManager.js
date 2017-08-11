@@ -142,20 +142,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _dropTarget: null,
 
         _allowDrop: function (evt) {
-            var target = evt.target.closest('.toc-title');
-            if(target.id !== this._dropTarget.id)
+            var target = evt.target.closest('.toc-layer');
+            if(target.firstChild.firstChild.id !== this._dropTarget.firstChild.firstChild.id)
             {
                 this._dropTarget = target;
-                //console.log(target.id, this._startTarget, this._dropTarget);
             }
             evt.preventDefault();
         },
 
         _drag: function(evt) {
-            //evt.dataTransfer.setData("text", evt.target.id);
             this._dropTarget = 
-            this._startTarget = evt.target.closest('.toc-title');
-            //console.log(evt.target, this._startTarget);
+            this._startTarget = evt.target.closest('.toc-layer');
             var bar = dojo.query('.dragabble', evt.target)[0];
             if(bar) {
                 if(bar.setActive) {
@@ -168,36 +165,44 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             else {
                 evt.preventDefault();
             }
-            //console.log(this, evt);
+        },
+
+        _drop: function (evt) {
+            var indexStart = this._getLayerPosition(this._startTarget.firstChild.id);
+            var indexDrop = this._getLayerPosition(this._dropTarget.firstChild.id);
+            dojo.place(this._startTarget, this._dropTarget, indexStart<indexDrop?"after":"before");
+            this.map.reorderLayer(this._startTarget.firstChild.dataset.layerid, indexDrop);
+            this._dropTarget = null;
+            evt.preventDefault();
         },
 
         _flipLayers: function(evt) {
             // console.log('_flipLayers', evt);
-            var startTarget = evt.target.closest('.toc-title');
-            var indexStart = this._getLayerPosition(startTarget);
+            var startTarget = evt.target.closest('.toc-layer');
+            var indexStart = this._getLayerPosition(startTarget.firstChild.id);
             var indexDrop = null;
             var dropTarget = null;
-            var layers = dojo.query('.toc-title[data-layerid]', dojo.byId('pageBody_layers'));
+            var dropTargets = dojo.query('.toc-layer[data-layerid]', dojo.byId('pageBody_layers'));
             switch(evt.key) {
                 case "ArrowDown" :
-                    if(layers && indexStart<layers.length-1) {
+                    if(dropTargets && indexStart<dropTargets.length-1) {
                         indexDrop = indexStart+1;
                         // console.log('indexStart indexEnd',indexStart, indexEnd);
-                        dropTarget = layers[indexDrop];
+                        dropTarget = dropTargets[indexDrop];
                         dojo.place(startTarget, dropTarget, indexStart<indexDrop?"after":"before");
-                        this.map.reorderLayer(startTarget.dataset.layerid, indexDrop);
+                        this.map.reorderLayer(startTarget.firstChild.dataset.layerid, indexDrop);
                         evt.target.focus();
                     }
                     evt.stopPropagation();
                     evt.preventDefault();
                     break;
                 case "ArrowUp" :
-                    if(indexStart>0) {
+                    if(dropTargets && indexStart>0) {
                         indexDrop = indexStart-1;
                         // console.log('indexStart indexEnd',indexStart, indexEnd);
-                        dropTarget = layers[indexDrop];
+                        dropTarget = dropTargets[indexDrop];
                         dojo.place(startTarget, dropTarget, indexStart<indexDrop?"after":"before");
-                        this.map.reorderLayer(startTarget.dataset.layerid, indexDrop);
+                        this.map.reorderLayer(startTarget.firstChild.dataset.layerid, indexDrop);
                         evt.target.focus();
                     }
                     evt.stopPropagation();
@@ -206,24 +211,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-        _getLayerPosition:function(layer) {
+        _getLayerPosition:function(layerId) {
             var layers = dojo.query('.toc-title', dojo.byId('pageBody_layers'));
             var layersIds = layers.map(function(l) {return l.id;});
             for(var i=0; i<layers.length; i++) {
-                if(layers[i].id === layer.id) {
+                if(layers[i].id === layerId) {
                     return i;
                 }
             }
             return -1;
-        },
-
-        _drop: function (evt) {
-            var indexStart = this._getLayerPosition(this._startTarget);
-            var indexDrop = this._getLayerPosition(this._dropTarget);
-            dojo.place(this._startTarget, this._dropTarget, indexStart<indexDrop?"after":"before");
-            this.map.reorderLayer(this._startTarget.dataset.layerid, indexDrop);
-            this._dropTarget = null;
-            evt.preventDefault();
         },
 
         _createList: function () {
@@ -240,12 +236,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 for (var i = 0; i < layers.length; i++) {
                     var layer = layers[i];
 
-                    // ceckbox class
-                    var titleCheckBoxClass = "checkbox";
                     // layer node
                     var layerDiv = domConstruct.create("div", {
                         className: "toc-layer",
                         role: "listitem",
+                        'data-layerid': layer.id,
                     });
                     domConstruct.place(layerDiv, this._layersNode, "first");
 
@@ -278,16 +273,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             title: i18n.widgets.layerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
                             tabindex:0,
                         }, titleText);
-                        on(titleContainerDiv, 'dragstart', lang.hitch(this, this._drag));
-                        on(titleContainerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                        on(titleContainerDiv, 'dragend', lang.hitch(this, this._drop));
+                        on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
+                        on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
+                        on(layerDiv, 'dragend', lang.hitch(this, this._drop));
                         on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
                     }
 
                     var titleCheckbox = domConstruct.create("input", 
                     {
                         id: "layer_ck_"+i,
-                        className: titleCheckBoxClass, 
+                        className: "checkbox", 
                         type: "checkbox",
                         tabindex: 0,
                         checked: layer.visibility,
@@ -458,19 +453,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 
                 var titleBaseText = domConstruct.create("div", {
                     className: "checkbox",
-                    // title:'Show Basemap Gallery',
-                    // role: "presentation",
-                    // tabindex:0,
                 }, titleBaseContainerDiv);
-
-                // var titleBasemapCheckbox = domConstruct.create("input", 
-                // {
-                //     type: "checkbox",
-                //     id: "layer_ck_baseMap",
-                //     className: titleBaseCheckBoxClass, 
-                //     tabindex: 0,
-                //     checked: this.baseMap.baseMapLayers[0].visibility,
-                // }, titleBaseText);
 
                 var baseMapLabel = domConstruct.create('label',{
                     // for: 'layer_ck_baseMap',
@@ -499,18 +482,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     style:'display:block',
                     class: 'hideBasemapArea',
                 }, titleBaseDiv);
-
-                // on(titleBasemapCheckbox, "click", lang.hitch(this.baseMap, function (evt) {
-                //     var cb = dojo.byId('layer_ck_baseMap');
-                //     var action = cb.checked;
-
-                //     hideBasemapArea.style.display = action?'block':'none';
-                //     domStyle.set(dojo.byId('basemapsBtn'), 'display', action?'table':'none');
-
-                //     this.baseMapLayers.forEach(function(bmLayer) {
-                //         bmLayer.layerObject.setVisibility(action);
-                //     });
-                // }));
 
                 var basemapSlider = domConstruct.create('input', {
                     type: 'range',
