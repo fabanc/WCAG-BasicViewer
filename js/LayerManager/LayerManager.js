@@ -118,10 +118,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         // expand
         // collapse
 
-        /* ---------------- */
-        /* Public Functions */
-        /* ---------------- */
-
         show: function () {
             this.set("visible", true);
         },
@@ -282,6 +278,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     var titleCheckbox = domConstruct.create("input", 
                     {
                         id: "layer_ck_"+i,
+                        'data-layerid': layer.id,
                         className: "checkbox", 
                         type: "checkbox",
                         tabindex: 0,
@@ -307,6 +304,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         settingsDiv = domConstruct.create("div", {
                             className: "toc-settings",
                             //id: layer.settings
+                            'data-layerid': layer.id,
                         }, titleText);//titleContainerDiv);
 
                         if(layer.layerType === "VectorTileLayer")
@@ -540,6 +538,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             
             var ck = dojo.query('#legendBtn_'+i+' input')[0].checked;
             domStyle.set(dojo.byId('layerExpandArea_'+i), 'display', (ck && expand)?'inherit':'none');
+
+            var toc_settings = dojo.query('.toc-settings[data-layerid='+evt.target.dataset.layerid+']');
+            if(toc_settings && toc_settings.length>0){
+                domStyle.set(toc_settings[0],'display', expand?'initial': 'none');
+            }
         },
 
         _showLegend : function(layer) {
