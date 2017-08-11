@@ -366,8 +366,11 @@ define([
 
                     on(layer.layerObject, "visibility-change", lang.hitch(this, function (evt) {
                         var layerId = evt.target.id;
+                        if(layerId === this.layer.layerObject.id) {
+                            this.emit("destroy", {}); 
+                        }
                         var menuItem = query('.dijitMenuItem[data-layerId='+layerId+']');
-                        // console.log('menuItem Layer visibility-change', menuItem, layerId, evt);
+                        
                         if(menuItem && menuItem.length>0) {
                             menuItem = menuItem[0];
                             if(evt.visible) {
