@@ -273,10 +273,7 @@ define([
                     datePattern: i18n.widgets.showFeatureTable.datePattern,
                     timeEnabled: false
                 },
-                // timeOptions: {
-                //     datePattern: i18n.widgets.showFeatureTable.datePattern,
-                //     timeEnabled: true
-                // },
+                
                 "outFields": outFields,
                 fieldInfos: fieldInfos,
                 // showRelatedRecords: true,
@@ -304,12 +301,7 @@ define([
                             }
                         })
                     },
-                    // {
-                    //     label: i18n.widgets.showFeatureTable.refresh, 
-                    //     callback: lang.hitch(this, function(evt){
-                    //         this.myFeatureTable.refresh();
-                    //     })
-                    // },
+
                     {
                         label: i18n.widgets.showFeatureTable.close, 
                         callback: lang.hitch(this, function(evt){
@@ -324,13 +316,6 @@ define([
             }, dojo.byId('featureTableNode'));
 
             this.myFeatureTable.startup();
-
-            // var menuTables = query('table.dijitMenu');
-            // if(menuTables) {
-            //     menuTables.forEach(function(table) {
-            //         domAttr.set(table, 'role','presentation');
-            //     });
-            // }
 
             var hidderToggle = query('.ui-icon.dgrid-hider-toggle')[0];
             if(hidderToggle) {
@@ -379,6 +364,8 @@ define([
                                 domClass.add(menuItem, 'menuItemDisabled');
                             }
                         }
+
+                        this.showRegionButton();
                     }));
                 }));
                 var menuItem2 = new MenuSeparator();
@@ -567,6 +554,8 @@ define([
                 }
             }));
 
+            this.showRegionButton();
+
             var _endDraw = lang.hitch(this, function(evt) {
                 SelectOnRectangle.HideMessage();
                 this.map.setMapCursor("default");
@@ -600,21 +589,6 @@ define([
                     domAttr.remove(table, 'role');
                 });
             }
-
-            //this.borderContainer.resize();
-
-            // on(this.myFeatureTable, "load", lang.hitch(this, function(evt){
-            //     console.log("The load event - ", evt);
-            // }));
-
-            // on(this.myFeatureTable, "show-statistics", function(evt){
-            //     console.log("show-statistics avgfield - ", evt.statistics.avgField);
-            //     console.log("show-statistics countfield - ", evt.statistics.countField);
-            //     console.log("show-statistics maxfield - ", evt.statistics.maxField);
-            //     console.log("show-statistics minfield - ", evt.statistics.minField);
-            //     console.log("show-statistics stddevfield - ", evt.statistics.stddevField);
-            //     console.log("show-statistics sumfield - ", evt.statistics.sumField);
-            // });
 
             on(this.myFeatureTable, "error", function(evt){
                 console.error("error event - ", evt);
@@ -723,6 +697,13 @@ define([
             rolesPresentation.forEach(function(table) {
                 domAttr.set(table,"role","presentation");
             });
+        },
+
+        showRegionButton: function() {
+            var btnSelectOnRegion = dojo.byId('btnSelectOnRegion');
+            var regionLayersExist = this.layers.filter(function(l){return l.visibility && l.layerObject.geometryType === "esriGeometryPolygon";}).length > 0;
+            domStyle.set(btnSelectOnRegion, 'display', regionLayersExist?'inline-block':'none');
+            
         },
 
         _setSelectSymbol : function(shape) {
