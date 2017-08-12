@@ -215,6 +215,10 @@ define([
 
         draw:null,
 
+        SelectOnRectangle:null,
+        SelectOnRegion:null,
+        SelectOnMapOrView:null,
+
         loadTable: function(myFeatureLayer){
             var outFields = [];
             var fieldInfos = [];
@@ -273,10 +277,7 @@ define([
                     datePattern: i18n.widgets.showFeatureTable.datePattern,
                     timeEnabled: false
                 },
-                // timeOptions: {
-                //     datePattern: i18n.widgets.showFeatureTable.datePattern,
-                //     timeEnabled: true
-                // },
+                
                 "outFields": outFields,
                 fieldInfos: fieldInfos,
                 // showRelatedRecords: true,
@@ -304,12 +305,7 @@ define([
                             }
                         })
                     },
-                    // {
-                    //     label: i18n.widgets.showFeatureTable.refresh, 
-                    //     callback: lang.hitch(this, function(evt){
-                    //         this.myFeatureTable.refresh();
-                    //     })
-                    // },
+
                     {
                         label: i18n.widgets.showFeatureTable.close, 
                         callback: lang.hitch(this, function(evt){
@@ -324,13 +320,6 @@ define([
             }, dojo.byId('featureTableNode'));
 
             this.myFeatureTable.startup();
-
-            // var menuTables = query('table.dijitMenu');
-            // if(menuTables) {
-            //     menuTables.forEach(function(table) {
-            //         domAttr.set(table, 'role','presentation');
-            //     });
-            // }
 
             var hidderToggle = query('.ui-icon.dgrid-hider-toggle')[0];
             if(hidderToggle) {
@@ -379,6 +368,8 @@ define([
                                 domClass.add(menuItem, 'menuItemDisabled');
                             }
                         }
+
+                        this.showRegionButton();
                     }));
                 }));
                 var menuItem2 = new MenuSeparator();
@@ -463,7 +454,7 @@ define([
             }, featureTableEndTools);
             on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
-            var SelectOnRectangle = new ImageToggleButton({
+            this.SelectOnRectangle = new ImageToggleButton({
                 id:'btnSelectOnRectangle',
                 // type:'radio',
                 group:'selectOn',
@@ -474,10 +465,9 @@ define([
                 autoCloseMessage: false, 
                 domMessage: dojo.byId('mapDiv_root'),
             }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnRectangle.startup();
+            this.SelectOnRectangle.startup();
 
-            on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
-                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            on(this.SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
@@ -485,19 +475,19 @@ define([
                 if(this._selectSignal) 
                     this._selectSignal.remove();
 
-                if(SelectOnRectangle.isChecked()) {
+                if(this.SelectOnRectangle.isChecked()) {
                     this.draw = new Draw(this.map);
                     this.draw.activate(Draw.EXTENT, {
                         showTooltips: false,
                     });
                     this.map.setMapCursor("url(images/Select.cur),auto");
                     this.map.hideZoomSlider();
-                    SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
+                    this.SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
                     this.draw.on("draw-end", _endDraw);
                 }
             }));
 
-            var SelectOnRegion = new ImageToggleButton({
+            this.SelectOnRegion = new ImageToggleButton({
                 id:'btnSelectOnRegion',
                 // type:'radio',
                 group:'selectOn',
@@ -507,10 +497,9 @@ define([
                 titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
                 domMessage: this.map.container,
             }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnRegion.startup();
+            this.SelectOnRegion.startup();
 
-            on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
-                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            on(this.SelectOnRegion, 'change', lang.hitch(this, function(ev) {
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
@@ -518,15 +507,15 @@ define([
                 if(this._selectSignal) 
                     this._selectSignal.remove();
 
-                if(SelectOnRegion.isChecked()) {
+                if(this.SelectOnRegion.isChecked()) {
                     if(this.draw) {
                         _endDraw();
                     }
 
                     var feature = this.map.infoWindow.getSelectedFeature();
                     if(!feature || feature.geometry.type==='point') {
-                        SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
-                        SelectOnRegion.Check(false);
+                        this.SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
+                        this.SelectOnRegion.Check(false);
                     }
                     else {
                         this.map.infoWindow.hide();
@@ -537,7 +526,7 @@ define([
                 }
             }));
 
-            var SelectOnMapOrView = new ImageToggleButton({
+            this.SelectOnMapOrView = new ImageToggleButton({
                 id:'btnSelectOnMapOrView',
                 // type:'radio',
                 group:'selectOn',
@@ -546,16 +535,15 @@ define([
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnMapOrView.startup();
+            this.SelectOnMapOrView.startup();
 
-            on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
-                // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            on(this.SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
                 }
 
-                if(SelectOnMapOrView.isChecked()) {
+                if(this.SelectOnMapOrView.isChecked()) {
                     if(this.draw) {
                         _endDraw();
                     }
@@ -567,8 +555,10 @@ define([
                 }
             }));
 
+            this.showRegionButton();
+
             var _endDraw = lang.hitch(this, function(evt) {
-                SelectOnRectangle.HideMessage();
+                this.SelectOnRectangle.HideMessage();
                 this.map.setMapCursor("default");
                 
                 this.draw.deactivate();
@@ -600,21 +590,6 @@ define([
                     domAttr.remove(table, 'role');
                 });
             }
-
-            //this.borderContainer.resize();
-
-            // on(this.myFeatureTable, "load", lang.hitch(this, function(evt){
-            //     console.log("The load event - ", evt);
-            // }));
-
-            // on(this.myFeatureTable, "show-statistics", function(evt){
-            //     console.log("show-statistics avgfield - ", evt.statistics.avgField);
-            //     console.log("show-statistics countfield - ", evt.statistics.countField);
-            //     console.log("show-statistics maxfield - ", evt.statistics.maxField);
-            //     console.log("show-statistics minfield - ", evt.statistics.minField);
-            //     console.log("show-statistics stddevfield - ", evt.statistics.stddevField);
-            //     console.log("show-statistics sumfield - ", evt.statistics.sumField);
-            // });
 
             on(this.myFeatureTable, "error", function(evt){
                 console.error("error event - ", evt);
@@ -661,7 +636,7 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!SelectOnMapOrView.isCheckedAny()) { 
+                        if(!this.SelectOnMapOrView.isCheckedAny()) { 
                             var grs = array.filter(this.map.graphics.graphics, function(gr){ 
                                 return gr.name && gr.name === 'ftMarker'; 
                             });
@@ -684,7 +659,7 @@ define([
                     }));
                 }));
 
-                if(!SelectOnMapOrView.isCheckedAny()) { 
+                if(!this.SelectOnMapOrView.isCheckedAny()) { 
                     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
                     if(grs && grs.length>=2) {
                         var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
@@ -723,6 +698,14 @@ define([
             rolesPresentation.forEach(function(table) {
                 domAttr.set(table,"role","presentation");
             });
+        },
+
+        showRegionButton: function() {
+            var regionLayersExist = this.layers.filter(function(l){return l.visibility && l.layerObject.geometryType === "esriGeometryPolygon";}).length > 0;
+            if(!regionLayersExist) {
+                this.SelectOnRegion.Check(false);
+            }
+            domStyle.set(this.SelectOnRegion.domNode, 'display', regionLayersExist?'inline-block':'none');
         },
 
         _setSelectSymbol : function(shape) {
