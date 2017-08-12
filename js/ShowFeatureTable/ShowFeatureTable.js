@@ -178,6 +178,9 @@ define([
         postCreate: function() {
             this.inherited(arguments);
             this.set('show', false);
+            on(this.map, 'extent-change', lang.hitch(this, function() {
+                this.showRegionButton();
+            }));
         },
 
         layout:function() {
@@ -701,7 +704,10 @@ define([
         },
 
         showRegionButton: function() {
-            var regionLayersExist = this.layers.filter(function(l){return l.visibility && l.layerObject.geometryType === "esriGeometryPolygon";}).length > 0;
+            if(!this.layers || !this.SelectOnRegion) return;
+            var regionLayersExist = this.layers.filter(function(l){
+                return l.visibility && l.layerObject.visibleAtMapScale && l.layerObject.geometryType === "esriGeometryPolygon";
+            }).length > 0;
             if(!regionLayersExist) {
                 this.SelectOnRegion.Check(false);
             }
