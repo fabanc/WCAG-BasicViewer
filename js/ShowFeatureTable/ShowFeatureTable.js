@@ -704,7 +704,7 @@ define([
         },
 
         showRegionButton: function() {
-            if(!this.layers || !this.SelectOnRegion) return;
+            if(!this.layers || !this.SelectOnRegion || this.SelectOnRegion.isChecked()) return;
             var regionLayersExist = this.layers.filter(function(l){
                 return l.visibility && l.layerObject.visibleAtMapScale && l.layerObject.geometryType === "esriGeometryPolygon";
             }).length > 0;
