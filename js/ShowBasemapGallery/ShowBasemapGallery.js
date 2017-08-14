@@ -4,26 +4,30 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/i18n!application/nls/resources",
     "dojo/i18n!application/nls/BaseMapLabels",
     "dojo/on", "dojo/Deferred", 
-    "esri/dijit/Legend", "esri/dijit/BasemapGallery",
-    "esri/dijit/BasemapLayer", "esri/dijit/Basemap",
-    "application/ShowFeatureTable/ShowFeatureTable", 
+    // "esri/dijit/Legend", 
+    "esri/dijit/BasemapGallery",
+    // "esri/dijit/BasemapLayer", 
+    // "esri/dijit/Basemap",
+    // "application/ShowFeatureTable/ShowFeatureTable", 
     "dojo/text!application/LayerManager/Templates/LayerManager.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/_base/array",
-    "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "esri/layers/LabelLayer"
+    // "esri/symbols/TextSymbol", "esri/renderers/SimpleRenderer", "esri/layers/LabelLayer"
     ], function (
         Evented, declare, lang, has, esriNS,
         _WidgetBase, 
         //_TemplatedMixin, 
         i18n, i18n_BaseMapLabels,
         on, Deferred,
-        Legend, BasemapGallery, 
-        BasemapLayer, Basemap,
-        ShowFeatureTable,
+        // Legend, 
+        BasemapGallery, 
+        // BasemapLayer, 
+        // Basemap,
+        // ShowFeatureTable,
         dijitTemplate, 
         domClass, domAttr, domStyle, domConstruct, event, 
-        array,
-        TextSymbol, SimpleRenderer, LabelLayer
+        array
+        // TextSymbol, SimpleRenderer, LabelLayer
     ) {
     var Widget = declare("esri.dijit.ShowBasemapGallery", [
         _WidgetBase, 
