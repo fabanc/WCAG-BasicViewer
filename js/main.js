@@ -94,6 +94,12 @@ define(["dojo/ready",
                 this.theme = this.setColor(this.config.theme);
                 // document ready
                 ready(lang.hitch(this, function () {
+                    var description = this.config.description || this.config.response.itemInfo.item.description || this.config.response.itemInfo.item.snippet;
+                    if (description) {
+                        dojo.byId("splashScreenContent").innerHTML = description;
+                        domStyle.set("splashScreen", "display", "block");
+                    }
+
                     //supply either the webmap id or, if available, the item info
                     var itemInfo = this.config.itemInfo || this.config.webmap;
                     //If a custom extent is set as a url parameter handle that before creating the map
@@ -190,10 +196,10 @@ define(["dojo/ready",
             // this.map.resize();
             // this.map.reposition();
 
-            query(".esriSimpleSlider").style("backgroundColor", this.theme.toString());
-            // remove loading class from body
-
             // domClass.remove(document.body, "app-loading");
+            // domStyle.set("splashScreen", "display", "block");
+
+            query(".esriSimpleSlider").style("backgroundColor", this.theme.toString());
             on(window, "orientationchange", lang.hitch(this, this._adjustPopupSize));
             this._adjustPopupSize();
 
@@ -455,6 +461,7 @@ define(["dojo/ready",
 
                     domStyle.set("panelPages", "visibility", "visible");
 
+                    domStyle.set("splashScreen", "display", "none");
                     domClass.remove(document.body, "app-loading");
                 }));
             }));

@@ -134,7 +134,6 @@ blockquote {
 }
 
 .loading-indicator {
-  /* Loading status */
   display: none;
   height: 100%;
   width: 100%;
@@ -144,6 +143,24 @@ blockquote {
   left: 0;
   overflow: hidden;
   background: #fff; 
+}
+
+#splashScreen {
+  display: none;
+  height: 100%;
+  width: 100%;
+  z-index: 501;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  background: #fff; 
+  opacity:0.75;
+  padding:10px;
+}
+
+#splashScreenContent {
+    vertical-align: middle;
 }
 
 .app-loading .loading-indicator, .app-error .loading-indicator {
