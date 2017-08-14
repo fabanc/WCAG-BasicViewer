@@ -160,7 +160,15 @@ blockquote {
 }
 
 #splashScreenContent {
-    vertical-align: middle;
+    position: relative;
+    top: calc(50% - 20px);
+    width: calc(100% - 20px);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    max-height: calc(100% - 20px);
+    max-width: calc(100% - 20px);
+    overflow: auto;
 }
 
 .app-loading .loading-indicator, .app-error .loading-indicator {
