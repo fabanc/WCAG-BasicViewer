@@ -76,10 +76,9 @@ Found a bug or want to request a new feature? Please let us know by submitting a
 # Contributing
 Anyone and everyone is welcome to contribute. 
 
-# Aknowldgement
+# Aknowldgements
 
-    The splash screen was developed by Esri Canada in conjunction with the Canadian Armed Forces, Mapping and Charting Establishment (MCE) and contributed back to the GIS community.
-
+- The Canadian Armed Forces - Mapping and Charting Establishment (MCE) for some of the testing, feedback, and bug fixes.
 
 # Licensing 
 
