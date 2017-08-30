@@ -78,7 +78,7 @@ Anyone and everyone is welcome to contribute.
 
 # Aknowldgements
 
-- The Canadian Armed Forces - Mapping and Charting Establishment (MCE) for some of the testing, feedback, and bug fixes.
+- Mapping and Charting Establishment (MCE) for providing ressources for some of the testing, feedback, and bug fixes.
 
 # Licensing 
 
