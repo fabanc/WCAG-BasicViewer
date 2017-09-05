@@ -2,7 +2,6 @@ define([
     "dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", 
     "esri/arcgis/utils", "dojo/has", "dojo/dom","esri/kernel", 
     "dijit/layout/_LayoutWidget", 
-    "esri/layers/FeatureLayer",
     "esri/dijit/FeatureTable", 
     "application/ImageToggleButton/ImageToggleButton", 
     "esri/map", "dojo/_base/array", 
@@ -16,7 +15,8 @@ define([
     "dijit/layout/ContentPane", "dijit/layout/BorderContainer",
     "dijit/form/DropDownButton", "dijit/DropDownMenu", "dijit/MenuItem", "dijit/MenuSeparator",
     "dojo/dom-construct", "dojo/_base/event", 
-    "esri/symbols/SimpleMarkerSymbol", "esri/symbols/PictureMarkerSymbol", 
+    // "esri/symbols/SimpleMarkerSymbol", 
+    "esri/symbols/PictureMarkerSymbol", 
     "esri/symbols/CartographicLineSymbol", 
     "esri/symbols/SimpleFillSymbol", "esri/symbols/SimpleLineSymbol",
     "esri/graphic", "esri/Color", "esri/graphicsUtils",
@@ -25,7 +25,6 @@ define([
     ], function (
         Evented, declare, lang, arcgisUtils, has, dom, esriNS,
         _LayoutWidget,
-        FeatureLayer, 
         FeatureTable, 
         ImageToggleButton,
         Map, array,
@@ -38,7 +37,8 @@ define([
         ContentPane, BorderContainer, 
         DropDownButton, DropDownMenu, MenuItem, MenuSeparator,
         domConstruct, event,
-        SimpleMarkerSymbol, PictureMarkerSymbol, 
+        // SimpleMarkerSymbol, 
+        PictureMarkerSymbol, 
         CartographicLineSymbol, 
         SimpleFillSymbol, SimpleLineSymbol,
         Graphic, Color, graphicsUtils
@@ -178,6 +178,9 @@ define([
         postCreate: function() {
             this.inherited(arguments);
             this.set('show', false);
+            // on(this.map, 'extent-change', lang.hitch(this, function() {
+            //     this.showRegionButton();
+            // }));
         },
 
         layout:function() {
@@ -214,6 +217,10 @@ define([
         _rectangleGr : null,
 
         draw:null,
+
+        SelectOnRectangle:null,
+        // SelectOnRegion:null,
+        SelectOnMapOrView:null,
 
         loadTable: function(myFeatureLayer){
             var outFields = [];
@@ -273,10 +280,7 @@ define([
                     datePattern: i18n.widgets.showFeatureTable.datePattern,
                     timeEnabled: false
                 },
-                // timeOptions: {
-                //     datePattern: i18n.widgets.showFeatureTable.datePattern,
-                //     timeEnabled: true
-                // },
+                
                 "outFields": outFields,
                 fieldInfos: fieldInfos,
                 // showRelatedRecords: true,
@@ -304,12 +308,7 @@ define([
                             }
                         })
                     },
-                    // {
-                    //     label: i18n.widgets.showFeatureTable.refresh, 
-                    //     callback: lang.hitch(this, function(evt){
-                    //         this.myFeatureTable.refresh();
-                    //     })
-                    // },
+
                     {
                         label: i18n.widgets.showFeatureTable.close, 
                         callback: lang.hitch(this, function(evt){
@@ -324,13 +323,6 @@ define([
             }, dojo.byId('featureTableNode'));
 
             this.myFeatureTable.startup();
-
-            // var menuTables = query('table.dijitMenu');
-            // if(menuTables) {
-            //     menuTables.forEach(function(table) {
-            //         domAttr.set(table, 'role','presentation');
-            //     });
-            // }
 
             var hidderToggle = query('.ui-icon.dgrid-hider-toggle')[0];
             if(hidderToggle) {
@@ -353,6 +345,10 @@ define([
                         label: layer.title,
                         'data-layerid': layer.id,
                     });
+                    if(!layer.layerObject.visible) {
+                        domClass.add(menuItem1.domNode, 'menuItemDisabled');
+                    }
+
                     on(menuItem1.domNode, 'click', lang.hitch(this, function(ev){ 
                         //console.log(layer.title, ev.target.parentElement.dataset.layerid, ev); 
                         this.emit("change", { layerId: ev.target.parentElement.dataset.layerid });
@@ -360,6 +356,24 @@ define([
                     //menu.addChild(menuItem1);
                     domConstruct.place(menuItem1.domNode, menu.domNode, 0);
 
+                    on(layer.layerObject, "visibility-change", lang.hitch(this, function (evt) {
+                        var layerId = evt.target.id;
+                        if(layerId === this.layer.layerObject.id) {
+                            this.emit("destroy", {}); 
+                        }
+                        var menuItem = query('.dijitMenuItem[data-layerId='+layerId+']');
+                        
+                        if(menuItem && menuItem.length>0) {
+                            menuItem = menuItem[0];
+                            if(evt.visible) {
+                                domClass.remove(menuItem, 'menuItemDisabled');
+                            } else {
+                                domClass.add(menuItem, 'menuItemDisabled');
+                            }
+                        }
+
+                        // this.showRegionButton();
+                    }));
                 }));
                 var menuItem2 = new MenuSeparator();
                 domConstruct.place(menuItem2.domNode, menu.domNode);
@@ -443,7 +457,7 @@ define([
             }, featureTableEndTools);
             on(closeBtn, 'click', lang.hitch(this, function(ev) { this.emit("destroy", {}); }));
 
-            var SelectOnRectangle = new ImageToggleButton({
+            this.SelectOnRectangle = new ImageToggleButton({
                 id:'btnSelectOnRectangle',
                 // type:'radio',
                 group:'selectOn',
@@ -454,21 +468,68 @@ define([
                 autoCloseMessage: false, 
                 domMessage: dojo.byId('mapDiv_root'),
             }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnRectangle.startup();
+            this.SelectOnRectangle.startup();
 
-            var SelectOnRegion = new ImageToggleButton({
-                id:'btnSelectOnRegion',
-                // type:'radio',
-                group:'selectOn',
-                imgSelected: 'images/ListRegion.Selected.png',
-                imgUnselected: 'images/ListRegion.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
-                domMessage: this.map.container,
-            }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnRegion.startup();
+            on(this.SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
+                if(this._rectangleGr) {
+                    this.map.graphics.remove(this._rectangleGr);
+                    this.myFeatureTable.clearFilter();
+                }
+                if(this._selectSignal) 
+                    this._selectSignal.remove();
 
-            var SelectOnMapOrView = new ImageToggleButton({
+                if(this.SelectOnRectangle.isChecked()) {
+                    this.draw = new Draw(this.map);
+                    this.draw.activate(Draw.EXTENT, {
+                        showTooltips: false,
+                    });
+                    this.map.setMapCursor("url(images/Select.cur),auto");
+                    this.map.hideZoomSlider();
+                    this.SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
+                    this.draw.on("draw-end", _endDraw);
+                }
+            }));
+
+            // this.SelectOnRegion = new ImageToggleButton({
+            //     id:'btnSelectOnRegion',
+            //     // type:'radio',
+            //     group:'selectOn',
+            //     imgSelected: 'images/ListRegion.Selected.png',
+            //     imgUnselected: 'images/ListRegion.Unselected.png',
+            //     titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+            //     titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
+            //     domMessage: this.map.container,
+            // }, domConstruct.create('div', {}, featureTableTools));
+            // this.SelectOnRegion.startup();
+
+            // on(this.SelectOnRegion, 'change', lang.hitch(this, function(ev) {
+            //     if(this._rectangleGr) {
+            //         this.map.graphics.remove(this._rectangleGr);
+            //         this.myFeatureTable.clearFilter();
+            //     }
+            //     if(this._selectSignal) 
+            //         this._selectSignal.remove();
+
+            //     if(this.SelectOnRegion.isChecked()) {
+            //         if(this.draw) {
+            //             _endDraw();
+            //         }
+
+            //         var feature = this.map.infoWindow.getSelectedFeature();
+            //         if(!feature || feature.geometry.type==='point') {
+            //             this.SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
+            //             this.SelectOnRegion.Check(false);
+            //         }
+            //         else {
+            //             this.map.infoWindow.hide();
+            //             this.map.infoWindow.clearFeatures();
+
+            //             this._setSelectSymbol(feature.geometry);
+            //         }
+            //     }
+            // }));
+
+            this.SelectOnMapOrView = new ImageToggleButton({
                 id:'btnSelectOnMapOrView',
                 // type:'radio',
                 group:'selectOn',
@@ -477,28 +538,15 @@ define([
                 titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
                 titleSelected: i18n.widgets.showFeatureTable.listFromView, 
             }, domConstruct.create('div', {}, featureTableTools));
-            SelectOnMapOrView.startup();
+            this.SelectOnMapOrView.startup();
 
-            var _endDraw = lang.hitch(this, function(evt) {
-                SelectOnRectangle.HideMessage();
-                this.map.setMapCursor("default");
-                
-                this.draw.deactivate();
-                this.map.showZoomSlider();
-
-                if(evt && evt.geometry) {
-                    this._setSelectSymbol(evt.geometry);
-                }
-            });
-
-            on(SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
-                // console.log(ev.checked, SelectOnMapOrView.isChecked());
+            on(this.SelectOnMapOrView, 'change', lang.hitch(this, function(ev) {
                 if(this._rectangleGr) {
                     this.map.graphics.remove(this._rectangleGr);
                     this.myFeatureTable.clearFilter();
                 }
 
-                if(SelectOnMapOrView.isChecked()) {
+                if(this.SelectOnMapOrView.isChecked()) {
                     if(this.draw) {
                         _endDraw();
                     }
@@ -510,54 +558,19 @@ define([
                 }
             }));
 
-            on(SelectOnRectangle, 'change', lang.hitch(this, function(ev) {
-                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(this._rectangleGr) {
-                    this.map.graphics.remove(this._rectangleGr);
-                    this.myFeatureTable.clearFilter();
+            // this.showRegionButton();
+
+            var _endDraw = lang.hitch(this, function(evt) {
+                this.SelectOnRectangle.HideMessage();
+                this.map.setMapCursor("default");
+                
+                this.draw.deactivate();
+                this.map.showZoomSlider();
+
+                if(evt && evt.geometry) {
+                    this._setSelectSymbol(evt.geometry);
                 }
-                if(this._selectSignal) 
-                    this._selectSignal.remove();
-
-                if(SelectOnRectangle.isChecked()) {
-                    this.draw = new Draw(this.map);
-                    this.draw.activate(Draw.EXTENT, {
-                        showTooltips: false,
-                    });
-                    this.map.setMapCursor("url(images/Select.cur),auto");
-                    this.map.hideZoomSlider();
-                    SelectOnRectangle.ShowMessage(i18n.widgets.showFeatureTable.selectOnRectangle, 'warning');
-                    this.draw.on("draw-end", _endDraw);
-                }
-            }));
-
-            on(SelectOnRegion, 'change', lang.hitch(this, function(ev) {
-                // // console.log(ev.checked, SelectOnMapOrView.isChecked());
-                if(this._rectangleGr) {
-                    this.map.graphics.remove(this._rectangleGr);
-                    this.myFeatureTable.clearFilter();
-                }
-                if(this._selectSignal) 
-                    this._selectSignal.remove();
-
-                if(SelectOnRegion.isChecked()) {
-                    if(this.draw) {
-                        _endDraw();
-                    }
-
-                    var feature = this.map.infoWindow.getSelectedFeature();
-                    if(!feature || feature.geometry.type==='point') {
-                        SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
-                        SelectOnRegion.Check(false);
-                    }
-                    else {
-                        this.map.infoWindow.hide();
-                        this.map.infoWindow.clearFeatures();
-
-                        this._setSelectSymbol(feature.geometry);
-                    }
-                }
-            }));
+            });
 
             this.set('show', true);
 
@@ -580,21 +593,6 @@ define([
                     domAttr.remove(table, 'role');
                 });
             }
-
-            //this.borderContainer.resize();
-
-            // on(this.myFeatureTable, "load", lang.hitch(this, function(evt){
-            //     console.log("The load event - ", evt);
-            // }));
-
-            // on(this.myFeatureTable, "show-statistics", function(evt){
-            //     console.log("show-statistics avgfield - ", evt.statistics.avgField);
-            //     console.log("show-statistics countfield - ", evt.statistics.countField);
-            //     console.log("show-statistics maxfield - ", evt.statistics.maxField);
-            //     console.log("show-statistics minfield - ", evt.statistics.minField);
-            //     console.log("show-statistics stddevfield - ", evt.statistics.stddevField);
-            //     console.log("show-statistics sumfield - ", evt.statistics.sumField);
-            // });
 
             on(this.myFeatureTable, "error", function(evt){
                 console.error("error event - ", evt);
@@ -641,7 +639,7 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked() && !SelectOnRegion.isChecked()) {
+                        if(!this.SelectOnMapOrView.isCheckedAny()) { 
                             var grs = array.filter(this.map.graphics.graphics, function(gr){ 
                                 return gr.name && gr.name === 'ftMarker'; 
                             });
@@ -664,7 +662,7 @@ define([
                     }));
                 }));
 
-                if(!SelectOnMapOrView.isChecked() && !SelectOnRectangle.isChecked()) {
+                if(!this.SelectOnMapOrView.isCheckedAny()) { 
                     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
                     if(grs && grs.length>=2) {
                         var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
@@ -704,6 +702,17 @@ define([
                 domAttr.set(table,"role","presentation");
             });
         },
+
+        // showRegionButton: function() {
+        //     if(!this.layers || !this.SelectOnRegion || this.SelectOnRegion.isChecked()) return;
+        //     var regionLayersExist = this.layers.filter(function(l){
+        //         return l.visibility && l.layerObject.visibleAtMapScale && l.layerObject.geometryType === "esriGeometryPolygon";
+        //     }).length > 0;
+        //     if(!regionLayersExist) {
+        //         this.SelectOnRegion.Check(false);
+        //     }
+        //     domStyle.set(this.SelectOnRegion.domNode, 'display', regionLayersExist?'inline-block':'none');
+        // },
 
         _setSelectSymbol : function(shape) {
             var symbol = new SimpleLineSymbol()
