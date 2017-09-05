@@ -178,9 +178,9 @@ define([
         postCreate: function() {
             this.inherited(arguments);
             this.set('show', false);
-            on(this.map, 'extent-change', lang.hitch(this, function() {
-                this.showRegionButton();
-            }));
+            // on(this.map, 'extent-change', lang.hitch(this, function() {
+            //     this.showRegionButton();
+            // }));
         },
 
         layout:function() {
@@ -219,7 +219,7 @@ define([
         draw:null,
 
         SelectOnRectangle:null,
-        SelectOnRegion:null,
+        // SelectOnRegion:null,
         SelectOnMapOrView:null,
 
         loadTable: function(myFeatureLayer){
@@ -372,7 +372,7 @@ define([
                             }
                         }
 
-                        this.showRegionButton();
+                        // this.showRegionButton();
                     }));
                 }));
                 var menuItem2 = new MenuSeparator();
@@ -490,44 +490,44 @@ define([
                 }
             }));
 
-            this.SelectOnRegion = new ImageToggleButton({
-                id:'btnSelectOnRegion',
-                // type:'radio',
-                group:'selectOn',
-                imgSelected: 'images/ListRegion.Selected.png',
-                imgUnselected: 'images/ListRegion.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
-                domMessage: this.map.container,
-            }, domConstruct.create('div', {}, featureTableTools));
-            this.SelectOnRegion.startup();
+            // this.SelectOnRegion = new ImageToggleButton({
+            //     id:'btnSelectOnRegion',
+            //     // type:'radio',
+            //     group:'selectOn',
+            //     imgSelected: 'images/ListRegion.Selected.png',
+            //     imgUnselected: 'images/ListRegion.Unselected.png',
+            //     titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
+            //     titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
+            //     domMessage: this.map.container,
+            // }, domConstruct.create('div', {}, featureTableTools));
+            // this.SelectOnRegion.startup();
 
-            on(this.SelectOnRegion, 'change', lang.hitch(this, function(ev) {
-                if(this._rectangleGr) {
-                    this.map.graphics.remove(this._rectangleGr);
-                    this.myFeatureTable.clearFilter();
-                }
-                if(this._selectSignal) 
-                    this._selectSignal.remove();
+            // on(this.SelectOnRegion, 'change', lang.hitch(this, function(ev) {
+            //     if(this._rectangleGr) {
+            //         this.map.graphics.remove(this._rectangleGr);
+            //         this.myFeatureTable.clearFilter();
+            //     }
+            //     if(this._selectSignal) 
+            //         this._selectSignal.remove();
 
-                if(this.SelectOnRegion.isChecked()) {
-                    if(this.draw) {
-                        _endDraw();
-                    }
+            //     if(this.SelectOnRegion.isChecked()) {
+            //         if(this.draw) {
+            //             _endDraw();
+            //         }
 
-                    var feature = this.map.infoWindow.getSelectedFeature();
-                    if(!feature || feature.geometry.type==='point') {
-                        this.SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
-                        this.SelectOnRegion.Check(false);
-                    }
-                    else {
-                        this.map.infoWindow.hide();
-                        this.map.infoWindow.clearFeatures();
+            //         var feature = this.map.infoWindow.getSelectedFeature();
+            //         if(!feature || feature.geometry.type==='point') {
+            //             this.SelectOnRegion.ShowMessage(i18n.widgets.showFeatureTable.selectOnRegion, 'error');
+            //             this.SelectOnRegion.Check(false);
+            //         }
+            //         else {
+            //             this.map.infoWindow.hide();
+            //             this.map.infoWindow.clearFeatures();
 
-                        this._setSelectSymbol(feature.geometry);
-                    }
-                }
-            }));
+            //             this._setSelectSymbol(feature.geometry);
+            //         }
+            //     }
+            // }));
 
             this.SelectOnMapOrView = new ImageToggleButton({
                 id:'btnSelectOnMapOrView',
@@ -558,7 +558,7 @@ define([
                 }
             }));
 
-            this.showRegionButton();
+            // this.showRegionButton();
 
             var _endDraw = lang.hitch(this, function(evt) {
                 this.SelectOnRectangle.HideMessage();
@@ -703,16 +703,16 @@ define([
             });
         },
 
-        showRegionButton: function() {
-            if(!this.layers || !this.SelectOnRegion || this.SelectOnRegion.isChecked()) return;
-            var regionLayersExist = this.layers.filter(function(l){
-                return l.visibility && l.layerObject.visibleAtMapScale && l.layerObject.geometryType === "esriGeometryPolygon";
-            }).length > 0;
-            if(!regionLayersExist) {
-                this.SelectOnRegion.Check(false);
-            }
-            domStyle.set(this.SelectOnRegion.domNode, 'display', regionLayersExist?'inline-block':'none');
-        },
+        // showRegionButton: function() {
+        //     if(!this.layers || !this.SelectOnRegion || this.SelectOnRegion.isChecked()) return;
+        //     var regionLayersExist = this.layers.filter(function(l){
+        //         return l.visibility && l.layerObject.visibleAtMapScale && l.layerObject.geometryType === "esriGeometryPolygon";
+        //     }).length > 0;
+        //     if(!regionLayersExist) {
+        //         this.SelectOnRegion.Check(false);
+        //     }
+        //     domStyle.set(this.SelectOnRegion.domNode, 'display', regionLayersExist?'inline-block':'none');
+        // },
 
         _setSelectSymbol : function(shape) {
             var symbol = new SimpleLineSymbol()
