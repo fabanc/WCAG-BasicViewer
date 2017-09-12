@@ -639,13 +639,13 @@ define([
                         gr.name = 'ftMarker';
                         this.map.graphics.add(gr);
 
-                        if(!this.SelectOnMapOrView.isCheckedAny()) { 
-                            var grs = array.filter(this.map.graphics.graphics, function(gr){ 
-                                return gr.name && gr.name === 'ftMarker'; 
-                            });
+                        // if(!this.SelectOnMapOrView.isCheckedAny()) { 
+                        //     var grs = array.filter(this.map.graphics.graphics, function(gr){ 
+                        //         return gr.name && gr.name === 'ftMarker'; 
+                        //     });
 
-                            this._fitToMapExtent(graphicsUtils.graphicsExtent(grs));
-                        }
+                        //     this._fitToMapExtent(graphicsUtils.graphicsExtent(grs));
+                        // }
                     }));
                 }));
 
@@ -662,13 +662,13 @@ define([
                     }));
                 }));
 
-                if(!this.SelectOnMapOrView.isCheckedAny()) { 
-                    var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
-                    if(grs && grs.length>=2) {
-                        var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
-                        this.map.setExtent(extent);
-                    }
-                }
+                // if(!this.SelectOnMapOrView.isCheckedAny()) { 
+                //     var grs = array.filter(this.map.graphics.graphics, function(gr){ return gr.name && gr.name === 'ftMarker'; });
+                //     if(grs && grs.length>=2) {
+                //         var extent = (this, graphicsUtils.graphicsExtent(grs)).expand(1.5);
+                //         this.map.setExtent(extent);
+                //     }
+                // }
             }));
 
             on(this.myFeatureTable, "refresh", lang.hitch(this, function(evt){
