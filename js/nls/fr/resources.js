@@ -64,7 +64,7 @@ define(
         	"details": "Détails",
         	"share": "Partager",
             "filter": "Filtres",
-            "features": "Liste d’entités sur la carte"
+            "features": "Liste de caractéristiques sur la carte"
         },
         "skip":{
             "tools" : "Aller au outils",
@@ -73,9 +73,10 @@ define(
             "hsplitter" : "Aller au diviseur d’écran horizontal",
             "map" : "Aller à la carte",
             "help" : "Aller à l’aide",
-            "featureDetaills" : "Aller aux fonctionnalités détaillées",
+            "featureDetaills" : "Aller aux caractéristiques détaillées",
             "vsplitter" : "Aller au diviseur d’écran vertical",
-            "table" : "Aller à la table des fonctionnalités",
+            "tableHeader" : "Passer à l'en-tête de la table des caractéristiques",
+            "table" : "Aller à la table des caractéristiques",
         },
         search : "Recherche : ",
         searchPlaceholder: "Trouver une adresse ou un lieu",

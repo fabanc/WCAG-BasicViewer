@@ -164,8 +164,14 @@ define([
 
             domConstruct.create("div", {
                 class:'goThereHint',
-                innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+Ri18n.skip.hsplitter,
-                style:'left:40%; top:2px;'
+                innerHTML: '<b>Alt&nbsp;+&nbsp;7</b> '+Ri18n.skip.hsplitter,
+                style:'left:40%; top: 0;'
+            }, dom.byId('featureTableNode1'));
+
+            domConstruct.create("div", {
+                class:'goThereHint',
+                innerHTML: '<b>Alt&nbsp;+&nbsp;8</b> '+Ri18n.skip.tableHeader,
+                style:'left:5px; top:40px;'
             }, dom.byId('featureTableNode1'));
 
             domConstruct.create("div", {

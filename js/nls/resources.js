@@ -76,6 +76,7 @@ define({
             "help" : "Skip to Help",
             "featureDetaills" : "Skip to Feature Details",
             "vsplitter" : "Skip to Vertical Splitter",
+            "tableHeader" : "Skip to Feature Table Header",
             "table" : "Skip to Feature Table",
         },
         search : "Search: ",
