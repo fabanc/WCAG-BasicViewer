@@ -469,8 +469,8 @@ define([
                 group:'selectOn',
                 imgSelected: 'images/ListRectangle.Selected.png',
                 imgUnselected: 'images/ListRectangle.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromRectangle,
+                titleUnselected: i18n.widgets.showFeatureTable.listFromRectangle, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromMap,
                 autoCloseMessage: false, 
                 domMessage: dojo.byId('mapDiv_root'),
             }, domConstruct.create('div', {}, featureTableTools));
@@ -502,8 +502,8 @@ define([
             //     group:'selectOn',
             //     imgSelected: 'images/ListRegion.Selected.png',
             //     imgUnselected: 'images/ListRegion.Unselected.png',
-            //     titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-            //     titleSelected: i18n.widgets.showFeatureTable.listFromPolygon, 
+            //     titleUnselected: i18n.widgets.showFeatureTable.listFromPolygon, 
+            //     titleSelected: i18n.widgets.showFeatureTable.listFromMap, 
             //     domMessage: this.map.container,
             // }, domConstruct.create('div', {}, featureTableTools));
             // this.SelectOnRegion.startup();
@@ -541,8 +541,8 @@ define([
                 group:'selectOn',
                 imgSelected: 'images/ListExtent.Selected.png',
                 imgUnselected: 'images/ListExtent.Unselected.png',
-                titleUnselected: i18n.widgets.showFeatureTable.listFromMap, 
-                titleSelected: i18n.widgets.showFeatureTable.listFromView, 
+                titleUnselected: i18n.widgets.showFeatureTable.listFromView, 
+                titleSelected: i18n.widgets.showFeatureTable.listFromMap, 
             }, domConstruct.create('div', {}, featureTableTools));
             this.SelectOnMapOrView.startup();
 

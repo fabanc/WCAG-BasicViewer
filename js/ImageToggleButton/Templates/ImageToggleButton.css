@@ -43,15 +43,15 @@
 .toggleBtnMessage.normal {
     background-color: white;
     color: black;
-    display: initial;
+    display: inline;
 }
 .toggleBtnMessage.warning {
     background-color: orange;
     color: black;
-    display: initial;
+    display: inline;
 }
 .toggleBtnMessage.error {
     background-color: red;
     color: white;
-    display: initial;
+    display: inline;
 }

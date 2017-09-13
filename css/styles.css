@@ -2025,7 +2025,7 @@ myKey {
     left:0;
     border-top-right-radius: 50%;
     border-bottom-right-radius: 50%;
-    right:initial;
+    right:auto;
 }
 
 #collapseLeftPanelButton label {
@@ -2057,5 +2057,6 @@ myKey {
     color: black;
  }
 
- .claro .dijitCalendarYearLabel {
+.claro .dijitCalendarYearLabel {
     font-size: initial;
+}

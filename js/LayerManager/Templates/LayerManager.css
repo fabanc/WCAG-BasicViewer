@@ -71,8 +71,8 @@
 
 .LayerManager input[type="checkbox"]:checked + .labelText {
     font-weight: bold;
-    font-size: initial;
-    text-decoration: initial;
+    font-size: 16px;
+    text-decoration: none;
 }
 
 /*.LayerManager input[type="checkbox"].checkbox + div .toc-settings {
