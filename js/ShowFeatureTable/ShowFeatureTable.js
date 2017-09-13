@@ -62,7 +62,7 @@ define([
             switch(visible){
                 case true:
                     domStyle.set(dojo.byId('featureTableContainer'), "height","50%");
-                    domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "initial");
+                    domStyle.set(dojo.byId('featureTableContainer_splitter'), "display", "block");
                     this.borderContainer.resize();
                     break;
                 case false:
