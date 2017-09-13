@@ -2061,4 +2061,7 @@ myKey {
     font-size: initial;
 }
 
+#navLocate, #extendedNav {
+    height:auto;
 }
+
