@@ -465,7 +465,7 @@ define(["dojo/ready",
 
                     domStyle.set("panelPages", "visibility", "visible");
 
-                    domStyle.set("splashScreen", "display", "none");
+                    // domStyle.set("splashScreen", "display", "none");
                     domClass.remove(document.body, "app-loading");
                 }));
             }));
