@@ -1204,23 +1204,31 @@ define(["dojo/ready",
                         var tables = node.querySelectorAll("table");
                         if(tables)
                         {
-                            tables.forEach(function(table) {
+                            // tables.forEach(function(table) {
+                            for(var i=0; i<tables.length; i++) {
+                                var table=tables[i];
                                 domAttr.set(table, 'role', 'presentation');
-                            });
+                            }
+                            // });
                         }
 
                         var svgs = node.querySelectorAll("svg");
                         if(svgs)
                         {
-                            svgs.forEach(function(svg) {
-                                domAttr.set(svg, 'title', 'symbol');
-                            });
+                            // svgs.forEach(function(svg) {
+                            for(var jj=0; jj<svgs.length; jj++) {
+                                domAttr.set(svgs[jj], 'title', 'symbol');
+                            }
+                            // });
                         }
 
                         var legendServiceLabels = node.querySelectorAll(".esriLegendServiceLabel");
                         if(legendServiceLabels)
                         {
-                            legendServiceLabels.forEach(function(legendServiceLabel) {
+                            // legendServiceLabels.forEach(function(legendServiceLabel) {
+                            for(var kk=0; kk<legendServiceLabels.length; kk++) {
+                                var legendServiceLabel = legendServiceLabels[kk];
+
                                 var service = legendServiceLabel.closest('.esriLegendService');
                                 var tabindex = (service && (!service.style || service.style.display !== 'none')) ? 0 : -1;
 
@@ -1235,7 +1243,8 @@ define(["dojo/ready",
                                 else {
                                     domAttr.set(legendServiceLabel, 'tabindex', tabindex);
                                 }
-                            });
+                            }
+                            // });
                         }
 
                         var legendLayers = node.querySelectorAll(".esriLegendLayer");
@@ -1254,27 +1263,32 @@ define(["dojo/ready",
 
                         var legendLayerImages = node.querySelectorAll(".esriLegendLayer image");
                         if(legendLayerImages) {
-                            legendLayerImages.forEach(function(image) {
-                                domAttr.set(image,'alt','');
-                            });
+                            // legendLayerImages.forEach(function(image) {
+                            for(var iii=0; iii<legendLayerImages.length; iii++)
+                                domAttr.set(legendLayerImages[iii],'alt','');
+                            // });
                         }
 
                         var messages = node.querySelectorAll(".esriLegendMsg");
                         if(messages) {
-                            messages.forEach(function(message) {
-                                domAttr.set(message,'tabindex',0);
-                            });
+                            // messages.forEach(function(message) {
+                            for(var iiii=0; iiii<messages.length; iiii++)
+                                domAttr.set(messages[iiii],'tabindex',0);
+                            // });
                         }
                     };
                     
                     this.legendNodeObserver = new MutationObserver(function(mutations) {
                         mutations.forEach(function(mutation) {
                             if(mutation.addedNodes && mutation.addedNodes.length>=1) {
-                                mutation.addedNodes.forEach(function(node) {
+                                // mutation.addedNodes.forEach(function(node) {
+                                for(var i=0; i<mutation.addedNodes.length; i++) {
+                                    var node = mutation.addedNodes[i];
                                     if(domStyle.get(node, 'display') !== 'none') {
                                         fixLegend(node);
                                     }
-                                });
+                                }
+                                // });
                             }
                         });    
                     });
