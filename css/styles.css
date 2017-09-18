@@ -2034,9 +2034,9 @@ myKey {
     right:auto;
 }
 
-#collapseLeftPanelButton label {
+/*#collapseLeftPanelButton label {
   margin:0;
-}
+}*/
 #collapseLeftPanelButton img {
     width: 9px !important;
     height: 18px !important;
