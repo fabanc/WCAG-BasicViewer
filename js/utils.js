@@ -1,4 +1,4 @@
-"use strict"
+"use strict" 
 
 if (!Element.prototype.matches)
     Element.prototype.matches = Element.prototype.msMatchesSelector || 
@@ -10,7 +10,11 @@ if (!Element.prototype.closest)
         var ancestor = this;
         if (!document.documentElement.contains(el)) return null;
         do {
-            if (ancestor.matches(s)) return ancestor;
+            try {
+                if (ancestor.matches(s)) return ancestor;
+            } catch (ex) {
+                return null;
+            }
             ancestor = ancestor.parentElement;
         } while (ancestor !== null); 
         return null;

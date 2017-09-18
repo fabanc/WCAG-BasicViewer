@@ -208,10 +208,11 @@
 }*/
 
 .layerOpacitySlider {
-	float: right;
+	  float: right;
     margin-top: -16px;
     margin-right: 36px;
     width: 20%;
+    padding: 0 2px;
 }
 
 .pageHeaderTools img {
@@ -245,7 +246,6 @@
 }
 
 label.cbLegendLabel {
-    display: inherit;
 }
 
 #showBasemapGallery {
