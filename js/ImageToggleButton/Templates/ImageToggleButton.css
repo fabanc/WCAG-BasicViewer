@@ -11,8 +11,8 @@
 }
 
 .ImageToggleButton label.cbToggleBtn {
-	display:inherit;
-	margin: 1px 1px 0 1px;
+	display:inline-block;
+	margin: 1px 1px 4px 1px;
 }
 
 .ImageToggleButton .cbToggleBtn {
