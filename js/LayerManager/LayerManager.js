@@ -181,6 +181,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var dropTargets = dojo.query('.toc-layer[data-layerid]', dojo.byId('pageBody_layers'));
             switch(evt.key) {
                 case "ArrowDown" :
+                case "Down" :
                     if(dropTargets && indexStart<dropTargets.length-1) {
                         indexDrop = indexStart+1;
                         // console.log('indexStart indexEnd',indexStart, indexEnd);
@@ -193,6 +194,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     evt.preventDefault();
                     break;
                 case "ArrowUp" :
+                case "Up" :
                     if(dropTargets && indexStart>0) {
                         indexDrop = indexStart-1;
                         // console.log('indexStart indexEnd',indexStart, indexEnd);
