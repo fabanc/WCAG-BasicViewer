@@ -224,10 +224,11 @@
     width: 30%;
     background-color: silver;
     margin-left: -4px;
-    margin-top: -6px;
+    margin-top: -3px;
     /*border-bottom-left-radius: 5px;*/
     border-bottom-right-radius: 5px;
     cursor: pointer;
+    position:absolute;
 }
 
 .dragabble:hover {
