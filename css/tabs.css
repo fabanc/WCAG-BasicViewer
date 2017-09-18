@@ -44,7 +44,7 @@
 
 .tab [type=radio]:checked ~ .tabContent{
   z-index: 1; 
-  display: inherit; 
+  display: ; 
   top: 0;
 }
 
@@ -53,7 +53,7 @@
 }
 
 .tabShow {
-  display: inherit; 
+  display: ; 
 }
 
 .tab span {

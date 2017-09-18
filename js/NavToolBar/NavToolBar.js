@@ -151,7 +151,7 @@ define([
                 on(dom.byId("extenderNavCheckbox"), "change", lang.hitch(this, function(e) {
                     var ck = e.target.checked;
 
-                    dojo.setStyle(dom.byId("extendedTools"), "display", ck?"inherit":"none");
+                    dojo.setStyle(dom.byId("extendedTools"), "display", ck?"":"none");
                     this.nav.deactivate();
                     this.map.setMapCursor("default");
                 }));
@@ -160,7 +160,7 @@ define([
                 dojo.destroy("navPrevNext");
                 dojo.destroy("ZoomTools");
                 dojo.destroy("extenderNav");
-                dojo.setStyle(dom.byId("extendedTools"), "display", "inherit");
+                dojo.setStyle(dom.byId("extendedTools"), "display", "");
             }
 
             this.nav.on("extent-history-change", lang.hitch(this, function () {
@@ -188,7 +188,7 @@ define([
             dojo.setStyle(div, "cursor", crs);
             dojo.setStyle(dis, "cursor", crs);
             dojo.setAttr(btn, "tabIndex", disable?-1:0);
-            dojo.setStyle(dis, "display", disable?"inherit":"none");
+            dojo.setStyle(dis, "display", disable?"":"none");
             return disable;
         },
 

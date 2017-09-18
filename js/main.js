@@ -1204,22 +1204,22 @@ define(["dojo/ready",
                         var tables = node.querySelectorAll("table");
                         if(tables)
                         {
-                            // tables.forEach(function(table) {
-                            for(var i=0; i<tables.length; i++) {
-                                var table=tables[i];
+                            array.forEach(tables, function(table) {
+                            // for(var i=0; i<tables.length; i++) {
+                                // var table=tables[i];
                                 domAttr.set(table, 'role', 'presentation');
-                            }
-                            // });
+                            // }
+                            });
                         }
 
                         var svgs = node.querySelectorAll("svg");
                         if(svgs)
                         {
-                            // svgs.forEach(function(svg) {
-                            for(var jj=0; jj<svgs.length; jj++) {
-                                domAttr.set(svgs[jj], 'title', 'symbol');
-                            }
-                            // });
+                            array.forEach(svgs, function(svg) {
+                            // for(var jj=0; jj<svgs.length; jj++) {
+                                domAttr.set(svg, 'title', 'symbol');
+                            // }
+                            });
                         }
 
                         var legendServiceLabels = node.querySelectorAll(".esriLegendServiceLabel");

@@ -139,7 +139,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _allowDrop: function (evt) {
             var target = evt.target.closest('.toc-layer');
-            if(target.firstChild.firstChild.id !== this._dropTarget.firstChild.firstChild.id)
+            if(target.firstChild.id !== this._dropTarget.firstChild.id)
             {
                 this._dropTarget = target;
             }
@@ -149,7 +149,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _drag: function(evt) {
             this._dropTarget = 
             this._startTarget = evt.target.closest('.toc-layer');
-            var bar = dojo.query('.dragabble', evt.target)[0];
+            var bar = dojo.query('.dragabble', this._startTarget)[0];
             if(bar) {
                 if(bar.setActive) {
                     bar.setActive();
@@ -239,19 +239,34 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         'data-layerid': layer.id,
                     });
                     domConstruct.place(layerDiv, this._layersNode, "first");
-
+                    
                     // title of layer
                     var titleDiv = domConstruct.create("div", {
                         className: 'toc-title',
                         id: 'tocTitle_'+i,
+                        draggable: true,
                         'data-layerid': layer.id,
                     }, layerDiv);
-                    
+
+                    if(layers.length > 1) {
+                        var layerHandleDiv = domConstruct.create("div", {
+                            className: 'dragabble',
+                            //draggable: true,
+                            title: i18n.widgets.layerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
+                            tabindex:0,
+                        }, titleDiv);
+                        on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
+                        on(layerHandleDiv, 'dragstart', lang.hitch(this, this._drag));
+                        on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
+                        on(layerDiv, 'dragend', lang.hitch(this, this._drop));
+                        on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
+                    }
+
                     // title container
                     var titleContainerDiv = domConstruct.create("div", {
                         className: "toc-title-container",
                         tabindex: -1,
-                        draggable: true,
+                        // draggable: true,
                         id: 'titleContainerDiv_'+i,
                     }, titleDiv);
                     
@@ -262,18 +277,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         tabindex:-1,
                     }, titleContainerDiv);
 
-                    if(layers.length > 1) {
-                        var layerHandleDiv = domConstruct.create("div", {
-                            className: 'dragabble',
-                            //draggable: true,
-                            title: i18n.widgets.layerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
-                            tabindex:0,
-                        }, titleText);
-                        on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
-                        on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                        on(layerDiv, 'dragend', lang.hitch(this, this._drop));
-                        on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
-                    }
+                    // if(layerHandleDiv) {
+                    //     on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
+                    //     on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
+                    //     on(layerDiv, 'dragend', lang.hitch(this, this._drop));
+                    //     on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
+                    // }
 
                     var titleCheckbox = domConstruct.create("input", 
                     {
@@ -491,14 +500,23 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     style: 'display:none;',
                 }, hideBasemapArea);
 
-                on(basemapSlider, 'input', lang.hitch(this, function(ev) {
-                    this.baseMap.setOpacity(ev.currentTarget.value/100);
+                require(["dojo/has", "dojo/sniff"], lang.hitch(this, function(Has){
+                    if(Has("ie")){
+                        on(basemapSlider, 'change', lang.hitch(this, function(ev) {
+                            this.baseMap.setOpacity(ev.currentTarget.value/100);
+                        }));
+                    }
+                    else {
+                        on(basemapSlider, 'input', lang.hitch(this, function(ev) {
+                            this.baseMap.setOpacity(ev.currentTarget.value/100);
+                        }));
+                    }
                 }));
 
                 on(expandBaseMaps, 'change', lang.hitch(this, function(evt) {
                     var expand = expandBaseMaps.isChecked();
-                    domStyle.set(dojo.byId('showBasemapGallery'), 'display', expand?'inherit':'none');
-                    domStyle.set(basemapSlider, 'display', expand?'inherit':'none');
+                    domStyle.set(dojo.byId('showBasemapGallery'), 'display', expand?'inline':'none');
+                    domStyle.set(basemapSlider, 'display', expand?'inline':'none');
                 }));
 
                 if(this.defaults.hasBasemapGallery) {
@@ -517,8 +535,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         var newBasemap = evt.newBasemap;
                         baseMapLabel.innerHTML = this.baseMap.title = basemapGallery.getLocalizedMapName(newBasemap.title);
 
-                        this.baseMap = array.filter(Object.values(this.map._layers), function(l) {return l._basemapGalleryLayerType === "basemap";})[0];
-                        this.baseMap.setOpacity(basemapSlider.value/100);
+                        // this.baseMap = array.filter(Object.values(this.map._layers), function(l) {return l._basemapGalleryLayerType === "basemap";})[0];
+                        var bm = array.filter(Object.keys(this.map._layers), 
+                            lang.hitch(this.map._layers, function(k) {
+                                return this[k]._basemapGalleryLayerType === "basemap";
+                            })
+                        )[0];
+                        if(bm) {
+                            this.baseMap = this.map._layers[bm]; // !
+                            this.baseMap.setOpacity(basemapSlider.value/100);
+                        }
                     }));
                 }
             }
@@ -527,7 +553,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _showHidelayerExpandArea : function(evt) {
             var expand = evt.checked;
             var thisLabel = dojo.byId('layerExpandArea_'+evt.value);
-            domStyle.set(dojo.byId(thisLabel), 'display', expand?'inherit':'none');
+            domStyle.set(dojo.byId(thisLabel), 'display', expand?'':'none');
         },
 
         _showHidelayerExpandAreaBtn : function(evt) {
@@ -537,7 +563,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             domStyle.set(dojo.byId('legendBtn_'+i), 'display', expand?'table':'none');
             
             var ck = dojo.query('#legendBtn_'+i+' input')[0].checked;
-            domStyle.set(dojo.byId('layerExpandArea_'+i), 'display', (ck && expand)?'inherit':'none');
+            domStyle.set(dojo.byId('layerExpandArea_'+i), 'display', (ck && expand)?'':'none');
 
             var toc_settings = dojo.query('.toc-settings[data-layerid='+evt.target.dataset.layerid+']');
             if(toc_settings && toc_settings.length>0){
@@ -850,18 +876,25 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 });
 
                 var svgs = legend.querySelectorAll("svg");
-                array.forEach(svgs, function(svg) {
-                    var description = svg.closest('tr').children[1].children[0].children[0].children[0].children[0].innerHTML;
-                    var symbol = i18n.widgets.layerManager.symbol;
-                    var alt = (description==='') ? symbol : '';
-                    domAttr.set(svg, 'alt', alt);
-                    domAttr.set(svg, 'title', symbol);
-                    if(description !== '')
+                // array.forEach(svgs, function(svg) {
+                for(var i=0; i<svgs.length; i++) {
+                    var svg = svgs[i];
+                    var tr = svg.closest('tr');
+                    if(tr) {
+                        var description = tr.children[1].children[0].children[0].children[0].children[0].innerHTML;
+                        var symbol = i18n.widgets.layerManager.symbol;
+                        var alt = (description==='') ? symbol : '';
+                        domAttr.set(svg, 'alt', alt);
+                        domAttr.set(svg, 'title', symbol);
+                        if(description !== '')
+                            domAttr.set(svg, 'aria-hidden', "true");
+                        else 
+                            domAttr.set(svg, 'aria-label', alt);
+                    } else {
                         domAttr.set(svg, 'aria-hidden', "true");
-                    else 
-                        domAttr.set(svg, 'aria-label', alt);
-
-                });
+                    }
+                }
+                // });
 
                 var LegendServiceLabels = legend.querySelectorAll(".esriLegendServiceLabel");
                 array.forEach(LegendServiceLabels, function(LegendServiceLabel) {

@@ -18,7 +18,14 @@
  margin: 0;
 }
 
-.filterAdd {/* border-color: aquamarine; *//* border-style: solid; */position: inherit;/* padding-top: 4px; */padding-bottom: 10px;/* bottom: 30px; */position: relative;width: 100%;}
+.filterAdd {
+/* border-color: aquamarine; 
+   border-style: solid; padding-top: 4px; */
+   padding-bottom: 10px;
+/* bottom: 30px; */
+   position: relative;
+   width: 100%;
+}
 
 .filterAdd select {
     font-size: 18px;
