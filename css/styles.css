@@ -11,7 +11,7 @@
 }
 
 blockquote {
-    display: inherit;
+    /*display: inherit;*/
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
     -webkit-margin-start: 0;
@@ -443,7 +443,7 @@ blockquote {
 .esriBookmarkLabel {
   font-size: 16px;
   text-overflow: ellipsis;
-  color: inherit;
+  /*color: inherit;*/
   margin-left:0;
   padding-left:0;
   width: 100%;
@@ -657,7 +657,7 @@ img {
 }
 
 #panelTools {
-    min-height: 16px;
+    min-height: 22px;
     width: calc(100% - 4px);
     margin: 2px;
     clear: both;
@@ -690,9 +690,9 @@ img {
 }
 
 .panelTool input[type="image"] {
-  width: 14px;
-  height: 14px;
-  float: left;
+    width: 20px;
+    height: 20px;
+    float: left;
 }
 
 @media only screen and (min-width: 720px) {
@@ -1689,7 +1689,7 @@ background: white;
 }
 
 .arcgisSearch .hasValue .searchClear {
-    background-color: inherit;
+    /*background-color: inherit;*/
     display: inline-block;
     width: 18px;
     height: 100%;
@@ -1825,12 +1825,18 @@ input[type=checkbox].checkbox {
 
 .esriSimpleSliderTL {
     top: 10px;
-    left: 10px;
+    left: 14px;
 }
 
 .esriSimpleSlider div {
   width: 20px;
   height: 28px;
+}
+
+.HomeButton .home,
+.LocateButton .zoomLocateButton {
+  width:auto;
+  height:auto;
 }
 
 .navToolBar input[type="image"] {
@@ -1852,8 +1858,8 @@ input[type=checkbox].checkbox {
 
 .HomeButton .home, .LocateButton .zoomLocateButton {
     background-color: transparent;
-    width: inherit;
-    height: inherit;
+/*    width: inherit;
+    height: inherit;*/
     padding: 0;
     cursor: pointer;
     background-image: none;
@@ -2032,10 +2038,10 @@ myKey {
   margin:0;
 }
 #collapseLeftPanelButton img {
-  width:10px !important;
-  height:20px !important;
-  margin:0 !important;
-  padding: 2px 4px !important;
+    width: 9px !important;
+    height: 18px !important;
+    margin: 0 !important;
+    padding: 1px 1px !important;
 }
 
 #collapseLeftPanelButton label img {
