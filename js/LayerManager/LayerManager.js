@@ -395,7 +395,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             title: i18n.widgets.layerManager.opacity,
                         }, layerExpandArea);
                         //dojo.place(slider, expandLegendBtn, 'after');
-                        on(slider, 'input', lang.hitch(this, this._layerSliderChanged));
+                        on(slider, isIE11() ?'change':'input', lang.hitch(this, this._layerSliderChanged));
 
                         var legendTitle = i18n.widgets.layerManager.legendFor+layer.title;
                         var legend = new Legend({
@@ -502,17 +502,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     style: 'display:none;',
                 }, hideBasemapArea);
 
-                require(["dojo/has", "dojo/sniff"], lang.hitch(this, function(Has){
-                    if(Has("ie")){
-                        on(basemapSlider, 'change', lang.hitch(this, function(ev) {
-                            this.baseMap.setOpacity(ev.currentTarget.value/100);
-                        }));
-                    }
-                    else {
-                        on(basemapSlider, 'input', lang.hitch(this, function(ev) {
-                            this.baseMap.setOpacity(ev.currentTarget.value/100);
-                        }));
-                    }
+                on(basemapSlider, isIE11() ?'change':'input', lang.hitch(this, function(ev) {
+                    this.baseMap.setOpacity(ev.currentTarget.value/100);
                 }));
 
                 on(expandBaseMaps, 'change', lang.hitch(this, function(evt) {

@@ -87,31 +87,32 @@ input[type=range]::-moz-range-thumb {
 
 
 input[type=range]::-ms-track {
-  width: 100%;
-  height: 8px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  border-width: 16px 0;
-  color: transparent;
+    width: 100%;
+    height: 9px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    border-width: 8px 0;
+    color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
   background: transparent;
-  border: 1px solid gray;
-  border-radius: 3px;
+  border: 2px solid gray;
+  border-radius: 4px;
 }
 input[type=range]::-ms-fill-upper {
   background: transparent;
-  border: 1px solid gray;
-  border-radius: 3px;
+  border: 2px solid gray;
+  border-radius: 4px;
 }
 input[type=range]:focus::-ms-fill-lower {
-    background: white; /* For browsers that do not support gradients */
-    background: linear-gradient(to right, white, gray); /* Standard syntax (must be last) */
+    background: white; 
+    background: linear-gradient(to right, white, gray); 
 }
 input[type=range]:focus::-ms-fill-upper {
-    background: black; /* For browsers that do not support gradients */
-    background: linear-gradient(to right, silver, black); /* Standard syntax (must be last) */
+    background: black; 
+    background: linear-gradient(to right, silver, black); 
 }
 
 input[type=range]::-ms-thumb {
