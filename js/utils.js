@@ -1,12 +1,17 @@
 "use strict" 
 
 function isIE11() 
-{ return (
-    (navigator.appName == 'Microsoft Internet Explorer') || 
-    (
-        (navigator.appName == 'Netscape') && 
-        (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null))
-    ); 
+{ 
+    return (
+        (navigator.appName == 'Microsoft Internet Explorer') || 
+        (
+            (navigator.appName == 'Netscape') && 
+            (new RegExp("Trident/.*rv:([0-9]{1,}[\.0-9]{0,})").exec(navigator.userAgent) != null))
+        ); 
+}
+
+function isChrome() {
+    return ((navigator.userAgent.toLowerCase().indexOf('chrome') > -1) &&(navigator.vendor.toLowerCase().indexOf("google inc.") > -1));
 }
 
 if (!Element.prototype.matches)

@@ -135,7 +135,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _drag: function(evt) {
             this._dropTarget = 
             this._startTarget = evt.target.closest('.toc-layer');
-            if(!isIE11() && evt.target.type && evt.target.type==="range") {
+            if(isChrome() && evt.target.type && evt.target.type==="range") {
                 evt.cancelBubble = true;
                 evt.preventDefault();
                 return;
@@ -367,7 +367,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             type:'range',
                             class:'layerOpacitySlider',
                             value:100,
-                            draggable: !isIE11(),//true, or isChrome?
+                            draggable: isChrome(),
                             'data-layerid':layer.id,
                             title: i18n.widgets.layerManager.opacity,
                         }, layerExpandArea);
