@@ -125,7 +125,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         _allowDrop: function (evt) {
             var target = evt.target.closest('.toc-layer');
-            if(target && target.firstChild.id !== this._dropTarget.firstChild.id)
+            if(target && target.firstChild && target.firstChild.id !== this._dropTarget.firstChild.id)
             {
                 this._dropTarget = target;
             }
@@ -135,6 +135,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _drag: function(evt) {
             this._dropTarget = 
             this._startTarget = evt.target.closest('.toc-layer');
+            if(!isIE11() && evt.target.type && evt.target.type==="range") {
+                evt.cancelBubble = true;
+                evt.preventDefault();
+                return;
+            }
             var bar = dojo.query('.dragabble', this._startTarget)[0];
             if(bar) {
                 if(bar.setActive) {
@@ -362,7 +367,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             type:'range',
                             class:'layerOpacitySlider',
                             value:100,
-                            draggable: false,
+                            draggable: !isIE11(),//true, or isChrome?
                             'data-layerid':layer.id,
                             title: i18n.widgets.layerManager.opacity,
                         }, layerExpandArea);
