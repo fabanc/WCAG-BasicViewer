@@ -19,7 +19,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     ) {
     var Widget = declare("esri.dijit.LayerManager", [_WidgetBase, _TemplatedMixin, Evented], {
         templateString: dijitTemplate,
-        // defaults
+
         options: {
             theme: "LayerManager",
             map: null,
@@ -33,11 +33,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             toolbar: null
         },
 
-        // lifecycle: 1
         constructor: function (options, srcRefNode) {
-            // mix in settings and defaults
             var defaults = lang.mixin({}, this.options, options);
-            // widget node
             this.domNode = srcRefNode;
 
             dojo.create("link", {
@@ -110,13 +107,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this._removeEvents();
             this.inherited(arguments);
         },
-        /* ---------------- */
-        /* Public Events */
-        /* ---------------- */
-        // load
-        // toggle
-        // expand
-        // collapse
 
         show: function () {
             this.set("visible", true);
@@ -130,16 +120,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this._createList();
         },
 
-        /* ----------------- */
-        /* Private Functions */
-        /* ----------------- */
-
         _startTarget: null,
         _dropTarget: null,
 
         _allowDrop: function (evt) {
             var target = evt.target.closest('.toc-layer');
-            if(target.firstChild.id !== this._dropTarget.firstChild.id)
+            if(target && target.firstChild.id !== this._dropTarget.firstChild.id)
             {
                 this._dropTarget = target;
             }
@@ -253,14 +239,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     if(layers.length > 1) {
                         var layerHandleDiv = domConstruct.create("div", {
                             className: 'dragabble',
-                            //draggable: true,
                             title: i18n.widgets.layerManager.dragLayer,//"Drag to change layers' order, or\nclick and use up/down arrow keys.",
                             tabindex:0,
                         }, titleDiv);
-                        on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
-                        on(layerHandleDiv, 'dragstart', lang.hitch(this, this._drag));
-                        on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                        on(layerDiv, 'dragend', lang.hitch(this, this._drop));
+                        on(titleDiv, 'dragstart', lang.hitch(this, this._drag));
+                        on(titleDiv, 'dragover', lang.hitch(this, this._allowDrop));
+                        on(titleDiv, 'dragend', lang.hitch(this, this._drop));
                         on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
                     }
 
@@ -278,13 +262,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         // role: "presentation",
                         tabindex:-1,
                     }, titleContainerDiv);
-
-                    // if(layerHandleDiv) {
-                    //     on(layerDiv, 'dragstart', lang.hitch(this, this._drag));
-                    //     on(layerDiv, 'dragover', lang.hitch(this, this._allowDrop));
-                    //     on(layerDiv, 'dragend', lang.hitch(this, this._drop));
-                    //     on(layerHandleDiv, 'keyup', lang.hitch(this, this._flipLayers));
-                    // }
 
                     var titleCheckbox = domConstruct.create("input", 
                     {
@@ -359,12 +336,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         }, settingsDiv);
                     }
 
-                    // // clear css
-                    // var clearCSS = domConstruct.create("div", {
-                    //     className: this.css.clear
-                    // }, titleContainerDiv);
-
-                    // legend ?
                     if(this.defaults.hasLegend && this._showLegend(layer)) {
 
                         var expandLegend = new ImageToggleButton({
@@ -391,10 +362,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             type:'range',
                             class:'layerOpacitySlider',
                             value:100,
+                            draggable: false,
                             'data-layerid':layer.id,
                             title: i18n.widgets.layerManager.opacity,
                         }, layerExpandArea);
-                        //dojo.place(slider, expandLegendBtn, 'after');
+                        
                         on(slider, isIE11() ?'change':'input', lang.hitch(this, this._layerSliderChanged));
 
                         var legendTitle = i18n.widgets.layerManager.legendFor+layer.title;
