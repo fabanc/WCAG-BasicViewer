@@ -45,3 +45,11 @@
   color: black;
   font-weight: bold;
 }
+
+#search_more_results_show {
+    display: none;
+}
+
+.arcgisSearch .moreResults .resultsList {
+    display: block;
+}

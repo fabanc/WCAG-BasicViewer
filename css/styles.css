@@ -1689,7 +1689,7 @@ background: white;
 }
 
 .arcgisSearch .hasValue .searchClear {
-    background-color: initial;
+    background-color: transparent;
     display: inline-block;
     width: 18px;
     height: 100%;
