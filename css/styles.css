@@ -1048,7 +1048,7 @@ input[type=checkbox]:checked.share-dialog-checkbox + .share-dialog-checkbox:befo
 }
 
 .arcgisSearch .searchBtn {
-  opacity: 0.5;
+  opacity: 0.75;
   background-color: rgba(0, 0, 0, 0.3);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#4D000000,endColorstr=#4D000000);
   color: #a8a8a8; 
@@ -1689,7 +1689,7 @@ background: white;
 }
 
 .arcgisSearch .hasValue .searchClear {
-    /*background-color: inherit;*/
+    background-color: initial;
     display: inline-block;
     width: 18px;
     height: 100%;
@@ -1736,7 +1736,7 @@ background: white;
         line-height: 28px;
         vertical-align: baseline;
         position: absolute;
-        opacity:0.5;
+        opacity:0.75;
         height: 29px;
     }
 
@@ -2070,4 +2070,3 @@ myKey {
 #navLocate, #extendedNav {
     height:auto;
 }
-
