@@ -1888,6 +1888,7 @@ define(["dojo/ready",
                             source.displayField = searchLayer.field.name;
                             source.searchFields = [searchLayer.field.name];
                             source.placeholder = searchOptions.hintText;
+                            // source.infoTemplate = layer.infoTemplate;
                             defaultSources.push(source);
                             searchLayers = true;
                         }
@@ -1907,6 +1908,9 @@ define(["dojo/ready",
                 search.set("sources", defaultSources);
 
                 search.startup();
+
+                search.enableLabel = true;
+                search.maxResults = 40;
 
                 if (search && search.domNode) {
                     domConstruct.place(search.domNode, "panelGeocoder");
