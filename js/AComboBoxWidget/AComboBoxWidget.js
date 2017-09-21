@@ -2,7 +2,7 @@ define(["dojo/_base/declare", "dojo/_base/lang", "dojo/has", "dojo/dom","esri/ke
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dojo/on", "dijit/form/DateTextBox",
     "dojo/Deferred", "dojo/promise/all", 
     "dojo/query", "dojo/_base/fx", "dojo/dom-style", "dojo/mouse", 
-    "dojo/text!application/AComboBoxWidget/templates/AComboBoxWidget.html", 
+    "dojo/text!application/AComboBoxWidget/Templates/AComboBoxWidget.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     

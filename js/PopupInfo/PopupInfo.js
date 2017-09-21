@@ -2,8 +2,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/registry",
     "dojo/on", 
     "dojo/Deferred", "dojo/query", 
-    "dojo/text!application/PopupInfo/templates/PopupInfo.html", 
-    // "dojo/text!application/PopupInfo/templates/PopupInfoHeader.html", 
+    "dojo/text!application/PopupInfo/Templates/PopupInfo.html", 
+    // "dojo/text!application/PopupInfo/Templates/PopupInfoHeader.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
@@ -53,6 +53,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.widgetsInTemplate = true;
 
             this.map = defaults.map;
+            this.search = defaults.search;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);
@@ -88,6 +89,22 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         postCreate : function() {
             if(this.superNavigator)
                 this.superNavigator.badge = this.showBadge;
+            if(this.search) {
+                this.search.enableLabel = true;
+                this.search.maxResults = 40;
+                this.search.popupOpenOnSelect = true;
+
+                this.search.on('search-results', function(e) {
+                    console.log('search-results', e);
+                });
+                this.search.on('select-result', function(e) {
+                    console.log('select-result', e);
+                });
+                this.search.infoTemplate.content = 
+                    '<div class="${searchTheme}"><div id="${searchMoreResultsId}" class="${searchMoreResults}"><div class="${searchMoreResultsItem}">${searchResult}</div>'+
+                    '<div>Results: ${*}</div>'+
+                    '<div>${searchMoreResultsHtml}</div></div></div>';   
+            }
         },
 
         popupInfoHeader : null,

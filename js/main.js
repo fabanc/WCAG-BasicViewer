@@ -1318,7 +1318,8 @@ define(["dojo/ready",
                 {
                     map: this.map,
                     toolbar: toolbar,
-                    superNavigator: this.superNav
+                    superNavigator: this.superNav,
+                    search: this.search
                 }, infoPanelDiv);
                 popupInfo.startup();
                 
@@ -1787,7 +1788,7 @@ define(["dojo/ready",
                 };
 
                 var searchLayers = false;
-                var search = new Search(options, domConstruct.create("div", {
+                var search = this.search = new Search(options, domConstruct.create("div", {
                     id: "search"
                 }, this.map.container));
                 var defaultSources = [];
@@ -1839,9 +1840,9 @@ define(["dojo/ready",
                             source.outFields = ["*"];
                             searchLayers = true;
                             defaultSources.push(source);
-                            if (mapLayer.infoTemplate) {
-                                source.infoTemplate = mapLayer.infoTemplate;
-                            }
+                            // if (mapLayer.infoTemplate) {
+                            //     source.infoTemplate = mapLayer.infoTemplate;
+                            // }
                         }
                     }
                 }));
@@ -1909,8 +1910,19 @@ define(["dojo/ready",
 
                 search.startup();
 
-                search.enableLabel = true;
-                search.maxResults = 40;
+                // search.enableLabel = true;
+                // search.maxResults = 40;
+                // search.popupOpenOnSelect = true;
+
+                // search.on('search-results', function(e) {
+                //     console.log('search-results', e);
+                // });
+                // search.on('select-result', function(e) {
+                //     console.log('select-result', e);
+                // });
+                // search.infoTemplate.content = '<div class="${searchTheme}"><div id="${searchMoreResultsId}" class="${searchMoreResults}"><div class="${searchMoreResultsItem}">${searchResult}</div>'+
+                // '<div>Results: ${*}</div>'+
+                // '<div>${searchMoreResultsHtml}</div></div></div>';
 
                 if (search && search.domNode) {
                     domConstruct.place(search.domNode, "panelGeocoder");

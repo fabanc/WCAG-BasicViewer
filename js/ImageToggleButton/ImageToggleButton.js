@@ -3,7 +3,7 @@ define([
     "dojo/dom", "esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", 
     "dojo/on", "dojo/query", "dijit/registry",
-    "dojo/text!application/ImageToggleButton/templates/ImageToggleButton.html", 
+    "dojo/text!application/ImageToggleButton/Templates/ImageToggleButton.html", 
     "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", 
     "dojo/dom-construct", "dojo/_base/event", "esri/lang", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
