@@ -94,12 +94,24 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.maxResults = 40;
                 this.search.popupOpenOnSelect = true;
 
-                this.search.on('search-results', function(e) {
-                    console.log('search-results', e);
-                });
-                this.search.on('select-result', function(e) {
-                    console.log('select-result', e);
-                });
+                this.search.on('search-results', lang.hitch(this, function(e) {
+                    this.searchResults = e.results;
+                    // console.log('search-results', this.searchResults);
+                }));
+                this.search.on('select-result', lang.hitch(this, function(e) {
+                    var links = query('ul li a', dojo.byId('search_more_results_list'));
+                    links.forEach(lang.hitch(this, function(link){
+                        on(link, 'click', lang.hitch(this, function(ev) {
+                            var data = ev.target.dataset;
+                            // console.log(data.sourceIndex, data.index);
+                            if(this.searchResults) {
+                                console.log(this.searchResults[data.sourceIndex][data.index]);
+                                this.search.select(this.searchResults[data.sourceIndex][data.index]);
+                            }
+                        }));
+                    }));
+                    // console.log('select-result', e, links);
+                }));
                 this.search.infoTemplate.content = 
                     '<div class="${searchTheme}"><div id="${searchMoreResultsId}" class="${searchMoreResults}"><div class="${searchMoreResultsItem}">${searchResult}</div>'+
                     '<div>Results: ${*}</div>'+

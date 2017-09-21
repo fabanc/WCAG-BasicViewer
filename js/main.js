@@ -1917,20 +1917,6 @@ define(["dojo/ready",
 
                 search.startup();
 
-                // search.enableLabel = true;
-                // search.maxResults = 40;
-                // search.popupOpenOnSelect = true;
-
-                // search.on('search-results', function(e) {
-                //     console.log('search-results', e);
-                // });
-                // search.on('select-result', function(e) {
-                //     console.log('select-result', e);
-                // });
-                // search.infoTemplate.content = '<div class="${searchTheme}"><div id="${searchMoreResultsId}" class="${searchMoreResults}"><div class="${searchMoreResultsItem}">${searchResult}</div>'+
-                // '<div>Results: ${*}</div>'+
-                // '<div>${searchMoreResultsHtml}</div></div></div>';
-
                 if (search && search.domNode) {
                     domConstruct.place(search.domNode, "panelGeocoder");
             
