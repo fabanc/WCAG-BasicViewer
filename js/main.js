@@ -23,6 +23,8 @@ define(["dojo/ready",
     "application/has-config", "esri/arcgis/utils", "esri/lang", 
     "dijit/layout/BorderContainer", "dijit/layout/ContentPane", "dijit/focus",
     "esri/tasks/query", 
+    "esri/dijit/Search", 
+    "esri/tasks/locator",
     "esri/dijit/HomeButton", "esri/dijit/LocateButton", 
     "esri/dijit/Legend", "esri/dijit/BasemapGallery", 
     "dojo/i18n!application/nls/resources",
@@ -53,6 +55,7 @@ define(["dojo/ready",
     has, arcgisUtils, esriLang, 
     BorderContainer, ContentPane, focusUtil,
     Query,
+    Search, Locator,
     HomeButton, LocateButton, 
     Legend, BasemapGallery, 
     i18n, i18n_BaseMapLabels,
@@ -584,7 +587,7 @@ define(["dojo/ready",
             skipTable.addEventListener('click', lang.hitch(this, this.skipToTable));
 
             query('.skip').forEach(function(h) {
-                h.addEventListener('keydown', function (e) {
+                on(h, 'keydown', function (e) {
                     if(e.key === "Enter" || e.key === " " || e.char === " ")
                     {
                         e.target.click();
@@ -610,7 +613,6 @@ define(["dojo/ready",
             };
 
             skipToMap = lang.hitch(this, function() {
-                //document.querySelector('.esriSimpleSliderIncrementButton input').focus();
                 this.map.container.focus();
             });
         },
@@ -638,7 +640,6 @@ define(["dojo/ready",
         },
 
         skipToMap: function() {
-            // console.log(dojo.byId('mapDiv'));
             dojo.byId('mapDiv').focus();
         },
 
@@ -1756,7 +1757,6 @@ define(["dojo/ready",
 
         _createMapUI: function () {
             if (!has("touch")) {
-                //remove no-touch class from body
                 domClass.remove(document.body, "no-touch");
             }
 
@@ -1770,11 +1770,18 @@ define(["dojo/ready",
                 });
             }));
 
-            //Add the location search widget
-            require(["application/has-config!search?esri/dijit/Search", 
-                "application/has-config!search?esri/tasks/locator"], 
-                lang.hitch(this, function (Search, Locator) {
-                if (!Search && !Locator) {
+            this.search = this._addSearch();
+
+            //create the tools
+            this._createUI();
+        },
+
+        _addSearch: function() {
+            // require(["application/has-config!search?esri/dijit/Search", 
+            //     "application/has-config!search?esri/tasks/locator"], 
+            //     lang.hitch(this, function (Search, Locator) {
+                if (!Search && !Locator) 
+                {
                     //add class so we know we don't have to hide title since search isn't visible
                     domClass.add("panelTop", "no-search");
                     return;
@@ -1788,7 +1795,7 @@ define(["dojo/ready",
                 };
 
                 var searchLayers = false;
-                var search = this.search = new Search(options, domConstruct.create("div", {
+                var search = new Search(options, domConstruct.create("div", {
                     id: "search"
                 }, this.map.container));
                 var defaultSources = [];
@@ -1965,7 +1972,6 @@ define(["dojo/ready",
                     }
                 });
 
-
                 var containerNode = dojo.query('#search [data-dojo-attach-point=containerNode]');
                 if(containerNode && containerNode.length > 0) {
                     var containerNodeObserver = new MutationObserver(function(mutations) {
@@ -2002,10 +2008,8 @@ define(["dojo/ready",
                     containerNodeObserver.observe(containerNode[0], observerCfg);
                 }
 
-            }));
-
-            //create the tools
-            this._createUI();
+                return search;
+            // }));
         },
  
         _updateTheme: function () {
