@@ -60,6 +60,7 @@ http://reference.sitepoint.com/css/outline-color
 
 .arcgisSearch .searchMenu li:hover, .arcgisSearch .searchMenu li:focus {
   background-color: rgba(0, 0, 0, 0.3);
+  color:white;
 }
 
 .activeMarker,

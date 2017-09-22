@@ -91,7 +91,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.superNavigator.badge = this.showBadge;
             if(this.search) {
                 this.search.enableLabel = true;
-                this.search.maxResults = 20;
+                this.search.maxResults = this.search.maxSuggestions = 20;
                 this.search.popupOpenOnSelect = true;
 
                 this.search.on('search-results', lang.hitch(this, function(e) {
@@ -110,23 +110,26 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         //domAttr.set(title, 'tabindex', 0);
                         dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
                     });
-                    var lists = query('ul', dojo.byId('search_more_results_list'));
-                    lists.forEach(function(list){
-                        //domAttr.set(title, 'tabindex', 0);
-                        dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
-                    });
-                    var links = query('ol li a', dojo.byId('search_more_results_list'));
-                    links.forEach(lang.hitch(this, function(link){
-                        link.innerHTML = link.innerHTML+', ';
-                        on(link, 'click', lang.hitch(this, function(ev) {
-                            var data = ev.target.dataset;
-                            // console.log(data.sourceIndex, data.index);
-                            if(this.searchResults) {
-                                console.log(this.searchResults[data.sourceIndex][data.index]);
-                                this.search.select(this.searchResults[data.sourceIndex][data.index]);
-                            }
+                    var searcMoreNode = dojo.byId('search_more_results_list');
+                    if(searcMoreNode) {
+                        var lists = query('ul', searcMoreNode);
+                        lists.forEach(function(list){
+                            //domAttr.set(title, 'tabindex', 0);
+                            dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
+                        });
+                        var links = query('ol li a', dojo.byId('search_more_results_list'));
+                        links.forEach(lang.hitch(this, function(link){
+                            link.innerHTML = link.innerHTML+', ';
+                            on(link, 'click', lang.hitch(this, function(ev) {
+                                var data = ev.target.dataset;
+                                // console.log(data.sourceIndex, data.index);
+                                if(this.searchResults) {
+                                    console.log(this.searchResults[data.sourceIndex][data.index]);
+                                    this.search.select(this.searchResults[data.sourceIndex][data.index]);
+                                }
+                            }));
                         }));
-                    }));
+                    }
                     var leftPane = dojo.byId('leftPane');
                     domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
                     leftPane.focus();
