@@ -93,23 +93,45 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.enableLabel = true;
                 this.search.maxResults = this.search.maxSuggestions = 20;
                 this.search.popupOpenOnSelect = true;
+                this.search.infoTemplate.content = 
+                    '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
+                    '<div class="${searchMoreResultsItem}">${searchResult}</div>'+
+                    // '<div>Results: ${*}</div>'+
+                    '<div>${searchMoreResultsHtml}</div></div>';   
+
 
                 this.search.on('search-results', lang.hitch(this, function(e) {
                     this.searchResults = e.results;
                     // console.log('search-results', this.searchResults);
                 }));
+
                 this.search.on('select-result', lang.hitch(this, function(e) {
-                    var resultTitle =  query('.moreItem', dojo.byId('search_more_results'));
-                    if(resultTitle && resultTitle.length>0) {
-                        resultTitle = resultTitle[0];
-                        dojo.place("<h3 id='selectResultFirstItem' tabindex=0 class='moreItem'>"+resultTitle.innerHTML+"</h3>", resultTitle, "replace");
-                        // console.log('resultTitle', resultTitle);
+                    var leftPane = dojo.byId('leftPane');
+                    domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
+                    var resultTitleNode = dojo.byId('search_more_results');
+                    if(resultTitleNode) {
+                        var resultTitle =  query('.moreItem', resultTitleNode);
+                        if(resultTitle && resultTitle.length>0) {
+                            resultTitle = resultTitle[0];
+                            dojo.place("<h3 id='selectResultFirstItem' tabindex=0 class='moreItem'>"+resultTitle.innerHTML+"</h3>", resultTitle, "replace");
+                            domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
+                            // console.log('resultTitle', resultTitle);
+                        }
+                        else {
+                            domAttr.remove(leftPane, 'aria-labelledby');
+                        }
                     }
-                    var titles =  query('.popupHeader', dojo.byId('search_more_results_list'));
-                    titles.forEach(function(title){
-                        //domAttr.set(title, 'tabindex', 0);
-                        dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
-                    });
+                    else {
+                        domAttr.remove(leftPane, 'aria-labelledby');
+                    }
+                    var searchResultListNode = dojo.byId('search_more_results_list');
+                    if(searchResultListNode) {
+                        var titles =  query('.popupHeader', searchResultListNode);
+                        titles.forEach(function(title){
+                            //domAttr.set(title, 'tabindex', 0);
+                            dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
+                        });
+                    }
                     var searcMoreNode = dojo.byId('search_more_results_list');
                     if(searcMoreNode) {
                         var lists = query('ul', searcMoreNode);
@@ -117,7 +139,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             //domAttr.set(title, 'tabindex', 0);
                             dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
                         });
-                        var links = query('ol li a', dojo.byId('search_more_results_list'));
+                        var links = query('ol li a', searcMoreNode);
                         links.forEach(lang.hitch(this, function(link){
                             link.innerHTML = link.innerHTML+', ';
                             on(link, 'click', lang.hitch(this, function(ev) {
@@ -130,15 +152,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             }));
                         }));
                     }
-                    var leftPane = dojo.byId('leftPane');
-                    domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
                     leftPane.focus();
                 }));
-                this.search.infoTemplate.content = 
-                    '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
-                    '<div class="${searchMoreResultsItem}">${searchResult}</div>'+
-                    // '<div>Results: ${*}</div>'+
-                    '<div>${searchMoreResultsHtml}</div></div>';   
+
             }
         },
 
