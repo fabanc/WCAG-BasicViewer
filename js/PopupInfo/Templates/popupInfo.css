@@ -53,3 +53,17 @@
 .arcgisSearch .moreResults .resultsList {
     display: block;
 }
+
+h3.moreItem,
+h4.popupHeader {
+    margin: 0; 
+    padding: 3px;
+}
+
+h4.popupHeader {
+    font-size: smaller;
+}
+
+#search_more_results_list ol {
+    margin: 0 0 8px 0;
+}
