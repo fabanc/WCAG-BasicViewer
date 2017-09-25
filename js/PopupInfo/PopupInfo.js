@@ -26,7 +26,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         ContentPane,
         string,
         i18n,
-        domUtils,
+        domUtils, 
         Popup, PopupInfoHeader, SuperNavigator
     ) {
 
@@ -89,6 +89,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         postCreate : function() {
             if(this.superNavigator)
                 this.superNavigator.badge = this.showBadge;
+
             if(this.search) {
                 this.search.enableLabel = true;
                 this.search.maxResults = this.search.maxSuggestions = 20;
@@ -99,11 +100,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     // '<div>Results: ${*}</div>'+
                     '<div>${searchMoreResultsHtml}</div></div>';   
 
-
-                this.search.on('search-results', lang.hitch(this, function(e) {
-                    this.searchResults = e.results;
-                    // console.log('search-results', this.searchResults);
-                }));
+                // this.search.on('search-results', lang.hitch(this, function(e) {
+                //     this.searchResults = e.results;
+                //     console.log('search-results', this.searchResults);
+                // }));
 
                 this.search.on('select-result', lang.hitch(this, function(e) {
                     var leftPane = dojo.byId('leftPane');
@@ -145,9 +145,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             on(link, 'click', lang.hitch(this, function(ev) {
                                 var data = ev.target.dataset;
                                 // console.log(data.sourceIndex, data.index);
-                                if(this.searchResults) {
-                                    console.log(this.searchResults[data.sourceIndex][data.index]);
-                                    this.search.select(this.searchResults[data.sourceIndex][data.index]);
+                                if(this.search.searchResults) {
+                                    console.log(this.search.searchResults[data.sourceIndex][data.index]);
+                                    this.search.select(this.search.searchResults[data.sourceIndex][data.index]);
                                 }
                             }));
                         }));
