@@ -45,6 +45,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             toolbar: null, 
             header: 'pageHeader_infoPanel',
             superNavigator : null,
+            maxSearchResults: 10
         },
 
         constructor: function (options, srcRefNode) {
@@ -54,6 +55,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.map = defaults.map;
             this.search = defaults.search;
+            this.maxSearchResults = defaults.maxSearchResults;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);
@@ -92,7 +94,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             if(this.search) {
                 this.search.enableLabel = true;
-                this.search.maxResults = this.search.maxSuggestions = 20;
+                this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
                 this.search.popupOpenOnSelect = true;
                 this.search.infoTemplate.content = 
                     '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
@@ -101,8 +103,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     '<div>${searchMoreResultsHtml}</div></div>';   
 
                 // this.search.on('search-results', lang.hitch(this, function(e) {
-                //     this.searchResults = e.results;
-                //     console.log('search-results', this.searchResults);
+                //     console.log('search-results', e.results);
                 // }));
 
                 this.search.on('select-result', lang.hitch(this, function(e) {

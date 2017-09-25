@@ -85,11 +85,14 @@ define({
     //Add the geocoding tool next to the title bar.
     "search": true,
     "locationSearch": true,
+    "maxSearchResults": 10,
+    "countryCodeSearch": "",
+
     //When searchExtent is true the locator will prioritize results within the current map extent.
     "searchExtent": true,
     "searchLayers":[{
-        "id": "Incidents",
-        "fields": ["Incident Type", "Province", "Company", "Status", "Substance"]
+        // "id": "Incidents",
+        // "fields": ["Incident Type", "Province", "Company", "Status", "Substance"]
     }],
     //Add the home extent button to the toolbar
     "home": true,

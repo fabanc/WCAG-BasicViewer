@@ -1332,7 +1332,8 @@ define(["dojo/ready",
                     map: this.map,
                     toolbar: toolbar,
                     superNavigator: this.superNav,
-                    search: this.search
+                    search: this.search,
+                    maxSearchResults: this.config.maxSearchResults
                 }, infoPanelDiv);
                 popupInfo.startup();
                 
@@ -1835,7 +1836,9 @@ define(["dojo/ready",
                             geocoder.highlightSymbol = searchSymbol;
                             
                             geocoder.outFields = ['*'];//["Match_addr"];
-                            geocoder.countryCode = 'CA';
+                            if(this.config.countryCodeSearch && this.config.countryCodeSearch !== "") {
+                                geocoder.countryCode = this.config.countryCodeSearch;
+                            }
 
                             geocoder.name = geocoder.name || "Esri World Geocoder";
 
@@ -1873,9 +1876,6 @@ define(["dojo/ready",
                             source.outFields = ["*"];
                             searchLayers = true;
                             defaultSources.push(source);
-                            // if (mapLayer.infoTemplate) {
-                            //     source.infoTemplate = mapLayer.infoTemplate;
-                            // }
                         }
                     }
                 }));

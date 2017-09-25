@@ -291,6 +291,20 @@
                "type": "boolean",
                "fieldName": "locationSearch",
                "label": "Location Search"
+            },
+            {
+               "type": "int",
+               "fieldName": "maxSearchResults",
+               "label": "Max Results"
+            },
+            {
+               "type": "string",
+               "fieldName": "countryCodeSearch",
+               "label": "CountryCode"
+            },
+            {
+               "type": "paragraph",
+               "value": "When Country Code is not null, searches will be restricted in that country."
             }
          ]
       },
@@ -519,6 +533,8 @@
       "tool_search": true,
       "tool_print": true,
       "locationSearch": true,
+      "maxSearchResults": 10,
+      "countryCodeSearch": "",
       "searchExtent": false,
       "languageLabel": true,
       "lang1shortName": "EN",
