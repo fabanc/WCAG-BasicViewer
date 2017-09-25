@@ -147,7 +147,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 var data = ev.target.dataset;
                                 // console.log(data.sourceIndex, data.index);
                                 if(this.search.searchResults) {
-                                    console.log(this.search.searchResults[data.sourceIndex][data.index]);
+                                    // console.log(this.search.searchResults[data.sourceIndex][data.index]);
                                     this.search.select(this.search.searchResults[data.sourceIndex][data.index]);
                                 }
                             }));

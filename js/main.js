@@ -292,7 +292,7 @@ define(["dojo/ready",
                 region: "top",
                 splitter: false,
                 style: "padding:0;",
-                content: dojo.byId("layoutTopPanel"),
+                content: dojo.byId("panelTitle"),
             });
             borderContainer.addChild(contentPaneTop);
               
@@ -1809,7 +1809,8 @@ define(["dojo/ready",
 
                 var searchLayers = false;
                 var search = new Search(options, domConstruct.create("div", {
-                    id: "search"
+                    id: "search",
+                    // role: "search"
                 }, this.map.container));
                 var defaultSources = [];
 
@@ -1941,6 +1942,9 @@ define(["dojo/ready",
                 });
                 search.set("sources", defaultSources);
 
+                var searchInputGroup = dojo.byId("search_input");
+                dojo.setAttr(searchInputGroup, 'role', 'search');
+
                 search.startup();
 
                 if (search && search.domNode) {
@@ -1955,8 +1959,8 @@ define(["dojo/ready",
                         '<img src="images\\downArrow.png" alt="Search in" width="20" height="20">';
                     }
 
-                    var searchInput = dojo.query(".searchInput")[0];
-                    dojo.setAttr(searchInput, 'role', 'search');
+                    // var searchInputGroup = dojo.query(".searchInputGroup")[0];
+                    // dojo.setAttr(searchInputGroup, 'role', 'search');
 
                     var esriIconZoomNode = dojo.query(".searchIcon.esri-icon-search")[0];
                     if(esriIconZoomNode)
