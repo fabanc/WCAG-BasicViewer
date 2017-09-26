@@ -1863,9 +1863,7 @@ define(["dojo/ready",
 
                 //add configured search layers to the search widget 
                 var configuredSearchLayers = (this.config.searchLayers instanceof Array) ? this.config.searchLayers : JSON.parse(this.config.searchLayers);
-
-                array.forEach(configuredSearchLayers, lang.hitch(this, function (layer) {
-
+                configuredSearchLayers.forEach(lang.hitch(this, function (layer) {
                     var mapLayer = this.map.getLayer(layer.id);
                     if (mapLayer) {
                         var source = {};
@@ -1944,6 +1942,7 @@ define(["dojo/ready",
 
                 var searchInputGroup = dojo.byId("search_input");
                 dojo.setAttr(searchInputGroup, 'role', 'search');
+                dojo.setAttr(searchInputGroup, 'aria-label', 'Search Input');
 
                 search.startup();
 
