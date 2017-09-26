@@ -154,14 +154,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             var popup = this.map.infoWindow;
 
-            this.searchLabel = new TextSymbol();
-            this.searchLabel.color="red";
-            // this.searchLabel.haloColor="white";
-            // this.searchLabel.haloSize=4;
-            this.searchLabel.yoffset = -12;
-            this.searchLabel.font.family="Roboto Condensed";
-            this.searchLabel.font.size=18;
-            this.searchLabel.font.weight = 'bold';
+            this.searchLabel = new TextSymbol({
+                yoffset : -14,
+                font : {
+                    family : "Roboto Condensed",
+                    size : 18,
+                    weight : 'bold'
+                }
+            });
+            this.searchLabel.color="red"; //"#7f0000";
 
             this.searchMarker = new esri.symbol.PictureMarkerSymbol({
                 "angle": 0,
