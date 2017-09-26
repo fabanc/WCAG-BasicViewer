@@ -1,5 +1,22 @@
-define(["dojo/_base/declare", "dojo/_base/lang", "dojo/_base/array", "dojo/_base/json", "dojo/dom-construct", "esri/lang", "esri/tasks/locator", "esri/layers/FeatureLayer", "esri/dijit/Search"], function (
-declare, lang, array, dojoJson, domConstruct, esriLang, Locator, FeatureLayer, Search) {
+define([
+    "dojo/_base/declare", 
+    "dojo/_base/lang", 
+    "dojo/_base/array", 
+    "dojo/_base/json", 
+    "dojo/dom-construct", 
+    "esri/lang", 
+    "esri/tasks/locator", 
+    "esri/layers/FeatureLayer", 
+    "esri/dijit/Search"], function (
+        declare, 
+        lang, 
+        array, 
+        dojoJson, 
+        domConstruct, 
+        esriLang, 
+        Locator, 
+        FeatureLayer, 
+        Search) {
     return declare(null, {
 
         constructor: function (parameters) {

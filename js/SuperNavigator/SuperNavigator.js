@@ -114,7 +114,7 @@ define([
             });
 
             on(this.map.container,'focus', lang.hitch(this, function() {
-                domStyle.set('mapSuperCursor', 'display', 'initial');
+                domStyle.set('mapSuperCursor', 'display', 'block');
             }));
 
             on(this.map.container,'blur', lang.hitch(this, function() {
@@ -353,13 +353,13 @@ define([
             this.getFeaturesAtPoint(center, mode, visibleLayers)
             .then(lang.hitch(this, function(features){
 
-            if(features && features !== undefined && features.length > 0)
-                this.map.infoWindow.setFeatures(features);
-            else 
-                this.map.infoWindow.clearFeatures();
+                if(features && features !== undefined && features.length > 0)
+                    this.map.infoWindow.setFeatures(features);
+                else 
+                    this.map.infoWindow.clearFeatures();
 
-            if(!has('infoPanel'))
-                this.map.infoWindow.show(center);
+                if(!has('infoPanel'))
+                    this.map.infoWindow.show(center);
 
                 deferred.resolve();
             }));
