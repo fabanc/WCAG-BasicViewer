@@ -129,6 +129,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                         "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
                                         "<div class='hzLine'></div>"+
                                         "<span Tabindex=0>${LongLabel}</span>"+
+                                        "<br/><span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
                                         "</div>"
                                         );   
                                 }
