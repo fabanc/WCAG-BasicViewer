@@ -67,3 +67,8 @@ h4.popupHeader {
 #search_more_results_list ol {
     margin: 0 0 8px 0;
 }
+
+.locatorScore {
+    position: absolute;
+    bottom: 10px;
+}

@@ -7,7 +7,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
-    "dojox/layout/ContentPane",    
+    "dojox/layout/ContentPane",  
+    "esri/InfoTemplate", 
+    "esri/symbols/PictureMarkerSymbol", "esri/graphic", 
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
@@ -24,6 +26,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         parser, ready,
         BorderContainer,
         ContentPane,
+        InfoTemplate, 
+        PictureMarkerSymbol, Graphic,
         string,
         i18n,
         domUtils, 
@@ -95,66 +99,108 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if(this.search) {
                 this.search.enableLabel = true;
                 this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
-                this.search.popupOpenOnSelect = true;
-                this.search.infoTemplate.content = 
-                    '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
-                    '<div class="${searchMoreResultsItem}">${searchResult}</div>'+
-                    // '<div>Results: ${*}</div>'+
-                    '<div>${searchMoreResultsHtml}</div></div>';   
+                this.search.autoSelect = false;
+                // ??? this.search.op
 
-                // this.search.on('search-results', lang.hitch(this, function(e) {
-                //     console.log('search-results', e.results);
-                // }));
+                // this.search.infoTemplate.content = 
+                //     '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
+                //     '<div class="${searchMoreResultsItem}">${searchResult}</div>'+
+                //     // '<div>Results: ${*}</div>'+
+                //     '<div>${searchMoreResultsHtml}</div></div>';   
 
-                this.search.on('select-result', lang.hitch(this, function(e) {
-                    var leftPane = dojo.byId('leftPane');
-                    domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
-                    var resultTitleNode = dojo.byId('search_more_results');
-                    if(resultTitleNode) {
-                        var resultTitle =  query('.moreItem', resultTitleNode);
-                        if(resultTitle && resultTitle.length>0) {
-                            resultTitle = resultTitle[0];
-                            dojo.place("<h3 id='selectResultFirstItem' tabindex=0 class='moreItem'>"+resultTitle.innerHTML+"</h3>", resultTitle, "replace");
-                            domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
-                            // console.log('resultTitle', resultTitle);
-                        }
-                        else {
-                            domAttr.remove(leftPane, 'aria-labelledby');
-                        }
-                    }
-                    else {
-                        domAttr.remove(leftPane, 'aria-labelledby');
-                    }
-                    var searchResultListNode = dojo.byId('search_more_results_list');
-                    if(searchResultListNode) {
-                        var titles =  query('.popupHeader', searchResultListNode);
-                        titles.forEach(function(title){
-                            //domAttr.set(title, 'tabindex', 0);
-                            dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
-                        });
-                    }
-                    var searcMoreNode = dojo.byId('search_more_results_list');
-                    if(searcMoreNode) {
-                        var lists = query('ul', searcMoreNode);
-                        lists.forEach(function(list){
-                            //domAttr.set(title, 'tabindex', 0);
-                            dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
-                        });
-                        var links = query('ol li a', searcMoreNode);
-                        links.forEach(lang.hitch(this, function(link){
-                            link.innerHTML = link.innerHTML+', ';
-                            on(link, 'click', lang.hitch(this, function(ev) {
-                                var data = ev.target.dataset;
-                                // console.log(data.sourceIndex, data.index);
-                                if(this.search.searchResults) {
-                                    // console.log(this.search.searchResults[data.sourceIndex][data.index]);
-                                    this.search.select(this.search.searchResults[data.sourceIndex][data.index]);
+                this.search.on('search-results', lang.hitch(this, function(e) {
+                    // console.log('search-results', e);
+
+                    var features = [];
+                    if(e.results) {
+                        for(var i = 0; i< this.search.sources.length; i++) {
+                            if(e.results.hasOwnProperty(i)) {
+                                var dataFeatures = e.results[i].map(function(r){ return r.feature;});
+                                var infoTemplate = null;
+                                var layer = null;
+                                if(this.search.sources[i].hasOwnProperty('featureLayer')) {
+                                    infoTemplate = this.search.sources[i].featureLayer.infoTemplate;
+                                    layer = this.search.sources[i].featureLayer;
                                 }
-                            }));
-                        }));
+                                else {
+                                    infoTemplate = new InfoTemplate(
+                                        "Locator", 
+                                        "<div class='esriViewPopup'>"+
+                                        "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
+                                        "<div class='hzLine'></div>"+
+                                        "<span Tabindex=0>${LongLabel}</span>"+
+                                        "</div>"
+                                        );   
+                                }
+                                for(var j = 0; j< dataFeatures.length; j++) {
+                                    dataFeatures[j].infoTemplate = infoTemplate;
+                                    dataFeatures[j]._layer = layer;
+                                }
+                                features = features.concat(dataFeatures);
+                            }
+                        }
+                        // console.log('features-results', features);
                     }
-                    leftPane.focus();
+                    this.search.map.infoWindow.show();
+                    if(features && features !== undefined && features.length > 0) {
+                        this.search.map.infoWindow.setFeatures(features);
+                     }
+                    else 
+                        this.search.map.infoWindow.clearFeatures();
                 }));
+
+                // this.search.on('select-result', lang.hitch(this, function(e) {
+                //     if(e.result.feature._layer) return;
+
+                //     var leftPane = dojo.byId('leftPane');
+                //     console.log('select-result', e);
+                //     domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
+                //     var resultTitleNode = dojo.byId('search_more_results');
+                //     if(resultTitleNode) {
+                //         var resultTitle =  query('.moreItem', resultTitleNode);
+                //         if(resultTitle && resultTitle.length>0) {
+                //             resultTitle = resultTitle[0];
+                //             dojo.place("<h3 id='selectResultFirstItem' tabindex=0 class='moreItem'>"+resultTitle.innerHTML+"</h3>", resultTitle, "replace");
+                //             domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
+                //             // console.log('resultTitle', resultTitle);
+                //         }
+                //         else {
+                //             domAttr.remove(leftPane, 'aria-labelledby');
+                //         }
+                //     }
+                //     else {
+                //         domAttr.remove(leftPane, 'aria-labelledby');
+                //     }
+                //     var searchResultListNode = dojo.byId('search_more_results_list');
+                //     if(searchResultListNode) {
+                //         var titles =  query('.popupHeader', searchResultListNode);
+                //         titles.forEach(function(title){
+                //             //domAttr.set(title, 'tabindex', 0);
+                //             dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
+                //         });
+                //     }
+                //     var searcMoreNode = dojo.byId('search_more_results_list');
+                //     if(searcMoreNode) {
+                //         var lists = query('ul', searcMoreNode);
+                //         lists.forEach(function(list){
+                //             //domAttr.set(title, 'tabindex', 0);
+                //             dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
+                //         });
+                //         var links = query('ol li a', searcMoreNode);
+                //         links.forEach(lang.hitch(this, function(link){
+                //             link.innerHTML = link.innerHTML+', ';
+                //             on(link, 'click', lang.hitch(this, function(ev) {
+                //                 var data = ev.target.dataset;
+                //                 // console.log(data.sourceIndex, data.index);
+                //                 if(this.search.searchResults) {
+                //                     // console.log(this.search.searchResults[data.sourceIndex][data.index]);
+                //                     this.search.select(this.search.searchResults[data.sourceIndex][data.index]);
+                //                 }
+                //             }));
+                //         }));
+                //     }
+                //     leftPane.focus();
+                // }));
 
             }
         },
@@ -167,6 +213,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.loaded = true;
 
             var popup = this.map.infoWindow;
+
+            this.searchMarker = new esri.symbol.PictureMarkerSymbol({
+                "angle": 0,
+                "xoffset": 0,
+                "yoffset": 15,
+                "type": "esriPMS",
+                "url": require.toUrl("./images/SearchPin.png"),
+                "contentType": "image/png",
+                "width": 30,
+                "height": 30
+            });
 
             popup.set("popupWindow", false);
 
@@ -187,12 +244,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }, domConstruct.create('Div', {}, this.headerNode));
             this.popupInfoHeader.startup();
 
-            var displayPopupContent = lang.hitch(this, function (feature) {
+            this.displayPopupContent = lang.hitch(this, function (feature) {
                 this.toolbar._toolOpen('infoPanel');
                 if (feature) {
                     contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
-                        if(mainSection) {
+                        if(mainSection && mainSection.length > 0) {
                             var header = query('.header', mainSection[0]);
                             if(header && header.length > 0) {
                                 domAttr.set(header[0], 'tabindex', 0);
@@ -241,7 +298,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             });
 
             on(popup, "SetFeatures", lang.hitch(this, function() {
-                // console.log("SetFeatures", popup.features);
+                console.log("SetFeatures", popup.features);
             }));
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
@@ -256,8 +313,26 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             on(popup, "SelectionChange", lang.hitch(this, function() {
                 var selectedFeature = popup.getSelectedFeature();
-                if(selectedFeature && selectedFeature !== undefined)
-                    displayPopupContent(selectedFeature);
+                if(selectedFeature && selectedFeature !== undefined) {
+                    this.displayPopupContent(selectedFeature);
+                    if(this.searchMarkerGrafic) {
+                        this.map.graphics.remove(this.searchMarkerGrafic);
+                        this.searchMarkerGrafic = null;
+                    }
+                    if(selectedFeature.infoTemplate) {
+                        var geometry = selectedFeature.geometry;
+                        if(geometry.type !== "point") {
+                            var extent = geometry.getExtent().expand(1.5);
+                            this.map.setExtent(extent);
+                        } else {
+                            this.map.centerAt(geometry);
+
+                            this.searchMarkerGrafic = new Graphic(geometry, this.searchMarker);
+                            // this.searchMarkerGrafic.name = 'searchMarker';
+                            this.map.graphics.add(this.searchMarkerGrafic);
+                        }
+                    }
+                }
             }));
 
             on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
