@@ -9,7 +9,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dijit/layout/BorderContainer",
     "dojox/layout/ContentPane",  
     "esri/InfoTemplate", 
-    "esri/symbols/PictureMarkerSymbol", "esri/graphic", 
+    "esri/symbols/PictureMarkerSymbol", "esri/symbols/TextSymbol", "esri/graphic", 
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
@@ -27,7 +27,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         BorderContainer,
         ContentPane,
         InfoTemplate, 
-        PictureMarkerSymbol, Graphic,
+        PictureMarkerSymbol, TextSymbol, Graphic,
         string,
         i18n,
         domUtils, 
@@ -100,16 +100,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.enableLabel = true;
                 this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
                 this.search.autoSelect = false;
-                // ??? this.search.op
-
-                // this.search.infoTemplate.content = 
-                //     '<div id="${searchMoreResultsId}" class="${searchMoreResults}">'+
-                //     '<div class="${searchMoreResultsItem}">${searchResult}</div>'+
-                //     // '<div>Results: ${*}</div>'+
-                //     '<div>${searchMoreResultsHtml}</div></div>';   
 
                 this.search.on('search-results', lang.hitch(this, function(e) {
-                    // console.log('search-results', e);
+                    console.log('search-results', e);
 
                     var features = [];
                     if(e.results) {
@@ -149,60 +142,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     else 
                         this.search.map.infoWindow.clearFeatures();
                 }));
-
-                // this.search.on('select-result', lang.hitch(this, function(e) {
-                //     if(e.result.feature._layer) return;
-
-                //     var leftPane = dojo.byId('leftPane');
-                //     console.log('select-result', e);
-                //     domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
-                //     var resultTitleNode = dojo.byId('search_more_results');
-                //     if(resultTitleNode) {
-                //         var resultTitle =  query('.moreItem', resultTitleNode);
-                //         if(resultTitle && resultTitle.length>0) {
-                //             resultTitle = resultTitle[0];
-                //             dojo.place("<h3 id='selectResultFirstItem' tabindex=0 class='moreItem'>"+resultTitle.innerHTML+"</h3>", resultTitle, "replace");
-                //             domAttr.set(leftPane, 'aria-labelledby', 'selectResultFirstItem');
-                //             // console.log('resultTitle', resultTitle);
-                //         }
-                //         else {
-                //             domAttr.remove(leftPane, 'aria-labelledby');
-                //         }
-                //     }
-                //     else {
-                //         domAttr.remove(leftPane, 'aria-labelledby');
-                //     }
-                //     var searchResultListNode = dojo.byId('search_more_results_list');
-                //     if(searchResultListNode) {
-                //         var titles =  query('.popupHeader', searchResultListNode);
-                //         titles.forEach(function(title){
-                //             //domAttr.set(title, 'tabindex', 0);
-                //             dojo.place("<h4 tabindex=0 class='popupHeader'>"+title.innerHTML+"</h4>", title, "replace");
-                //         });
-                //     }
-                //     var searcMoreNode = dojo.byId('search_more_results_list');
-                //     if(searcMoreNode) {
-                //         var lists = query('ul', searcMoreNode);
-                //         lists.forEach(function(list){
-                //             //domAttr.set(title, 'tabindex', 0);
-                //             dojo.place("<ol>"+list.innerHTML+"</ol>", list, "replace");
-                //         });
-                //         var links = query('ol li a', searcMoreNode);
-                //         links.forEach(lang.hitch(this, function(link){
-                //             link.innerHTML = link.innerHTML+', ';
-                //             on(link, 'click', lang.hitch(this, function(ev) {
-                //                 var data = ev.target.dataset;
-                //                 // console.log(data.sourceIndex, data.index);
-                //                 if(this.search.searchResults) {
-                //                     // console.log(this.search.searchResults[data.sourceIndex][data.index]);
-                //                     this.search.select(this.search.searchResults[data.sourceIndex][data.index]);
-                //                 }
-                //             }));
-                //         }));
-                //     }
-                //     leftPane.focus();
-                // }));
-
             }
         },
 
@@ -214,6 +153,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.loaded = true;
 
             var popup = this.map.infoWindow;
+
+            this.searchLabel = new TextSymbol();
+            this.searchLabel.color="red";
+            // this.searchLabel.haloColor="white";
+            // this.searchLabel.haloSize=4;
+            this.searchLabel.yoffset = -12;
+            this.searchLabel.font.family="Roboto Condensed";
+            this.searchLabel.font.size=18;
+            this.searchLabel.font.weight = 'bold';
 
             this.searchMarker = new esri.symbol.PictureMarkerSymbol({
                 "angle": 0,
@@ -298,9 +246,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
             });
 
-            on(popup, "SetFeatures", lang.hitch(this, function() {
-                console.log("SetFeatures", popup.features);
-            }));
+            // on(popup, "SetFeatures", lang.hitch(this, function() {
+            //     console.log("SetFeatures", popup.features);
+            // }));
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
                 contentPanel.set("content", i18n.widgets.popupInfo.instructions);
@@ -320,6 +268,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         this.map.graphics.remove(this.searchMarkerGrafic);
                         this.searchMarkerGrafic = null;
                     }
+                    if(this.searchLabelGraphic) {
+                        this.map.graphics.remove(this.searchLabelGraphic);
+                        this.searchLabelGraphic = null;
+                    }
                     if(selectedFeature.infoTemplate) {
                         var geometry = selectedFeature.geometry;
                         if(geometry.type !== "point") {
@@ -327,10 +279,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             this.map.setExtent(extent);
                         } else {
                             this.map.centerAt(geometry);
+                            if(!selectedFeature._layer) {
+                                this.searchMarkerGrafic = new Graphic(geometry, this.searchMarker);
+                                this.map.graphics.add(this.searchMarkerGrafic);
 
-                            this.searchMarkerGrafic = new Graphic(geometry, this.searchMarker);
-                            // this.searchMarkerGrafic.name = 'searchMarker';
-                            this.map.graphics.add(this.searchMarkerGrafic);
+                                this.searchLabel.setText(selectedFeature.attributes.ShortLabel);
+                                this.searchLabelGraphic = new Graphic(geometry, this.searchLabel);
+                                this.map.graphics.add(this.searchLabelGraphic);
+                            }
                         }
                     }
                 }
