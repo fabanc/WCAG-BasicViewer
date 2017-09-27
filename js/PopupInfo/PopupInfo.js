@@ -137,9 +137,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     this.search.map.infoWindow.show();
                     if(features && features !== undefined && features.length > 0) {
                         this.search.map.infoWindow.setFeatures(features);
-                     }
-                    else 
+                    }
+                    else { 
                         this.search.map.infoWindow.clearFeatures();
+                    }
                 }));
             }
         },
@@ -153,15 +154,23 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             var popup = this.map.infoWindow;
 
+            var textProbe = dojo.byId('searchTextProbe');
+            var cs = domStyle.getComputedStyle(textProbe);
+            var fontSize = cs.fontSize.slice(0,-2);
             this.searchLabel = new TextSymbol({
-                yoffset : -14,
-                font : {
-                    family : "Roboto Condensed",
-                    size : 18,
-                    weight : 'bold'
+                yoffset : -fontSize,//-14,
+                haloColor: [255,255,255,255],
+                haloSize: 3,
+                font : 
+                {
+                    family : cs.fontFamily, //"Roboto Condensed",
+                    size : fontSize, //18,
+                    weight : cs.fontWeight, //'bold'
                 }
             });
-            this.searchLabel.color="red"; //"#7f0000";
+            this.searchLabel.color = cs.color; //"red";
+
+            domConstruct.destroy(textProbe);
 
             this.searchMarker = new esri.symbol.PictureMarkerSymbol({
                 "angle": 0,

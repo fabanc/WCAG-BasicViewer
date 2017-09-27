@@ -2070,3 +2070,10 @@ myKey {
 #navLocate, #extendedNav {
     height:auto;
 }
+
+#searchTextProbe {
+    font-weight: bold;
+    font-size: 18px;
+    color: red;
+    font-family : "Roboto Condensed";
+}
