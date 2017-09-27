@@ -102,8 +102,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.autoSelect = false;
 
                 this.search.on('search-results', lang.hitch(this, function(e) {
-                    console.log('search-results', e);
-
+                    // console.log('search-results', e);
                     var features = [];
                     if(e.results) {
                         for(var i = 0; i< this.search.sources.length; i++) {
