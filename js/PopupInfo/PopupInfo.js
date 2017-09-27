@@ -160,7 +160,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.searchLabel = new TextSymbol({
                 yoffset : -fontSize,//-14,
                 haloColor: [255,255,255,255],
-                haloSize: 3,
+                haloSize: 2,
                 font : 
                 {
                     family : cs.fontFamily, //"Roboto Condensed",
@@ -177,7 +177,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 "xoffset": 0,
                 "yoffset": 15,
                 "type": "esriPMS",
-                "url": require.toUrl("./images/SearchPin.png"),
+                "url": require.toUrl("./images/SearchPin1.png"),
                 "contentType": "image/png",
                 "width": 30,
                 "height": 30
