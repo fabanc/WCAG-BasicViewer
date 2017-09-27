@@ -1681,6 +1681,9 @@ background: white;
 
 .arcgisSearch .searchSpinner {
     display: none;
+    color: white;
+    left: 0;
+    opacity: 1 !important;
 }
 
 .arcgisSearch .hasMultipleSources .searchToggle {
