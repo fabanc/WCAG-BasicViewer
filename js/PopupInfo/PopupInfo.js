@@ -179,7 +179,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 "xoffset": 0,
                 "yoffset": 15,
                 "type": "esriPMS",
-                "url": require.toUrl("./images/SearchPin1.png"),
+                "url": require.toUrl("./images/SearchPin3.png"),
                 "contentType": "image/png",
                 "width": 30,
                 "height": 30

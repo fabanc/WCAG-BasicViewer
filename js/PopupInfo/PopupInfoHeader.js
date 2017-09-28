@@ -95,11 +95,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.preventDefault();
                             break;
                         case 37: // <
+                            if(ev && ev.ctrlKey && this.map.infoWindow.count>1) {
+                                this.map.infoWindow.selectedIndex = 1;
+                            }
                             this.ToPrev();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;
                         case 39: // >
+                            if(ev && ev.ctrlKey && this.map.infoWindow.count>2) {
+                                this.map.infoWindow.selectedIndex = this.map.infoWindow.count - 2;
+                            }
                             this.ToNext();
                             ev.stopPropagation();
                             ev.preventDefault();
@@ -203,12 +209,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-        selectPrevious : function () {
+        selectPrevious : function (event) {
+            if(event && event.ctrlKey && this.map.infoWindow.count>1) {
+                this.map.infoWindow.selectedIndex = 1;
+            }
             this.map.infoWindow.selectPrevious();
             this.clearSuperNavigator();
         },
 
-        selectNext : function () {
+        selectNext : function (event) {
+            if(event && event.ctrlKey && this.map.infoWindow.count>2) {
+                this.map.infoWindow.selectedIndex = this.map.infoWindow.count - 2;
+            }
             this.map.infoWindow.selectNext();
             this.clearSuperNavigator();
         },
