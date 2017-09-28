@@ -101,6 +101,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
                 this.search.autoSelect = false;
 
+                this.search.on('clear-search', lang.hitch(this, this.clearSearchGraphics));
+
                 this.search.on('search-results', lang.hitch(this, function(e) {
                     // console.log('search-results', e);
                     var features = [];
@@ -273,14 +275,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var selectedFeature = popup.getSelectedFeature();
                 if(selectedFeature && selectedFeature !== undefined) {
                     this.displayPopupContent(selectedFeature);
-                    if(this.searchMarkerGrafic) {
-                        this.map.graphics.remove(this.searchMarkerGrafic);
-                        this.searchMarkerGrafic = null;
-                    }
-                    if(this.searchLabelGraphic) {
-                        this.map.graphics.remove(this.searchLabelGraphic);
-                        this.searchLabelGraphic = null;
-                    }
+                    this.clearSearchGraphics();
                     if(selectedFeature.infoTemplate) {
                         var geometry = selectedFeature.geometry;
                         if(geometry.type !== "point") {
@@ -345,6 +340,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         clear: function() {
             this.map.infoWindow.clearFeatures();
             this.map.container.focus();
+        },
+
+        clearSearchGraphics: function(){
+            if(this.searchMarkerGrafic) {
+                this.map.graphics.remove(this.searchMarkerGrafic);
+                this.searchMarkerGrafic = null;
+            }
+            if(this.searchLabelGraphic) {
+                this.map.graphics.remove(this.searchLabelGraphic);
+                this.searchLabelGraphic = null;
+            }
         },
 
         showBadge : function(show) {

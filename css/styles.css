@@ -1642,8 +1642,8 @@ background: white;
     /*font-size: 10px;
     line-height: 20px;
     height: 14px;*/
-    -webkit-border-radius: 0 2px 2px 0;
-    border-radius: 0 2px 2px 0;
+    /*-webkit-border-radius: 0 2px 2px 0;*/
+    /*border-radius: 0 2px 2px 0;*/
 }
 
 .arcgisSearch .searchGroup .searchInput {
@@ -1652,8 +1652,8 @@ background: white;
     padding: 3px 20px 3px 6px ;
     font-size: 12px;
     line-height: 16px;
-    -webkit-border-radius: 2px 0 0 2px;
-    border-radius: 2px 0 0 2px;
+    /*-webkit-border-radius: 2px 0 0 2px;*/
+    /*border-radius: 2px 0 0 2px;*/
 }
 
 .arcgisSearch .searchGroup .searchInput {
@@ -1673,10 +1673,18 @@ background: white;
 /*}*/
 
 .arcgisSearch .searchClose, .arcgisSearch .searchSpinner {
-    vertical-align: baseline;
-    margin-top: 3.5px;
+    /*vertical-align: baseline;*/
+    /*margin-top: 3.5px;*/
     position: absolute;
-    right: 2px;
+    /*right: 0;*/
+    width:19px;
+    height:19px;
+    line-height: 19px;
+    /*padding:6px;*/
+}
+
+.arcgisSearch .searchSpinner {
+    opacity:1;
 }
 
 .arcgisSearch .searchSpinner {
@@ -1693,10 +1701,11 @@ background: white;
 
 .arcgisSearch .hasValue .searchClear {
     background-color: transparent;
-    display: inline-block;
-    width: 18px;
-    height: 100%;
-    top: 0;
+    display: -webkit-inline-box;
+    width: 20px;
+    height: 20px;
+    /*right: 33px;*/
+    top: 1px;
 }
 
 @media only screen and (min-width: 720px) {
@@ -1718,11 +1727,11 @@ background: white;
 
     .arcgisSearch .searchBtn {
         padding: 6px;
-        font-size: 16px;
-        line-height: 20px;
-        height: 20px;
-        -webkit-border-radius: 0 4px 4px 0;
-        border-radius: 0 4px 4px 0;
+        /*font-size: 16px;*/
+        /*line-height: 20px;*/
+        /*height: 20px;*/
+        /*-webkit-border-radius: 0 4px 4px 0;*/
+        /*border-radius: 0 4px 4px 0;*/
     }
 
     .arcgisSearch .searchGroup .searchInput {
@@ -1731,16 +1740,18 @@ background: white;
         padding: 6px 28px 6px 12px;
         font-size: 14px;
         line-height: 20px;
-        -webkit-border-radius: 4px 0 0 4px;
-        border-radius: 4px 0 0 4px;
+        /*-webkit-border-radius: 4px 0 0 4px;*/
+        /*border-radius: 4px 0 0 4px;*/
     }
 
     .arcgisSearch .searchClose, .arcgisSearch .searchSpinner {
-        line-height: 28px;
-        vertical-align: baseline;
-        position: absolute;
+        /*line-height: 28px;*/
+        /*vertical-align: baseline;*/
+        /*position: absolute;*/
         opacity:0.75;
-        height: 29px;
+        /*height: 29px;*/
+        padding:6px;
+        right:0;
     }
 
     .searchClose:focus, .searchClose:hover {
@@ -1749,7 +1760,9 @@ background: white;
     }
 
     .arcgisSearch .hasValue .searchClear {
-        width: 28px;
+        width: 32px;
+        height: 32px;
+        /*padding: 6px;*/
     }
 
 }
@@ -1992,7 +2005,7 @@ myKey {
 }
 
 .claro .dijitComboButton .dijitStretch {
-    -moz-border-radius: 4px 0 0 4px;
+    /*-moz-border-radius: 4px 0 0 4px;*/
     /* border-radius: 4px 0 0 4px; */
     border-radius: 0;
     border: none;

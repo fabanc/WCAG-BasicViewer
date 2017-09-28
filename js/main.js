@@ -1817,16 +1817,16 @@ define(["dojo/ready",
                 //setup geocoders defined in common config 
                 if (this.config.helperServices.geocode && this.config.locationSearch) {
                     var geocoders = lang.clone(this.config.helperServices.geocode);
-                    var searchSymbol = new esri.symbol.PictureMarkerSymbol({
-                                "angle": 0,
-                                "xoffset": 0,
-                                "yoffset": 20,
-                                "type": "esriPMS",
-                                "url": require.toUrl("./images/SearchPin.png"),
-                                "contentType": "image/png",
-                                "width": 25,
-                                "height": 25
-                            });
+                    // var searchSymbol = new esri.symbol.PictureMarkerSymbol({
+                    //             "angle": 0,
+                    //             "xoffset": 0,
+                    //             "yoffset": 20,
+                    //             "type": "esriPMS",
+                    //             "url": require.toUrl("./images/SearchPin.png"),
+                    //             "contentType": "image/png",
+                    //             "width": 25,
+                    //             "height": 25
+                    //         });
                     array.forEach(geocoders, lang.hitch(this, function (geocoder) {
                         if (geocoder.url.indexOf(".arcgis.com/arcgis/rest/services/World/GeocodeServer") > -1) {
 
@@ -1834,7 +1834,7 @@ define(["dojo/ready",
                             geocoder.locator = new Locator(geocoder.url);
 
                             geocoder.singleLineFieldName = "SingleLine";
-                            geocoder.highlightSymbol = searchSymbol;
+                            // geocoder.highlightSymbol = searchSymbol;
                             
                             geocoder.outFields = ['*'];//["Match_addr"];
                             if(this.config.countryCodeSearch && this.config.countryCodeSearch !== "") {
@@ -1974,7 +1974,7 @@ define(["dojo/ready",
                     if(esriIconCloseNode) {
                         domClass.remove(esriIconCloseNode, "searchIcon esri-icon-close");
                         esriIconCloseNode.innerHTML = 
-                            '<img src="images\\searchClear.png" alt="Clear search" width="16" height="16">';
+                            '<img src="images\\searchClear.png" alt="Clear search" width="19" height="19">';
                     }
                 }
 
