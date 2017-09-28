@@ -434,21 +434,27 @@ img {
 }
 
 .shadow {
-  -webkit-box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
-  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); 
+    -webkit-box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3); 
 }
 
 #panelContent {
-  font-family: Helvetica, Arial, sans-serif;
-  font-family: 'Raleway', sans-serif;
+    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Raleway', sans-serif;
 }
 
 #panelPages {
-  font-family: Helvetica, Arial, sans-serif;
-  font-family: 'Raleway', sans-serif;
-  height: calc(100% - 95px);
-  overflow: auto;
+    font-family: Helvetica, Arial, sans-serif;
+    font-family: 'Raleway', sans-serif;
+    height: calc(100% - 68px);
+    overflow: auto;
+}
+
+@media only screen and (min-width: 720px) {
+  #panelPages {
+    height: calc(100% - 96px);
+  }
 }
 
 .page {
@@ -466,8 +472,8 @@ img {
 }
 
 .pageTitle {
-    display: inline-block;
-    font-size: 12px;
+    display: inline;
+    font-size: 14px;
     font-weight: bolder;
     overflow: hidden;
     padding: 0 4px;
@@ -482,6 +488,17 @@ img {
         font-size: 18px;
         font-weight: bold;
     }
+}
+
+.pageHeader {
+    padding: 2px;
+    font-size: 12px;
+}
+
+@media only screen and (min-width: 720px) {
+  .pageHeader {
+    font-size: 16px;
+  }
 }
 
 .pageHeaderImg {
@@ -509,7 +526,7 @@ img {
 
 .pageBody {
     width: 100%;
-    height: calc(100% - 34px);
+    height: calc(100% - 21px);
     color: #000000;
     overflow: hidden;
     overflow-y: auto;
@@ -518,17 +535,16 @@ img {
     position: relative;
 }
 
+@media only screen and (min-width: 720px) {
+  .pageBody {
+    height: calc(100% - 26px);
+  }
+}
+
 #pageBody_details {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-}
-
-@media only screen and (min-width: 720px) {
-    .pageBody {
-        width: 100%;
-        height: calc(100% - 24px);
-    }
 }
 
 #panelTop {

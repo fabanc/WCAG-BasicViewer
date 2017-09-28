@@ -13,9 +13,9 @@
 .popupInfoHeader {
     color: white;
     float: right;
-    margin-right: 10px;
-    margin-top: 4px;
-    font-size: 15px;
+    margin-right: 4px;
+    margin-top: 1px;
+    /*font-size: 15px;*/
 }
 
 .popupInfoHeader * {
@@ -23,8 +23,17 @@
 }
 
 .popupInfoHeader img {
-	  height: 12px;
+    height: 12px;
     width: 12px;
+    display: inline;
+    vertical-align: text-bottom;
+}
+
+@media only screen and (min-width: 720px) {
+  .popupInfoHeader img {
+    height: 18px;
+    width: 18px;
+  }
 }
 
 .titleButton {
