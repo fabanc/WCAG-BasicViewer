@@ -50,7 +50,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             header: 'pageHeader_infoPanel',
             superNavigator : null,
             maxSearchResults: 10,
-            searchMarker: './images/SearchPin.png'
+            searchMarker: './images/SearchPin.png',
+            geolocatorLabelColor: "#ff0000" // 'red'
         },
 
         constructor: function (options, srcRefNode) {
@@ -62,6 +63,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.search = defaults.search;
             this.maxSearchResults = defaults.maxSearchResults;
             this.searchMarker = defaults.searchMarker;
+            this.geolocatorLabelColor = defaults.geolocatorLabelColor;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);
@@ -173,7 +175,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     weight : cs.fontWeight, //'bold'
                 }
             });
-            this.searchLabel.color = cs.color; //"red";
+            this.searchLabel.color = this.geolocatorLabelColor; //"red";
 
             domConstruct.destroy(textProbe);
 

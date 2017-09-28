@@ -1344,7 +1344,8 @@ define(["dojo/ready",
                     superNavigator: this.superNav,
                     search: this.search,
                     maxSearchResults: this.config.maxSearchResults,
-                    searchMarker: this.config.searchMarker
+                    searchMarker: this.config.searchMarker,
+                    geolocatorLabelColor: this.config.geolocatorLabelColor
                 }, infoPanelDiv);
                 popupInfo.startup();
                 
@@ -1676,6 +1677,11 @@ define(["dojo/ready",
                             alt: 'carret-down',
                         }, arrowButton);
 
+                        on(print, 'error', lang.hitch(this, function(ev) {
+                            console.log(ev);
+                            alert(ev);
+                        }));
+
                         deferred.resolve(true);
                         return;
                     }
@@ -1717,14 +1723,14 @@ define(["dojo/ready",
                         }));
 
 
-                        print = new Print({
-                            map: this.map,
-                            templates: templates,
-                            url: this.config.helperServices.printTask.url
-                        }, domConstruct.create("div"));
-                        domConstruct.place(print.printDomNode, printDiv, "first");
+                        // print = new Print({
+                        //     map: this.map,
+                        //     templates: templates,
+                        //     url: this.config.helperServices.printTask.url
+                        // }, domConstruct.create("div"));
+                        // domConstruct.place(print.printDomNode, printDiv, "first");
 
-                        print.startup();
+                        // print.startup();
                         deferred.resolve(true);
 
                     }));

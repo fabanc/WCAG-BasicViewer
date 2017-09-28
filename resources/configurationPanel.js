@@ -121,10 +121,16 @@
                "tooltip": "Map Info Popup Selection color"
             },
             {
-               "label": "Icon color:",
+               "label": "Geolocator Label Color:",
+               "type": "color",
+               "fieldName": "geolocatorLabelColor",
+               "tooltip": "Color for Map Label when Geolocator is used in the Side Info Panel."
+            },
+            {
+               "label": "Icons color:",
                "type": "string",
                "fieldName": "icons",
-               "tooltip": "Icon color",
+               "tooltip": "Icons color",
                "options": [
                   {
                      "label": "White",
@@ -293,14 +299,22 @@
                "label": "Location Search"
             },
             {
-               "type": "int",
-               "fieldName": "maxSearchResults",
-               "label": "Max Results"
-            },
-            {
                "type": "string",
                "fieldName": "countryCodeSearch",
                "label": "CountryCode"
+            },
+            {
+               "type": "paragraph",
+               "value": "When Country Code is not null, searches will be restricted in that country."
+            },
+            {
+               "type": "paragraph",
+               "value": "Next options will work only for Side Panel Info."
+            },
+            {
+               "type": "int",
+               "fieldName": "maxSearchResults",
+               "label": "Max Results"
             },
             {
                "label": "<strong>Geocoder Image Marker:</strong>",
@@ -310,7 +324,7 @@
             },
             {
                "type": "paragraph",
-               "value": "When Country Code is not null, searches will be restricted in that country."
+               "value": "The marker pointer is in the middle of its base. It will be resized to 50x50 pixels."
             }
          ]
       },
@@ -512,6 +526,7 @@
       "focusColor": "#FF7700",
       "activeColor": "#00b9f6",
       "mapSelectionColor": "#00ffff",
+      "geolocatorLabelColor": "#ff0000",
       "theme": "#005ce6",
       "activeTool": "details",
       "scalebar": false,
