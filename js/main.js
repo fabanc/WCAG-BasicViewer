@@ -617,7 +617,17 @@ define(["dojo/ready",
             var verticalSplitter = query('.dijitSplitterV');
             if(verticalSplitter && verticalSplitter.length>0) {
                 verticalSplitter = verticalSplitter[0];
-                // domAttr.set(verticalSplitter, 'tooltip', 'drag or double-click');
+                domAttr.set(verticalSplitter, 'title', i18n.tooltips.vsplitter);
+
+                on(verticalSplitter, 'keyup', lang.hitch(this, function(ev) {
+                    // alert('verticalSplitter');
+                    if(ev.keyCode === 13) {
+                        var leftPanel = dojo.byId('leftPanel');
+                        var minWidth = window.getComputedStyle(leftPanel)['min-width'];
+                        domStyle.set(this.contentPaneLeft.domNode, "width", minWidth);
+                        borderContainer.resize();
+                    }
+                }));
 
                 on(verticalSplitter,'dblclick', lang.hitch(this, function(ev) {
                     // alert('verticalSplitter');

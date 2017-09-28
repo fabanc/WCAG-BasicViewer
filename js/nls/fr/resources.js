@@ -64,7 +64,9 @@ define(
         	"details": "Détails",
         	"share": "Partager",
             "filter": "Filtres",
-            "features": "Liste de caractéristiques sur la carte"
+            "features": "Liste de caractéristiques sur la carte",
+            "vsplitter" : "Cliquez et faites glisser ou obtenez la mise au point et utilisez les flèches gauche / droite pour redimensionner, \ndouble-cliquez ou saisissez Enter pour une taille optimale."
+
         },
         "skip":{
             "tools" : "Aller au outils",
