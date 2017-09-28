@@ -303,6 +303,12 @@
                "label": "CountryCode"
             },
             {
+               "label": "<strong>Geocoder Image Marker:</strong>",
+               "fieldName": "searchMarker",
+               "type": "string",
+               "tooltip": "Defaults to './images/SearchPin.png'"
+            },
+            {
                "type": "paragraph",
                "value": "When Country Code is not null, searches will be restricted in that country."
             }
@@ -496,6 +502,7 @@
       "new_icons": false,
       "animated_marker": true,
       "marker": "images/ripple-dot1.gif",
+      "searchMarker": "./images/SearchPin.png",
       "marker_size": "35",
       "alt_keys": true,
       "logo": "images/logo.png",

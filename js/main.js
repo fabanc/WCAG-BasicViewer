@@ -1343,7 +1343,8 @@ define(["dojo/ready",
                     toolbar: toolbar,
                     superNavigator: this.superNav,
                     search: this.search,
-                    maxSearchResults: this.config.maxSearchResults
+                    maxSearchResults: this.config.maxSearchResults,
+                    searchMarker: this.config.searchMarker
                 }, infoPanelDiv);
                 popupInfo.startup();
                 
