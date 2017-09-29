@@ -1560,7 +1560,8 @@ define(["dojo/ready",
             legendNode = null,
             print = null;
 
-            require(["application/has-config!print?esri/dijit/Print"], lang.hitch(this, function (Print) {
+            require(["application/has-config!print?esri/dijit/Print"], lang.hitch(this, 
+            function (Print) {
                 if (!Print) {
                     deferred.resolve(false);
                     return;
@@ -1632,7 +1633,10 @@ define(["dojo/ready",
                     }));
                 }
 
-                require(["application/has-config!print-layouts?esri/request", "application/has-config!print-layouts?esri/tasks/PrintTemplate"], lang.hitch(this, function (esriRequest, PrintTemplate) {
+                require([
+                    "application/has-config!print-layouts?esri/request", 
+                    "application/has-config!print-layouts?esri/tasks/PrintTemplate"], lang.hitch(this, 
+                function (esriRequest, PrintTemplate) {
                     if (!esriRequest && !PrintTemplate) {
                         //Use the default print templates
                         var templates = [{
@@ -1723,14 +1727,14 @@ define(["dojo/ready",
                         }));
 
 
-                        // print = new Print({
-                        //     map: this.map,
-                        //     templates: templates,
-                        //     url: this.config.helperServices.printTask.url
-                        // }, domConstruct.create("div"));
-                        // domConstruct.place(print.printDomNode, printDiv, "first");
+                        print = new Print({
+                            map: this.map,
+                            templates: templates,
+                            url: this.config.helperServices.printTask.url
+                        }, domConstruct.create("div"));
+                        domConstruct.place(print.printDomNode, printDiv, "first");
 
-                        // print.startup();
+                        print.startup();
                         deferred.resolve(true);
 
                     }));
