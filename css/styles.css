@@ -1284,12 +1284,13 @@ background: white;
 
 .small-loading {
     display: inline-block;
-    vertical-align: baseline;
+    vertical-align: bottom;
+    line-height: 0;
 }
 
 .small-loading img {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
 }
 
 @media only screen and (min-width: 720px) {
@@ -1942,4 +1943,13 @@ myKey {
     font-size: 16px;
     color: red;
     font-family : "Roboto Condensed";
+}
+
+#printError {
+    bottom: 10px;
+    position: absolute;
+}
+
+#printError span {
+    color: #b60000;
 }

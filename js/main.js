@@ -1574,8 +1574,15 @@ define(["dojo/ready",
                 };
 
                 var printDiv = domConstruct.create("div", {
-                    class:"PrintDialog"
-                }, toolbar.createTool(tool));
+                    class: 'PrintDialog',
+                    id: 'printDialog'
+                }, toolbar.createTool(tool, "", "reload1.gif")); 
+
+                var printError = domConstruct.create('div', {
+                    id:'printError',
+                    class:'printError'
+                }, printDiv);
+
                 //get format
                 this.format = "PDF"; //default if nothing is specified
                 for (var i = 0; i < this.config.tools.length; i++) {
@@ -1674,16 +1681,42 @@ define(["dojo/ready",
 
                         print.startup();
 
-                        var arrowButton = dojo.query('.PrintDialog .dijitArrowButtonInner')[0];
-                        domConstruct.create('img', {
-                            // role: 'presentation',
-                            src: 'images/icons_black/carret-down.32.png',
-                            alt: 'carret-down',
-                        }, arrowButton);
+                        this._addPrintArrowButton();
+
+                        on(print, 'print-start', lang.hitch(this, function(ev) {
+                            var printError = dojo.byId('printError');
+                            if(printError)
+                                printError.innerHTML = '';
+                        
+                            var loading_print = dojo.byId('loading_print');
+                            domClass.replace(loading_print, "showLoading", "hideLoading");
+                        }));
+
+                        on(print, 'print-complete', lang.hitch(this, function(ev) {
+                            this._addPrintArrowButton();
+                            var loading_print = dojo.byId('loading_print');
+                            domClass.replace(loading_print, "hideLoading", "showLoading");
+                        }));
 
                         on(print, 'error', lang.hitch(this, function(ev) {
-                            console.log(ev);
-                            alert(ev);
+                            // console.log(ev);
+                            // alert(ev);
+                            var printError = dojo.byId('printError');
+                            if(printError) {
+                                printError.innerHTML = '<span>'+ev+'</span><br/>';
+                                var a = domConstruct.create('a', {
+                                    href: '#',
+                                    innerHTML: 'Clear Graphic Layer',
+                                }, printError);
+                                on(a,'click', lang.hitch(this, function() {
+                                    this.map.graphics.clear();
+                                }));
+                            }
+
+                            var loading_print = dojo.byId('loading_print');
+                            domClass.replace(loading_print, "hideLoading", "showLoading");
+                            this._addPrintArrowButton();
+
                         }));
 
                         deferred.resolve(true);
@@ -1742,6 +1775,15 @@ define(["dojo/ready",
             }));
 
             return deferred.promise;
+        },
+
+        _addPrintArrowButton: function() {
+            var arrowButton = dojo.query('.PrintDialog .dijitArrowButtonInner')[0];
+            domConstruct.create('img', {
+                // role: 'presentation',
+                src: 'images/icons_black/carret-down.32.png',
+                alt: 'carret-down',
+                }, arrowButton);        
         },
 
         _addShare: function (tool, toolbar) {
