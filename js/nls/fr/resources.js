@@ -65,7 +65,7 @@ define(
         	"share": "Partager",
             "filter": "Filtres",
             "features": "Liste de caractéristiques sur la carte",
-            "vsplitter" : "Cliquez et faites glisser ou obtenez la mise au point et utilisez les flèches gauche / droite pour redimensionner, \ndouble-cliquez ou saisissez Enter pour une taille optimale."
+            "vsplitter" : "Cliquer et déplacer avec la souris ou utiliser le flèches gauche droite quand cet outil est activé. \nDouble-cliquer ou presser ‘Entrer’ pour ajuster à la taille optimale."
 
         },
         "skip":{

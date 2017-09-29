@@ -66,7 +66,7 @@ define({
         	"print": "Print",
         	"details": "Details",
         	"share": "Share",
-            "vsplitter" : "Click and drag or focus and use left/right arrows to resize, \ndouble-click or type Enter for optimal size."
+            "vsplitter" : "Click and drag or focus and use left/right arrows to resize. \nDouble-click or type Enter for optimal size."
         },
         "skip":{
             "tools" : "Skip to Tools",
