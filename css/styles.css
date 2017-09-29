@@ -361,16 +361,12 @@ blockquote {
 }
 
 .esriBookmarkItem {
-  width: calc(100% - 16px);
-  background: #f8f8f8;
-  color: #555;
-  border-bottom: 1px solid #e0e0e0;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  padding: 5px 3px 5px 12px;
+  width: calc(100% - 8px);
+  /*background: #f8f8f8;*/
+  /*color: black;*/
+  /*border-bottom: 1px solid gray;*/
+  /*margin-left: 1px;*/
+  padding: 4px;
 }
 
 .esriBookmarkLabel {
@@ -929,11 +925,6 @@ input[type=checkbox]:checked.share-dialog-checkbox + .share-dialog-checkbox:befo
     height:26px !important;
     margin-top: 2px;
     text-align:center;
-}
-
-.esriBookmarkItem {
-  /* width: 281px; */
-  margin-left: 1px;
 }
 
 .searchBtn .searchIcon, .searchClear .searchIcon {
@@ -1952,4 +1943,28 @@ myKey {
 
 #printError span {
     color: #b60000;
+}
+
+.esriBookmarks .dojoDndItem {
+    padding: 0px;
+    /*border-top: none; */
+    border-bottom: none; 
+    background-color: silver;
+}
+
+.claro .dojoDndItemOver {
+    background-color: black;
+    color: white;
+}
+
+.esriBookmarkHighlight {
+    background-color:black;
+}
+
+.esriBookmarkHighlight .esriBookmarkLabel {
+    color:white;
+}
+
+.esriBookmarks {
+    border:none;
 }

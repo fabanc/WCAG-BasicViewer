@@ -947,8 +947,9 @@ define(["dojo/ready",
 
                         for(i=0; i<items.length; i++) {
                             var item = items[i];
-                            domAttr.set(item, 'tabindex', 0);
-                            label = item.querySelector('.esriBookmarkLabel');
+                            // domAttr.set(item, 'tabindex', 0);
+                            var label = item.querySelector('.esriBookmarkLabel');
+                            // domAttr.remove(label, 'tabindex');
                             this._atachEnterKey(item, label);
                             domStyle.set(label, 'width', '');
 

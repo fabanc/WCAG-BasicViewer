@@ -5,7 +5,7 @@ div[role='button']:not(.searchBtn):not(.searchClear):not(.home):not(.zoomLocateB
 button:hover, .navBtn:hover,
 .panelToolActive:hover,
 .esriMeasurement .esriToggleButton .dijitButtonNode:hover,
-.panelTool:hover, .esriBookmarkItem:hover,
+.panelTool:hover, /*.esriBookmarkItem:hover,*/
 .esriSimpleSliderDecrementButton:hover, .esriSimpleSliderHomeButton:hover, .esriSimpleSliderIncrementButton:hover
 {
   background-color: rgba(255, 255, 255, 0.5) !important;
