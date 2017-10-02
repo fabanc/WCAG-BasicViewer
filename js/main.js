@@ -1483,17 +1483,8 @@ define(["dojo/ready",
             ovwHighlight = div.querySelector('.ovwHighlight');
             dojo.setAttr(ovwHighlight, 'tabindex', 0);
             dojo.setAttr(ovwHighlight, 'title', i18n.map.overviewTip);
-            this._atachArrowKeys(ovwHighlight, ovMap);
-
-            on(ovMap.overviewMap, "extent-change", lang.hitch(ovMap.overviewMap.container, function() {
-                var images = this.querySelectorAll("img");
-                for(var i=0; i<images.length; i++)
-                    domAttr.set(images[i],'alt','');
-            }));
-        },
-
-        _atachArrowKeys: function(onButton, map) {
-            on(onButton, 'keydown', lang.hitch({ div: onButton, map: map}, function(event) {
+            
+            on(ovwHighlight, 'keydown', lang.hitch({ div: ovwHighlight, map: ovMap}, function(event) {
                 var top = dojo.style(this.div, 'top');
                 var left = dojo.style(this.div, 'left');
                 switch (event.keyCode) {
@@ -1555,7 +1546,7 @@ define(["dojo/ready",
                 }
             }));
 
-            on(onButton, 'keyup', lang.hitch(map, function(event) {
+            on(ovwHighlight, 'keyup', lang.hitch(ovMap, function(event) {
                 switch (event.keyCode) {
                     case 38 : // up
                     case 40 : // down
@@ -1579,6 +1570,12 @@ define(["dojo/ready",
                         event.preventDefault();
                         break;
                 }
+            }));
+
+            on(ovMap.overviewMap, "extent-change", lang.hitch(ovMap.overviewMap.container, function() {
+                var images = this.querySelectorAll("img");
+                for(var i=0; i<images.length; i++)
+                    domAttr.set(images[i],'alt','');
             }));
         },
 
