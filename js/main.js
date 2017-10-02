@@ -1707,7 +1707,7 @@ define(["dojo/ready",
                                 printError.innerHTML = '<span>'+ev+'</span><br/>';
                                 var a = domConstruct.create('a', {
                                     href: '#',
-                                    innerHTML: 'Clear Graphic Layer',
+                                    innerHTML: this.config.i18n.tools.print.clearGraphicLayer,
                                 }, printError);
                                 on(a,'click', lang.hitch(this, function() {
                                     this.map.graphics.clear();

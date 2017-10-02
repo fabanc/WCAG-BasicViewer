@@ -34,7 +34,8 @@ define({
 			      "label3": 'Landscape',
 			      "label4": 'Portrait'
 			    },
-			    "legend": "Add legend to output"
+			    "legend": "Add legend to output",
+                clearGraphicLayer : "Clear Graphic Layer"
 			},
 			"share": {
 				"extent": "Use current map extent",

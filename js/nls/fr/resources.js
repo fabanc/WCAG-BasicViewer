@@ -34,7 +34,8 @@ define(
 			      "label3": 'Paysage',
 			      "label4": 'Portrait'
 			    },
-			    "legend": "Ajouter la légende à la sortie"
+			    "legend": "Ajouter la légende à la sortie",
+                clearGraphicLayer : "Effacer la couche graphique"
 			},
 			"share": {
 				"extent": "Utiliser l’étendue courante de la carte",
