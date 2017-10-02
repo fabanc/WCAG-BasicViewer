@@ -1482,7 +1482,7 @@ define(["dojo/ready",
 
             ovwHighlight = div.querySelector('.ovwHighlight');
             dojo.setAttr(ovwHighlight, 'tabindex', 0);
-            dojo.setAttr(ovwHighlight, 'title', 'Drag to change the Map Extent,\nor focus and use Arrow keys.');
+            dojo.setAttr(ovwHighlight, 'title', i18n.map.overviewTip);
             this._atachArrowKeys(ovwHighlight, ovMap);
 
             on(ovMap.overviewMap, "extent-change", lang.hitch(ovMap.overviewMap.container, function() {

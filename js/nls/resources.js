@@ -17,7 +17,8 @@
 define({
     root: ({
         "map": {
-            "error": "Unable to create map"
+            "error": "Unable to create map",
+            "overviewTip": "Drag to change the Map Extent,\nor focus and use Arrow keys.",
         },
         "tools":{
             "search":{
