@@ -1475,7 +1475,7 @@ define(["dojo/ready",
                 height: height,
                 visible: false,
                 opacity: 1,
-                color: '#0000000f'
+                color: '#1f1f1f0f'
             }, domConstruct.create("div", {}, div));
 
             ovMap.startup();
