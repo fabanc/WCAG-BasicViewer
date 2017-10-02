@@ -1517,6 +1517,30 @@ define(["dojo/ready",
                             dojo.style(this.div, 'left', ++left + 'px');
                         }
                         break;
+                    case 33 : //pgup
+                        if(top > -this.div.clientHeight/2 && left > -this.div.clientWidth/2) {
+                            dojo.style(this.div, 'left', ++left + 'px');
+                            dojo.style(this.div, 'top', --top + 'px');
+                        }
+                        break;
+                    case 34 : //pgdn
+                        if(top < this.div.parentElement.offsetHeight - this.div.clientHeight/2 && left > -this.div.clientWidth/2) {
+                            dojo.style(this.div, 'left', ++left + 'px');
+                            dojo.style(this.div, 'top', ++top + 'px');
+                        }
+                        break;
+                    case 36 : //home
+                        if(top > -this.div.clientHeight/2 && left < this.div.parentElement.offsetWidth - this.div.clientWidth/2) {
+                            dojo.style(this.div, 'left', --left + 'px');
+                            dojo.style(this.div, 'top', --top + 'px');
+                        }
+                        break;
+                    case 35 : //end
+                        if(top < this.div.parentElement.offsetHeight - this.div.clientHeight/2 && left < this.div.parentElement.offsetWidth - this.div.clientWidth/2) {
+                            dojo.style(this.div, 'left', --left + 'px');
+                            dojo.style(this.div, 'top', ++top + 'px');
+                        }
+                        break;
                 }
                 switch (event.keyCode) {
                     case  9: // tab
@@ -1537,8 +1561,11 @@ define(["dojo/ready",
                     case 40 : // down
                     case 37 : // left
                     case 39 : // right
-                        // var a;
-                        // this._moveStopHandler(a);
+                    case 34 : //pgdn
+                    case 33 : //pgup
+                    case 36 : //home
+                    case 35 : //end
+                        this._moveStopHandler();
                         break;
                 }
                 switch (event.keyCode) {
