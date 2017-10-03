@@ -2235,9 +2235,9 @@ define(["dojo/ready",
             arcgisUtils.createMap(itemInfo, "mapDiv", {
                 mapOptions: options,
                 editable: has("edit"),
-                //is the app editable
+                isKeyboardNavigation: false,
                 usePopupManager: true,
-                bingMapsKey: this.config.bingKey
+                // bingMapsKey: this.config.bingKey
             }).then(lang.hitch(this, function (response) {
 
                 var mapDiv = response.map.container;
