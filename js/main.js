@@ -2235,89 +2235,80 @@ define(["dojo/ready",
             arcgisUtils.createMap(itemInfo, "mapDiv", {
                 mapOptions: options,
                 editable: has("edit"),
-                isKeyboardNavigation: false,
                 usePopupManager: true,
-                // bingMapsKey: this.config.bingKey
             }).then(lang.hitch(this, function (response) {
 
+                // response.map.disableKeyboardNavigation();
+
                 var mapDiv = response.map.container;
+
+                on(mapDiv, 'focus', lang.hitch(this, function(event){
+                    this.map.disableKeyboardNavigation();
+                    // this.map.showPanArrows();
+                    // this.map.navigationMode = 'clasic';
+                    // this.map.optimizePanAnimation = false;
+                }));
+
+                on(mapDiv, 'blur', lang.hitch(this, function(event){
+                    this.map.enableKeyboardNavigation();
+                    // this.map.hidePanArrows();
+                    // this.map.navigationMode = 'css-transforms';
+                    // this.map.optimizePanAnimation = true;
+                }));
 
                 var mapScroll = function(event){
                     var focusElement = document.querySelector(':focus');
                     if(!focusElement || focusElement !== mapDiv) return; 
                     // console.log(event.keyCode);
+                    
+                    var _mapScroll = lang.hitch(this, function(x, y){
+                        var dx = x * this.stepX;
+                        var dy = y * this.stepY;
+                        if(!this.superNav || !event.shiftKey) {
+                            return this.map._fixedPan(dx, dy);
+                        }
+                        else {
+                            return this.superNav.cursorScroll(dx, dy);
+                        }
+                    });
+
                     switch(event.keyCode) {
                         case 40 : //down
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, 0, 1).then(mapScrollPausable.resume);
+                            _mapScroll(0, 1).then(mapScrollPausable.resume);
                             break;
                         case 38 : //up
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, 0, -1).then(mapScrollPausable.resume);
+                            _mapScroll(0, -1).then(mapScrollPausable.resume);
                             break;
                         case 37 : //left
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, -1, 0).then(mapScrollPausable.resume);
+                            _mapScroll(-1, 0).then(mapScrollPausable.resume);
                             break;
                         case 39 : //right
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, 1, 0).then(mapScrollPausable.resume);
+                            _mapScroll(1, 0).then(mapScrollPausable.resume);
                             break;
                         case 33 : //pgup
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, 1, -1).then(mapScrollPausable.resume);
+                            _mapScroll(1, -1).then(mapScrollPausable.resume);
                             break;
                         case 34 : //pgdn
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, 1, 1).then(mapScrollPausable.resume);
+                            _mapScroll(1, 1).then(mapScrollPausable.resume);
                             break;
                         case 35 : //end
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, -1, 1).then(mapScrollPausable.resume);
+                            _mapScroll(-1, 1).then(mapScrollPausable.resume);
                             break;
                         case 36 : //home
-                            event.preventDefault();
-                            event.stopPropagation();
                             mapScrollPausable.pause();
-                            this._mapScroll(event, -1, -1).then(mapScrollPausable.resume);
+                            _mapScroll(-1, -1).then(mapScrollPausable.resume);
                             break;
                     }
                 };
 
                 var mapScrollPausable = on.pausable(mapDiv, 'keydown', lang.hitch(this, mapScroll));
-
-                on(mapDiv, 'keyup', lang.hitch(this, function(event){
-                    var focusElement = document.querySelector(':focus');
-                    if(!focusElement || focusElement !== mapDiv) return; 
-                    // console.log(event.keyCode);
-                    switch(event.keyCode)  {
-                        case 40 : //down
-                        case 38 : //up
-                        case 37 : //left
-                        case 39 : //right
-                        case 33 : //pgup
-                        case 34 : //pgdn
-                        case 35 : //end
-                        case 36 : //home
-                            event.preventDefault();
-                            event.stopPropagation();
-                            break;
-                    }
-                }));
 
                 on(mapDiv, 'keypress', lang.hitch(this, function(evn){
                     var focusElement = document.querySelector(':focus');
@@ -2450,16 +2441,6 @@ define(["dojo/ready",
             if(event.keyCode=='13')
                 this.click();
             }));
-        },
-
-        _mapScroll: function(evn, x, y){
-            if(!this.superNav || !evn.shiftKey) {
-                // console.log(evn);
-                return this.map._fixedPan(x * this.stepX, y * this.stepY);
-            }
-            else {
-                return this.superNav.cursorScroll(x * this.stepX, y * this.stepY);
-            }
         },
 
     });
