@@ -30,7 +30,7 @@ define(["dojo/ready",
     "dojo/i18n!application/nls/resources",
     "dojo/i18n!application/nls/BaseMapLabels",
     "esri/dijit/Measurement", "esri/dijit/OverviewMap", "esri/geometry/Extent", 
-    "esri/layers/FeatureLayer", 
+    "esri/layers/FeatureLayer", "esri/geometry/ScreenPoint",
 
     "application/LayerManager/LayerManager",
     "application/NavToolBar/NavToolBar", 
@@ -60,7 +60,7 @@ define(["dojo/ready",
     Legend, BasemapGallery, 
     i18n, i18n_BaseMapLabels,
     Measurement, OverviewMap, Extent, 
-    FeatureLayer,
+    FeatureLayer, ScreenPoint,
 
     LayerManager, 
     NavToolBar,
@@ -1057,7 +1057,7 @@ define(["dojo/ready",
                     this.editorDiv = toolbar.createTool(tool);
                     return this._createEditor();
                 } else {
-                    console.log("No Editable Layers");
+                    console.error("No Editable Layers");
                     deferred.resolve(false);
                 }
             } else {
@@ -1762,7 +1762,7 @@ define(["dojo/ready",
                         });
 
                         if (layoutTemplate.length === 0) {
-                            console.log("print service parameters name for templates must be \"Layout_Template\"");
+                            console.error('Print service parameters name for templates must be "Layout_Template"');
                             return;
                         }
                         templateNames = layoutTemplate[0].choiceList;
@@ -2241,49 +2241,81 @@ define(["dojo/ready",
             }).then(lang.hitch(this, function (response) {
 
                 var mapDiv = response.map.container;
-                on(mapDiv, 'keydown', lang.hitch(this, function(evn){
+                var _this = this;
+
+                var mapScroll = function(event){
                     var focusElement = document.querySelector(':focus');
                     if(!focusElement || focusElement !== mapDiv) return; 
-                    switch(evn.keyCode)  {
+                    // console.log(event.keyCode);
+                    switch(event.keyCode) {
                         case 40 : //down
-                            this._mapScroll(evn, 0, 1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, 0, 1).then(mapScrollPausable.resume);
                             break;
                         case 38 : //up
-                            this._mapScroll(evn, 0, -1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, 0, -1).then(mapScrollPausable.resume);
                             break;
                         case 37 : //left
-                            this._mapScroll(evn, -1, 0);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, -1, 0).then(mapScrollPausable.resume);
                             break;
                         case 39 : //right
-                            this._mapScroll(evn, 1, 0);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, 1, 0).then(mapScrollPausable.resume);
                             break;
                         case 33 : //pgup
-                            this._mapScroll(evn, 1, -1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, 1, -1).then(mapScrollPausable.resume);
                             break;
                         case 34 : //pgdn
-                            this._mapScroll(evn, 1, 1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, 1, 1).then(mapScrollPausable.resume);
                             break;
                         case 35 : //end
-                            this._mapScroll(evn, -1, 1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, -1, 1).then(mapScrollPausable.resume);
                             break;
                         case 36 : //home
-                            this._mapScroll(evn, -1, -1);
-                            evn.preventDefault();
-                            evn.stopPropagation();
+                            event.preventDefault();
+                            event.stopPropagation();
+                            mapScrollPausable.pause();
+                            _this._mapScroll(event, -1, -1).then(mapScrollPausable.resume);
+                            break;
+                    }
+                };
+
+                var mapScrollPausable = on.pausable(mapDiv, 'keydown', mapScroll);
+
+                on(mapDiv, 'keyup', lang.hitch(this, function(event){
+                    var focusElement = document.querySelector(':focus');
+                    if(!focusElement || focusElement !== mapDiv) return; 
+                    // console.log(event.keyCode);
+                    switch(event.keyCode)  {
+                        case 40 : //down
+                        case 38 : //up
+                        case 37 : //left
+                        case 39 : //right
+                        case 33 : //pgup
+                        case 34 : //pgdn
+                        case 35 : //end
+                        case 36 : //home
+                            event.preventDefault();
+                            event.stopPropagation();
                             break;
                     }
                 }));
@@ -2421,21 +2453,14 @@ define(["dojo/ready",
         },
 
         _mapScroll: function(evn, x, y){
-            if(!this.superNav) {
-                this.map._fixedPan(x * this.stepX, y * this.stepY);
+            if(!this.superNav || !evn.shiftKey) {
+                // console.log(evn);
+                return this.map._fixedPan(x * this.stepX, y * this.stepY);
             }
             else {
-                this.superNav.cursorScroll(evn, x * this.stepX, y * this.stepY)
-                .then(
-                    lang.hitch(this, function(cursorPos) {
-                        this.map.toMap(cursorPos);
-                    }),
-                    lang.hitch(this, function(err) {
-                        this.map._fixedPan(x * this.stepX, y * this.stepY);
-                    })
-                );
+                return this.superNav.cursorScroll(x * this.stepX, y * this.stepY);
             }
-        }
+        },
 
     });
 });
