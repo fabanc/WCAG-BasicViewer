@@ -167,7 +167,9 @@ define([
                 var zoom = this.map.getZoom();
                 this.tryDisableBtn("navZoomIn", zoom == this.map.getMaxZoom());
                 this.tryDisableBtn("navZoomOut", zoom == this.map.getMinZoom());
-                this.tryDisableBtn("navHome",window.initExt === this.map.extent);
+                this.tryDisableBtn("navHome",
+                    // window.initExt === 
+                    this.map.extent);
                 if(has("navigation")) {
                     this.tryDisableBtn("navPrev",this.nav.isFirstExtent());
                     this.tryDisableBtn("navNext",this.nav.isLastExtent());

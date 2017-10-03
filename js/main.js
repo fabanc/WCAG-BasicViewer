@@ -2238,11 +2238,15 @@ define(["dojo/ready",
 
                 var mapDiv = response.map.container;
 
-                on(mapDiv, 'focus', lang.hitch(this, function(event){
+                on.once(mapDiv, 'focus', lang.hitch(this, function(){
+                    this.map.enableKeyboardNavigation();
+                }));
+
+                on(mapDiv, 'focus', lang.hitch(this, function(){
                     this.map.disableKeyboardNavigation();
                 }));
 
-                on(mapDiv, 'blur', lang.hitch(this, function(event){
+                on(mapDiv, 'blur', lang.hitch(this, function(){
                     this.map.enableKeyboardNavigation();
                 }));
 
@@ -2365,7 +2369,6 @@ define(["dojo/ready",
                     dom.byId("panelText").innerHTML = this.config.title;
                 }
 
-                domAttr.set(dom.byId("panelText"),"TabIndex",0);
                 this.config.title = title;
                 if(!response.itemInfo.itemData)
                     response.itemInfo.itemData = {};
@@ -2376,12 +2379,14 @@ define(["dojo/ready",
                 if(!response.itemInfo.itemData.applicationProperties.viewing.search)
                     response.itemInfo.itemData.applicationProperties.viewing.search = { hintText: i18n.searchPlaceholder };
                 this.config.response = response;
-                window.config = this.config;
+                
+                // window.config = this.config;
 
                 if (this.initExt !== null) {
                     this.map.setExtent(this.initExt);
                 }
-                window.initExt = this.initExt = this.map.extent;
+                // window.initExt = 
+                this.initExt = this.map.extent;
                 
                 on.once(this.map, "extent-change", lang.hitch(this, function() {
                     navDeferred.then(lang.hitch(this, function (results) {
