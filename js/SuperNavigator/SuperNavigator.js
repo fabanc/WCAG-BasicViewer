@@ -153,53 +153,53 @@ define([
         cursorToCenter:function() {
             var m = this.map.container.getBoundingClientRect();
             this.cursorPos = new ScreenPoint(((m.right-m.left)/2), ((m.bottom-m.top)/2));
-            return m;
+            return this.cursorPos;
         },
 
-        cursorScroll:function(evn, dx, dy) {
+        cursorScroll:function(dx, dy) {
             var deferred = new Deferred();
-
-            if(!evn.shiftKey) {
-                deferred.reject("pan");
+            
+            this.cursorPos.x += dx;
+            this.cursorPos.y += dy;
+            var m = this.map.container.getBoundingClientRect();
+            if(this.cursorPos.x < 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(
+                    lang.hitch(this, function(){
+                        this.map.toMap(this.setCursorPos(this.cursorToCenter()));
+                        deferred.resolve();
+                    })
+                );
             }
-            else {
-                this.cursorPos.x += dx;
-                this.cursorPos.y += dy;
-                var m = this.map.container.getBoundingClientRect();
-                if(this.cursorPos.x < 20) {
-                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                        this.cursorToCenter();
-                        this.setCursorPos();
-                        deferred.resolve(this.cursorPos);
-                    }));
-                }
-                else if (this.cursorPos.x > this.map.container.getBoundingClientRect().width - 20) {
-                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                        this.cursorToCenter();
-                        this.setCursorPos();
-                        deferred.resolve(this.cursorPos);
-                    }));
-                }
-                if(this.cursorPos.y < 20) {
-                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                        this.cursorToCenter();
-                        this.setCursorPos();
-                        deferred.resolve(this.cursorPos);
-                    }));
-                }
-                else if (this.cursorPos.y > this.map.container.getBoundingClientRect().height - 20) {
-                    this.map.centerAt(this.map.toMap(this.cursorPos)).then(lang.hitch(this, function(){
-                        this.cursorToCenter();
-                        this.setCursorPos();
-                        deferred.resolve(this.cursorPos);
-                    }));
-                }
-                else 
-                {
-                    this.setCursorPos();
-                    deferred.resolve(this.cursorPos);
-                }
+            else if (this.cursorPos.x > this.map.container.getBoundingClientRect().width - 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(
+                    lang.hitch(this, function(){
+                        this.map.toMap(this.setCursorPos(this.cursorToCenter()));
+                        deferred.resolve();
+                    })
+                );
             }
+            if(this.cursorPos.y < 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(
+                    lang.hitch(this, function(){
+                        this.map.toMap(this.setCursorPos(this.cursorToCenter()));
+                        deferred.resolve();
+                    })
+                );
+            }
+            else if (this.cursorPos.y > this.map.container.getBoundingClientRect().height - 20) {
+                this.map.centerAt(this.map.toMap(this.cursorPos)).then(
+                    lang.hitch(this, function(){
+                        this.map.toMap(this.setCursorPos(this.cursorToCenter()));
+                        deferred.resolve();
+                    })
+                );
+            }
+            else 
+            {
+                this.map.toMap(this.setCursorPos());
+                deferred.resolve();
+            }
+           
             return deferred.promise;
         },
 
@@ -209,6 +209,7 @@ define([
             }
             domStyle.set('mapSuperCursor', 'left', (this.cursorPos.x-20)+'px');
             domStyle.set('mapSuperCursor', 'top', (this.cursorPos.y-20)+'px');
+            return this.cursorPos;
         },
 
         queryZone : null,
