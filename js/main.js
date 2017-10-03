@@ -2319,6 +2319,7 @@ define(["dojo/ready",
                             break;
                     }
                 }));
+
                 on(mapDiv, 'keypress', lang.hitch(this, function(evn){
                     var focusElement = document.querySelector(':focus');
                     if(!focusElement || focusElement !== mapDiv) return; 

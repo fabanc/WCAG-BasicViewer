@@ -310,12 +310,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             on(dojo.byId('pageBody_infoPanel'), 'keydown', lang.hitch(this, function(ev) {
                 switch(ev.keyCode) {
                     case 37: // <
+                        if(this.popupInfoHeader.total>1) {
                             this.popupInfoHeader.ToPrev();
                             ev.stopPropagation();
                             ev.preventDefault();
                         }
                         break;
                     case 39: // >
+                        if(this.popupInfoHeader.total>1) {
                             this.popupInfoHeader.ToNext();
                             ev.stopPropagation();
                             ev.preventDefault();
