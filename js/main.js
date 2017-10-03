@@ -2241,7 +2241,6 @@ define(["dojo/ready",
             }).then(lang.hitch(this, function (response) {
 
                 var mapDiv = response.map.container;
-                var _this = this;
 
                 var mapScroll = function(event){
                     var focusElement = document.querySelector(':focus');
@@ -2252,54 +2251,54 @@ define(["dojo/ready",
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, 0, 1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, 0, 1).then(mapScrollPausable.resume);
                             break;
                         case 38 : //up
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, 0, -1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, 0, -1).then(mapScrollPausable.resume);
                             break;
                         case 37 : //left
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, -1, 0).then(mapScrollPausable.resume);
+                            this._mapScroll(event, -1, 0).then(mapScrollPausable.resume);
                             break;
                         case 39 : //right
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, 1, 0).then(mapScrollPausable.resume);
+                            this._mapScroll(event, 1, 0).then(mapScrollPausable.resume);
                             break;
                         case 33 : //pgup
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, 1, -1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, 1, -1).then(mapScrollPausable.resume);
                             break;
                         case 34 : //pgdn
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, 1, 1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, 1, 1).then(mapScrollPausable.resume);
                             break;
                         case 35 : //end
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, -1, 1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, -1, 1).then(mapScrollPausable.resume);
                             break;
                         case 36 : //home
                             event.preventDefault();
                             event.stopPropagation();
                             mapScrollPausable.pause();
-                            _this._mapScroll(event, -1, -1).then(mapScrollPausable.resume);
+                            this._mapScroll(event, -1, -1).then(mapScrollPausable.resume);
                             break;
                     }
                 };
 
-                var mapScrollPausable = on.pausable(mapDiv, 'keydown', mapScroll);
+                var mapScrollPausable = on.pausable(mapDiv, 'keydown', lang.hitch(this, mapScroll));
 
                 on(mapDiv, 'keyup', lang.hitch(this, function(event){
                     var focusElement = document.querySelector(':focus');
