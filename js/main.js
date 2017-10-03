@@ -2163,13 +2163,13 @@ define(["dojo/ready",
                 for(i=0; i<styleCss.cssRules.length; i++) {
                     var rule = styleCss.cssRules[i];
                     if(typeof(rule.selectorText)!='undefined' && rule.selectorText!==null) {
+                        var rgbaColor = function(color) {
+                            return 'rgb('+color.r+', '+color.g+', '+color.b+')';
+                        };
                         //hover
                         if(rule.selectorText.indexOf(':hover') >= 0) {
-                            rule.style.backgroundColor = this._rgbaColor(this.hoverColor);
+                            rule.style.backgroundColor = rgbaColor(this.hoverColor);
                         }
-                        // if(rule.selectorText.indexOf('.goThereHint') >= 0) {
-                        //     rule.style.backgroundColor = this._rgbaColor(this.hoverColor);
-                        // }
                         //focus
                         if(rule.selectorText.indexOf(':focus') >= 0) {
                             if(rule.selectorText.indexOf('#mapDiv') >= 0) {
@@ -2178,21 +2178,15 @@ define(["dojo/ready",
                                 rule.style.boxShadow = 'inset rgba(255, 170, 0, 0.901961) 0px 0px 0px 2px';
                             }
                             else {
-                                rule.style.outlineColor = this._rgbaColor(this.focusColor);
+                                rule.style.outlineColor = rgbaColor(this.focusColor);
                             }
                         }
                         if(rule.selectorText.indexOf('.goThereHint') >= 0) {
-                            rule.style.borderColor = this._rgbaColor(this.focusColor);
-                            //rule.style.boxShadow = "3px 3px 10px "+this._rgbaColor(this.focusColor);
+                            rule.style.borderColor = rgbaColor(this.focusColor);
                         }
                     }
                 }
             }
-            //debugger;
-        },
-
-        _rgbaColor: function(color) {
-            return 'rgb('+color.r+', '+color.g+', '+color.b+')';
         },
 
         _checkExtent: function () {
@@ -2238,22 +2232,18 @@ define(["dojo/ready",
                 usePopupManager: true,
             }).then(lang.hitch(this, function (response) {
 
-                // response.map.disableKeyboardNavigation();
+                this.map = response.map;
+                domClass.add(this.map.infoWindow.domNode, "light");
+                this._updateTheme();
 
                 var mapDiv = response.map.container;
 
                 on(mapDiv, 'focus', lang.hitch(this, function(event){
                     this.map.disableKeyboardNavigation();
-                    // this.map.showPanArrows();
-                    // this.map.navigationMode = 'clasic';
-                    // this.map.optimizePanAnimation = false;
                 }));
 
                 on(mapDiv, 'blur', lang.hitch(this, function(event){
                     this.map.enableKeyboardNavigation();
-                    // this.map.hidePanArrows();
-                    // this.map.navigationMode = 'css-transforms';
-                    // this.map.optimizePanAnimation = true;
                 }));
 
                 var mapScroll = function(event){
@@ -2326,10 +2316,6 @@ define(["dojo/ready",
                         evn.stopPropagation();
                     }
                 }));
-
-                this.map = response.map;
-                domClass.add(this.map.infoWindow.domNode, "light");
-                this._updateTheme();
 
                 var title;
                 if (this.config.title === null || this.config.title === "") {
