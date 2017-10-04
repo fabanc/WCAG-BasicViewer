@@ -2259,6 +2259,9 @@ define(["dojo/ready",
                         var dx = x * this.stepX;
                         var dy = y * this.stepY;
                         if(!this.superNav || !event.shiftKey) {
+                            // var extent = this.map.extent;
+                            // var delta = (extent.ymax-extent.ymin) / 50;
+                            // return this.map.setExtent(extent.offset(x * delta, y * delta));
                             return this.map._fixedPan(dx, dy);
                         }
                         else {
@@ -2270,6 +2273,9 @@ define(["dojo/ready",
                         case 40 : //down
                             mapScrollPausable.pause();
                             _mapScroll(0, 1).then(mapScrollPausable.resume);
+                            // var extent = this.map.extent;
+                            // var delta = (extent.ymax-extent.ymin) / 50;
+                            // this.map.setExtent(extent.offset(0, delta));
                             break;
                         case 38 : //up
                             mapScrollPausable.pause();
@@ -2385,8 +2391,7 @@ define(["dojo/ready",
                 if (this.initExt !== null) {
                     this.map.setExtent(this.initExt);
                 }
-                // window.initExt = 
-                this.initExt = this.map.extent;
+                window.initExt = this.initExt = this.map.extent;
                 
                 on.once(this.map, "extent-change", lang.hitch(this, function() {
                     navDeferred.then(lang.hitch(this, function (results) {
