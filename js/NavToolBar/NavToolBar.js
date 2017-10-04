@@ -167,9 +167,7 @@ define([
                 var zoom = this.map.getZoom();
                 this.tryDisableBtn("navZoomIn", zoom == this.map.getMaxZoom());
                 this.tryDisableBtn("navZoomOut", zoom == this.map.getMinZoom());
-                this.tryDisableBtn("navHome",
-                    // window.initExt === 
-                    this.map.extent);
+                this.tryDisableBtn("navHome", window.initExt === this.map.extent);
                 if(has("navigation")) {
                     this.tryDisableBtn("navPrev",this.nav.isFirstExtent());
                     this.tryDisableBtn("navNext",this.nav.isLastExtent());
@@ -190,7 +188,7 @@ define([
             dojo.setStyle(div, "cursor", crs);
             dojo.setStyle(dis, "cursor", crs);
             dojo.setAttr(btn, "tabIndex", disable?-1:0);
-            dojo.setStyle(dis, "display", disable?"":"none");
+            dojo.setStyle(dis, "display", disable?null:"none");
             return disable;
         },
 
