@@ -20,6 +20,7 @@ define({
             "error": "Unable to create map",
             "overviewTip": "Drag to change the Map Extent,\nor focus and use Arrow keys.",
         },
+        "EsriWorldGeocoder": "Esri World Geocoder",
         "tools":{
             "search":{
                 "error": "Location could not be found",

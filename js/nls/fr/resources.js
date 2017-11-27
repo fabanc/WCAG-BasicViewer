@@ -20,6 +20,7 @@ define(
             "error": "Impossible de créer la carte",
             "overviewTip": "Faites glisser pour modifier l'étendue de la carte, \nou mise au point et utiliser les touches fléchées.",
         },
+        "EsriWorldGeocoder": "Géocodeur Mondial Esri",
         "tools":{
             "search":{
                 "error": "Emplacement introuvable",

@@ -1930,6 +1930,9 @@ define(["dojo/ready",
                             }
 
                             geocoder.name = geocoder.name || "Esri World Geocoder";
+                            if(geocoder.name === "Esri World Geocoder") {
+                                geocoder.name = this.config.i18n.EsriWorldGeocoder;
+                            }
 
                             if (this.config.searchExtent) {
                                 geocoder.searchExtent = this.map.extent;
