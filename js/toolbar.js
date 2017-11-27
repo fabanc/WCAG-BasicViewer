@@ -229,7 +229,7 @@ on, mouse, query, Deferred) {
                 }
             });
 
-            _gaq.push(['_trackEvent', "Tool: '"+name+"'", 'selected']);
+            if(_gaq) _gaq.push(['_trackEvent', "Tool: '"+name+"'", 'selected']);
 
             pages.forEach(lang.hitch(this, function(p){
                 if(hidden && p === page) {
