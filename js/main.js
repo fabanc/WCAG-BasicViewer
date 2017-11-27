@@ -14,6 +14,20 @@
  | limitations under the License.
  */
 
+var _gaq = _gaq || [];
+// _gaq.push(['_setAccount', 'UA-109917224-4']);
+// _gaq.push(['_trackPageview']);
+
+(function() {
+    var ga = document.createElement('script');
+    ga.type = 'text/javascript';
+    ga.async = true;
+    ga.src = 'https://ssl.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(ga, s);
+})();
+
+
 define(["dojo/ready", 
     "dojo/aspect", "dijit/registry",
     "dojo/json", "dojo/_base/array", "dojo/_base/Color", "dojo/_base/declare", 
@@ -95,6 +109,20 @@ define(["dojo/ready",
                 this.focusColor = typeof(this.config.focusColor)=='undefined' ? this.setColor('#1f1f1f', 0.4) : this.setColor(this.config.focusColor, 0.9);
                 this.activeColor = typeof(this.config.activeColor)=='undefined' ? this.focusColor : this.setColor(this.config.activeColor, 0.9);
                 this.theme = this.setColor(this.config.theme);
+
+                // var _gaq = _gaq || [];
+                _gaq.push(['_setAccount', 'UA-109917224-4']);
+                _gaq.push(['_trackPageview']);
+
+                // (function() {
+                //     var ga = document.createElement('script');
+                //     ga.type = 'text/javascript';
+                //     ga.async = true;
+                //     ga.src = 'https://ssl.google-analytics.com/ga.js';
+                //     var s = document.getElementsByTagName('script')[0];
+                //     s.parentNode.insertBefore(ga, s);
+                // })();
+
                 // document ready
                 ready(lang.hitch(this, function () {
                     var description = this.config.description;
