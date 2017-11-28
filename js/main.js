@@ -108,12 +108,19 @@ define(["dojo/ready",
                 this.activeColor = typeof(this.config.activeColor)=='undefined' ? this.focusColor : this.setColor(this.config.activeColor, 0.9);
                 this.theme = this.setColor(this.config.theme);
 
-                // _gaq = null;
-                if(_gaq)
+                if(config.useGoogleAnalytics)
                 {
-                    _gaq.push(['_setAccount', 'UA-109917224-4']);
+                    var gaqUserAccount = config.googleAnalyticsUserAccount;
+                    if(!gaqUserAccount || gaqUserAccount.trim() === "")
+                    {
+                        gaqUserAccount = 'UA-109917224-4';
+                    }
+                    _gaq.push(['_setAccount', gaqUserAccount]);
                     _gaq.push(['_trackPageview']);
+                } else {
+                    _gaq = null;
                 }
+
 
                 // document ready
                 ready(lang.hitch(this, function () {

@@ -509,6 +509,27 @@
                "tooltip": "Application ID for language 3."
             }
          ]
+      },
+      {
+         "category": "Debug",
+         "fields": [
+            {
+               "type": "paragraph",
+               "value": "Allow Google Analytics to receive information about how the application works. <br/>Your users private information won't be exposed."
+            },
+            {
+               "label": "Use Google Analytics",
+               "type": "boolean",
+               "fieldName": "useGoogleAnalytics", 
+               "tooltip": "Check to get information in your Google Analytics account."
+            },
+            {
+               "label": "Google Analytics User Account:",
+               "fieldName": "googleAnalyticsUserAccount",
+               "type": "string",
+               "tooltip": "Enter here your Google Analytics User Account in the format:<br/>'UA-#########-#'."
+            }
+         ]
       }
    ],
    "values": {
@@ -559,6 +580,8 @@
       "countryCodeSearch": "",
       "searchExtent": false,
       "languageLabel": true,
+      "googleAnalyticsUserAccount": "",
+      "useGoogleAnalytics": true,
       "lang1shortName": "EN",
       "lang1name": "English",
       "lang1code": "EN-US",
