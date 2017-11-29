@@ -214,6 +214,11 @@
                "fieldName": "tool_infoPanel"
             },
             {
+               "label": "Reverse Geo Code",
+               "type": "boolean",
+               "fieldName": "tool_GeoCoding"
+            },
+            {
                "label": "Map Keyboard Navigation",
                "type": "boolean",
                "fieldName": "tool_mapKeyboardNavigation"
@@ -566,6 +571,7 @@
       "tool_features": true,
       "tool_featureTable": true,
       "tool_infoPanel": false,
+      "tool_GeoCoding": false,
       "tool_mapKeyboardNavigation": false,
       "tool_home": true,
       "tool_locate": true,
