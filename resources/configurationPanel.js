@@ -214,7 +214,7 @@
                "fieldName": "tool_infoPanel"
             },
             {
-               "label": "Reverse Geo Code",
+               "label": "Reverse Geocode",
                "type": "boolean",
                "fieldName": "tool_GeoCoding"
             },

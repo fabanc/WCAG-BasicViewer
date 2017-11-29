@@ -411,6 +411,9 @@ define(["dojo/ready",
                         case "infoPanel":
                             toolList.push(this._addInfoPanel(this.config.tools[i], toolbar));
                             break;
+                        case "geoCoding":
+                            toolList.push(this._addGeoCoding(this.config.tools[i], toolbar));
+                            break;
                         case "features":
                             toolList.push(this._addFeatures(this.config.tools[i], toolbar));
                             break;
@@ -1381,6 +1384,32 @@ define(["dojo/ready",
 
             } else {
                 this._fixFocusOnNativeInfoWindows();
+                deferred.resolve(false);
+            }
+            return deferred.promise;
+        },
+
+        _addGeoCoding: function (tool, toolbar) {
+            //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
+            var deferred = new Deferred();
+            if (has("geoCoding")) {
+                var geoCoding = toolbar.createTool(tool, "");
+
+                // popupInfo = new PopupInfo(
+                // {
+                //     map: this.map,
+                //     toolbar: toolbar,
+                //     superNavigator: this.superNav,
+                //     search: this.search,
+                //     maxSearchResults: this.config.maxSearchResults,
+                //     searchMarker: this.config.searchMarker,
+                //     geolocatorLabelColor: this.config.geolocatorLabelColor
+                // }, infoPanelDiv);
+                // popupInfo.startup();
+                
+                deferred.resolve(true);
+
+            } else {
                 deferred.resolve(false);
             }
             return deferred.promise;
