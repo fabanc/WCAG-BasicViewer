@@ -196,7 +196,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // this.popupInfoHeader.startup();
 
             this.displayPopupContent = lang.hitch(this, function (feature) {
-                this.toolbar._toolOpen('geoCoding');
+                if(!this.toolbar.IsToolOpen('geoCoding')) return;
                 if (feature) {
                     contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane1'));
@@ -278,20 +278,20 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 this.searchMarkerGrafic = new Graphic(geometry, this.searchMarker);
                                 this.map.graphics.add(this.searchMarkerGrafic);
 
-                                this.searchLabel.setText(selectedFeature.attributes.ShortLabel);
-                                this.searchLabelGraphic = new Graphic(geometry, this.searchLabel);
-                                this.map.graphics.add(this.searchLabelGraphic);
+                                // this.searchLabel.setText(selectedFeature.attributes.ShortLabel);
+                                // this.searchLabelGraphic = new Graphic(geometry, this.searchLabel);
+                                // this.map.graphics.add(this.searchLabelGraphic);
                             }
                         }
                     }
                 }
             }));
 
-            on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
-                if(this.superNavigator && name !== 'infoPanel') {
-                    this.superNavigator.followTheMapMode(false);
-                }
-            }));
+            // on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
+            //     if(this.superNavigator && name !== 'infoPanel') {
+            //         this.superNavigator.followTheMapMode(false);
+            //     }
+            // }));
 
             // on(dojo.byId('pageBody_infoPanel'), 'keydown', lang.hitch(this, function(ev) {
             //     switch(ev.keyCode) {
@@ -332,10 +332,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             //     }}));
         },
 
-        clear: function() {
-            this.map.infoWindow.clearFeatures();
-            this.map.container.focus();
-        },
+        // clear: function() {
+        //     this.map.infoWindow.clearFeatures();
+        //     this.map.container.focus();
+        // },
 
         clearSearchGraphics: function(){
             if(this.searchMarkerGrafic) {

@@ -210,7 +210,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.popupInfoHeader.startup();
 
             this.displayPopupContent = lang.hitch(this, function (feature) {
-                this.toolbar._toolOpen('infoPanel');
+                if(this.toolbar.IsToolOpen('geoCoding')) return;
+                
+                this.toolbar.OpenTool('infoPanel');
                 if (feature) {
                     contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
                         var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
