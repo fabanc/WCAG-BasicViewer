@@ -1393,7 +1393,7 @@ define(["dojo/ready",
                     on(btn,'keypress', lang.hitch(this, function(ev) {
                         // console.log(ev);
                         if(ev.keyCode == 13) {
-                            ev.srcElement.click();
+                            ev.target.click();
                         }
                     }));
                 });
