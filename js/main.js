@@ -46,7 +46,9 @@ define(["dojo/ready",
 
     "application/LayerManager/LayerManager",
     "application/NavToolBar/NavToolBar", 
-    "application/SuperNavigator/SuperNavigator", "application/PopupInfo/PopupInfo", 
+    "application/SuperNavigator/SuperNavigator", 
+    "application/PopupInfo/PopupInfo", 
+    "application/GeoCoding/GeoCoding", 
     "application/ImageToggleButton/ImageToggleButton", 
     "application/FeatureList/FeatureList", 
     "application/Filters/Filters", 
@@ -76,7 +78,7 @@ define(["dojo/ready",
 
     LayerManager, 
     NavToolBar,
-    SuperNavigator, PopupInfo,
+    SuperNavigator, PopupInfo, GeoCoding,
     ImageToggleButton,
     FeatureList, Filters, TableOfContents, 
 
@@ -1393,19 +1395,19 @@ define(["dojo/ready",
             //Add the legend tool to the toolbar. Only activated if the web map has operational layers.
             var deferred = new Deferred();
             if (has("geoCoding")) {
-                var geoCoding = toolbar.createTool(tool, "");
+                var geoCodingDiv = toolbar.createTool(tool, "");
 
-                // popupInfo = new PopupInfo(
-                // {
-                //     map: this.map,
-                //     toolbar: toolbar,
-                //     superNavigator: this.superNav,
-                //     search: this.search,
-                //     maxSearchResults: this.config.maxSearchResults,
-                //     searchMarker: this.config.searchMarker,
-                //     geolocatorLabelColor: this.config.geolocatorLabelColor
-                // }, infoPanelDiv);
-                // popupInfo.startup();
+                geoCoding = new GeoCoding(
+                {
+                    map: this.map,
+                    toolbar: toolbar,
+                    superNavigator: this.superNav,
+                    search: this.search,
+                    maxSearchResults: this.config.maxSearchResults,
+                    searchMarker: this.config.searchMarker,
+                    geolocatorLabelColor: this.config.geolocatorLabelColor
+                }, geoCodingDiv);
+                geoCoding.startup();
                 
                 deferred.resolve(true);
 

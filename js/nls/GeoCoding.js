@@ -6,7 +6,7 @@ define({
             "clear": "Clear Selection",
             "noAddress": "No address",
             "instructions" : 
-                "Click the map get location address."
+                "Click the map to get location address."
             }
         })
     }),
