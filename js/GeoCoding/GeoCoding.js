@@ -1,6 +1,8 @@
 define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/registry",
     "dojo/on", 
+    "esri/tasks/locator",
+    "esri/geometry/webMercatorUtils",
     "dojo/Deferred", "dojo/query", 
     "dojo/text!application/GeoCoding/Templates/GeoCoding.html", 
     // "dojo/text!application/GeoCoding/Templates/GeoCodingHeader.html", 
@@ -13,7 +15,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/string", 
     "dojo/i18n!application/nls/GeoCoding",
     "esri/domUtils",
-    "esri/dijit/Popup", 
+    // "esri/dijit/Popup", 
     "application/PopupInfo/PopupInfoHeader",
     "application/SuperNavigator/SuperNavigator",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
@@ -22,6 +24,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         Evented, declare, lang, has, esriNS,
         _WidgetBase, _TemplatedMixin, registry,
         on, 
+        Locator, webMercatorUtils,
         Deferred, query,
         GeoCodingTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
@@ -33,7 +36,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         string,
         i18n,
         domUtils,
-        Popup, PopupInfoHeader, SuperNavigator
+        // Popup, 
+        PopupInfoHeader, SuperNavigator
     ) {
 
     ready(function(){
@@ -45,7 +49,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         // defaults
         templateString: GeoCodingTemplate,
 
-
         options: {
             map: null,
             toolbar: null, 
@@ -54,8 +57,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             maxSearchResults: 10,
             searchMarker: './images/SearchPin1.png',
             geolocatorLabelColor: "#0000ff", // 'green'
-            emptyMessage: i18n.widgets.geoCoding.noAddress
+            emptyMessage: i18n.widgets.geoCoding.noAddress,
         },
+
+        locator : null,
 
         constructor: function (options, srcRefNode) {
             var defaults = lang.mixin({}, this.options, options);
@@ -78,6 +83,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 type : "text/css",
                 rel : "stylesheet",
             }, document.head);
+
+            this.locator = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         },
 
         startup: function () {
@@ -101,59 +108,105 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         postCreate : function() {
-            if(this.search) {
-                this.search.enableLabel = true;
-                this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
-                this.search.autoSelect = false;
+            if(this.locator) {
 
-                this.search.on('clear-search', lang.hitch(this, this.clearSearchGraphics));
+                this.locator.on('location-to-address-complete', lang.hitch(this, function(evt) {
+                    console.log('locator', evt);
+                    if (evt.address.address) {
+                        console.log('address', evt.address);
+                        var address = evt.address.address;
+                        var infoTemplate = new InfoTemplate(
+                            "Location", 
+                            this.makeAddressTemplate(address)
+                            );
+                        var location = webMercatorUtils.geographicToWebMercator(
+                            evt.address.location
+                            );
+                        //this service returns geocoding results in geographic - convert to web mercator to display on map
+                        // var location = webMercatorUtils.geographicToWebMercator(evt.location);
+                        var graphic = new Graphic(
+                            location, 
+                            this.searchMarker, 
+                            address, 
+                            infoTemplate
+                            );
+                        this.map.graphics.add(graphic);
 
-                this.search.on('search-results', lang.hitch(this, function(e) {
-                    // console.log('search-results', e);
-                    var features = [];
-                    if(e.results) {
-                        for(var i = 0; i< this.search.sources.length; i++) {
-                            if(e.results.hasOwnProperty(i)) {
-                                var dataFeatures = e.results[i].map(function(r){ return r.feature;});
-                                var infoTemplate = null;
-                                var layer = null;
-                                if(this.search.sources[i].hasOwnProperty('featureLayer')) {
-                                    infoTemplate = this.search.sources[i].featureLayer.infoTemplate;
-                                    layer = this.search.sources[i].featureLayer;
-                                }
-                                else {
-                                    infoTemplate = new InfoTemplate(
-                                        "Locator", 
-                                        "<div class='esriViewPopup'>"+
-                                        "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
-                                        "<div class='hzLine'></div>"+
-                                        "<span Tabindex=0>${LongLabel}</span>"+
-                                        "<br/><span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
-                                        "</div>"
-                                        );   
-                                }
-                                for(var j = 0; j< dataFeatures.length; j++) {
-                                    dataFeatures[j].infoTemplate = infoTemplate;
-                                    dataFeatures[j]._layer = layer;
-                                }
-                                features = features.concat(dataFeatures);
-                            }
-                        }
-                        // console.log('features-results', features);
+                        
+                        var popup = this.map.infoWindow;
+
+                        popup.set("popupWindow", true);
+                        
+                        popup.setTitle(graphic.getTitle());
+                        popup.setContent(graphic.getContent());
+                        // popup.infoWindow.show();
+
+                        //display the info window with the address information
+                        var screenPnt = this.map.toScreen(location);
+                        popup.resize(400,200);
+                        popup.show(screenPnt, this.map.getInfoWindowAnchor(screenPnt));
                     }
-                    this.search.map.infoWindow.show();
-                    if(features && features !== undefined && features.length > 0) {
-                        this.search.map.infoWindow.setFeatures(features);
-                    }
-                    else { 
-                        this.search.map.infoWindow.clearFeatures();
-                    }
+                    // popup.infoWindow.show();
+                    // if(features && features !== undefined && features.length > 0) {
+                    //     popup.infoWindow.setFeatures(features);
+                    // }
+                    // else { 
+                    //     popup.infoWindow.clearFeatures();
+                    // }
+                }));
+
+                this.map.on("click", lang.hitch(this, function(evt) {
+                    this.map.graphics.clear();
+                    this.locator.locationToAddress(
+                        webMercatorUtils.webMercatorToGeographic(evt.mapPoint), 100
+                    );
                 }));
             }
         },
 
         geoCodingHeader : null,
         contentPanel : null,
+
+        makeAddressTemplate: function(address) {
+            var result = '';
+            if(address.Address.isNonEmpty()) 
+                result += "<tr><td>Address:</td><td>${Address}</td></tr>";
+            if(address.Block.isNonEmpty()) 
+                result += "<tr><td>Block:</td><td>${Block}</td></tr>";
+            if(address.Neighborhood.isNonEmpty()) 
+                result += "<tr><td>Neighborhood:</td><td>${Neighborhood}</td></tr>";
+            if(address.PlaceName.isNonEmpty()) 
+                result += "<tr><td>Place Name:</td><td>${PlaceName}</td></tr>";
+            if(address.MetroArea.isNonEmpty()) 
+                result += "<tr><td>Metro Area:</td><td>${MetroArea}</td></tr>";
+            if(address.District.isNonEmpty() && address.District !== address.City) 
+                result += "<tr><td>District:</td><td>${District}</td></tr>";
+            if(address.City.isNonEmpty()) 
+                result += "<tr><td>City:</td><td>${City}</td></tr>";
+            if(address.Postal.isNonEmpty()) {
+                result += "<tr><td>Postal Code:</td><td>${Postal}";
+                if(address.PostalExt.isNonEmpty()) result += " ${PostalExt}";
+                result += "</td></tr>";
+            }
+            if(address.Region.isNonEmpty()) {
+                result += "<tr><td>Region:</td><td>${Region}";
+                if(address.Subregion.isNonEmpty() && address.Region !== address.Subregion) {
+                    result += " - ${Subregion}";
+                }
+                result += "</td></tr>";
+            }
+            if(address.Territory.isNonEmpty()) 
+                result += "<tr><td>Territory:</td><td>${Territory}</td></tr>";
+            if(address.CountryCode.isNonEmpty()) 
+                result += "<tr><td>Country Code:</td><td>${CountryCode}</td></tr>";
+            if(address.Type.isNonEmpty()) 
+                result += "<tr><td><br/>Type:</td><td><br/>${Type}</td></tr>";
+
+            if(result !=='') {
+                result = "<table role='presentation' class='addressInfo'>"+result+"</table>";
+            }
+            return result;
+        },
 
         _init: function () {
 
@@ -189,6 +242,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 "width": 30,
                 "height": 30
             });
+
+            // this.infoTemplate = new InfoTemplate("Location", "<div>${Address}</div><div>${MetroArea}</div><div>${Neighborhood}</div>");
 
             ////https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
