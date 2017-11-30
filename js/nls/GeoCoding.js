@@ -7,6 +7,7 @@ define({
             "clear": "Clear Selection",
             "instructions" : 
                 "Click the map to get location address.",
+            "Location": "Location",
             "Address": "Address:",
             "Block": "Block:",
             "City": "City:",

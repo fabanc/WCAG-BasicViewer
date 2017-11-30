@@ -116,7 +116,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         console.log('address', evt.address);
                         var address = evt.address.address;
                         var infoTemplate = new InfoTemplate(
-                            "Location", 
+                            "<div tabindex=0>"+(i18n.widgets.geoCoding.Location+(address.Addr_type.isNonEmpty() ? (' (<i>${Addr_type}</i>)') : ''))+"</div>", 
                             this.makeAddressTemplate(address)
                             );
                         var location = webMercatorUtils.geographicToWebMercator(
@@ -205,7 +205,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 result += "<tr tabindex=0><th><br/>"+i18n.widgets.geoCoding.Type+"</th><td><br/>${Type}</td></tr>";
 
             if(result !=='') {
-                result = "<table class='addressInfo'>"+result+"</table>";
+                result = "<table class='addressInfo' tabindex=0>"+result+"</table>";
             }
             return result;
         },
