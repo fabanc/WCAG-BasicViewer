@@ -13,6 +13,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/string", 
     "dojo/i18n!application/nls/GeoCoding",
     "esri/domUtils",
+    "esri/dijit/Popup", 
+    "application/PopupInfo/PopupInfoHeader",
+    "application/SuperNavigator/SuperNavigator",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
     ], function (
@@ -29,7 +32,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         PictureMarkerSymbol, TextSymbol, Graphic,
         string,
         i18n,
-        domUtils
+        domUtils,
+        Popup, PopupInfoHeader, SuperNavigator
     ) {
 
     ready(function(){
@@ -43,6 +47,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
 
         options: {
+            map: null,
+            toolbar: null, 
+            header: 'pageHeader_geoCoding',
+            superNavigator : null,
+            maxSearchResults: 10,
+            searchMarker: './images/SearchPin1.png',
+            geolocatorLabelColor: "#0000ff", // 'green'
+            emptyMessage: i18n.widgets.geoCoding.noAddress
         },
 
         constructor: function (options, srcRefNode) {
@@ -57,6 +69,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.geolocatorLabelColor = defaults.geolocatorLabelColor;
             this.toolbar = defaults.toolbar;
             this._i18n = i18n;
+            this.headerNode = dom.byId(defaults.header);
+            this.superNavigator = defaults.superNavigator;
+            this.emptyMessage = defaults.emptyMessage;
 
             dojo.create("link", {
                 href : "js/GeoCoding/Templates/geoCoding.css",
@@ -90,7 +105,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.search.enableLabel = true;
                 this.search.maxResults = this.search.maxSuggestions = this.maxSearchResults;
                 this.search.autoSelect = false;
-
 
                 this.search.on('clear-search', lang.hitch(this, this.clearSearchGraphics));
 
@@ -138,7 +152,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-        // popupInfoHeader : null,
+        geoCodingHeader : null,
         contentPanel : null,
 
         _init: function () {
@@ -176,30 +190,33 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 "height": 30
             });
 
-            popup.set("popupWindow", false);
+            ////https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
-            //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
-
-            contentPanel = new ContentPane({
+            this.contentPanel = new ContentPane({
                 region: "center",
-                id: "leftPane1",
+                id: "geoCodingContent",
                 tabindex: 0,
             }, dom.byId("geoCoding_content"));
-            contentPanel.startup();
-            contentPanel.set("content", i18n.widgets.geoCoding.instructions);
+            this.contentPanel.startup();
+            this.contentPanel.set("content", i18n.widgets.geoCoding.instructions);
             
-            // this.popupInfoHeader = new PopupInfoHeader({
-            //     map: this.map,
-            //     toolbar: this.toolbar, 
-            //     superNavigator : this.superNavigator,
-            // }, domConstruct.create('Div', {}, this.headerNode));
-            // this.popupInfoHeader.startup();
+            this.geoCodingHeader = new PopupInfoHeader({
+                map: this.map,
+                toolbar: this.toolbar, 
+                header: 'pageHeader_geoCoding', 
+                id: 'geoCoding_headerId', 
+                superNavigator : this.superNavigator,
+                emptyMessage : this.emptyMessage
+            }, domConstruct.create('Div', {}, this.headerNode));
+            this.geoCodingHeader.startup();
+
+            popup.set("popupWindow", false);
 
             this.displayPopupContent = lang.hitch(this, function (feature) {
-                if(!this.toolbar.IsToolOpen('geoCoding')) return;
+                if(!this.toolbar.IsToolSelected('geoCoding')) return;
                 if (feature) {
-                    contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
-                        var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane1'));
+                    this.contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
+                        var mainSection = query('.esriViewPopup .mainSection', dojo.byId('geoCodingContent'));
                         if(mainSection && mainSection.length > 0) {
                             var header = query('.header', mainSection[0]);
                             if(header && header.length > 0) {
@@ -221,14 +238,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 }
                             }
 
-                            var editSummarySection = query('.esriViewPopup .editSummarySection', dojo.byId('leftPane1'));
+                            var editSummarySection = query('.esriViewPopup .editSummarySection', dojo.byId('geoCodingContent'));
                             if(editSummarySection) {
                                 var editSummary =  query('.editSummary', editSummarySection[0]);
                                 if(editSummary) {
                                     editSummary.forEach(function(edit) { domAttr.set(edit, 'tabindex', 0);});
                                 }
                             }
-                            var images = query('.esriViewPopup img', dojo.byId('leftPane1'));
+                            var images = query('.esriViewPopup img', dojo.byId('geoCodingContent'));
                             if(images) {
                                 images.forEach(function(img) {
                                     var alt = domAttr.get(img, 'alt');
@@ -253,13 +270,13 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // }));
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
-                contentPanel.set("content", i18n.widgets.geoCoding.instructions);
+                this.contentPanel.set("content", i18n.widgets.geoCoding.instructions);
                 // if(this.superNavigator) {
                 //     this.superNavigator.clearZone();
                 // }
-                // if(this.popupInfoHeader) {
-                //     this.popupInfoHeader.setTotal(0);
-                // }
+                if(this.geoCodingHeader) {
+                    this.geoCodingHeader.setTotal(0);
+                }
             }));
 
             on(popup, "SelectionChange", lang.hitch(this, function() {
@@ -293,43 +310,43 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             //     }
             // }));
 
-            // on(dojo.byId('pageBody_infoPanel'), 'keydown', lang.hitch(this, function(ev) {
-            //     switch(ev.keyCode) {
-            //         case 37: // <
-            //             if(this.popupInfoHeader.total>1) {
-            //                 this.popupInfoHeader.ToPrev();
-            //                 ev.stopPropagation();
-            //                 ev.preventDefault();
-            //             }
-            //             break;
-            //         case 39: // >
-            //             if(this.popupInfoHeader.total>1) {
-            //                 this.popupInfoHeader.ToNext();
-            //                 ev.stopPropagation();
-            //                 ev.preventDefault();
-            //             }
-            //             break;
-            //         case 90: // Z
-            //             this.popupInfoHeader.ToZoom();
-            //             ev.stopPropagation();
-            //             ev.preventDefault();
-            //             break;
-            //         case 77: // M
-            //         case 80: // P
-            //             this.popupInfoHeader.ToMap();
-            //             ev.stopPropagation();
-            //             ev.preventDefault();
+            on(dojo.byId('pageBody_geoCoding'), 'keydown', lang.hitch(this, function(ev) {
+                switch(ev.keyCode) {
+                    case 37: // <
+                        if(this.geoCodingHeader.total>1) {
+                            this.geoCodingHeader.ToPrev();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                        }
+                        break;
+                    case 39: // >
+                        if(this.geoCodingHeader.total>1) {
+                            this.geoCodingHeader.ToNext();
+                            ev.stopPropagation();
+                            ev.preventDefault();
+                        }
+                        break;
+                    case 90: // Z
+                        this.geoCodingHeader.ToZoom();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                    case 77: // M
+                    case 80: // P
+                        this.geoCodingHeader.ToMap();
+                        ev.stopPropagation();
+                        ev.preventDefault();
 
-            //             break;
-            //         case 88: // X
-            //         case 67: // C
-            //         case 69: // E
-            //             this.popupInfoHeader.ToClear();
-            //             ev.stopPropagation();
-            //             ev.preventDefault();
-            //             break;
+                        break;
+                    case 88: // X
+                    case 67: // C
+                    case 69: // E
+                        this.geoCodingHeader.ToClear();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
 
-            //     }}));
+                }}));
         },
 
         // clear: function() {

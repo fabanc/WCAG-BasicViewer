@@ -3,8 +3,8 @@ define({
         widgets: ({
             "geoCoding" : {
             "zoomTo": "Zoom to Feature",
+            "noAddress": "No Point Address",
             "clear": "Clear Selection",
-            "noAddress": "No address",
             "instructions" : 
                 "Click the map to get location address."
             }

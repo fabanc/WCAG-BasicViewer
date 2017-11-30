@@ -210,7 +210,7 @@ on, mouse, query, Deferred) {
             this._toolClick(name);
         },
 
-        IsToolOpen: function(name) {
+        IsToolSelected: function(name) {
             var page = dom.byId("page_"+name);
             if(!page) return false;
             var hidden = page.classList.contains("hideAttr");

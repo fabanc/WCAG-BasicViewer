@@ -39,8 +39,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             map: null,
             toolbar: null, 
             header: 'pageHeader_infoPanel',
+            id: 'headrId',
             popupInfo: null,
             superNavigator: null,
+            emptyMessage: '***'
         },
 
         constructor: function (options, srcRefNode) {
@@ -50,9 +52,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.map = defaults.map;
             this.toolbar = defaults.toolbar;
+            this.popupHeaderId = defaults.id;
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);
             this.popupInfo = defaults.popupInfo;
+            this.emptyMessage = defaults.emptyMessage;
         },
 
         startup: function () {
@@ -111,7 +115,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             ev.preventDefault();
                             break;
                         case 40: // down
-                            dojo.byId("leftPane").focus();
+                            dojo.byId("popupInfoContent").focus();
                             ev.stopPropagation();
                             ev.preventDefault();
                             break;

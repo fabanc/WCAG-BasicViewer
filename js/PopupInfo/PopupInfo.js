@@ -13,7 +13,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
-    "esri/dijit/Popup", "application/PopupInfo/PopupInfoHeader","application/SuperNavigator/SuperNavigator",
+    "esri/dijit/Popup", 
+    "application/PopupInfo/PopupInfoHeader",
+    "application/SuperNavigator/SuperNavigator",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
     ], function (
@@ -51,7 +53,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             superNavigator : null,
             maxSearchResults: 10,
             searchMarker: './images/SearchPin.png',
-            geolocatorLabelColor: "#ff0000" // 'red'
+            geolocatorLabelColor: "#ff0000", // 'red'
+            emptyMessage: i18n.widgets.popupInfo.noFeatures
         },
 
         constructor: function (options, srcRefNode) {
@@ -68,6 +71,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);
             this.superNavigator = defaults.superNavigator;
+            this.emptyMessage = defaults.emptyMessage;
 
             dojo.create("link", {
                 href : "js/PopupInfo/Templates/PopupInfo.css",
@@ -194,28 +198,31 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             //https://developers.arcgis.com/javascript/3/sandbox/sandbox.html?sample=popup_sidepanel
 
-            contentPanel = new ContentPane({
+            this.contentPanel = new ContentPane({
                 region: "center",
-                id: "leftPane",
+                id: "popupInfoContent",
                 tabindex: 0,
             }, dom.byId("feature_content"));
-            contentPanel.startup();
-            contentPanel.set("content", i18n.widgets.popupInfo.instructions);
+            this.contentPanel.startup();
+            this.contentPanel.set("content", i18n.widgets.popupInfo.instructions);
             
             this.popupInfoHeader = new PopupInfoHeader({
                 map: this.map,
                 toolbar: this.toolbar, 
+                header: 'pageHeader_infoPanel',
+                id: 'infoPanel_headerId', 
                 superNavigator : this.superNavigator,
+                emptyMessage: this.emptyMessage
             }, domConstruct.create('Div', {}, this.headerNode));
             this.popupInfoHeader.startup();
 
             this.displayPopupContent = lang.hitch(this, function (feature) {
-                if(this.toolbar.IsToolOpen('geoCoding')) return;
-                
+                if(this.toolbar.IsToolSelected('geoCoding')) return;
+
                 this.toolbar.OpenTool('infoPanel');
                 if (feature) {
-                    contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
-                        var mainSection = query('.esriViewPopup .mainSection', dojo.byId('leftPane'));
+                    this.contentPanel.set("content", feature.getContent()).then(lang.hitch(this, function() {
+                        var mainSection = query('.esriViewPopup .mainSection', dojo.byId('popupInfoContent'));
                         if(mainSection && mainSection.length > 0) {
                             var header = query('.header', mainSection[0]);
                             if(header && header.length > 0) {
@@ -237,14 +244,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 }
                             }
 
-                            var editSummarySection = query('.esriViewPopup .editSummarySection', dojo.byId('leftPane'));
+                            var editSummarySection = query('.esriViewPopup .editSummarySection', dojo.byId('popupInfoContent'));
                             if(editSummarySection) {
                                 var editSummary =  query('.editSummary', editSummarySection[0]);
                                 if(editSummary) {
                                     editSummary.forEach(function(edit) { domAttr.set(edit, 'tabindex', 0);});
                                 }
                             }
-                            var images = query('.esriViewPopup img', dojo.byId('leftPane'));
+                            var images = query('.esriViewPopup img', dojo.byId('popupInfoContent'));
                             if(images) {
                                 images.forEach(function(img) {
                                     var alt = domAttr.get(img, 'alt');
@@ -269,7 +276,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // }));
 
             on(popup, "ClearFeatures", lang.hitch(this, function() {
-                contentPanel.set("content", i18n.widgets.popupInfo.instructions);
+                this.contentPanel.set("content", i18n.widgets.popupInfo.instructions);
                 // if(this.superNavigator) {
                 //     this.superNavigator.clearZone();
                 // }
