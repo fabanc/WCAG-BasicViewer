@@ -6,7 +6,21 @@ define({
             "noAddress": "No Point Address",
             "clear": "Clear Selection",
             "instructions" : 
-                "Click the map to get location address."
+                "Click the map to get location address.",
+            "Address": "Address:",
+            "Block": "Block:",
+            "City": "City:",
+            "CountryCode": "Country Code:",
+            "District": "District:",
+            "MetroArea": "Metro Area:",
+            "Neighborhood": "Neighborhood:",
+            "PlaceName": "Place Name:",
+            "PostalCode": "Postal Code:",
+            "Region": "Region:",
+            "Sector": "Sector:",
+            "Territory": "Territory:",
+            "Type": "Type:",
+            "Addr_type": "Addr Type:"
             }
         })
     }),

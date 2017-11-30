@@ -170,40 +170,42 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         makeAddressTemplate: function(address) {
             var result = '';
             if(address.Address.isNonEmpty()) 
-                result += "<tr><td>Address:</td><td>${Address}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Address+"</th><td>${Address}</td></tr>";
             if(address.Block.isNonEmpty()) 
-                result += "<tr><td>Block:</td><td>${Block}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Block+"</th><td>${Block}</td></tr>";
+            if(address.Sector.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Sector+"</th><td>${Sector}</td></tr>";
             if(address.Neighborhood.isNonEmpty()) 
-                result += "<tr><td>Neighborhood:</td><td>${Neighborhood}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Neighborhood+"</th><td>${Neighborhood}</td></tr>";
             if(address.PlaceName.isNonEmpty()) 
-                result += "<tr><td>Place Name:</td><td>${PlaceName}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.PlaceName+"</th><td>${PlaceName}</td></tr>";
             if(address.MetroArea.isNonEmpty()) 
-                result += "<tr><td>Metro Area:</td><td>${MetroArea}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.MetroArea+"</th><td>${MetroArea}</td></tr>";
             if(address.District.isNonEmpty() && address.District !== address.City) 
-                result += "<tr><td>District:</td><td>${District}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.District+"</th><td>${District}</td></tr>";
             if(address.City.isNonEmpty()) 
-                result += "<tr><td>City:</td><td>${City}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.City+"</th><td>${City}</td></tr>";
             if(address.Postal.isNonEmpty()) {
-                result += "<tr><td>Postal Code:</td><td>${Postal}";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.PostalCode+"</th><td>${Postal}";
                 if(address.PostalExt.isNonEmpty()) result += " ${PostalExt}";
                 result += "</td></tr>";
             }
             if(address.Region.isNonEmpty()) {
-                result += "<tr><td>Region:</td><td>${Region}";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Region+"</th><td>${Region}";
                 if(address.Subregion.isNonEmpty() && address.Region !== address.Subregion) {
                     result += " - ${Subregion}";
                 }
                 result += "</td></tr>";
             }
             if(address.Territory.isNonEmpty()) 
-                result += "<tr><td>Territory:</td><td>${Territory}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Territory+"</th><td>${Territory}</td></tr>";
             if(address.CountryCode.isNonEmpty()) 
-                result += "<tr><td>Country Code:</td><td>${CountryCode}</td></tr>";
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.CountryCode+"</th><td>${CountryCode}</td></tr>";
             if(address.Type.isNonEmpty()) 
-                result += "<tr><td><br/>Type:</td><td><br/>${Type}</td></tr>";
+                result += "<tr tabindex=0><th><br/>"+i18n.widgets.geoCoding.Type+"</th><td><br/>${Type}</td></tr>";
 
             if(result !=='') {
-                result = "<table role='presentation' class='addressInfo'>"+result+"</table>";
+                result = "<table class='addressInfo'>"+result+"</table>";
             }
             return result;
         },
