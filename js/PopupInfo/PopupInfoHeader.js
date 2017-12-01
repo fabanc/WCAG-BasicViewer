@@ -33,7 +33,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     // });
 
     var Widget = declare("esri.dijit.PopupInfoHeader", [_WidgetBase, _TemplatedMixin, Evented], {
-        templateString: PopupInfoHeaderTemplate,
+        // templateString: PopupInfoHeaderTemplate,
 
         options: {
             map: null,
@@ -42,6 +42,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             id: 'headrId',
             popupInfo: null,
             superNavigator: null,
+            template: PopupInfoHeaderTemplate,
             emptyMessage: '***'
         },
 
@@ -52,6 +53,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.map = defaults.map;
             this.toolbar = defaults.toolbar;
+            this.templateString = defaults.template;
             this.popupHeaderId = defaults.id;
             this._i18n = i18n;
             this.headerNode = dom.byId(defaults.header);

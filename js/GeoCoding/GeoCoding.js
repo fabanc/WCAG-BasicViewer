@@ -5,7 +5,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "esri/geometry/webMercatorUtils",
     "dojo/Deferred", "dojo/query", 
     "dojo/text!application/GeoCoding/Templates/GeoCoding.html", 
-    // "dojo/text!application/GeoCoding/Templates/GeoCodingHeader.html", 
+    "dojo/text!application/GeoCoding/Templates/GeoCodingHeader.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
     "dojo/parser", "dojo/ready",
     "dijit/layout/BorderContainer",
@@ -13,7 +13,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "esri/InfoTemplate", 
     "esri/symbols/PictureMarkerSymbol", "esri/symbols/TextSymbol", "esri/graphic", 
     "dojo/string", 
-    "dojo/i18n!application/nls/GeoCoding",
+    "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
     // "esri/dijit/Popup", 
     "application/PopupInfo/PopupInfoHeader",
@@ -26,7 +26,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         on, 
         Locator, webMercatorUtils,
         Deferred, query,
-        GeoCodingTemplate, 
+        GeoCodingTemplate, GeoCodingHeaderTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
         parser, ready,
         BorderContainer,
@@ -67,8 +67,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.widgetsInTemplate = true;
 
             this.map = defaults.map;
-            // this.search = defaults.search;
-            // this.maxSearchResults = defaults.maxSearchResults;
             this.searchMarker = defaults.searchMarker;
             this.geolocatorLabelColor = defaults.geolocatorLabelColor;
             this.toolbar = defaults.toolbar;
@@ -115,14 +113,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         console.log('address', evt.address);
                         var address = evt.address.address;
                         var infoTemplate = new InfoTemplate(
-                            "<div tabindex=0>"+(i18n.widgets.geoCoding.Location+
-                                (address.Addr_type.isNonEmpty() || address.Type.isNonEmpty() ? 
-                                    (' (<i>'+
-                                        (address.Addr_type.isNonEmpty() ? '${Addr_type}':'')+
-                                        (address.Addr_type.isNonEmpty() && address.Type.isNonEmpty() ? ' - ': '')+
-                                        (address.Type.isNonEmpty() ? '${Type}':'')+
-                                        '</i>)') 
-                                    : ''))+"</div>", 
+                            "<div tabindex=0>"+i18n.widgets.geoCoding.Location+"</div>", 
                             this.makeAddressTemplate(address)
                             );
                         var location = webMercatorUtils.geographicToWebMercator(
@@ -155,14 +146,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         contentPanel : null,
 
         makeAddressTemplate: function(address) {
-            var result = "<div tabindex=0 style='font-weight:bold;'>"+
-                                (address.Addr_type.isNonEmpty() || address.Type.isNonEmpty() ? 
-                                    (
-                                        (address.Addr_type.isNonEmpty() ? '${Addr_type}':'')+
-                                        (address.Addr_type.isNonEmpty() && address.Type.isNonEmpty() ? ': ': '')+
-                                        (address.Type.isNonEmpty() ? '${Type}':'')
-                                        ) 
-                                    : '')+"</div><hr/>";
+            var result = "";
 
             if(address.Address.isNonEmpty()) 
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Address+"</th><td>${Address}</td></tr>";
@@ -198,7 +182,19 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.CountryCode+"</th><td>${CountryCode}</td></tr>";
 
             if(result !=='') {
-                result = "<table class='addressInfo' tabindex=0>"+result+"</table>";
+                result = 
+                "<div class='esriViewPopup'>"+
+                    "<div tabindex=0 class='header'>"+
+                        (address.Addr_type.isNonEmpty() || address.Type.isNonEmpty() ? 
+                            (
+                                (address.Addr_type.isNonEmpty() ? '${Addr_type}':'')+
+                                (address.Addr_type.isNonEmpty() && address.Type.isNonEmpty() ? ' - ': '')+
+                                (address.Type.isNonEmpty() ? '${Type}':'')
+                                ) 
+                            : '')+"</div>"+
+                        "<div class='hzLine'></div>"+
+                        "<table class='addressInfo'>"+result+"</table>"+
+                    "</div>";
             }
             return result;
         },
@@ -207,7 +203,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
-            var popup = this.map.infoWindow;
+            // var popup = this.map.infoWindow;
 
             // var textProbe = dojo.byId('searchTextProbe');
             // var cs = domStyle.getComputedStyle(textProbe);
@@ -246,15 +242,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.contentPanel.startup();
             this.contentPanel.set("content", i18n.widgets.geoCoding.instructions);
             
-            // this.geoCodingHeader = new PopupInfoHeader({
-            //     map: this.map,
-            //     toolbar: this.toolbar, 
-            //     header: 'pageHeader_geoCoding', 
-            //     id: 'geoCoding_headerId', 
-            //     superNavigator : this.superNavigator,
-            //     emptyMessage : this.emptyMessage
-            // }, domConstruct.create('Div', {}, this.headerNode));
-            // this.geoCodingHeader.startup();
+            this.geoCodingHeader = new PopupInfoHeader({
+                map: this.map,
+                toolbar: this.toolbar, 
+                header: 'pageHeader_geoCoding', 
+                id: 'geoCoding_headerId', 
+                superNavigator : this.superNavigator,
+                template: GeoCodingHeaderTemplate,
+            }, domConstruct.create('Div', {}, this.headerNode));
+            this.geoCodingHeader.startup();
         },
 
         clearSearchGraphics: function(){
