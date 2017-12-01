@@ -45,6 +45,27 @@ define({
             "Territory": "Territoire&nbsp;:",
             "Type": "Type&nbsp;:",
             "Addr_type": "Type&nbsp;d'addr&nbsp;:"
+        },
+        "addrType" : {
+            PointAddress : "Adresse",
+            StreetName : "Nom de rue",
+            StreetAddress : "Adresse de rue",
+            POI: "Point d'intérêt",
+            Locality: "Localité",
+            Neighborhood: "Quartier",
+            City: "Ville",
+            Zone: "Zoné",
+            Bank: "Banque",
+            Park: "Parc",
+            Postal: "Code Postal",
+            College: "Collège",
+            School: "École",
+            ShoppingCenter: "Centre commercial",
+            BusinessFacility: "Facilité d'affaires",
+            County: "Département",
+            GolfCourse: "Terrain de golf",
+            Parking: "Stationnement"
         }
+
     })
 });

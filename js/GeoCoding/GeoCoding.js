@@ -113,7 +113,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         console.log('address', evt.address);
                         var address = evt.address.address;
                         var infoTemplate = new InfoTemplate(
-                            "<div tabindex=0>"+i18n.widgets.geoCoding.Location+"</div>", 
+                            "<div tabindex=0 class='header'>"+i18n.widgets.geoCoding.Location+"</div>", 
                             this.makeAddressTemplate(address)
                             );
                         var location = webMercatorUtils.geographicToWebMercator(
@@ -146,6 +146,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         contentPanel : null,
 
         makeAddressTemplate: function(address) {
+            if(address.Addr_type.isNonEmpty()) {
+                var prop = address.Addr_type.replace(' ', '');
+                address.AddrTypeLoc = (i18n.widgets.hasOwnProperty('addrType') && i18n.widgets.addrType.hasOwnProperty(prop)) ?
+                i18n.widgets.addrType[prop] : address.Addr_type;
+            }
+            // address.Type.isNonEmpty()
+            if(address.Type.isNonEmpty()) {
+                var prop1 = address.Type.replace(' ', '');
+                address.TypeLoc = (i18n.widgets.hasOwnProperty('addrType') && i18n.widgets.addrType.hasOwnProperty(prop1)) ?
+                i18n.widgets.addrType[prop1] : address.Type;
+            }
+
             var result = "";
 
             if(address.Address.isNonEmpty()) 
@@ -187,10 +199,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     "<div tabindex=0 class='header'>"+
                         (address.Addr_type.isNonEmpty() || address.Type.isNonEmpty() ? 
                             (
-                                (address.Addr_type.isNonEmpty() ? '${Addr_type}':'')+
+                                (address.Addr_type.isNonEmpty() ? '${AddrTypeLoc}':'')+
                                 (address.Addr_type.isNonEmpty() && address.Type.isNonEmpty() ? ' - ': '')+
-                                (address.Type.isNonEmpty() ? '${Type}':'')
-                                ) 
+                                (address.Type.isNonEmpty() ? '${TypeLoc}':'')
+                            ) 
                             : '')+"</div>"+
                         "<div class='hzLine'></div>"+
                         "<table class='addressInfo'>"+result+"</table>"+

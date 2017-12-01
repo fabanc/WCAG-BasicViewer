@@ -127,14 +127,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 }
                                 else {
                                     infoTemplate = new InfoTemplate(
-                                        "Locator", 
-                                        "<div class='esriViewPopup'>"+
-                                        "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
-                                        "<div class='hzLine'></div>"+
-                                        "<span Tabindex=0>${LongLabel}</span>"+
-                                        "<br/><span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
-                                        "</div>"
-                                        );   
+                                         "Locator",
+                                         this.makeAddressTemplate(e.results[0][i].feature.attributes)
+                                         );
+                                    // new InfoTemplate(
+                                    //     "Locator", 
+                                    //     "<div class='esriViewPopup'>"+
+                                    //     "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
+                                    //     "<div class='hzLine'></div>"+
+                                    //     "<span Tabindex=0>${LongLabel}</span>"+
+                                    //     "<br/><span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
+                                    //     "</div>"
+                                    //     );   
                                 }
                                 for(var j = 0; j< dataFeatures.length; j++) {
                                     dataFeatures[j].infoTemplate = infoTemplate;
@@ -158,6 +162,75 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
         popupInfoHeader : null,
         contentPanel : null,
+
+        makeAddressTemplate: function(address) {
+            console.log('Info Address:', address);
+            
+            if(address.Addr_type.isNonEmpty()) {
+                var prop = address.Addr_type.replace(' ', '');
+                address.AddrTypeLoc = (i18n.widgets.hasOwnProperty('addrType') && i18n.widgets.addrType.hasOwnProperty(prop)) ?
+                i18n.widgets.addrType[prop] : address.Addr_type;
+            }
+            // address.Type.isNonEmpty()
+            if(address.Loc_name.isNonEmpty()) {
+                var prop1 = address.Loc_name.replace(' ', '');
+                address.TypeLoc = (i18n.widgets.hasOwnProperty('addrType') && i18n.widgets.addrType.hasOwnProperty(prop1)) ?
+                i18n.widgets.addrType[prop1] : address.Loc_name;
+            }
+
+            var result = "";
+
+            if(address.StAddr.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Address+"</th><td>${StAddr}</td></tr>";
+            if(address.Block.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Block+"</th><td>${Block}</td></tr>";
+            if(address.Sector.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Sector+"</th><td>${Sector}</td></tr>";
+            if(address.Nbrhd.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Neighborhood+"</th><td>${Nbrhd}</td></tr>";
+            if(address.PlaceName.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.PlaceName+"</th><td>${PlaceName}</td></tr>";
+            if(address.MetroArea.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.MetroArea+"</th><td>${MetroArea}</td></tr>";
+            if(address.District.isNonEmpty() && address.District !== address.City) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.District+"</th><td>${District}</td></tr>";
+            if(address.City.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.City+"</th><td>${City}</td></tr>";
+            if(address.Postal.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.PostalCode+"</th><td>${Postal}";
+                if(address.PostalExt.isNonEmpty()) result += " ${PostalExt}";
+                result += "</td></tr>";
+            }
+            if(address.Region.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Region+"</th><td>${Region}";
+                if(address.Subregion.isNonEmpty() && address.Region !== address.Subregion) {
+                    result += " - ${Subregion}";
+                }
+                result += "</td></tr>";
+            }
+            if(address.Territory.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Territory+"</th><td>${Territory}</td></tr>";
+            if(address.Country.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.CountryCode+"</th><td>${Country}</td></tr>";
+
+            if(result !=='') {
+                result = 
+                "<div class='esriViewPopup'>"+
+                    "<div tabindex=0 class='header'>"+
+                        (address.Addr_type.isNonEmpty() || address.Loc_name.isNonEmpty() ? 
+                            (
+                                (address.Addr_type.isNonEmpty() ? '${AddrTypeLoc}':'')+
+                                (address.Addr_type.isNonEmpty() && address.Loc_name.isNonEmpty() ? ' - ': '')+
+                                (address.Loc_name.isNonEmpty() ? '${TypeLoc}':'')
+                            ) 
+                            : '')+"</div>"+
+                    "<div class='hzLine'></div>"+
+                    "<table class='addressInfo'>"+result+"</table>"+
+                    "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
+                    "</div>";
+            }
+            return result;
+        },
 
         _init: function () {
 
