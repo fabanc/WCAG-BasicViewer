@@ -254,15 +254,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.contentPanel.startup();
             this.contentPanel.set("content", i18n.widgets.geoCoding.instructions);
             
-            this.geoCodingHeader = new PopupInfoHeader({
-                map: this.map,
-                toolbar: this.toolbar, 
-                header: 'pageHeader_geoCoding', 
-                id: 'geoCoding_headerId', 
-                superNavigator : this.superNavigator,
-                template: GeoCodingHeaderTemplate,
-            }, domConstruct.create('Div', {}, this.headerNode));
-            this.geoCodingHeader.startup();
+            // this.geoCodingHeader = new PopupInfoHeader({
+            //     map: this.map,
+            //     toolbar: this.toolbar, 
+            //     header: 'pageHeader_geoCoding', 
+            //     id: 'geoCoding_headerId', 
+            //     superNavigator : this.superNavigator,
+            //     template: GeoCodingHeaderTemplate,
+            // }, domConstruct.create('Div', {}, this.headerNode));
+            // this.geoCodingHeader.startup();
         },
 
         clearSearchGraphics: function(){
