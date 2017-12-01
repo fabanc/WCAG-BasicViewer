@@ -328,6 +328,12 @@
                "tooltip": "Defaults to './images/SearchPin.png'"
             },
             {
+               "label": "<strong>Reverse Geocoder Image Marker:</strong>",
+               "fieldName": "geoCodingMarker",
+               "type": "string",
+               "tooltip": "Defaults to './images/SearchPin.png'"
+            },
+            {
                "type": "paragraph",
                "value": "The marker pointer is in the middle of its base. It will be resized to 50x50 pixels."
             }
@@ -543,6 +549,7 @@
       "animated_marker": true,
       "marker": "images/ripple-dot1.gif",
       "searchMarker": "./images/SearchPin.png",
+      "geoCodingMarker": "./images/SearchPin.png",
       "marker_size": "35",
       "alt_keys": true,
       "logo": "images/logo.png",

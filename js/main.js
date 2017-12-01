@@ -1404,7 +1404,7 @@ define(["dojo/ready",
                     superNavigator: this.superNav,
                     search: this.search,
                     maxSearchResults: this.config.maxSearchResults,
-                    searchMarker: this.config.searchMarker,
+                    searchMarker: this.config.geoCodingMarker,
                     geolocatorLabelColor: this.config.geolocatorLabelColor
                 }, geoCodingDiv);
                 geoCoding.startup();
