@@ -39,7 +39,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             map: null,
             toolbar: null, 
             header: 'pageHeader_infoPanel',
-            id: 'headrId',
+            id: 'popupInfoHeadrId',
             popupInfo: null,
             superNavigator: null,
             template: PopupInfoHeaderTemplate,
@@ -85,11 +85,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             var popup = this.map.infoWindow;
 
-            on(query('.popupInfoButton.prev')[0], 'click', lang.hitch(this, this.selectPrevious));
-            on(query('.popupInfoButton.next')[0], 'click', lang.hitch(this, this.selectNext));
-            on(query('.popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
-            on(query('.popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
-            on(query('.popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearFeatures));
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.prev')[0], 'click', lang.hitch(this, this.selectPrevious));
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.next')[0], 'click', lang.hitch(this, this.selectNext));
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearFeatures));
 
             var buttons = query(".popupInfoButton");
             buttons.forEach(lang.hitch(this, function (btn) {

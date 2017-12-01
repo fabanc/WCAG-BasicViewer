@@ -16,7 +16,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
     // "esri/dijit/Popup", 
-    "application/PopupInfo/PopupInfoHeader",
+    "application/GeoCoding/GeoCodingHeader",
     "application/SuperNavigator/SuperNavigator",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
@@ -37,7 +37,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         i18n,
         domUtils,
         // Popup, 
-        PopupInfoHeader, SuperNavigator
+        GeoCodingHeader, SuperNavigator
     ) {
 
     ready(function(){
@@ -121,20 +121,21 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             );
                         //this service returns geocoding results in geographic - convert to web mercator to display on map
                         // var location = webMercatorUtils.geographicToWebMercator(evt.location);
-                        var graphic = new Graphic(
+                        this.geoCodingMarkerGraphic = new Graphic(
                             location, 
                             this.searchMarker, 
                             address, 
                             infoTemplate
                             );
-                        this.map.graphics.add(graphic);
+                        this.map.graphics.add(this.geoCodingMarkerGraphic);
 
-                        this.contentPanel.setContent(graphic.getContent());
+                        this.contentPanel.setContent(this.geoCodingMarkerGraphic.getContent());
                     }
                 }));
 
                 this.map.on("click", lang.hitch(this, function(evt) {
-                    this.map.graphics.clear();
+                    // this.map.graphics.clear();
+                    this.clearSearchGraphics();
                     this.locator.locationToAddress(
                         webMercatorUtils.webMercatorToGeographic(evt.mapPoint), 100
                     );
@@ -215,8 +216,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
-            // var popup = this.map.infoWindow;
-
             // var textProbe = dojo.byId('searchTextProbe');
             // var cs = domStyle.getComputedStyle(textProbe);
             // var fontSize = cs.fontSize.slice(0,-2);
@@ -254,26 +253,28 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.contentPanel.startup();
             this.contentPanel.set("content", i18n.widgets.geoCoding.instructions);
             
-            // this.geoCodingHeader = new PopupInfoHeader({
-            //     map: this.map,
-            //     toolbar: this.toolbar, 
-            //     header: 'pageHeader_geoCoding', 
-            //     id: 'geoCoding_headerId', 
-            //     superNavigator : this.superNavigator,
-            //     template: GeoCodingHeaderTemplate,
-            // }, domConstruct.create('Div', {}, this.headerNode));
-            // this.geoCodingHeader.startup();
+            this.geoCodingHeader = new GeoCodingHeader({
+                map: this.map,
+                toolbar: this.toolbar, 
+                header: 'pageHeader_geoCoding', 
+                id: 'geoCoding_headerId', 
+                superNavigator : this.superNavigator,
+                template: GeoCodingHeaderTemplate,
+                contentPanel: this.contentPanel,
+                self: this,
+            }, domConstruct.create('Div', {}, this.headerNode));
+            this.geoCodingHeader.startup();
         },
 
         clearSearchGraphics: function(){
-            if(this.searchMarkerGrafic) {
-                this.map.graphics.remove(this.searchMarkerGrafic);
-                this.searchMarkerGrafic = null;
+            if(this.geoCodingMarkerGraphic) {
+                this.map.graphics.remove(this.geoCodingMarkerGraphic);
+                this.geoCodingMarkerGraphic = null;
             }
-            if(this.searchLabelGraphic) {
-                this.map.graphics.remove(this.searchLabelGraphic);
-                this.searchLabelGraphic = null;
-            }
+            // if(this.searchLabelGraphic) {
+            //     this.map.graphics.remove(this.searchLabelGraphic);
+            //     this.searchLabelGraphic = null;
+            // }
         },
 
         // showBadge : function(show) {

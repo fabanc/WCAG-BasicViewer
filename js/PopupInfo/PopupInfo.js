@@ -236,8 +236,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var fontSize = cs.fontSize.slice(0,-2);
             this.searchLabel = new TextSymbol({
                 yoffset : -fontSize,//-14,
-                haloColor: [255,255,255,255],
-                haloSize: 2,
+                haloColor: [25,25,25,155],
+                haloSize: 4,
                 font : 
                 {
                     family : cs.fontFamily, //"Roboto Condensed",
@@ -278,7 +278,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 header: 'pageHeader_infoPanel',
                 id: 'infoPanel_headerId', 
                 superNavigator : this.superNavigator,
-                emptyMessage: this.emptyMessage
+                emptyMessage: this.emptyMessage,
             }, domConstruct.create('Div', {}, this.headerNode));
             this.popupInfoHeader.startup();
 
