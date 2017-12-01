@@ -113,7 +113,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         console.log('address', evt.address);
                         var address = evt.address.address;
                         var infoTemplate = new InfoTemplate(
-                            "<div tabindex=0 class='header'>"+i18n.widgets.geoCoding.Location+"</div>", 
+                            i18n.widgets.geoCoding.Location, 
                             this.makeAddressTemplate(address)
                             );
                         var location = webMercatorUtils.geographicToWebMercator(

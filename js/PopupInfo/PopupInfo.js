@@ -121,28 +121,21 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 var dataFeatures = e.results[i].map(function(r){ return r.feature;});
                                 var infoTemplate = null;
                                 var layer = null;
-                                if(this.search.sources[i].hasOwnProperty('featureLayer')) {
+                                var isFeatureLayer = this.search.sources[i].hasOwnProperty('featureLayer');
+                                if(isFeatureLayer) {
                                     infoTemplate = this.search.sources[i].featureLayer.infoTemplate;
                                     layer = this.search.sources[i].featureLayer;
                                 }
-                                else {
-                                    infoTemplate = new InfoTemplate(
-                                         "Locator",
-                                         this.makeAddressTemplate(e.results[0][i].feature.attributes)
-                                         );
-                                    // new InfoTemplate(
-                                    //     "Locator", 
-                                    //     "<div class='esriViewPopup'>"+
-                                    //     "<div Tabindex=0 class='header'>${Addr_type} ${Loc_name} ${Subregion}</div>"+
-                                    //     "<div class='hzLine'></div>"+
-                                    //     "<span Tabindex=0>${LongLabel}</span>"+
-                                    //     "<br/><span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
-                                    //     "</div>"
-                                    //     );   
-                                }
                                 for(var j = 0; j< dataFeatures.length; j++) {
-                                    dataFeatures[j].infoTemplate = infoTemplate;
-                                    dataFeatures[j]._layer = layer;
+                                    if(isFeatureLayer) {
+                                        dataFeatures[j].infoTemplate = infoTemplate;
+                                        dataFeatures[j]._layer = layer;
+                                    } else {
+                                        dataFeatures[j].infoTemplate = new InfoTemplate(
+                                            i18n.widgets.geoCoding.Location,
+                                            this.makeAddressTemplate(e.results[i][j].feature.attributes)
+                                        );
+                                    }
                                 }
                                 features = features.concat(dataFeatures);
                             }

@@ -51,7 +51,7 @@ define({
                 PointAddress : "Address",
                 StreetName : "Street Name",
                 StreetAddress : "Street Address",
-                POI: "POI",
+                POI: "Point Of Interest",
                 Locality: "Locality",
                 Neighborhood: "Neighborhood",
                 City: "City",
