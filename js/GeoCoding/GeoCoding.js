@@ -110,6 +110,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 if(this.superNavigator) {
                     on(this.superNavigator, 'mapClick', lang.hitch(this, function(evt) {
                         // console.log('mapClick', evt);
+                        if(!this.toolbar.IsToolSelected('geoCoding')) return;
                         this.clearSearchGraphics();
                         this.locator.locationToAddress(
                             webMercatorUtils.webMercatorToGeographic(evt.mapPoint), 100
@@ -118,9 +119,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
 
                 this.locator.on('location-to-address-complete', lang.hitch(this, function(evt) {
-                    console.log('locator', evt);
+                    // console.log('locator', evt);
                     if (evt.address.address) {
-                        console.log('address', evt.address);
+                        // console.log('address', evt.address);
                         var address = evt.address.address;
                         var infoTemplate = new InfoTemplate(
                             i18n.widgets.geoCoding.Location, 
@@ -144,7 +145,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }));
 
                 this.map.on("click", lang.hitch(this, function(evt) {
-                    // this.map.graphics.clear();
+                    if(!this.toolbar.IsToolSelected('geoCoding')) return;
+
                     this.clearSearchGraphics();
                     this.locator.locationToAddress(
                         webMercatorUtils.webMercatorToGeographic(evt.mapPoint), 100
