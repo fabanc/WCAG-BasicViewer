@@ -276,6 +276,29 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 self: this,
             }, domConstruct.create('Div', {}, this.headerNode));
             this.geoCodingHeader.startup();
+
+            on(dojo.byId('pageBody_geoCoding'), 'keydown', lang.hitch(this, function(ev) {
+                switch(ev.keyCode) {
+                    case 90: // Z
+                        this.geoCodingHeader.ToZoom();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                    case 77: // M
+                    case 80: // P
+                        this.geoCodingHeader.ToMap();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+
+                        break;
+                    case 88: // X
+                    case 67: // C
+                    case 69: // E
+                        this.geoCodingHeader.ToClear();
+                        ev.stopPropagation();
+                        ev.preventDefault();
+                        break;
+                }}));
         },
 
         clearSearchGraphics: function(){
