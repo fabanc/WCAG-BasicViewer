@@ -190,11 +190,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     case 'Park' :
                         zoomLevel = 15;
                         break;
-                    case 'PostalCode' :
-                        zoomLevel = 12;
-                        break;
                     case 'Locality' :
                         zoomLevel = 10;
+                        break;
+                    case 'Postal' :
+                        zoomLevel = 8;
                         break;
                 }
                 this.map.centerAndZoom(this.self.geoCodingMarkerGraphic.geometry, zoomLevel);
