@@ -107,6 +107,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         postCreate : function() {
             if(this.locator) {
 
+                if(this.superNavigator) {
+                    on(this.superNavigator, 'mapClick', lang.hitch(this, function(evt) {
+                        // console.log('mapClick', evt);
+                        this.clearSearchGraphics();
+                        this.locator.locationToAddress(
+                            webMercatorUtils.webMercatorToGeographic(evt.mapPoint), 100
+                        );
+                    }));
+                }
+
                 this.locator.on('location-to-address-complete', lang.hitch(this, function(evt) {
                     console.log('locator', evt);
                     if (evt.address.address) {

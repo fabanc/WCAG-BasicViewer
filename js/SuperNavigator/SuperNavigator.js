@@ -141,6 +141,7 @@ define([
                 switch(evn.keyCode)  {
                     case 13: //Enter
                         // https://gis.stackexchange.com/questions/78976/how-to-open-infotemplate-programmatically
+                        this.emit("mapClick", {mapPoint:this.map.toMap(this.cursorPos)});
                         this.showPopup(evn, this.operationalLayers);
                         evn.preventDefault();
                         evn.stopPropagation();
