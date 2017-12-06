@@ -82,3 +82,13 @@ h4.popupHeader {
     bottom: 10px;
 }
 
+.locatorCopy {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+
+.locatorCopy:hover {
+    text-decoration: underline;
+}
+

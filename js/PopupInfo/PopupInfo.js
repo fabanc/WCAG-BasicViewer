@@ -174,10 +174,50 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             var result = "";
 
-            if(address.StAddr.isNonEmpty()) 
-                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Address+"</th><td>${StAddr}</td></tr>";
+            if(address.StAddr.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Address+"</th><td>${StAddr}";
+                if(address.SubAddr.isNonEmpty()) {
+                    result += "<br/>${SubAddr}";
+                }
+                result += "</td></tr>";
+            }
+            if(address.Status.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Status+"</th><td>${Status}</td></tr>";
+            if(address.Side.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Side+"</th><td>${Side}</td></tr>";
+            if(address.StDir.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.StDir+"</th><td>${StDir}";
+                if(address.StType.isNonEmpty()) {
+                    result += "/${StType}";
+                }
+                if(address.StPreType.isNonEmpty()) {
+                    result += "/${StPreType}";
+                }
+                result += "</td></tr>";
+            }
+            if(address.BldgName.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.BldgName+"</th><td>${BldgName}";
+                if(address.BldgType.isNonEmpty()) {
+                    result += " - ${BldgType}";
+                }
+                result += "</td></tr>";
+            }
+            if(address.LevelName.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.LevelName+"</th><td>${LevelName}";
+                if(address.LevelType.isNonEmpty()) {
+                    result += " - ${LevelType}";
+                }
+                result += "</td></tr>";
+            }
             if(address.Block.isNonEmpty()) 
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Block+"</th><td>${Block}</td></tr>";
+            if(address.UnitName.isNonEmpty()) {
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.UnitName+"</th><td>${UnitName}";
+                if(address.UnitType.isNonEmpty()) {
+                    result += " (${UnitType})";
+                }
+                result += "</td></tr>";
+            }
             if(address.Sector.isNonEmpty()) 
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Sector+"</th><td>${Sector}</td></tr>";
             if(address.Nbrhd.isNonEmpty()) 
@@ -207,6 +247,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             if(address.Country.isNonEmpty()) 
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.CountryCode+"</th><td>${Country}</td></tr>";
 
+            if(address.Phone.isNonEmpty()) 
+                result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Phone+"</th><td>${Phone}</td></tr>";
+
             if(result !=='') {
                 result = 
                 "<div class='esriViewPopup'>"+
@@ -221,6 +264,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     "<div class='hzLine'></div>"+
                     "<table class='addressInfo'>"+result+"</table>"+
                     "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
+                    "<a class='locatorCopy' onclick='\"${LongLabel}\".copyToClipboard();' title='Copy to Clipboard'>Copy</span>"+
                     "</div>";
             }
             return result;
