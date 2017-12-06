@@ -134,7 +134,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                     } else {
                                         dataFeatures[j].infoTemplate = new InfoTemplate(
                                             i18n.widgets.geoCoding.Location,
-                                            this.makeAddressTemplate(e.results[i][j].feature.attributes)
+                                            this.makeSearchResultTemplate(e.results[i][j].feature.attributes)
                                         );
                                     }
                                 }
@@ -157,7 +157,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         popupInfoHeader : null,
         contentPanel : null,
 
-        makeAddressTemplate: function(address) {
+        makeSearchResultTemplate: function(address) {
             console.log('Info Address:', address);
             
             if(address.Addr_type.isNonEmpty()) {
