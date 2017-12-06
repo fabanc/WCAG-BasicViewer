@@ -219,6 +219,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             : '')+"</div>"+
                         "<div class='hzLine'></div>"+
                         "<table class='addressInfo'>"+result+"</table>"+
+                        "<a class='locatorCopy' tabindex=0 onkeydown='if(event.keyCode===13 || event.keyCode===20) this.click();' onclick='\"${LongLabel}\".copyToClipboard();' title='"+i18n.widgets.geoCoding.CopyToClipboard+"'>"+i18n.widgets.geoCoding.Copy+"</span>"+
                     "</div>";
             }
             return result;

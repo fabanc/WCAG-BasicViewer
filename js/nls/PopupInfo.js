@@ -38,6 +38,8 @@ define({
                     "<li>press <myKey>ENTER</myKey> to select at cursor.</li>"+
                     "</ul>",
                 "Location": "Location",
+                Copy: "Copy",
+                CopyToClipboard: "Copy to Clipboard",
                 "Address": "Address:",
                 "Block": "Block:",
                 "BldgName": "Building Name:",

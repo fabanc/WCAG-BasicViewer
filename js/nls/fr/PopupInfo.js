@@ -37,6 +37,8 @@ define({
                 "<li>appuyez sur <myKey>Entrée</myKey> pour sélectionner au curseur.</li>"+
                 "</ul>",
             "Location": "Emplacement",
+            Copy: "Copier",
+            CopyToClipboard: "Copier dans le presse-papier",
             "Address": "Adresse&nbsp;:",
             "Block": "Bloc&nbsp;:",
                 "BldgName": "Nom&nbsp;du&nbsp;bâtiment&nbsp;:",
