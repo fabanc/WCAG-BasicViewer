@@ -406,6 +406,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 if(this.toolbar.IsToolSelected('geoCoding')) return;
 
                 var selectedFeature = popup.getSelectedFeature();
+                // selectedFeature._shape.rawNode.outerHTML
                 if(selectedFeature && selectedFeature !== undefined) {
                     this.displayPopupContent(selectedFeature);
                     this.clearSearchGraphics();
@@ -425,6 +426,18 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 this.map.graphics.add(this.searchLabelGraphic);
                             }
                         }
+                    }
+                    else {
+                        var mainSectionHeader = query('.esriViewPopup .mainSection .header', dojo.byId('popupInfoContent'))[0];
+                        var source = selectedFeature._shape.rawNode.attributes['xlink:href'];
+                        if(source && source.value)
+                            dojo.create(
+                                'img', 
+                                {
+                                    src : source.value
+                                },
+                                mainSectionHeader
+                            );
                     }
                 }
             }));
