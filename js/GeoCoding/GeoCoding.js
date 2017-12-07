@@ -218,6 +218,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.CountryCode+"</th><td>${CountryCode}</td></tr>";
 
             if(result !=='') {
+                var title="Location to Address";
                 result = 
                 "<div class='esriViewPopup'>"+
                     "<div tabindex=0 class='header'>"+
@@ -228,6 +229,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 (address.Type.isNonEmpty() ? '${TypeLoc}':'')
                             ) 
                             : '')+"</div>"+
+                        "<img src='"+this.searchMarker.url+"' alt='"+title+"'' title='"+title+"'/>"+
                         "<div class='hzLine'></div>"+
                         "<table class='addressInfo'>"+result+"</table>"+
                         "<a class='locatorCopy' tabindex=0 onkeydown='if(event.keyCode===13 || event.keyCode===32) this.click();' onclick='\"${LongLabel}\".copyToClipboard();' title='"+i18n.widgets.geoCoding.CopyToClipboard+"'>"+i18n.widgets.geoCoding.Copy+"</span>"+

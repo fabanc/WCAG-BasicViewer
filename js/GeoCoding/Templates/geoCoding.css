@@ -8,3 +8,11 @@
 	vertical-align: top;
 	font-weight: bold;
 }
+
+.esriViewPopup img {
+	width: 24px;
+    height: 24px;
+    right: 10px;
+    position: absolute;
+    top: 4px;
+}

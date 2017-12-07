@@ -22,6 +22,7 @@ define({
                 "<li>appuyez <myKey aria-label='Contrôle'>CTRL</myKey> + <myKey>MAJ</myKey> + <myKey>Entrée</myKey> pour sélectionner l'intérieur de la caractéristique sélectionnée.</li>"+
                 "</ul>"+
                 "En sélectionnant l'étendue, commence le mode 'Suivre la Carte'.",
+            "addressToLocation": "Adresse à l'emplacement",
             "followTheMap": "Mode Suivez la carte"
         }),
         geoCoding : {
@@ -37,6 +38,7 @@ define({
                 "<li>déplacer le curseur de carte avec <myKey>MAJ</myKey> + <myKey>flèches</myKey>, puis</li>"+
                 "<li>appuyez sur <myKey>Entrée</myKey> pour sélectionner au curseur.</li>"+
                 "</ul>",
+            "locationToAddress": "Lieu à adresse",
             "Location": "Emplacement",
             Copy: "Copier",
             CopyToClipboard: "Copier dans le presse-papier",

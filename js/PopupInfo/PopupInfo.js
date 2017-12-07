@@ -251,6 +251,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 result += "<tr tabindex=0><th>"+i18n.widgets.geoCoding.Phone+"</th><td>${Phone}</td></tr>";
 
             if(result !=='') {
+                var title="Address to Location"; 
                 result = 
                 "<div class='esriViewPopup'>"+
                     "<div tabindex=0 class='header'>"+
@@ -261,6 +262,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 (address.Loc_name.isNonEmpty() ? '${TypeLoc}':'')
                             ) 
                             : '')+"</div>"+
+                    "<img src='"+this.searchMarker.url+"' alt='"+title+"'' title='"+title+"'/>"+
                     "<div class='hzLine'></div>"+
                     "<table class='addressInfo'>"+result+"</table>"+
                     "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
