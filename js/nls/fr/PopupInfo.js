@@ -27,7 +27,8 @@ define({
         geoCoding : {
             "zoomTo": "Zoomer sur l'emplacement",
             "clear": "Effacer la sélection",
-            "noAddress": "Pas d'adresse au point",
+            "noAddress": "Pas d'adresse",
+            "noAddressFound": "Aucune adresse trouvée au point",
             "instructions" : 
                 "Cliquez sur la carte pour obtenir l'adresse du lieu, <br/>ou <br/>"+
                 "<a href='#' onclick='dojo.byId(\"mapDiv\").focus();'>Aller à la carte</a> et:"+

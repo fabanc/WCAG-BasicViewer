@@ -28,6 +28,7 @@ define({
             "geoCoding" : {
                 "zoomTo": "Zoom to Location",
                 "noAddress": "No Point Address",
+                "noAddressFound": "No Address Found at Point",
                 "clear": "Clear Selection",
                 "instructions" : 
                     "Click the map to get location address <br/>or <br/>"+
