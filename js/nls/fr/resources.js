@@ -89,6 +89,7 @@ define(
         searchEnterCriteria : "Terme recherché pour",
         pressAlt : "Appuyer sur ALT + 0 à 9 pour naviguer rapidement",
         instructions:"instructions.french",
+        moreHelp : "Plus d'aide",
         wcagViewer : "Visualiseur Accessible",
         leftCollapse: "Réduire le panneau gauche",
         leftExpand: "Révéler le panneau gauche",

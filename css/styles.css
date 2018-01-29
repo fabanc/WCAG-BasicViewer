@@ -1994,3 +1994,8 @@ myKey {
 .esriViewPopup .esriDateValue {
     white-space: nowrap;
 }
+
+.more_help {
+  display:block; 
+  float:right;
+}

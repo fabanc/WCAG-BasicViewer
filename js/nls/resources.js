@@ -89,6 +89,7 @@ define({
         searchEnterCriteria : "Enter search term for",
         pressAlt : "Press ALT + 0 to 9 keys for fast navigation",
         instructions:"instructions",
+        moreHelp : "More Help",
         wcagViewer : "Accessible Viewer",
         leftCollapse: "Collapse Left Panel",
         leftExpand: "Expand Left Panel",

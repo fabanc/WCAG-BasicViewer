@@ -1053,12 +1053,17 @@ define(["dojo/ready",
                     deferedDetails.then(lang.hitch(this, function(r) {
                         require(["dojo/text!application/dijit/templates/"+this.config.i18n.instructions+".html"], 
                             function(instructionsText){
-                            var instructionsDiv = domConstruct.create('div',{
-                                id:"instructionsDiv",
-                                innerHTML: instructionsText,
-                                tabindex: 0
-                            }, dom.byId("pageBody_details"));
-                        });
+
+                                if(this.config.moreHelpURL.isNonEmpty())
+                                    instructionsText += "<a href='"+this.config.moreHelpURL+"' target='blank' class='more_help'>"+this.config.i18n.moreHelp+"</a>"
+
+
+                                var instructionsDiv = domConstruct.create('div',{
+                                    id:"instructionsDiv",
+                                    innerHTML: instructionsText,
+                                    tabindex: 0
+                                }, dom.byId("pageBody_details"));
+                            });
 
                         on(toolbar, 'updateTool_details', this._adjustDetails);
                         on(this.map, 'resize', this._adjustDetails);
