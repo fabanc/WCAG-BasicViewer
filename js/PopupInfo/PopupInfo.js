@@ -262,7 +262,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 (address.Loc_name.isNonEmpty() ? '${TypeLoc}':'')
                             ) 
                             : '')+"</div>"+
-                    "<img src='"+this.searchMarker.url+"' alt='"+title+"'' title='"+title+"'/>"+
+                        "<div id='thumb' class='thumbFeature' tabindex=0 title='"+title+"'><img src='"+this.searchMarker.url+"' alt='"+title+"''/></div>"+
                     "<div class='hzLine'></div>"+
                     "<table class='addressInfo'>"+result+"</table>"+
                     "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
@@ -374,7 +374,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                         domAttr.set(img,'tabindex',0);
                                         if(!domAttr.get(img, 'title'))
                                         {
-                                            domAttr.set(img,'title',alt);
+                                            domAttr.set(img,'title', alt);
                                         }
                                     }
                                 });
@@ -429,15 +429,26 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
                     else {
                         var mainSectionHeader = query('.esriViewPopup .mainSection .header', dojo.byId('popupInfoContent'))[0];
+                        var title = selectedFeature._layer.arcgisProps.title.replace('_',' ');
+                        var thumb =dojo.create('div', { 
+                            id: 'thumb', 
+                            class: 'thumbFeature',
+                            title:title,
+                            'aria-label':title,
+                            tabindex:0
+                       }, mainSectionHeader);
                         var source = selectedFeature._shape.rawNode.attributes['xlink:href'];
-                        if(source && source.value)
+                        if(source && source.value) {
                             dojo.create(
                                 'img', 
                                 {
-                                    src : source.value
-                                },
-                                mainSectionHeader
-                            );
+                                    src : source.value,
+                                    alt:title,
+                                    title:title,
+                                    'aria-label':title,
+                                    tabindex:0
+                                }, thumb);
+                        }
                     }
                 }
             }));

@@ -1973,3 +1973,24 @@ myKey {
 .esriBookmarks {
     border:none;
 }
+
+.thumbFeature {
+    position:absolute;
+    top:5px;
+    right:8px;
+    width: 24px;
+    height:24px;
+}
+
+.thumbFeature * {
+    max-width: 24px;
+    max-height:24px;
+}
+
+.esriViewPopup .header {
+    margin-right: 26px;
+}
+
+.esriViewPopup .esriDateValue {
+    white-space: nowrap;
+}

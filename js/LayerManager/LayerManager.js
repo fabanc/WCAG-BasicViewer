@@ -379,7 +379,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             map: this.map,
                             layerInfos: [{
                                 defaultSymbol:true,
-                                layer: layer.layerObject
+                                layer: layer.layerObject,
+                                title: layer.title,
                             }],
                         }, domConstruct.create("div", {
                             role:'application', 
