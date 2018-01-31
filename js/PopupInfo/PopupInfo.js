@@ -266,7 +266,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     "<div class='hzLine'></div>"+
                     "<table class='addressInfo'>"+result+"</table>"+
                     "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
-                    "<a class='locatorCopy' tabindex=0 onkeydown='if(event.keyCode===13 || event.keyCode===32) onclick='\"${LongLabel}\".copyToClipboard();' title='"+i18n.widgets.geoCoding.CopyToClipboard+"'>"+i18n.widgets.geoCoding.Copy+"</span>"+
                     "</div>";
             }
             return result;
