@@ -97,7 +97,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             // this._fixLegends();
             
             if(this.defaults.toolbar) {
-                on(this.defaults.toolbar, 'updateTool_layers', lang.hitch(this, function(name) {
+                on(this.defaults.toolbar, 'updateTool_layerManager', lang.hitch(this, function(name) {
                     this._fixLegends();
                 }));
             }
