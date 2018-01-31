@@ -1323,11 +1323,11 @@ define(["dojo/ready",
                             }
                         }
 
-                        var legendLayerImages = node.querySelectorAll(".esriLegendLayer image");
+                        var legendLayerImages = node.querySelectorAll(".esriLegendLayer image, .esriLegendLayer img");
                         if(legendLayerImages) {
                             // legendLayerImages.forEach(function(image) {
                             for(var iii=0; iii<legendLayerImages.length; iii++)
-                                domAttr.set(legendLayerImages[iii],'alt','');
+                                domAttr.set(legendLayerImages[iii],'alt',i18n.map.symbol);
                             // });
                         }
 
