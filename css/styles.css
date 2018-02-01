@@ -1775,7 +1775,7 @@ input[type=checkbox].checkbox {
 }
 
 #panelLogo img {
-    max-height: 24px; 
+    max-height: 24px;
     padding: 2px;
 }
 
@@ -1785,8 +1785,8 @@ input[type=checkbox].checkbox {
 
 @media only screen and (min-width: 720px) {
     #panelLogo img {
-        max-height: 32px; 
-        padding: 3px;
+        max-height: 32px;
+        padding: 6px 3px;
     }
 
     #panelTitle {
@@ -1961,7 +1961,7 @@ myKey {
     color:white;
 }
 
-.esriBookmarks {
+.esriBookmarks { 
     border:none;
 }
 
