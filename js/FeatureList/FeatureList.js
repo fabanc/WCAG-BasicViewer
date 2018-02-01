@@ -232,9 +232,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                         window._prevSelected = null;
                     } else {
                         var checkbox = query("#featureButton_"+window._prevSelected)[0];
-                        checkbox.checked = true;
-                        window.featureExpand(checkbox, true);
-                        checkbox.focus();
+                        if(checkbox) {
+                            checkbox.checked = true;
+                            window.featureExpand(checkbox, true);
+                            checkbox.focus();
+                        }
                     }
                 deferred.resolve(true);
                 }
