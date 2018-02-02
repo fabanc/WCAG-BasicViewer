@@ -10,7 +10,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
-    "esri/dijit/Popup",
+    // "esri/dijit/Popup",
+    "dijit/TooltipDialog",
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
     ], function (
@@ -26,7 +27,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         string,
         i18n,
         domUtils,
-        Popup
+        // Popup,
+        Tooltip
     ) {
 
     // ready(function(){
@@ -176,6 +178,36 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.clearSuperNavigator();
        },
 
+        showTooltip: function (evt, address){
+            this.closeDialog();
+            var tipContent = 
+            address.Addr_type+' <b>'+address.Type+'</b><br/>'+
+                address.Match_addr;
+                // "<b>Status</b>: " + evt.graphic.attributes.STATUS +
+                // "<br><b>Cummulative Gas</b>: " + evt.graphic.attributes.CUMM_GAS + " MCF" +
+                // "<br><b>Total Acres</b>: " +  evt.graphic.attributes.APPROXACRE +
+                // "<br><b>Avg. Field Depth</b>: " + evt.graphic.attributes.AVGDEPTH + " meters";
+
+            var dialog = new dijit.TooltipDialog({
+                id: "tooltipDialog",
+                content: tipContent,
+                style: "position: absolute; width: auto; max-width:400px; font: normal normal bold Tahoma;z-index:100; "+
+                "top:"+(evt.offsetY+20)+"px; left:"+(evt.offsetX-10)+"px;"
+            });
+            dialog.startup();
+
+            dojo.style(dialog.domNode, "opacity", 0.85);
+            // dijit.placeOnScreen(dialog.domNode, {x: evt.pageX, y: evt.pageY}, ["TL", "BL"], {x: 10, y: 10});
+            domConstruct.place(dialog.domNode, query('#mapDiv')[0]);
+        },
+
+        closeDialog: function () {
+            var widget = dijit.byId("tooltipDialog");
+            if (widget) {
+                widget.destroy();
+            }
+        },
+
         switchTooltips : function(ev) {
             if(this.locator) {
                 if(dojo.hasClass(ev.target, 'activeBg')) {
@@ -200,6 +232,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 this.locator.locationToAddress(
                     webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 100,
                     lang.hitch(this, function(evt) {
+                        this.showTooltip(ev, evt.address);
                         console.log(evt.address.Addr_type,'/', evt.address.Type, ': ', evt.address.Match_addr);
                         this.locatorProcessing = false;
                     }),
