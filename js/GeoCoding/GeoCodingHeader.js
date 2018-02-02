@@ -191,12 +191,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var dialog = new dijit.TooltipDialog({
                 id: "tooltipDialog",
                 content: tipContent,
-                style: "position: absolute; width: auto; max-width:400px; font: normal normal bold Tahoma;z-index:100; "+
-                "top:"+(evt.offsetY+20)+"px; left:"+(evt.offsetX-10)+"px;"
+                class: "addressToolTip",
+                style: "top:"+(evt.offsetY+20)+"px; left:"+(evt.offsetX-10)+"px;"
             });
             dialog.startup();
 
-            dojo.style(dialog.domNode, "opacity", 0.85);
+            dojo.style(dialog.domNode, "opacity", 0.75);
             // dijit.placeOnScreen(dialog.domNode, {x: evt.pageX, y: evt.pageY}, ["TL", "BL"], {x: 10, y: 10});
             domConstruct.place(dialog.domNode, query('#mapDiv')[0]);
         },
