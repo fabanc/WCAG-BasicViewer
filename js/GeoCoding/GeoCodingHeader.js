@@ -1,6 +1,7 @@
 define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/registry",
     "dojo/on", 
+    "esri/tasks/locator", "esri/geometry/webMercatorUtils",
     "dojo/Deferred", "dojo/query", 
     "dojo/text!application/GeoCoding/templates/GeoCodingHeader.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
@@ -16,6 +17,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         Evented, declare, lang, has, esriNS,
         _WidgetBase, _TemplatedMixin, registry,
         on, 
+        Locator, webMercatorUtils,
         Deferred, query,
         GeoCodingHeaderTemplate, 
         dom, domClass, domAttr, domStyle, domConstruct, event, 
@@ -63,6 +65,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.contentPanel = defaults.contentPanel;
             this.self = defaults.self;
             this.iconColor=defaults.iconColor;
+
+            this.locator = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         },
 
         startup: function () {
@@ -173,13 +177,37 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
        },
 
         switchTooltips : function(ev) {
-            if(dojo.hasClass(ev.target, 'activeBg')) {
-                domClass.remove(ev.target, 'activeBg');
-
+            if(this.locator) {
+                if(dojo.hasClass(ev.target, 'activeBg')) {
+                    domClass.remove(ev.target, 'activeBg');
+                    // remove
+                }
+                else {
+                    domClass.add(ev.target, 'activeBg');
+                    this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
+                }
             }
-            else {
-                domClass.add(ev.target, 'activeBg');
+        },
 
+        locatorProcessing: false,
+
+        hoverMap : function(ev) {
+            // console.log('mapClick', evt);
+            if(!this.toolbar.IsToolSelected('geoCoding')) return;
+            // this.clearSearchGraphics();
+            if(!this.locatorProcessing) {
+                this.locatorProcessing = true;
+                this.locator.locationToAddress(
+                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 100,
+                    lang.hitch(this, function(evt) {
+                        console.log(evt.address.Addr_type,'/', evt.address.Type, ': ', evt.address.Match_addr);
+                        this.locatorProcessing = false;
+                    }),
+                    lang.hitch(this, function(error) {
+                        console.log(error);
+                        this.locatorProcessing = false;
+                    })
+                )
             }
         },
 
