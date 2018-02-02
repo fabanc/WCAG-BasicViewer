@@ -54,6 +54,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             toolbar: null, 
             header: 'pageHeader_geoCoding',
             superNavigator : null,
+            iconColor: 'white',
             searchMarker: './images/SearchPin1.png',
             geolocatorLabelColor: "#0000ff", // 'green'
             emptyMessage: i18n.widgets.geoCoding.noAddress,
@@ -65,7 +66,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             var defaults = lang.mixin({}, this.options, options);
             this.domNode = srcRefNode;
             this.widgetsInTemplate = true;
-
+            this.iconColor = defaults.iconColor;
             this.map = defaults.map;
             this.searchMarker = defaults.searchMarker;
             this.geolocatorLabelColor = defaults.geolocatorLabelColor;
@@ -287,6 +288,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 superNavigator : this.superNavigator,
                 template: GeoCodingHeaderTemplate,
                 contentPanel: this.contentPanel,
+                iconColor: this.iconColor,
                 self: this,
             }, domConstruct.create('Div', {}, this.headerNode));
             this.geoCodingHeader.startup();

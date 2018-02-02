@@ -27,6 +27,8 @@ define({
                 "followTheMap": "Follow The Map Mode"
             },
             "geoCoding" : {
+                "tooltips" : "No ToolTips",
+                "showTooltips" : "Show ToolTips",
                 "zoomTo": "Zoom to Location",
                 "noAddress": "No Point Address",
                 "noAddressFound": "No Address Found at Point",

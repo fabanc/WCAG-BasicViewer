@@ -1408,6 +1408,7 @@ define(["dojo/ready",
                     map: this.map,
                     toolbar: toolbar,
                     superNavigator: this.superNav,
+                    iconColor: this.config.icons,
                     search: this.search,
                     maxSearchResults: this.config.maxSearchResults,
                     searchMarker: this.config.geoCodingMarker,
@@ -2236,6 +2237,10 @@ define(["dojo/ready",
                         //hover
                         if(rule.selectorText.indexOf(':hover') >= 0) {
                             rule.style.backgroundColor = rgbaColor(this.hoverColor);
+                        }
+                        //active
+                        if(rule.selectorText.indexOf('.activeBg') >= 0) {
+                            rule.style.backgroundColor = rgbaColor(this.activeColor);
                         }
                         //focus
                         if(rule.selectorText.indexOf(':focus') >= 0) {

@@ -90,3 +90,9 @@ http://reference.sitepoint.com/css/outline-color
   z-index:1;
   pointer-events: none;
 }
+
+.activeBg {
+  padding-top: 1px;
+  margin-top:-1px;
+  border-radius: 15%;
+}

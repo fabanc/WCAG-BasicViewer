@@ -42,6 +42,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             id: 'geoCodingHeadrId',
             popupInfo: null,
             superNavigator: null,
+            iconColor: 'white',
             template: GeoCodingHeaderTemplate,
             self: null,
         },
@@ -61,6 +62,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.emptyMessage = defaults.emptyMessage;
             this.contentPanel = defaults.contentPanel;
             this.self = defaults.self;
+            this.iconColor=defaults.iconColor;
         },
 
         startup: function () {
@@ -87,6 +89,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             // var popup = this.map.infoWindow;
 
+            on(query('#'+this.popupHeaderId+' .popupInfoButton.tooltips')[0], 'click', lang.hitch(this, this.switchTooltips));
             on(query('#'+this.popupHeaderId+' .popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
             on(query('#'+this.popupHeaderId+' .popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
             on(query('#'+this.popupHeaderId+' .popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearAddress));
@@ -168,6 +171,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.map.container.focus();
             this.clearSuperNavigator();
        },
+
+        switchTooltips : function(ev) {
+            if(dojo.hasClass(ev.target, 'activeBg')) {
+                domClass.remove(ev.target, 'activeBg');
+
+            }
+            else {
+                domClass.add(ev.target, 'activeBg');
+
+            }
+        },
 
         zoomTo : function(ev) {
             this.panZoom();

@@ -26,6 +26,8 @@ define({
             "followTheMap": "Mode Suivez la carte"
         }),
         geoCoding : {
+            "tooltips" : "Pas infobulles",
+            "showTooltips" : "Afficher les infobulles",
             "zoomTo": "Zoomer sur l'emplacement",
             "clear": "Effacer la sélection",
             "noAddress": "Pas d'adresse",
