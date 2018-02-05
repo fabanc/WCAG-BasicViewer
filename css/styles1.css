@@ -96,3 +96,22 @@ http://reference.sitepoint.com/css/outline-color
   margin-top:-1px;
   border-radius: 15%;
 }
+
+
+.addrHintTitle {
+  padding: 5px;
+  margin:-5px;
+  border-radius: 5px 5px 0 0;
+  /*background:navy; 
+  color:white;*/
+}
+
+.addrHintContent {
+  padding: 5px;
+  margin:-5px;
+  margin-top:5px;
+  border-radius: 0 0 5px 5px;
+  font-weight: bold;
+  background:white;
+  color:black;
+}

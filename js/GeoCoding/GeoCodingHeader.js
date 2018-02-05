@@ -198,7 +198,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 address.TypeLoc = '';
             }
 
-            var tipContent = "<b>"+address.AddrTypeLoc+address.TypeLoc+'</b><br/>'+address.Match_addr;
+            var tipContent = "<div class='addrHintTitle'>"+address.AddrTypeLoc+address.TypeLoc+"</div>"+
+            "<div class='addrHintContent' >"+address.Match_addr+"</div>";
 
             var location = this.map.toScreen(evt.location);
 
@@ -237,7 +238,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         locatorDeffered: null,
 
         hoverMap : function(ev) {
-            if(!this.toolbar.IsToolSelected('geoCoding')) return;
+            // if(!this.toolbar.IsToolSelected('geoCoding')) return;
 
             if(this.locatorDeffered && !this.locatorDeffered.isFulfilled()) {
                 this.closeDialog();
@@ -245,8 +246,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             else 
             {
                 this.locatorDeffered = this.locator.locationToAddress(
-                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 
-                    1)
+                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 1)
                 .then(
                     lang.hitch(this, function(result) {
                         this.showTooltip(result);

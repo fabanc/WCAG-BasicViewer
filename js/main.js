@@ -2242,6 +2242,12 @@ define(["dojo/ready",
                         if(rule.selectorText.indexOf('.activeBg') >= 0) {
                             rule.style.backgroundColor = rgbaColor(this.activeColor);
                         }
+
+                        if(rule.selectorText.indexOf('.addrHintTitle') >= 0) {
+                            rule.style.backgroundColor = rgbaColor(this.theme);
+                            rule.style.color = rgbaColor(this.color);
+                        }
+                        
                         //focus
                         if(rule.selectorText.indexOf(':focus') >= 0) {
                             if(rule.selectorText.indexOf('#mapDiv') >= 0) {
