@@ -141,9 +141,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 var btn = dojo.byId('addrTooltipBtn');
                 if(dojo.hasClass(btn, 'activeBg')) {
                     if(name !== 'geoCoding') {
-                        this.locatorSignal.remove();
-                        this.locatorSignal = null;
-                        this.closeDialog();
+                        if(this.locatorSignal) {
+                            this.locatorSignal.remove();
+                            this.locatorSignal = null;
+                            this.closeDialog();
+                            }
                         }
                     else {
                         this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
