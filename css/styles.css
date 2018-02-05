@@ -1990,10 +1990,16 @@ myKey {
 }
 
 .addressToolTip {
-  position: absolute; 
-  width: auto; 
-  max-width:400px; 
+  background: white;
+  border: black 1px solid;
+  border-radius: 5px;
+  padding:5px;
+  font-size: small;
+  font-family: 'Roboto Condensed', sans-serif;
+  position: absolute;
+  width: auto;
+  max-width:400px;
   font: normal normal bold Tahoma;
-  z-index:100; 
+  z-index: 100;
   box-shadow: rgb(97, 97, 97) 2px 2px 2px 0px;
 }

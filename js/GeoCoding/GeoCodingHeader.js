@@ -150,7 +150,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             //         this.clearFeatures();
             //     }
             // }));
-
         },
 
         ToZoom: function() {
@@ -178,45 +177,57 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.clearSuperNavigator();
        },
 
-        showTooltip: function (evt, address){
+        showTooltip: function (evt){
             this.closeDialog();
-            var tipContent = 
-            address.Addr_type+' <b>'+address.Type+'</b><br/>'+
-                address.Match_addr;
-                // "<b>Status</b>: " + evt.graphic.attributes.STATUS +
-                // "<br><b>Cummulative Gas</b>: " + evt.graphic.attributes.CUMM_GAS + " MCF" +
-                // "<br><b>Total Acres</b>: " +  evt.graphic.attributes.APPROXACRE +
-                // "<br><b>Avg. Field Depth</b>: " + evt.graphic.attributes.AVGDEPTH + " meters";
+            var address = evt.address;
+            
+            if(address.Addr_type.isNonEmpty()) {
+                var prop = address.Addr_type.replace(' ', '');
+                address.AddrTypeLoc = (i18n.widgets.hasOwnProperty('addrType') && i18n.widgets.addrType.hasOwnProperty(prop)) ?
+                i18n.widgets.addrType[prop] : address.Addr_type;
+            }
+            if(address.Type.isNonEmpty()) {
+                var prop1 = address.Type.replace(' ', '');
+                address.TypeLoc = (i18n.widgets.hasOwnProperty('addrType') && 
+                    i18n.widgets.addrType.hasOwnProperty(prop1)) ?
+                i18n.widgets.addrType[prop1] : address.Type;
+            } 
+            else {
+                address.TypeLoc = '';
+            }
 
-            var dialog = new dijit.TooltipDialog({
-                id: "tooltipDialog",
-                content: tipContent,
-                class: "addressToolTip",
-                style: "top:"+(evt.offsetY+20)+"px; left:"+(evt.offsetX-10)+"px;"
-            });
-            dialog.startup();
+            var tipContent = address.AddrTypeLoc+' <i>'+address.TypeLoc+'</i><br/>'+address.Match_addr;
 
-            dojo.style(dialog.domNode, "opacity", 0.75);
-            // dijit.placeOnScreen(dialog.domNode, {x: evt.pageX, y: evt.pageY}, ["TL", "BL"], {x: 10, y: 10});
-            domConstruct.place(dialog.domNode, query('#mapDiv')[0]);
+            var location = this.map.toScreen(evt.location);
+
+            if(!this.addressToolTip)
+                this.addressToolTip = domConstruct.place("<div class='addressToolTip'/>", "mapDiv");
+            this.addressToolTip.innerHTML = tipContent;
+            this.addressToolTip.style = "display:block; "+
+                "top:"+(location.y+10)+"px; "+
+                "left:"+(location.x+10)+"px;";
         },
 
         closeDialog: function () {
-            var widget = dijit.byId("tooltipDialog");
-            if (widget) {
-                widget.destroy();
-            }
+            if(this.addressToolTip)
+                this.addressToolTip.style = "display:none;";
         },
+
+        locatorSignal: null,
 
         switchTooltips : function(ev) {
             if(this.locator) {
-                if(dojo.hasClass(ev.target, 'activeBg')) {
+                if(this.locatorSignal) {
                     domClass.remove(ev.target, 'activeBg');
-                    // remove
+                    if(this.locatorSignal) {
+                        this.locatorSignal.remove();
+                        this.locatorSignal = null;
+                        this.closeDialog();
+                    }
                 }
                 else {
                     domClass.add(ev.target, 'activeBg');
-                    this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
+                    this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
                 }
             }
         },
@@ -224,16 +235,19 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         locatorProcessing: false,
 
         hoverMap : function(ev) {
-            // console.log('mapClick', evt);
             if(!this.toolbar.IsToolSelected('geoCoding')) return;
-            // this.clearSearchGraphics();
-            if(!this.locatorProcessing) {
+
+            if(this.locatorProcessing) {
+                this.closeDialog();
+            }
+            else 
+            {
                 this.locatorProcessing = true;
                 this.locator.locationToAddress(
                     webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 100,
                     lang.hitch(this, function(evt) {
-                        this.showTooltip(ev, evt.address);
-                        console.log(evt.address.Addr_type,'/', evt.address.Type, ': ', evt.address.Match_addr);
+                        this.showTooltip(evt);
+                        console.log("evt: ", evt, "ev: ", ev);//, evt.address.Addr_type,'/', evt.address.Type, ': ', evt.address.Match_addr);
                         this.locatorProcessing = false;
                     }),
                     lang.hitch(this, function(error) {

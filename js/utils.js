@@ -74,7 +74,7 @@ if (!('trim' in String.prototype)) {
 
 if (!('isNonEmpty' in String.prototype)) {
     String.prototype.isNonEmpty= function() {
-        return this !== null && this.trim() !== '';
+        return this !== null && this.trim() !== '' && this !== undefined;
     };
 }
 
