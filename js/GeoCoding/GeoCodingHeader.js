@@ -136,20 +136,20 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }));
             }));
 
-            // on(popup, "SelectionChange", lang.hitch(this, function() {
-            //     if(popup.selectedIndex>=0) {
-            //         dom.byId('featureIndex').innerHTML = popup.selectedIndex + 1;
-            //     }
-            // }));
-
-            // on(popup, "SetFeatures", lang.hitch(this, function() {
-            //     if(popup.features && popup.features.length > 0) {
-            //         // this.setTotal(popup.features.length);
-            //     }
-            //     else {
-            //         this.clearFeatures();
-            //     }
-            // }));
+            on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
+                // console.log(name);
+                var btn = dojo.byId('addrTooltipBtn');
+                if(dojo.hasClass(btn, 'activeBg')) {
+                    if(name !== 'geoCoding') {
+                        this.locatorSignal.remove();
+                        this.locatorSignal = null;
+                        this.closeDialog();
+                        }
+                    else {
+                        this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
+                    }
+                }
+            }));
         },
 
         ToZoom: function() {
