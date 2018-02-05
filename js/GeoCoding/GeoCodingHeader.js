@@ -188,15 +188,15 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
             if(address.Type.isNonEmpty()) {
                 var prop1 = address.Type.replace(' ', '');
-                address.TypeLoc = (i18n.widgets.hasOwnProperty('addrType') && 
+                address.TypeLoc = " - <i>"+((i18n.widgets.hasOwnProperty('addrType') && 
                     i18n.widgets.addrType.hasOwnProperty(prop1)) ?
-                i18n.widgets.addrType[prop1] : address.Type;
+                i18n.widgets.addrType[prop1] : address.Type) + "</i>";
             } 
             else {
                 address.TypeLoc = '';
             }
 
-            var tipContent = address.AddrTypeLoc+' <i>'+address.TypeLoc+'</i><br/>'+address.Match_addr;
+            var tipContent = "<b>"+address.AddrTypeLoc+address.TypeLoc+'</b><br/>'+address.Match_addr;
 
             var location = this.map.toScreen(evt.location);
 
@@ -232,29 +232,28 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
         },
 
-        locatorProcessing: false,
+        locatorDeffered: null,
 
         hoverMap : function(ev) {
             if(!this.toolbar.IsToolSelected('geoCoding')) return;
 
-            if(this.locatorProcessing) {
+            if(this.locatorDeffered && !this.locatorDeffered.isFulfilled()) {
                 this.closeDialog();
             }
             else 
             {
-                this.locatorProcessing = true;
-                this.locator.locationToAddress(
-                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 100,
-                    lang.hitch(this, function(evt) {
-                        this.showTooltip(evt);
-                        console.log("evt: ", evt, "ev: ", ev);//, evt.address.Addr_type,'/', evt.address.Type, ': ', evt.address.Match_addr);
-                        this.locatorProcessing = false;
+                this.locatorDeffered = this.locator.locationToAddress(
+                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 
+                    1)
+                .then(
+                    lang.hitch(this, function(result) {
+                        this.showTooltip(result);
                     }),
-                    lang.hitch(this, function(error) {
-                        console.log(error);
-                        this.locatorProcessing = false;
-                    })
-                )
+                    function(error) {
+                        if(error.name !== "CancelError")
+                            console.log('locator eror: ', error);
+                    }
+                );
             }
         },
 
