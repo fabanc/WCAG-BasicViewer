@@ -2244,7 +2244,7 @@ define(["dojo/ready",
                             rule.style.backgroundColor = rgbaColor(this.activeColor);
                         }
 
-                        if(rule.selectorText.indexOf('.addrHintTitle') >= 0) {
+                        if(rule.selectorText.indexOf('#addrHintTitle') >= 0) {
                             rule.style.backgroundColor = rgbaColor(this.theme);
                             rule.style.color = rgbaColor(this.color);
                         }

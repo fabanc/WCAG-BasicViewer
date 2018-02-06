@@ -98,7 +98,7 @@ http://reference.sitepoint.com/css/outline-color
 }
 
 
-.addrHintTitle {
+#addrHintTitle {
   padding: 5px;
   margin:-5px;
   border-radius: 5px 5px 0 0;
@@ -106,7 +106,7 @@ http://reference.sitepoint.com/css/outline-color
   color:white;*/
 }
 
-.addrHintContent {
+#addrHintContent {
   padding: 5px;
   margin:-5px;
   margin-top:5px;

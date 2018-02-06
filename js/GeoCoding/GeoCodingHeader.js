@@ -216,10 +216,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     ;
 
                 this.tipHeader = domConstruct.create('div', {
-                    class:'addrHintTitle',
+                    id:'addrHintTitle',
+                    tabindex:0
                 }, this.addressToolTip);
                 this.tipContent = domConstruct.create('div', {
-                    class:'addrHintContent',
+                    id:'addrHintContent',
+                    tabindex:0
                 }, this.addressToolTip);
 
                 domConstruct.place(this.tipHeader, this.addressToolTip);                

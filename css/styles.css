@@ -1990,7 +1990,7 @@ myKey {
 }
 
 .addressToolTip {
-  pointer-events: none;
+  /* pointer-events: none; */
   background: white;
   opacity:0.85;
   border: black 1px solid;
@@ -2001,7 +2001,6 @@ myKey {
   position: absolute;
   width: auto;
   max-width:400px;
-  font: normal normal bold Tahoma;
   z-index: 100;
   box-shadow: #1f1f1f 2px 2px 2px 0px;
 }
