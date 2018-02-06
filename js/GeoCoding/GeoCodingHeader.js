@@ -10,8 +10,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
     "esri/domUtils",
-    // "esri/dijit/Popup",
-    "dijit/TooltipDialog",
+    "dojox/gfx", 
     "dojo/NodeList-dom", "dojo/NodeList-traverse"
     
     ], function (
@@ -27,8 +26,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         string,
         i18n,
         domUtils,
-        // Popup,
-        Tooltip
+        gfx
     ) {
 
     // ready(function(){
@@ -67,6 +65,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.contentPanel = defaults.contentPanel;
             this.self = defaults.self;
             this.iconColor=defaults.iconColor;
+            this.themeColor = defaults.themeColor,
 
             this.locator = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         },
@@ -198,22 +197,48 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 address.TypeLoc = '';
             }
 
-            var tipContent = "<div class='addrHintTitle'>"+address.AddrTypeLoc+address.TypeLoc+"</div>"+
-            "<div class='addrHintContent' >"+address.Match_addr+"</div>";
-
             var location = this.map.toScreen(evt.location);
 
-            if(!this.addressToolTip)
-                this.addressToolTip = domConstruct.place("<div class='addressToolTip'/>", "mapDiv");
-            this.addressToolTip.innerHTML = tipContent;
+            if(!this.addressToolTip) {
+                this.addressToolTip = domConstruct.create('div', {
+                    class:'addressToolTip'  
+                }, 'mapDiv');
+                
+                var spikeDiv = domConstruct.create('div', {
+                    id: 'spikeDiv',
+                    style:'position:absolute; pointer-events:none; '+
+                    'top:-12px; left:12px;',
+                    }, this.addressToolTip);
+                var spike = gfx.createSurface("spikeDiv", 20, 20);
+                var path = spike.createPath("M 0 12 L 0 0 12 12")
+                    .setFill(this.themeColor)
+                    .setStroke({color:"black", width:1, style:"solid", cap:"but"})
+                    ;
+
+                this.tipHeader = domConstruct.create('div', {
+                    class:'addrHintTitle',
+                }, this.addressToolTip);
+                this.tipContent = domConstruct.create('div', {
+                    class:'addrHintContent',
+                }, this.addressToolTip);
+
+                domConstruct.place(this.tipHeader, this.addressToolTip);                
+                domConstruct.place(this.tipContent, this.addressToolTip);  
+            }
+
+            this.tipHeader.innerHTML=address.AddrTypeLoc+address.TypeLoc;
+            this.tipContent.innerHTML=address.Match_addr;
+
             this.addressToolTip.style = "display:block; "+
-                "top:"+(location.y+10)+"px; "+
-                "left:"+(location.x+10)+"px;";
+                "top:"+(location.y+12)+"px; "+
+                "left:"+(location.x-12)+"px;";
+            this.map.setMapCursor('none');              
         },
 
         closeDialog: function () {
             if(this.addressToolTip)
                 this.addressToolTip.style = "display:none;";
+            this.map.setMapCursor('default');
         },
 
         locatorSignal: null,

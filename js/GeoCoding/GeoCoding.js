@@ -67,6 +67,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.domNode = srcRefNode;
             this.widgetsInTemplate = true;
             this.iconColor = defaults.iconColor;
+            this.themeColor = defaults.themeColor,
             this.map = defaults.map;
             this.searchMarker = defaults.searchMarker;
             this.geolocatorLabelColor = defaults.geolocatorLabelColor;
@@ -289,6 +290,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 template: GeoCodingHeaderTemplate,
                 contentPanel: this.contentPanel,
                 iconColor: this.iconColor,
+                themeColor: this.themeColor,
                 self: this,
             }, domConstruct.create('Div', {}, this.headerNode));
             this.geoCodingHeader.startup();
