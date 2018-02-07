@@ -234,7 +234,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.addressToolTip.style = "display:block; "+
                 "top:"+(location.y+12)+"px; "+
                 "left:"+(location.x-12)+"px;";
-            this.map.setMapCursor('none');              
+            this.map.setMapCursor('none');  
+            this.tipContent.focus();            
         },
 
         closeDialog: function () {
