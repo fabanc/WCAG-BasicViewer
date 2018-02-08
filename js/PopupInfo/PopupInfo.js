@@ -429,11 +429,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
                     else {
                         var mainSectionHeader = query('.esriViewPopup .mainSection .header', dojo.byId('popupInfoContent'))[0];
-                        var title = selectedFeature._layer.arcgisProps.title.replace('_',' ');
+                        var title = (selectedFeature._layer && selectedFeature._layer.arcgisProps && selectedFeature._layer.arcgisProps.title) ? 
+                            selectedFeature._layer.arcgisProps.title.replace('_',' ') : '';
                         var thumb =dojo.create('div', { 
                             id: 'thumb', 
                             class: 'thumbFeature',
-                            title:title,
+                            'title':title,
                             'aria-label':title,
                             tabindex:0
                        }, mainSectionHeader);
@@ -444,7 +445,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                                 {
                                     src : source.value,
                                     alt:title,
-                                    title:title,
+                                    'title':title,
                                     'aria-label':title,
                                     tabindex:0
                                 }, thumb);
