@@ -95,24 +95,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.tipHeader = dom.byId('addrHintTitle');
             this.tipContent = dom.byId('addrHintContent');
 
-            this.addressTooltipButton.activated = lang.hitch(this, this.switchTooltips);
+            this.addressTooltipButton.activate = lang.hitch(this, this.switchTooltips);
 
-			on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
-                // console.log(name);
-                var btn = this.addressTooltipButton;//dojo.byId('addrTooltipBtn');
-                if(dojo.hasClass(btn, 'activeBg')) {
-                    if(name !== 'geoCoding') {
-                        if(this.locatorSignal) {
-                            this.locatorSignal.remove();
-                            this.locatorSignal = null;
-                            this.closeDialog();
-                            }
-                        }
-                    else {
-                        this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
-                    }
+            on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
+                if(this.addressTooltipButton.isActive()) {
+                    this.addressTooltipButton.activate(name === 'geoCoding');
                 }
-            }));        },
+            }));
+		},
 
 		showTooltip: function (evt){
             this.closeDialog();

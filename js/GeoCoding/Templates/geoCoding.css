@@ -1,4 +1,4 @@
-.shadow {
+.address-tooltip--shadow {
     -webkit-filter: drop-shadow( 1px 1px 1px #000  );
     filter: drop-shadow( 1px 1px 1px #000 );
 }
@@ -30,6 +30,7 @@
   display: none;
   top: 250px;
   left: 20px;
+  /*padding: 50px;*/
 }
 
 #address-tooltip__title {
@@ -51,7 +52,7 @@
 .address-tooltip__spike {
 	position:absolute;
 	pointer-events:none;
-	display: none;
+	/* display: none; */
 }
 
 .address-tooltip__spike svg {
