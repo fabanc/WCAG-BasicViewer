@@ -244,24 +244,6 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
-            // var textProbe = dojo.byId('searchTextProbe');
-            // var cs = domStyle.getComputedStyle(textProbe);
-            // var fontSize = cs.fontSize.slice(0,-2);
-            // this.searchLabel = new TextSymbol({
-            //     yoffset : -fontSize,//-14,
-            //     haloColor: [255,255,255,255],
-            //     haloSize: 2,
-            //     font : 
-            //     {
-            //         family : cs.fontFamily, //"Roboto Condensed",
-            //         size : fontSize, //18,
-            //         weight : cs.fontWeight, //'bold'
-            //     }
-            // });
-            // this.searchLabel.color = this.geolocatorLabelColor; //"red";
-
-            // domConstruct.destroy(textProbe);
-
             this.searchMarker = new esri.symbol.PictureMarkerSymbol({
                 "angle": 0,
                 "xoffset": 0,

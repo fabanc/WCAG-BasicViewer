@@ -27,7 +27,7 @@
   width: auto;
   max-width:400px;
   z-index: 100;
-  display: block;
+  display: none;
   top: 250px;
   left: 20px;
 }
@@ -51,7 +51,7 @@
 .address-tooltip__spike {
 	position:absolute;
 	pointer-events:none;
-	display: block;
+	display: none;
 }
 
 .address-tooltip__spike svg {

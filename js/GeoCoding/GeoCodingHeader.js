@@ -87,9 +87,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
-            // var popup = this.map.infoWindow;
-
-            on(query('#'+this.popupHeaderId+' .popupInfoButton.tooltips')[0], 'click', lang.hitch(this, this.switchTooltips));
+            this.addressTooltipButton = query('#'+this.popupHeaderId+' .popupInfoButton.tooltips')[0];
+            
+            if(this.addressTooltipButton) {
+                on(this.addressTooltipButton, 'click', lang.hitch(this, this.switchTooltips));
+            }
             on(query('#'+this.popupHeaderId+' .popupInfoButton.zoom')[0], 'click', lang.hitch(this, this.zoomTo));
             on(query('#'+this.popupHeaderId+' .popupInfoButton.map')[0], 'click', lang.hitch(this, this.toMap));
             on(query('#'+this.popupHeaderId+' .popupInfoButton.clear')[0], 'click', lang.hitch(this, this.clearAddress));
@@ -130,39 +132,38 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }));
             }));
 
-            on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
-                // console.log(name);
-                var btn = dojo.byId('addrTooltipBtn');
-                if(dojo.hasClass(btn, 'activeBg')) {
-                    if(name !== 'geoCoding') {
-                        if(this.locatorSignal) {
-                            this.locatorSignal.remove();
-                            this.locatorSignal = null;
-                            this.closeDialog();
-                            }
-                        }
-                    else {
-                        this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
-                    }
-                }
-            }));
+            // on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
+            //     // console.log(name);
+            //     var btn = dojo.byId('addrTooltipBtn');
+            //     if(dojo.hasClass(btn, 'activeBg')) {
+            //         if(name !== 'geoCoding') {
+            //             if(this.locatorSignal) {
+            //                 this.locatorSignal.remove();
+            //                 this.locatorSignal = null;
+            //                 this.closeDialog();
+            //                 }
+            //             }
+            //         else {
+            //             this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
+            //         }
+            //     }
+            // }));
 
 
-            this.geoAddressTooltip = new GeoAddressTooltip({
-                map: this.map,
-                toolbar: this.toolbar, 
-                // header: 'pageHeader_geoCoding', 
-                // id: 'geoCoding_headerId', 
-                // superNavigator : this.superNavigator,
-                // template: GeoCodingHeaderTemplate,
-                // contentPanel: this.contentPanel,
-                iconColor: this.iconColor,
-                themeColor: this.themeColor,
-                // self: this,
-            }, domConstruct.create('Div', {}, this.headerNode));
-            this.geoAddressTooltip.startup();
+            if(this.addressTooltipButton) {
+                this.addressTooltipButton.activated = function(active) {};
+                this.geoAddressTooltip = new GeoAddressTooltip({
+                    map: this.map,
+                    toolbar: this.toolbar, 
+                    addressTooltipButton: this.addressTooltipButton,
+                    iconColor: this.iconColor,
+                    themeColor: this.themeColor,
+                    locator: this.locator,
+                }, domConstruct.create('Div', {}, this.headerNode));
+                this.geoAddressTooltip.startup();
 
-            domConstruct.place(this.geoAddressTooltip.domNode, "mapDiv");
+                domConstruct.place(this.geoAddressTooltip.domNode, "mapDiv");
+            }
         },
 
         ToZoom: function() {
@@ -256,46 +257,14 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.map.setMapCursor('default');
         },
 
-        locatorSignal: null,
-
         switchTooltips : function(ev) {
-            if(this.locator) {
-                if(this.locatorSignal) {
-                    domClass.remove(ev.target, 'activeBg');
-                    if(this.locatorSignal) {
-                        this.locatorSignal.remove();
-                        this.locatorSignal = null;
-                        this.closeDialog();
-                    }
-                }
-                else {
-                    domClass.add(ev.target, 'activeBg');
-                    this.locatorSignal = this.map.on('mouse-move', lang.hitch(this, this.hoverMap));
-                }
+            if(dojo.hasClass(ev.target, 'activeBg')) {
+                domClass.remove(ev.target, 'activeBg');
+                ev.target.activated(false);
             }
-        },
-
-        locatorDeffered: null,
-
-        hoverMap : function(ev) {
-            // if(!this.toolbar.IsToolSelected('geoCoding')) return;
-
-            if(this.locatorDeffered && !this.locatorDeffered.isFulfilled()) {
-                this.closeDialog();
-            }
-            else 
-            {
-                this.locatorDeffered = this.locator.locationToAddress(
-                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 1)
-                .then(
-                    lang.hitch(this, function(result) {
-                        this.showTooltip(result);
-                    }),
-                    function(error) {
-                        if(error.name !== "CancelError")
-                            console.log('locator eror: ', error);
-                    }
-                );
+            else {
+                domClass.add(ev.target, 'activeBg');
+                ev.target.activated(true);
             }
         },
 
