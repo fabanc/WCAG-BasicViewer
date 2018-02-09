@@ -23,13 +23,16 @@
   max-width:400px;
   z-index: 100;
   box-shadow: #1f1f1f 2px 2px 2px 0px;
-  display:none;
+  /*display:none;*/
 }
 
 #address-tooltip__title {
   padding: 5px;
   margin:-5px;
   border-radius: 5px 5px 0 0;
+  /*debug*/
+  width:100px;
+  height:20px;
 }
 
 #address-tooltip__content {
@@ -40,6 +43,8 @@
   font-weight: bold;
   background:white;
   color:black;
+  /*debug*/
+  height:50px;
 }
 
 .address-tooltip__spike {
@@ -47,7 +52,7 @@
 	pointer-events:none; 
   	box-shadow: #1f1f1f 2px 2px 2px 0px;
 
-	display:none;
+	/*display:none;*/
 }
 
 .address-tooltip__spike svg {

@@ -1,21 +1,23 @@
 define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/registry",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", 
     "dojo/on", 
-    "esri/tasks/locator",
-    "esri/geometry/webMercatorUtils",
-    "dojo/Deferred", "dojo/query", 
-    "dojo/text!application/GeoCoding/Templates/GeoAddressTooltip.html", 
-    "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
+    "esri/tasks/locator", "esri/geometry/webMercatorUtils",
+    "dojo/query", 
+    "dojo/text!application/GeoCoding/templates/GeoCodingHeader.html", 
+    "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
     "dojo/parser", "dojo/ready",
+    "dojo/i18n!application/nls/PopupInfo",
+    "dojo/parser", "dojo/ready"
 ], function (
         Evented, declare, lang, has, esriNS,
-        _WidgetBase, _TemplatedMixin, registry,
+        _WidgetBase, _TemplatedMixin, 
         on, 
         Locator, webMercatorUtils,
-        Deferred, query,
-        GeoCodingTemplate, GeoCodingHeaderTemplate, 
-        dom, domClass, domAttr, domStyle, domConstruct, event, 
-        parser, ready
+        query,
+        GeoCodingHeaderTemplate, 
+        dom, domClass, domAttr, domStyle, domConstruct, 
+        parser, ready,
+        i18n
     ) {
 
     ready(function(){

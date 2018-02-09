@@ -1,31 +1,24 @@
 define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "esri/kernel", 
-    "dijit/_WidgetBase", "dijit/_TemplatedMixin", "dijit/registry",
+    "dijit/_WidgetBase", "dijit/_TemplatedMixin", 
     "dojo/on", 
     "esri/tasks/locator", "esri/geometry/webMercatorUtils",
-    "dojo/Deferred", "dojo/query", 
+    "dojo/query", 
     "dojo/text!application/GeoCoding/templates/GeoCodingHeader.html", 
-    "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", "dojo/_base/event", 
+    "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
     "dojo/parser", "dojo/ready",
-    "dijit/layout/ContentPane",    
-    "dojo/string", 
     "dojo/i18n!application/nls/PopupInfo",
-    "esri/domUtils",
-    "dojox/gfx", 
-    "dojo/NodeList-dom", "dojo/NodeList-traverse"
+    "dojox/gfx"
     
     ], function (
         Evented, declare, lang, has, esriNS,
-        _WidgetBase, _TemplatedMixin, registry,
+        _WidgetBase, _TemplatedMixin, 
         on, 
         Locator, webMercatorUtils,
-        Deferred, query,
+        query,
         GeoCodingHeaderTemplate, 
-        dom, domClass, domAttr, domStyle, domConstruct, event, 
+        dom, domClass, domAttr, domStyle, domConstruct, 
         parser, ready,
-        ContentPane,
-        string,
         i18n,
-        domUtils,
         gfx
     ) {
 
