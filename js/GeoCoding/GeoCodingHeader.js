@@ -7,6 +7,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
     "dojo/parser", "dojo/ready",
     "dojo/i18n!application/nls/PopupInfo",
+    "application/GeoCoding/GeoAddressTooltip",
     "dojox/gfx"
     
     ], function (
@@ -19,6 +20,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         dom, domClass, domAttr, domStyle, domConstruct, 
         parser, ready,
         i18n,
+        GeoAddressTooltip,
         gfx
     ) {
 
@@ -144,6 +146,23 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     }
                 }
             }));
+
+
+            this.geoAddressTooltip = new GeoAddressTooltip({
+                map: this.map,
+                toolbar: this.toolbar, 
+                // header: 'pageHeader_geoCoding', 
+                // id: 'geoCoding_headerId', 
+                // superNavigator : this.superNavigator,
+                // template: GeoCodingHeaderTemplate,
+                // contentPanel: this.contentPanel,
+                iconColor: this.iconColor,
+                themeColor: this.themeColor,
+                // self: this,
+            }, domConstruct.create('Div', {}, this.headerNode));
+            this.geoAddressTooltip.startup();
+
+            domConstruct.place(this.geoAddressTooltip.domNode, "mapDiv");
         },
 
         ToZoom: function() {

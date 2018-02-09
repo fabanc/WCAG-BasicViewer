@@ -3,7 +3,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/on", 
     "esri/tasks/locator", "esri/geometry/webMercatorUtils",
     "dojo/query", 
-    "dojo/text!application/GeoCoding/templates/GeoCodingHeader.html", 
+    "dojo/text!application/GeoCoding/templates/GeoAddressTooltip.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
     "dojo/parser", "dojo/ready",
     "dojo/i18n!application/nls/PopupInfo",
@@ -14,7 +14,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         on, 
         Locator, webMercatorUtils,
         query,
-        GeoCodingHeaderTemplate, 
+        GeoAddressTooltip, 
         dom, domClass, domAttr, domStyle, domConstruct, 
         parser, ready,
         i18n
@@ -27,7 +27,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
     var Widget = declare("esri.dijit.GeoAddressTooltip", [_WidgetBase, _TemplatedMixin, Evented], {
         // defaults
-        templateString: GeoCodingTemplate,
+        templateString: GeoAddressTooltip,
 
         options: {
             map: null,
@@ -54,11 +54,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.headerNode = dom.byId(defaults.header);
             // this.superNavigator = defaults.superNavigator;
 
-            dojo.create("link", {
-                href : "js/GeoCoding/Templates/geoAddressTooltip.css",
-                type : "text/css",
-                rel : "stylesheet",
-            }, document.head);
+            // dojo.create("link", {
+            //     href : "js/GeoCoding/Templates/geoAddressTooltip.css",
+            //     type : "text/css",
+            //     rel : "stylesheet",
+            // }, document.head);
 
             this.locator = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         },
@@ -81,16 +81,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             this.loaded = true;
 
-            var addrTooltipsButton = query('#'+this.popupHeaderId+' .popupInfoButton.tooltips')[0];
+            // var addrTooltipsButton = query('#'+this.popupHeaderId+' .popupInfoButton.tooltips')[0];
 
-            on(addrTooltipsButton, 'click', lang.hitch(this, this.switchTooltips));
-            on(addrTooltipsButton,'keydown', lang.hitch(this, function(ev) {
-                if(ev.keyCode === 13) { 
-                    btn.click();
-                    ev.stopPropagation();
-                    ev.preventDefault();
-                }
-            }));
+            // on(addrTooltipsButton, 'click', lang.hitch(this, this.switchTooltips));
+            // on(addrTooltipsButton,'keydown', lang.hitch(this, function(ev) {
+            //     if(ev.keyCode === 13) { 
+            //         btn.click();
+            //         ev.stopPropagation();
+            //         ev.preventDefault();
+            //     }
+            // }));
 
 			on(this.toolbar, 'updateTool', lang.hitch(this, function(name) {
                 // console.log(name);
