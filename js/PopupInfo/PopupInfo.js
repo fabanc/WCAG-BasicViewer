@@ -264,7 +264,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                             : '')+"</div>"+
                         "<div id='thumb' class='thumbFeature' tabindex=0 title='"+title+"'><img src='"+this.searchMarker.url+"' alt='"+title+"''/></div>"+
                     "<div class='hzLine'></div>"+
-                    "<table class='addressInfo'>"+result+"</table>"+
+                    "<table class='address-tooltip__address-info'>"+result+"</table>"+
                     "<span tabindex=0 class='locatorScore'>Score: ${Score}</span>"+
                     "<a class='locatorCopy' tabindex=0 onkeydown='if(event.keyCode===13 || event.keyCode===32) this.click();' onclick='\"${LongLabel}\".copyToClipboard();' title='"+i18n.widgets.geoCoding.CopyToClipboard+"'>"+i18n.widgets.geoCoding.Copy+"</span>"+
                     "</div>";

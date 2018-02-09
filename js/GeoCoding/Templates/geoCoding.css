@@ -1,23 +1,22 @@
 .shadow {
-    /* Use -webkit- only if supporting: Chrome < 54, iOS < 9.3, Android < 4.4.4 */
     -webkit-filter: drop-shadow( 1px 1px 1px #000  );
     filter: drop-shadow( 1px 1px 1px #000 );
 }
 
-.addressInfo th {
+.address-tooltip__address-info th {
 	vertical-align: top;
 	text-align: left;
 	font-weight: normal;
 }
 
-.addressInfo td {
+.address-tooltip__address-info td {
 	vertical-align: top;
 	font-weight: bold;
 }
 
 .address-tooltip {
   /* pointer-events: none; */
-  background: white;
+  /*background: white;*/
   opacity:0.85;
   border: black 1px solid;
   border-radius: 5px;
@@ -28,7 +27,6 @@
   width: auto;
   max-width:400px;
   z-index: 100;
-  /*box-shadow: #1f1f1f 2px 2px 2px 0px;*/
   display: block;
   top: 250px;
   left: 20px;
@@ -38,9 +36,6 @@
   padding: 5px;
   margin:-5px;
   border-radius: 5px 5px 0 0;
-  /*debug*/
-  width:100px;
-  height:20px;
 }
 
 #address-tooltip__content {
@@ -51,14 +46,11 @@
   font-weight: bold;
   background:white;
   color:black;
-  /*debug*/
-  height:50px;
 }
 
 .address-tooltip__spike {
 	position:absolute;
 	pointer-events:none;
-	/* box-shadow: #1f1f1f 2px 2px 2px 0px; */
 	display: block;
 }
 
