@@ -9,3 +9,64 @@
 	font-weight: bold;
 }
 
+.address-tooltip {
+  /* pointer-events: none; */
+  background: white;
+  opacity:0.85;
+  border: black 1px solid;
+  border-radius: 5px;
+  padding:5px;
+  font-size: small;
+  font-family: 'Roboto Condensed', sans-serif;
+  position: absolute;
+  width: auto;
+  max-width:400px;
+  z-index: 100;
+  box-shadow: #1f1f1f 2px 2px 2px 0px;
+  display:none;
+}
+
+#address-tooltip__title {
+  padding: 5px;
+  margin:-5px;
+  border-radius: 5px 5px 0 0;
+}
+
+#address-tooltip__content {
+  padding: 5px;
+  margin:-5px;
+  margin-top:5px;
+  border-radius: 0 0 5px 5px;
+  font-weight: bold;
+  background:white;
+  color:black;
+}
+
+.address-tooltip__spike {
+	position:absolute; 
+	pointer-events:none; 
+  	box-shadow: #1f1f1f 2px 2px 2px 0px;
+
+	display:none;
+}
+
+.address-tooltip__spike svg {
+	touch-action: none;
+}
+
+.address-tooltip__spike--NE {
+	top:-12px; 
+	left:12px; 
+}
+.address-tooltip__spike--NW {
+	top:-12px; 
+	right:12px; 
+}
+.address-tooltip__spike--SE {
+	bottom:-12px; 
+	left:12px; 
+}
+.address-tooltip__spike--SV {
+	bottom:-12px; 
+	right:12px; 
+}

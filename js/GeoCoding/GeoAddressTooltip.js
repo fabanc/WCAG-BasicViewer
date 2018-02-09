@@ -52,11 +52,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.headerNode = dom.byId(defaults.header);
             // this.superNavigator = defaults.superNavigator;
 
-            // dojo.create("link", {
-            //     href : "js/GeoCoding/Templates/geoCoding.css",
-            //     type : "text/css",
-            //     rel : "stylesheet",
-            // }, document.head);
+            dojo.create("link", {
+                href : "js/GeoCoding/Templates/geoAddressTooltip.css",
+                type : "text/css",
+                rel : "stylesheet",
+            }, document.head);
 
             this.locator = new Locator("https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer");
         },
@@ -132,7 +132,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             if(!this.addressToolTip) {
                 this.addressToolTip = domConstruct.create('div', {
-                    class:'addressToolTip bg'  
+                    class:'address-tooltip bg'  
                 }, 'mapDiv');
                 
                 var spikeDiv = domConstruct.create('div', {

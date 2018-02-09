@@ -201,7 +201,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             if(!this.addressToolTip) {
                 this.addressToolTip = domConstruct.create('div', {
-                    class:'addressToolTip bg'  
+                    class:'address-tooltip bg'  
                 }, 'mapDiv');
                 
                 var spikeDiv = domConstruct.create('div', {
