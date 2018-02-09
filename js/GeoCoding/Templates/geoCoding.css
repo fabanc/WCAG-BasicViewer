@@ -28,9 +28,6 @@
   max-width:400px;
   z-index: 100;
   display: none;
-  top: 250px;
-  left: 20px;
-  /*padding: 50px;*/
 }
 
 #address-tooltip__title {
@@ -50,28 +47,28 @@
 }
 
 .address-tooltip__spike {
-	position:absolute;
+	position: absolute;
 	pointer-events:none;
-	/* display: none; */
+	display: none;
 }
 
 .address-tooltip__spike svg {
 	touch-action: none;
 }
 
-.address-tooltip__spike--NE {
-	top:-12px; 
-	left:12px; 
-}
 .address-tooltip__spike--NW {
-	top:-12px;
-	right: 4px;
+	top:-12px !important; 
+	left:12px !important; 
 }
-.address-tooltip__spike--SE {
-	bottom: -23px;
-	left:12px;
+.address-tooltip__spike--NE {
+	top:-12px !important;
+	right: 4px !important;
 }
 .address-tooltip__spike--SW {
-	bottom: -23px;
-	right: 4px;
+	bottom: -23px !important;
+	left:12px !important;
+}
+.address-tooltip__spike--SE {
+	bottom: -23px !important;
+	right: 4px !important;
 }

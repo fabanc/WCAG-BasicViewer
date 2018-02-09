@@ -5,6 +5,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dojo/query", 
     "dojo/text!application/GeoCoding/templates/GeoAddressTooltip.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
+    "esri/geometry/Point",
     "dojo/parser", "dojo/ready",
     "dojo/i18n!application/nls/PopupInfo",
     "dojo/parser", "dojo/ready"
@@ -16,6 +17,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         query,
         GeoAddressTooltip, 
         dom, domClass, domAttr, domStyle, domConstruct, 
+        Point,
         parser, ready,
         i18n
     ) {
@@ -102,6 +104,11 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                     this.addressTooltipButton.activate(name === 'geoCoding');
                 }
             }));
+
+            this.spikeNE = query('.address-tooltip__spike--NE')[0];
+            this.spikeNW = query('.address-tooltip__spike--NW')[0];
+            this.spikeSE = query('.address-tooltip__spike--SE')[0];
+            this.spikeSW = query('.address-tooltip__spike--SW')[0];
 		},
 
 		showTooltip: function (evt){
@@ -123,15 +130,72 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 address.TypeLoc = '';
             }
 
+            var mapDiv = dojo.byId('mapDiv');
             var location = this.map.toScreen(evt.location);
 
+            var mapSize = {w: mapDiv.clientWidth, h:mapDiv.clientHeight};
+            var mapMin = {x:mapDiv.clientLeft, y:mapDiv.clientTop};
+            var mapMax = {x:mapDiv.clientLeft+mapSize.w, y:mapDiv.clientTop+mapSize.h};
+
+            var mapCenter = {x:mapSize.w/2+mapMin.x, y:mapSize.h/2+mapMin.y};
+			
+
+			// var mapMin = this.map.toScreen({ type: "point", x:this.map.extent.xmin, y:this.map.extent.ymin, 'spatialReference':this.map.spatialReference});
+			// var mapMax = this.map.toScreen({ type: "point", x:this.map.extent.xmax, y:this.map.extent.ymax, 'spatialReference':this.map.spatialReference});
+			var mapH = dojo.byId('mapDiv').clientHeight;
+			var mapW = dojo.byId('mapDiv').clientWidth;
+
+            if(location.x <= mapCenter.x && location.y<=mapCenter.y) {
+            	console.log("NW");
+            	domStyle.set(this.spikeNE, "display", "");
+            	domStyle.set(this.spikeNW, "display", "block");
+            	domStyle.set(this.spikeSE, "display", "");
+            	domStyle.set(this.spikeSW, "display", "");
+
+            	domStyle.set(this.addressToolTip, "top", (location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "bottom", "");
+            	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
+            	domStyle.set(this.addressToolTip, "right", "");
+            } else if(location.x > mapCenter.x && location.y<=mapCenter.y) {
+            	console.log("NE");
+            	domStyle.set(this.spikeNE, "display", "block");
+            	domStyle.set(this.spikeNW, "display", "");
+            	domStyle.set(this.spikeSE, "display", "");
+            	domStyle.set(this.spikeSW, "display", "");
+
+            	domStyle.set(this.addressToolTip, "top", (location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "bottom", "");
+            	domStyle.set(this.addressToolTip, "right", (mapW-location.x)+"px");
+            	domStyle.set(this.addressToolTip, "left", "");
+            } else if(location.x <= mapCenter.x && location.y>mapCenter.y) {
+            	console.log("SW");
+            	domStyle.set(this.spikeNE, "display", "");
+            	domStyle.set(this.spikeNW, "display", "");
+            	domStyle.set(this.spikeSE, "display", "");
+            	domStyle.set(this.spikeSW, "display", "block");
+
+            	domStyle.set(this.addressToolTip, "top", "");
+            	domStyle.set(this.addressToolTip, "bottom", (mapH-location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
+            	domStyle.set(this.addressToolTip, "right", "");
+            } else if(location.x > mapCenter.x && location.y>mapCenter.y) {
+            	console.log("SE");
+            	domStyle.set(this.spikeNE, "display", "");
+            	domStyle.set(this.spikeNW, "display", "");
+            	domStyle.set(this.spikeSE, "display", "block");
+            	domStyle.set(this.spikeSW, "display", "");
+
+            	domStyle.set(this.addressToolTip, "top", "");
+            	domStyle.set(this.addressToolTip, "bottom", (mapH-location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "left", "");
+            	domStyle.set(this.addressToolTip, "right", (mapW-location.x-12)+"px");
+            }
 
             this.tipHeader.innerHTML=address.AddrTypeLoc+address.TypeLoc;
             this.tipContent.innerHTML=address.Match_addr;
 
-            this.addressToolTip.style = "display:block; "+
-                "top:"+(location.y+12)+"px; "+
-                "left:"+(location.x-12)+"px;";
+            domStyle.set(this.addressToolTip, "display", "block");
+
             this.map.setMapCursor('none');  
             this.tipContent.focus();            
         },
