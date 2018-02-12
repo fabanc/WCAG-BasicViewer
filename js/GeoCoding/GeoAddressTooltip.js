@@ -110,18 +110,17 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             this.spikeSE = dom.byId('spikeSE');
             this.spikeSW = dom.byId('spikeSW');
 
-            this.mapDiv = dojo.byId('mapDiv');
+            // this.mapDiv = this.map.container;
 
             lang.hitch(this, this.getMapBounds);
-
             this.map.on('resize', lang.hitch(this, this.getMapBounds));
 		},
 
-		getMapBounds: function() {
-            this.mapH = this.mapDiv.clientHeight;
-			this.mapW = this.mapDiv.clientWidth;
-            this.mapMin = {x:this.mapDiv.clientLeft, y:this.mapDiv.clientTop};
-            this.mapMax = {x:this.mapDiv.clientLeft+this.mapW, y:this.mapDiv.clientTop+this.mapH};
+		getMapBounds: function(){
+            this.mapH = this.map.container.clientHeight;
+			this.mapW = this.map.container.clientWidth;
+            this.mapMin = {x:this.map.container.clientLeft, y:this.map.container.clientTop};
+            this.mapMax = {x:this.map.container.clientLeft+this.mapW, y:this.map.container.clientTop+this.mapH};
             this.mapCenter = {x:this.mapW/2+this.mapMin.x, y:this.mapH/2+this.mapMin.y};
 		},
 
@@ -165,7 +164,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             	domStyle.set(this.addressToolTip, "top", (location.y+12)+"px");
             	domStyle.set(this.addressToolTip, "bottom", "");
-            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x)+"px");
+            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x-15)+"px");
             	domStyle.set(this.addressToolTip, "left", "");
             } else if(location.x <= this.mapCenter.x && location.y>this.mapCenter.y) {
             	console.log("SW");
@@ -176,7 +175,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             	domStyle.set(this.addressToolTip, "top", "");
             	domStyle.set(this.addressToolTip, "bottom", (this.mapH-location.y+12)+"px");
-            	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
+            	domStyle.set(this.addressToolTip, "left", (location.x-15)+"px");
             	domStyle.set(this.addressToolTip, "right", "");
             } else if(location.x > this.mapCenter.x && location.y>this.mapCenter.y) {
             	console.log("SE");
@@ -188,7 +187,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.addressToolTip, "top", "");
             	domStyle.set(this.addressToolTip, "bottom", (this.mapH-location.y+12)+"px");
             	domStyle.set(this.addressToolTip, "left", "");
-            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x-12)+"px");
+            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x-15)+"px");
             }
 
             this.tipHeader.innerHTML=address.AddrTypeLoc+address.TypeLoc;
@@ -214,6 +213,12 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             }
             else 
             {
+            	var location = this.map.toScreen(ev.mapPoint);
+            	if(location.x < this.mapMin.x+12 || location.x>this.mapMax.x-18) {
+		            this.map.setMapCursor('default');
+            		return;
+				}
+
                 this.locatorDeffered = this.locator.locationToAddress(
                     webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 1)
                 .then(
