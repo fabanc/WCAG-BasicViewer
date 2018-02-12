@@ -15,8 +15,7 @@
 }
 
 .address-tooltip {
-  /* pointer-events: none; */
-  /*background: white;*/
+  /*pointer-events: none; */
   opacity:0.85;
   border: black 1px solid;
   border-radius: 5px;

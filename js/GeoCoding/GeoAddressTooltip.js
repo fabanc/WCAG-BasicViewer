@@ -213,7 +213,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         	if(this.timeoutDeffered && !this.timeoutDeffered.isResolved() 
         		&& this.timeout) {
         		clearTimeout(this.timeout);
-        		this.timeoutDeffered.cancel("CancelError");
+        		// this.timeoutDeffered.cancel("CancelError");
         	}
 
             if(this.locatorDeffered && !this.locatorDeffered.isFulfilled()) {
@@ -227,33 +227,29 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             		return;
 				}
 
-				lang.hitch(this, this.asyncProcess(new Deferred(), ev.mapPoint));
+				lang.hitch(this, this.asyncProcess(this.timeoutDeffered = new Deferred(), ev.mapPoint));
             }
         },
 
 		asyncProcess: function (timeoutDeffered, mapPoint){
-		    this.timeoutDeffered = timeoutDeffered;
-		    var self = this;
-		    setTimeout(function(){
-				this.timeout = setTimeout(lang.hitch(self, function(){
-	                this.locatorDeffered = this.locator.locationToAddress(
-	                    webMercatorUtils.webMercatorToGeographic(mapPoint), 1)
-	                .then(
-	                    lang.hitch(this, function(result) {
-	                        this.showTooltip(result);
-	                        timeoutDeffered.resolve();
-	                    }),
-	                    function(error) {
-	                        if(error.name !== "CancelError")
-	                            console.log('locator eror: ', error);
-	                        timeoutDeffered.cancel();
-	                    },
-	                    function() {
-	                    	this.timeout = null;
-	                    });
-		    	}, 250));
+			this.timeout = setTimeout(lang.hitch(this, function(){
+                this.locatorDeffered = this.locator.locationToAddress(
+                    webMercatorUtils.webMercatorToGeographic(mapPoint), 1)
+                .then(
+                    lang.hitch(this, function(result) {
+                        this.showTooltip(result);
+                        timeoutDeffered.resolve("");
+                    }),
+                    function(error) {
+                        if(error.name !== "CancelError")
+                            console.log('locator eror: ', error);
+                        timeoutDeffered.resolve("");
+                    },
+                    function() {
+                    	this.timeout = null;
+                    });
+	    	}, 250));
 
-	  		})
 		    return timeoutDeffered.promise;
 	  	},
 
