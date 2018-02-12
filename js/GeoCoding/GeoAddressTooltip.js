@@ -105,10 +105,24 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 }
             }));
 
-            this.spikeNE = query('.address-tooltip__spike--NE')[0];
-            this.spikeNW = query('.address-tooltip__spike--NW')[0];
-            this.spikeSE = query('.address-tooltip__spike--SE')[0];
-            this.spikeSW = query('.address-tooltip__spike--SW')[0];
+            this.spikeNE = dom.byId('spikeNE');
+            this.spikeNW = dom.byId('spikeNW');
+            this.spikeSE = dom.byId('spikeSE');
+            this.spikeSW = dom.byId('spikeSW');
+
+            this.mapDiv = dojo.byId('mapDiv');
+
+            lang.hitch(this, this.getMapBounds);
+
+            this.map.on('resize', lang.hitch(this, this.getMapBounds));
+		},
+
+		getMapBounds: function() {
+            this.mapH = this.mapDiv.clientHeight;
+			this.mapW = this.mapDiv.clientWidth;
+            this.mapMin = {x:this.mapDiv.clientLeft, y:this.mapDiv.clientTop};
+            this.mapMax = {x:this.mapDiv.clientLeft+this.mapW, y:this.mapDiv.clientTop+this.mapH};
+            this.mapCenter = {x:this.mapW/2+this.mapMin.x, y:this.mapH/2+this.mapMin.y};
 		},
 
 		showTooltip: function (evt){
@@ -130,22 +144,8 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
                 address.TypeLoc = '';
             }
 
-            var mapDiv = dojo.byId('mapDiv');
             var location = this.map.toScreen(evt.location);
-
-            var mapSize = {w: mapDiv.clientWidth, h:mapDiv.clientHeight};
-            var mapMin = {x:mapDiv.clientLeft, y:mapDiv.clientTop};
-            var mapMax = {x:mapDiv.clientLeft+mapSize.w, y:mapDiv.clientTop+mapSize.h};
-
-            var mapCenter = {x:mapSize.w/2+mapMin.x, y:mapSize.h/2+mapMin.y};
-			
-
-			// var mapMin = this.map.toScreen({ type: "point", x:this.map.extent.xmin, y:this.map.extent.ymin, 'spatialReference':this.map.spatialReference});
-			// var mapMax = this.map.toScreen({ type: "point", x:this.map.extent.xmax, y:this.map.extent.ymax, 'spatialReference':this.map.spatialReference});
-			var mapH = dojo.byId('mapDiv').clientHeight;
-			var mapW = dojo.byId('mapDiv').clientWidth;
-
-            if(location.x <= mapCenter.x && location.y<=mapCenter.y) {
+            if(location.x <= this.mapCenter.x && location.y<=this.mapCenter.y) {
             	console.log("NW");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "block");
@@ -156,7 +156,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.addressToolTip, "bottom", "");
             	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
             	domStyle.set(this.addressToolTip, "right", "");
-            } else if(location.x > mapCenter.x && location.y<=mapCenter.y) {
+            } else if(location.x > this.mapCenter.x && location.y<=this.mapCenter.y) {
             	console.log("NE");
             	domStyle.set(this.spikeNE, "display", "block");
             	domStyle.set(this.spikeNW, "display", "");
@@ -165,9 +165,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             	domStyle.set(this.addressToolTip, "top", (location.y+12)+"px");
             	domStyle.set(this.addressToolTip, "bottom", "");
-            	domStyle.set(this.addressToolTip, "right", (mapW-location.x)+"px");
+            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x)+"px");
             	domStyle.set(this.addressToolTip, "left", "");
-            } else if(location.x <= mapCenter.x && location.y>mapCenter.y) {
+            } else if(location.x <= this.mapCenter.x && location.y>this.mapCenter.y) {
             	console.log("SW");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "");
@@ -175,10 +175,10 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.spikeSW, "display", "block");
 
             	domStyle.set(this.addressToolTip, "top", "");
-            	domStyle.set(this.addressToolTip, "bottom", (mapH-location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "bottom", (this.mapH-location.y+12)+"px");
             	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
             	domStyle.set(this.addressToolTip, "right", "");
-            } else if(location.x > mapCenter.x && location.y>mapCenter.y) {
+            } else if(location.x > this.mapCenter.x && location.y>this.mapCenter.y) {
             	console.log("SE");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "");
@@ -186,9 +186,9 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.spikeSW, "display", "");
 
             	domStyle.set(this.addressToolTip, "top", "");
-            	domStyle.set(this.addressToolTip, "bottom", (mapH-location.y+12)+"px");
+            	domStyle.set(this.addressToolTip, "bottom", (this.mapH-location.y+12)+"px");
             	domStyle.set(this.addressToolTip, "left", "");
-            	domStyle.set(this.addressToolTip, "right", (mapW-location.x-12)+"px");
+            	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x-12)+"px");
             }
 
             this.tipHeader.innerHTML=address.AddrTypeLoc+address.TypeLoc;
