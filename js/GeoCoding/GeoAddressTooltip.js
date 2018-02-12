@@ -2,7 +2,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
     "dijit/_WidgetBase", "dijit/_TemplatedMixin", 
     "dojo/on", 
     "esri/tasks/locator", "esri/geometry/webMercatorUtils",
-    "dojo/query", 
+    "dojo/query", "dojo/Deferred",
     "dojo/text!application/GeoCoding/templates/GeoAddressTooltip.html", 
     "dojo/dom", "dojo/dom-class", "dojo/dom-attr", "dojo/dom-style", "dojo/dom-construct", 
     "esri/geometry/Point",
@@ -14,7 +14,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         _WidgetBase, _TemplatedMixin, 
         on, 
         Locator, webMercatorUtils,
-        query,
+        query, Deferred,
         GeoAddressTooltip, 
         dom, domClass, domAttr, domStyle, domConstruct, 
         Point,
@@ -145,7 +145,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
 
             var location = this.map.toScreen(evt.location);
             if(location.x <= this.mapCenter.x && location.y<=this.mapCenter.y) {
-            	console.log("NW");
+            	// console.log("NW");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "block");
             	domStyle.set(this.spikeSE, "display", "");
@@ -156,7 +156,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.addressToolTip, "left", (location.x-12)+"px");
             	domStyle.set(this.addressToolTip, "right", "");
             } else if(location.x > this.mapCenter.x && location.y<=this.mapCenter.y) {
-            	console.log("NE");
+            	// console.log("NE");
             	domStyle.set(this.spikeNE, "display", "block");
             	domStyle.set(this.spikeNW, "display", "");
             	domStyle.set(this.spikeSE, "display", "");
@@ -167,7 +167,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.addressToolTip, "right", (this.mapW-location.x-15)+"px");
             	domStyle.set(this.addressToolTip, "left", "");
             } else if(location.x <= this.mapCenter.x && location.y>this.mapCenter.y) {
-            	console.log("SW");
+            	// console.log("SW");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "");
             	domStyle.set(this.spikeSE, "display", "");
@@ -178,7 +178,7 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             	domStyle.set(this.addressToolTip, "left", (location.x-15)+"px");
             	domStyle.set(this.addressToolTip, "right", "");
             } else if(location.x > this.mapCenter.x && location.y>this.mapCenter.y) {
-            	console.log("SE");
+            	// console.log("SE");
             	domStyle.set(this.spikeNE, "display", "");
             	domStyle.set(this.spikeNW, "display", "");
             	domStyle.set(this.spikeSE, "display", "block");
@@ -206,8 +206,16 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
         },
 
         locatorDeffered: null,
+        timeoutDeffered: null,
+        timeout: null,
 
         hoverMap : function(ev) {
+        	if(this.timeoutDeffered && !this.timeoutDeffered.isResolved() 
+        		&& this.timeout) {
+        		clearTimeout(this.timeout);
+        		this.timeoutDeffered.cancel("CancelError");
+        	}
+
             if(this.locatorDeffered && !this.locatorDeffered.isFulfilled()) {
                 this.closeDialog();
             }
@@ -219,21 +227,38 @@ define(["dojo/Evented", "dojo/_base/declare", "dojo/_base/lang", "dojo/has", "es
             		return;
 				}
 
-                this.locatorDeffered = this.locator.locationToAddress(
-                    webMercatorUtils.webMercatorToGeographic(ev.mapPoint), 1)
-                .then(
-                    lang.hitch(this, function(result) {
-                        this.showTooltip(result);
-                    }),
-                    function(error) {
-                        if(error.name !== "CancelError")
-                            console.log('locator eror: ', error);
-                    }
-                );
+				lang.hitch(this, this.asyncProcess(new Deferred(), ev.mapPoint));
             }
         },
 
+		asyncProcess: function (timeoutDeffered, mapPoint){
+		    this.timeoutDeffered = timeoutDeffered;
+		    var self = this;
+		    setTimeout(function(){
+				this.timeout = setTimeout(lang.hitch(self, function(){
+	                this.locatorDeffered = this.locator.locationToAddress(
+	                    webMercatorUtils.webMercatorToGeographic(mapPoint), 1)
+	                .then(
+	                    lang.hitch(this, function(result) {
+	                        this.showTooltip(result);
+	                        timeoutDeffered.resolve();
+	                    }),
+	                    function(error) {
+	                        if(error.name !== "CancelError")
+	                            console.log('locator eror: ', error);
+	                        timeoutDeffered.cancel();
+	                    },
+	                    function() {
+	                    	this.timeout = null;
+	                    });
+		    	}, 250));
+
+	  		})
+		    return timeoutDeffered.promise;
+	  	},
+
     });
+
 
     if (has("extend-esri")) {
         lang.setObject("dijit.GeoAddressTooltip", Widget, esriNS);
