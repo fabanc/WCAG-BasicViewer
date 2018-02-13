@@ -110,7 +110,7 @@ define(["dojo/ready",
                 this.activeColor = typeof(this.config.activeColor)=='undefined' ? this.focusColor : this.setColor(this.config.activeColor, 0.9);
                 this.theme = this.setColor(this.config.theme);
 
-                if(config.useGoogleAnalytics && false)
+                if(config.useGoogleAnalytics)
                 {
                     var gaqUserAccount = config.googleAnalyticsUserAccount;
                     if(!gaqUserAccount || gaqUserAccount.trim() === "")
