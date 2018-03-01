@@ -116,9 +116,9 @@ http://reference.sitepoint.com/css/outline-color
   color:black;
 }
 
-#tooltip {  
-    background-color: black;
-    color: white;
+.tooltip__focus {  
+    font-size: 14px;
+    font-family: 'Raleway', sans-serif;
     padding:5px;
     margin-top: 1.5em;
     position: absolute;
@@ -126,5 +126,19 @@ http://reference.sitepoint.com/css/outline-color
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    z-index:1;
+    border-style: solid;
+    border-width: 2px;
+    z-index:1000;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-shadow: 1px 1px 1px 0px rgba(255,255,255,0.51);
+    -moz-box-shadow: 1px 1px 1px 0px rgba(255,255,255,0.51);
+    box-shadow: 1px 1px 1px 0px rgba(255,255,255,0.51);
+}
+
+.tool--focus {
+    background-color: black;
+    color: white;
+    border-color: black;
 }

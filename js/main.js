@@ -2221,7 +2221,7 @@ define(["dojo/ready",
 
             var styleSheetList = document.styleSheets;
             var styleCss = null;
-            for(i=0; i<styleSheetList.length; i++) {
+            for(var i=0; i<styleSheetList.length; i++) {
                 css = styleSheetList[i];
                 if(css.href.indexOf('styles1.css')>0) {
                     styleCss = css;
@@ -2230,7 +2230,7 @@ define(["dojo/ready",
             }
 
             if(styleCss) {
-                for(i=0; i<styleCss.cssRules.length; i++) {
+                for(var i=0; i<styleCss.cssRules.length; i++) {
                     var rule = styleCss.cssRules[i];
                     if(typeof(rule.selectorText)!='undefined' && rule.selectorText!==null) {
                         var rgbaColor = function(color) {
@@ -2248,6 +2248,11 @@ define(["dojo/ready",
                         if(rule.selectorText.indexOf('#addrHintTitle') >= 0) {
                             rule.style.backgroundColor = rgbaColor(this.theme);
                             rule.style.color = rgbaColor(this.color);
+                        }
+                        if(rule.selectorText.indexOf('.tool--focus') >= 0) {
+                            rule.style.backgroundColor = rgbaColor(this.color);
+                            rule.style.borderColor = 
+                            rule.style.color = rgbaColor(this.theme);
                         }
                         
                         //focus
