@@ -1358,7 +1358,8 @@ define(["dojo/ready",
                     this.legendNodeObserver.observe(dojo.byId('esri_dijit_Legend_0'), { 
                         attributes: true, 
                         childList: true, 
-                        characterData: false 
+                        characterData: false,
+                        subtree: true 
                     });
 
                     deferred.resolve(true);
