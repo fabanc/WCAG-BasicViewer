@@ -545,7 +545,7 @@ img {
 #pageBody_details {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-evenly;
 }
 
 #panelTop {
@@ -1148,7 +1148,7 @@ html, body {
 }
 
 .dijitSplitterThumb {
-    opacity:0.25;
+    opacity: 0.5;
 }
 
 .dijitSplitterThumb:hover {
